@@ -11,9 +11,10 @@
       
       {% if page_paths %}
       <div class="header-right">
-        <!-- <a class="page-link" href="{{ '/' | relative_url }}">Home</a> -->
-        <!-- <a class="page-link" href="{{ '/categories/' | relative_url }}">Categories</a> -->
-        <!-- <a class="page-link" href="{{ '/archive/' | relative_url }}">Archive</a> -->
+        <!-- TODO(mebjas): Add categories and resume. -->
+        <a class="page-link" href="{{ site.footer-links.500px }}">500px</a>
+        <a class="page-link" href="{{ site.footer-links.github_full }}">Github</a>
+        <a class="page-link" href="{{ site.footer-links.linkedin }}">LinkedIn</a>
         <a class="page-link" href="{{ '/about/' | relative_url }}">About</a>
       </div>
       {% endif %}
