@@ -10,12 +10,14 @@ category: graphics, html Canvas, javascript, mathematics
  - Creating a 3d surface patch using Bezier curves
  - Making it interactive
 
-![Screenshot](../images/Screen-Shot-2014-11-17-at-11.27.12-am.png.jpg)
+<img src="../images/Screen-Shot-2014-11-17-at-11.27.12-am.png.jpg" alt="Screenshot" height=400>
 _figure 1: Screenshot of experiment_
 
 ### So what’s a Bezier curve:
 
 Its a cubic parametric curve used to draw smooth curves, we can draw a bezier curve using two endpoints and two control points. It looks something like:
+
+<img src="../images/quad01.png" alt="bezier curve">
 
 ![bezier curve](../images/quad01.png)
 _figure 1: Bezier Curve - [Wikipedia](http://en.wikipedia.org/wiki/B%C3%A9zier_curve)_

@@ -8,11 +8,11 @@ We had a B-Tech course on Distributed Systems and I took a course on on Cloud Co
 
 We use distributed systems a lot in our development pipelines, but most of the concepts are abstracted out by the cloud solutions. I work for Microsoft Azure, and we use concepts like scheduling, queuing, distributed caching all the time, but most of these are provided as a SaaS offering – hence it’s mostly:
 
-```c++
+{% highlight cpp %}
 Azure.Client.CreateIfNotExists()
 Azure.Client.JustDoMostOfItForMe()
 Azure.Thanks()
-```
+{% endhighlight %}
 
 Well I’m actually grateful for all the offerings we have in 2017, it makes development much faster and takes a lot of headache away. So I’m picking up this fun exercise to refresh the underlying concepts IN MEMORY :D.
 
@@ -58,7 +58,7 @@ node process\index.js <portno> <introducer>
 `<introducer>` – port number of the introducer to which join request will be sent; Not needed for first instance – it will assume itself to be first instance because of this; I’m not going for any automatic discovery or centralized discovery mechanism here;
 
 ## Top level architecture
-![architecture](../images/post2_picture1.png)
+<img src="../images/post2_picture1.png" alt="architecture" width=500>
 _Figure 1: Architecture_
 
 ### TASK 1.1: Membership Protocol
@@ -68,14 +68,14 @@ If it doesn’t get an ACK, it’d send a PING_REQ message to K random nodes, an
 
 These screenshots are when 8 nodes were joined and two of them crashed
 
-![Nine nodes detecting other nodes joining in gossip style](../images/post2_image2.png)
+<img src="../images/post2_image2.png" alt="Nine nodes detecting other nodes joining in gossip style" width=500>
 _Figure 2: Nine nodes detecting other nodes joining in gossip style_
 
-![After killing two nodes, other seven nodes detected the failure by failure detection and gossip style messaging](../images/post2_image3.png)
+<img src="../images/post2_image3.png" alt="After killing two nodes, other seven nodes detected the failure by failure detection and gossip style messaging" width=500>
 _Figure 3: After killing two nodes, other seven nodes detected the failure by failure detection and gossip style messaging_
 
 #### Detecting failures in 24 nodes 😀
-![Did the same with 24 Nodes :D; If you look at the console logs, you can see some nodes detected the failure while others got the information as a gossip](../images/post2_image4.png)
+<img src="../images/post2_image4.png" alt="Did the same with 24 Nodes :D; If you look at the console logs, you can see some nodes detected the failure while others got the information as a gossip" width=500>
 _Figure 4: Did the same with 24 Nodes :D; If you look at the console logs, you can see some nodes detected the failure while others got the information as a gossip_
 
 ### TASK 1.2: Testing Membership Protocol
