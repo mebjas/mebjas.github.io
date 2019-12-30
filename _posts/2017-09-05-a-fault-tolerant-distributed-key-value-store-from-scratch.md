@@ -2,9 +2,11 @@
 layout: post
 title: A fault tolerant distributed key value store from scratch
 category: distributed systems, hackathon, Key Value Store, node js
+description: "We had a B-Tech course on Distributed Systems and I took a course on on Cloud Computing Concepts 1 by Dr Indranil Gupta (UIUC) a year back and for long, I have been thinking about trying out different concepts explained in the course together as something meaningful. In this article I have attempted to describe how to build a fault tolerant distributed key value store from scratch. A key-value store, or key-value database, is a data storage paradigm designed for storing, retrieving, and managing associative arrays, a data structure more commonly known today as a dictionary or hash. A distributed Key Value store is one where data is replicated across different nodes such that there is High Availability and No single point of failure"
+post-no: 2
 ---
 
-We had a B-Tech course on Distributed Systems and I took a course on on Cloud Computing Concepts 1 by Dr Indranil Gupta (UIUC) a year back and for long, I have been thinking about trying out different concepts explained in the course together as something meaningful. There are assignments in the course which you need to finish, but they don’t require you to just club all of them together. I wished to try something out where most of the major concepts are used;
+We had a B-Tech course on Distributed Systems and I took a course on on Cloud Computing Concepts 1 by Dr Indranil Gupta (UIUC) a year back and for long, I have been thinking about trying out different concepts explained in the course together as something meaningful. There are assignments in the course which you need to finish, but they don’t require you to just club all of them together. I wished to try something out where most of the major concepts are used.
 
 We use distributed systems a lot in our development pipelines, but most of the concepts are abstracted out by the cloud solutions. I work for Microsoft Azure, and we use concepts like scheduling, queuing, distributed caching all the time, but most of these are provided as a SaaS offering – hence it’s mostly:
 
