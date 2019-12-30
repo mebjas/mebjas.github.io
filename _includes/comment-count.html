@@ -1,0 +1,6 @@
+{% assign comments = site.data.comments[page.slug] %}
+{% if comments %}
+{% assign comments = comments | sort %}
+{% endif %}
+{% assign commentCount = comments | size %}
+[&nbsp;{{ commentCount }}&nbsp;comment{% if commentCount != 1 %}s{% endif %}&nbsp;]

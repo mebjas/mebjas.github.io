@@ -1,0 +1,4 @@
+{% for category in page.categories %}
+<a class="category-link" href="/{{ site.category_dir }}/{{ category }}/" rel="category">{{ category }}</a>
+<!-- {% unless forloop.last %},{% endunless %}{% if forloop.last %}.{% endif %} -->
+{% endfor %}

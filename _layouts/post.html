@@ -16,15 +16,15 @@ layout: default
       {% endif %}
       •
       {% include filed.html %}
-      •
-      <a href="#comments">{% include comment-count.html %}</a>
+      <!-- TODO(mebjas): add support for commenting. -->
+      <!-- • -->
+      <!-- <a href="#comments">{% include comment-count.html %}</a> -->
     </p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
     {% if page.toc %}
-    <!-- <h2 id="table-of-contents">Table of Contents</h2> -->
-    {% include spoiler.html display="Table of Contents" %}
+    {% include toc.html display="Table of Contents" %}
 
     {% endif %}
     
@@ -35,8 +35,11 @@ layout: default
     {% include post-footer.html %}
   </div>
 
-  <div class="comments">
-    {% include comments.html slug=page.slug %}
-  </div>
+  <!-- TODO(mebjas): add support for commenting. -->
+  <!--
+    <div class="comments">
+      {% include comments.html slug=page.slug %}
+    </div>
+  -->
 
 </article>

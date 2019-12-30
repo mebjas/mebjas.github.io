@@ -1,0 +1,14 @@
+{% if page.post-no %}
+<div class="related-posts">
+  <span class="related-posts-text">Related posts:</span>
+  <ul>
+    {% for rel-page in site.posts %}
+    {% if page.related contains rel-page.post-no %}
+    <li>
+      <a href="{{ rel-page.url | relative_url }}">{{ rel-page.title | escape }}</a>
+    </li>
+    {% endif %}
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
