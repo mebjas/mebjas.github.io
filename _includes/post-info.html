@@ -1,0 +1,18 @@
+<div class="post-info">
+
+    <h3 class="post-header"><a class="post-link" href="{{ page.url | relative_url }}">{{ page.title | escape }}</a></h3>
+  
+    <p class="post-meta post-meta-home">
+      {% assign date_format = site.minutia.date_format | default: "%b %-d, %Y" %}
+      {{ page.date | date: date_format }}
+      •
+      {% include filed.html %}
+    </p>
+  
+    {% if page.description and include.description == 1 %}
+    <span class="post-description">{{ page.description }}</span>
+    <span class="read-more"><a href="{{ page.url | relative_url }}">[&nbsp;Read&nbsp;more&nbsp;]</a></span>
+    {% endif %}
+  
+  </div>
+  
