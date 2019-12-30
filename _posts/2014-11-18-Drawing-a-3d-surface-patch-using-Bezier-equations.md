@@ -30,7 +30,7 @@ So how to draw the surface using multiple bezier curves:
  - In the meanwhile you can draw points at equidistant points on each bezier curve.
  - The code looks something like:
 
-```js
+{% highlight javascript %}
 function plot() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     // draw top line and find the points
@@ -111,7 +111,7 @@ function plot() {
     }
     ctx.stroke();
 }
-```
+{% endhighlight %}
 
 **How to make it interactive**: Simply change the control points according to input (mouse move, key press in my case)
 
