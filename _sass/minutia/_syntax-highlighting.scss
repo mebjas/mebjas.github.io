@@ -1,0 +1,206 @@
+@import "nimbus-pygments/nimbus-pygments.scss";
+
+/**
+ * Code formatting
+ */
+
+/* Applies to all code */
+pre, code {
+    // font-size: $code-font-size;
+    font-family: $code-font-family;
+    font-style: normal;
+
+    font-feature-settings: "kern" off;
+    font-kerning: none;
+    font-variant: none;
+
+    background-color: $light-purple;
+
+    ::selection {
+        color: $nimbus-bg;
+        background: $nimbus-fg;
+    }
+
+    ::-moz-selection {
+        color: $nimbus-bg;
+        background: $nimbus-fg;
+    }
+
+    ::-webkit-selection {
+        color: $nimbus-bg;
+        background: $nimbus-fg;
+    }
+}
+
+/* Inline code, no highlight */
+code {
+    padding: 2px 4px;
+    border-radius: 3px;
+
+    white-space: nowrap;
+}
+
+blockquote code {
+    color: $dark-gray;
+}
+
+/* Inline code, highlight */
+code.highlight {
+    border-radius: 3px;
+
+    color: $nimbus-fg;
+    background-color: $nimbus-bg;
+}
+
+/* Block code, no highlight */
+pre {
+    border-radius: 5px;
+    margin: $spacing-unit * 0.75 $spacing-unit / 2;
+    padding: 8px 12px;
+    overflow-x: auto;
+    background-color: $lightest-purple;
+
+    code {
+        border: 0;
+        padding: 0;
+
+        white-space: pre;
+    }
+}
+
+/* Block code, highlight */
+figure.highlight, div.highlight {
+    position: relative;
+
+    pre {
+        background-color: $nimbus-bg;
+
+        code {
+            background-color: $nimbus-bg;
+            color: $nimbus-fg;
+
+            counter-reset: code;
+            display: block;
+            line-height: 1.5;
+
+            /* Display language name */
+            &[data-lang]::before {
+                content: attr(data-lang);
+                position: absolute;
+                right: 34px; // 15 + 19
+
+                // font-size: 12px;
+                top: -10px;
+                padding-left: $spacing-unit / 4;
+                padding-right: $spacing-unit / 4;
+
+                border: 1px solid $gray;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+                border-bottom-left-radius: 5px;
+                border-bottom-right-radius: 5px;
+
+                min-width: 40px;
+                text-align: center;
+
+                color: $nimbus-lightest-green;
+                background-color: $nimbus-bg;
+
+                @include media-query(300px) {
+                    visibility: hidden;
+                }
+            }
+
+            div {
+                counter-increment: code;
+
+                /* Line numbers */
+                &::before {
+                    color: $nimbus-blue-gray;
+                    content: counter(code);
+
+                    width: 14px;
+                    text-align: right;
+
+                    /* Add a nice border */
+                    display: inline-block;
+                    padding-right: $spacing-unit / 4;
+                    margin-right: $spacing-unit * 0.4;
+                    border-right: 1px solid $nimbus-dark-gray;
+
+                    /* For older browsers and Safari */
+                    -webkit-touch-callout: none;
+                    -webkit-user-select: none;
+                    -khtml-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
+            }
+        }
+    }
+}
+
+/* Hide language */
+.hide-lang + figure code::before {
+    visibility: hidden;
+}
+
+/**
+ * Language-specific settings
+ */
+
+.language-liquid {
+    .p {
+        color: $nimbus-green;
+    }
+}
+
+/**
+ * ID-specific overrides
+ */
+
+#c-example + figure {
+    .kt {
+        color: $nimbus-blue;
+    }
+}
+
+#liquid-example + figure {
+    .p {
+        color: $nimbus-fg;
+    }
+}
+
+#borders-example + figure {
+    div {
+        &::before {
+            padding-left: 0.625em;
+            border-left: 1px solid $nimbus-dark-gray;
+        }
+
+        &:first-of-type::before {
+            padding-top: 0.25em;
+            border-top: 1px solid $nimbus-dark-gray;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+
+        &:last-of-type::before {
+            padding-bottom: 0.25em;
+            border-bottom: 1px solid $nimbus-dark-gray;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+    }
+}
+
+#yaml-example + figure {
+    .na, .s {
+        color: $nimbus-purple;
+    }
+}
+
+.hl-1 + figure .line-1 {
+    background-color: $nimbus-blue-bg;
+}

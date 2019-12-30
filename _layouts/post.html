@@ -2,16 +2,41 @@
 layout: default
 ---
 
-<article class="post">
-  <h1>{{ page.title }}</h1>
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <div class="entry">
+  <header class="page-header">
+    <h1 class="post-title" itemprop="name headline">{{ page.title | escape }}</h1>
+    <p class="post-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+        {% assign date_format = site.minutia.date_format | default: "%b %-d, %Y" %}
+        {{ page.date | date: date_format }}
+      </time>
+      {% if page.author %}
+      • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author }}</span></span>
+      {% endif %}
+      •
+      {% include filed.html %}
+      •
+      <a href="#comments">{% include comment-count.html %}</a>
+    </p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    {% if page.toc %}
+    <!-- <h2 id="table-of-contents">Table of Contents</h2> -->
+    {% include spoiler.html display="Table of Contents" %}
+
+    {% endif %}
+    
     {{ content }}
   </div>
 
-  <div class="date">
-    Written on {{ page.date | date: "%B %e, %Y" }}
+  <div class="post-footer">
+    {% include post-footer.html %}
   </div>
 
-  <!-- {% include disqus.html %} -->
+  <div class="comments">
+    {% include comments.html slug=page.slug %}
+  </div>
+
 </article>

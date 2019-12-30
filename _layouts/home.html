@@ -1,0 +1,15 @@
+---
+layout: default
+---
+
+<article class="post">
+  <div class="home">
+    
+    {{ content }}
+
+    {% for page in site.posts %}
+    {% include post-info.html description=1 %}
+    {% endfor %}
+
+  </div>
+</article>

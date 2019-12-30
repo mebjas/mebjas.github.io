@@ -1,0 +1,30 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>{% if page.title %}{{ page.title | escape }} | {{site.title}}{% else %}{{ site.title | escape }}{% endif %}</title>
+    {% comment %} <meta name="description" content="{{ page.description | default: page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
+    {% endcomment %}
+    
+    <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
+    <!-- <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url | replace:'http://','https://' }}"> -->
+    <link rel="alternate" type="application/rss+xml" title="{{ site.title | escape }}" href="{{ "/feed.xml" | relative_url }}">
+    
+    <!-- Favicons -->
+    <!--
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    -->
+    <script src="/assets/js/jquery.js"></script>
+    
+    {% if page.style %}
+    <style>
+      {{ page.style }}
+    </style>
+    {% endif %}
+    
+    <!-- jekyll-seo-tag. Should be right before </head> -->
+    {% seo %}
+    
+    </head>

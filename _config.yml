@@ -17,6 +17,8 @@ footer-links:
   twitter: minhazav
   stackoverflow: users/2614250/mebjas
 
+github: mebjas
+
 # Enter your Disqus shortname (not your username) to enable commenting on posts
 # You can find your shortname on the Settings page of your Disqus account
 
@@ -32,6 +34,9 @@ url: http://mebjas.github.io
 # and NOT your User repository (http://yourusername.github.io)
 # then add in the baseurl here, like this: "/repository-name"
 baseurl: ""
+
+copyright_year: 2019
+copyright_owner: minhazav.dev
 
 #
 # !! You don't need to change any of the configuration flags below !!

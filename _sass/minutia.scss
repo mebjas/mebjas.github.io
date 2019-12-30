@@ -1,0 +1,94 @@
+@charset "utf-8";
+
+// Define defaults for each variable.
+
+$base-font-family: 'IBM Plex Sans', Helvetica, sans-serif !default;
+$logo-font-family: 'Ubuntu', Helvetica, sans-serif !default;
+$code-font-family: 'Hack', monospace !default;
+
+$base-font-size:   16px !default;
+$code-font-size:   13px !default;
+$small-font-size:  15px !default;
+$smaller-font-size: 14px !default;
+$large-font-size:  18px !default;
+$larger-font-size: 19px !default;
+$content-font-size: 17px !default;
+
+$base-font-weight: 300 !default;
+$strong-font-weight: 400 !default;
+$bold-font-weight: 500 !default;
+$base-line-height: 1.5 !default;
+
+$spacing-unit:     30px !default;
+
+/* Define color palette */
+
+$gray:             #828282 !default;
+$mild-gray:        lighten($gray, 20%) !default;
+$light-gray:       lighten($gray, 30%) !default;
+$lighter-gray:     lighten($gray, 40%) !default;
+$lightest-gray:    #f7f7f7 !default;
+$dark-gray:        darken($gray, 15%) !default;
+
+$blue:             #2a7ae2 !default;
+$light-blue:       lighten($blue, 10%) !default;
+$dark-blue:        darken($blue, 10%) !default;
+$darker-blue:      darken($blue, 20%) !default;
+$darkerer-blue:    darken($blue, 30%) !default;
+$red:              #d65946 !default;
+$lightest-red:     #fffafa !default;
+$green:            #6aaf50 !default;
+$light-purple:     #eef !default;
+$lightest-purple:  #f1f1ff !default;
+
+$text-color:       #111 !default;
+$background-color: #fdfdfd !default;
+
+/* Define some common color variables */
+
+$link:             $dark-blue !default;
+$link-visited:     $light-blue !default;
+$hover-opacity:    0.75 !default;
+
+$logo-text:        $darkerer-blue !default;
+$logo-background:  $blue !default;
+
+$header-background: $lightest-gray !default;
+$header-border:    $gray !default;
+
+/* Define some widths */
+
+// Width of the content area
+$content-width:    880px !default;
+
+$on-palm:          600px !default;
+$on-laptop:        880px !default;
+
+// Use media queries like this:
+// @include media-query($on-palm) {
+//   .wrapper {
+//     padding-right: $spacing-unit / 2;
+//     padding-left: $spacing-unit / 2;
+//   }
+// }
+@mixin media-query($device) {
+    @media screen and (max-width: $device) {
+        @content;
+    }
+}
+
+@mixin relative-font-size($ratio) {
+    font-size: $base-font-size * $ratio;
+
+    code {
+        font-size: $code-font-size * $ratio;
+    }
+}
+
+// Import partials.
+@import
+    "minutia/fonts",
+    "minutia/base",
+    "minutia/layout",
+    "minutia/syntax-highlighting"
+;

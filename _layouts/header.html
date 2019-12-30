@@ -1,0 +1,22 @@
+<header class="site-header">
+
+    <div class="wrapper-header">
+      {% assign default_paths = site.pages | map: "path" %}
+      {% assign page_paths = site.header_pages | default: default_paths %}
+      <div class="header-left">
+        <a class="site-title" href="{{ '/' | relative_url }}">
+          <b>{{ site.name }}</b> {{ site.description }}
+        </a>
+      </div>
+      
+      {% if page_paths %}
+      <div class="header-right">
+        <!-- <a class="page-link" href="{{ '/' | relative_url }}">Home</a> -->
+        <!-- <a class="page-link" href="{{ '/categories/' | relative_url }}">Categories</a> -->
+        <!-- <a class="page-link" href="{{ '/archive/' | relative_url }}">Archive</a> -->
+        <a class="page-link" href="{{ '/about/' | relative_url }}">About</a>
+      </div>
+      {% endif %}
+    </div>
+    
+  </header>

@@ -1,0 +1,270 @@
+/* Reset some basic elements */
+
+body, h1, h2, h3, h4, h5, h6,
+p, blockquote, pre, hr,
+dl, dd, ol, ul, figure {
+    margin: 0;
+    padding: 0;
+}
+
+/* Basic styling */
+
+body {
+    font: $base-font-weight #{$base-font-size}/#{$base-line-height} $base-font-family;
+    color: $text-color;
+    background-color: $background-color;
+
+    code {
+        font-size: $code-font-size;
+    }
+
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-feature-settings: "kern" 1;
+    -moz-font-feature-settings: "kern" 1;
+    -o-font-feature-settings: "kern" 1;
+    font-feature-settings: "kern" 1;
+    font-kerning: normal;
+
+    display: flex;
+    min-height: 100.1vh;
+    flex-direction: column;
+}
+
+b, strong {
+    font-weight: $bold-font-weight;
+}
+
+/* Inputs */
+
+textarea {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+input, textarea, button {
+    font: $base-font-weight #{$small-font-size}/#{$base-line-height} $base-font-family;
+    color: $text-color;
+    background-color: $background-color;
+
+    padding-left: $spacing-unit / 8;
+    padding-right: $spacing-unit / 8;
+    border: 1px solid $gray;
+    border-radius: 3px;
+
+    outline: none;
+
+    &:hover {
+        box-shadow: 2px 2px 2px 0px $lighter-gray;
+    }
+
+    &:focus {
+        box-shadow: 2px 2px 2px 0px $lighter-gray;
+        border: 1px solid $text-color;
+    }
+
+    &:not(:focus):invalid {
+        box-shadow: 0px 0px 1px 1px $red;
+    }
+}
+
+*::placeholder {
+    opacity: 1;
+    color: $gray;
+    font-size: $smaller-font-size;
+}
+
+/* Set `margin-bottom` to maintain vertical rhythm */
+
+h1, h2, h3, h4, h5, h6,
+p, blockquote, hr,
+ul, ol, dl, figure,
+%vertical-rhythm {
+    margin-bottom: $spacing-unit / 2;
+}
+
+/* Horizontal rule */
+
+hr {
+    color: $lighter-gray;
+    border-style: solid;
+}
+
+/* Images */
+
+img {
+    vertical-align: middle;
+}
+
+/* Figures */
+
+figure > img {
+    display: block;
+}
+
+figcaption {
+    font-size: $small-font-size;
+}
+
+/* Lists */
+
+ul,
+ol {
+    margin-left: $spacing-unit;
+}
+
+ul {
+    list-style: none;
+    // padding: 0px;
+}
+
+li {
+    > ul,
+    > ol {
+        margin-bottom: 0;
+    }
+}
+
+ul li {
+    /* handle multiline */
+    position: relative;
+    overflow: visible;
+}
+
+ul li::before {
+    position: absolute;
+    content: '\203A';
+    left: -$spacing-unit / 2;
+}
+
+/* Links */
+
+a {
+    color: $link;
+    text-decoration: none;
+
+    &:visited {
+        color: $link-visited;
+    }
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    &:active {
+        background-color: $light-purple;
+    }
+}
+
+/* Headings */
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: $strong-font-weight;
+    display: flex;
+
+    &,
+    a,
+    a:visited {
+        color: $dark-blue !important;
+    }
+
+    a:hover {
+        text-decoration: none;
+        opacity: $hover-opacity;
+    }
+}
+
+h1 {
+    // font-family: $logo-font-family;
+
+    @include relative-font-size(2);
+    line-height: 1;
+    padding-bottom: $spacing-unit / 4;
+    border-bottom: 1px solid $mild-gray;
+
+    &,
+    a,
+    a:visited {
+        color: $darkerer-blue !important;
+    }
+
+    @include media-query($on-palm) {
+        @include relative-font-size(1.75);
+    }
+}
+
+h2 {
+    @include relative-font-size(1.625);
+    border-bottom: 1px solid $light-gray;
+
+    &,
+    a,
+    a:visited {
+        color: $darker-blue !important;
+    }
+
+    @include media-query($on-palm) {
+        @include relative-font-size(1.5);
+    }
+}
+
+h3 {
+    @include relative-font-size(1.375);
+
+    @include media-query($on-palm) {
+        @include relative-font-size(1.25);
+    }
+}
+
+/* Blockquotes */
+blockquote {
+    border-left: 4px solid $lighter-gray;
+    color: $gray;
+    // font-style: italic;
+    margin-left: $spacing-unit / 2;
+    margin-right: $spacing-unit / 2;
+    padding-left: $spacing-unit / 2;
+
+    > :last-child {
+        margin-bottom: 0;
+    }
+}
+
+/* Wrappers */
+
+.wrapper-header,
+.wrapper-content,
+.wrapper-footer {
+    max-width: -webkit-calc(#{$content-width} - (#{$spacing-unit} * 2));
+    max-width: calc(#{$content-width} - (#{$spacing-unit} * 2));
+    padding-right: $spacing-unit;
+    padding-left: $spacing-unit;
+    margin: 0 auto;
+
+    @include media-query($on-palm) {
+        max-width: -webkit-calc(#{$content-width} - (#{$spacing-unit}));
+        max-width: calc(#{$content-width} - (#{$spacing-unit}));
+        padding-right: $spacing-unit / 2;
+        padding-left: $spacing-unit / 2;
+    }
+}
+
+/* Icons */
+
+.icon > svg {
+    display: inline-block;
+    vertical-align: middle;
+
+    path {
+        fill: $gray;
+    }
+}
+
+/* Misc */
+
+// Prevent superscripts from affecting line height.
+
+sup {
+    vertical-align: top;
+    position: relative;
+    top: -0.3em;
+}
