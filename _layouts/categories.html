@@ -1,0 +1,46 @@
+---
+layout: page
+title: Categories
+---
+
+<div class="categories">
+
+  {{ content }}
+
+  {% assign first = 1 %}
+
+  {% for category in site.category_descriptions %}
+  {% assign category_posts = 0 %}
+
+  {% for site_category in site.categories %}
+  {% assign site_category_name = site_category[0] %}
+  {% assign site_category_posts = site_category[1] %}
+
+  {% if site_category_name == category["name"] %}
+  {% assign category_posts = site_category_posts | size %}
+  {% endif %}
+
+  {% endfor %}
+
+  {% if category_posts > 0 %}
+  {% assign category_name = category["name"] %}
+
+  {% if first == 0 %}
+  •
+  {% else %}
+  {% assign first = 0 %}
+  {% endif %}
+
+  <a class="category-link" href="{{ site.category_dir | append: '/' | append: category_name | append: '/' | relative_url }}">{{ category_name | escape }}</a>&nbsp;<span class="category-count">({{ category_posts }})</span>
+
+  {% comment %}
+  {% if category["description"] %}
+  <br>
+  <span class="category-description">{{ category["description"] }}</span>
+  {% endif %}
+  {% endcomment %}
+
+  {% endif %}
+  {% endfor %}
+
+</div>

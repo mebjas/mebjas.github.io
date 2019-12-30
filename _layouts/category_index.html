@@ -1,0 +1,11 @@
+---
+layout: page
+---
+
+{% comment %}
+{{ site.category_descriptions[page.category] }}
+{% endcomment %}
+
+{% for page in site.categories[page.category] %}
+{% include post-info.html %}
+{% endfor %}

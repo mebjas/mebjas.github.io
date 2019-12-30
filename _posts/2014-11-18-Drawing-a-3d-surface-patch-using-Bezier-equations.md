@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Drawing a 3d surface patch using Bezier equations
-category: graphics, html Canvas, Javascript, Mathematics
+category: graphics, html Canvas, javascript, mathematics
 ---
 
 ### This post covers :

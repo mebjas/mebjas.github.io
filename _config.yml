@@ -9,7 +9,11 @@ copyright_owner: minhazav.dev
 category_dir: category
 url: "http://mebjas.github.io"
 # repository: "mebjas/mebjas.github.io"
-
+# If you're hosting your site at a Project repository on GitHub pages
+# (http://yourusername.github.io/repository-name)
+# and NOT your User repository (http://yourusername.github.io)
+# then add in the baseurl here, like this: "/repository-name"
+baseurl: ""
 
 # Includes an icon in the footer for each username you enter
 footer-links:
@@ -21,14 +25,9 @@ footer-links:
   twitter: minhazav
   stackoverflow: users/2614250/mebjas
 
-# If you're hosting your site at a Project repository on GitHub pages
-# (http://yourusername.github.io/repository-name)
-# and NOT your User repository (http://yourusername.github.io)
-# then add in the baseurl here, like this: "/repository-name"
-baseurl: ""
-#
-# !! You don't need to change any of the configuration flags below !!
-#
+# Outputting
+permalink: /:title/
+timezone: Etc/UTC
 
 # Build settings
 markdown: kramdown
