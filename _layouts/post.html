@@ -16,18 +16,14 @@ layout: default
       {% endif %}
       •
       {% include filed.html %}
-      <!-- TODO(mebjas): add support for commenting. -->
-      <!-- • -->
-      <!-- <a href="#comments">{% include comment-count.html %}</a> -->
+      <!-- TODO(mebjas): add support for comment counts here. -->
     </p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
     {% if page.toc %}
     {% include toc.html display="Table of Contents" %}
-
     {% endif %}
-    
     {{ content }}
   </div>
 
@@ -36,10 +32,4 @@ layout: default
   </div>
 
   <!-- TODO(mebjas): add support for commenting. -->
-  <!--
-    <div class="comments">
-      {% include comments.html slug=page.slug %}
-    </div>
-  -->
-
 </article>
