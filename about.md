@@ -21,7 +21,7 @@ I work for team called **[NBU: Next Billion Users](https://www.blog.google/techn
 ## before `now()` - Software Engineer II at Microsoft
 I worked with **Microsoft Azure** for around 3 years. My day to day involved applied data science, Azure cloud services, distributed systems and some part of Azure UI. My team was working on an intelligent alerting platform in Azure on features like Smart Grouping capable of automatically grouping user alerts from different sources to reduce mean time to mitigation for customers. Another interesting project I had opportunity to work on was: designing and implementing a high availability architecture for Azure Alerting platform targetting 4 9's of availability (99.99% Uptime). The effort was centered around making Alerting Service in Azure resilient to even regional Azure Datacenter outages.
 
->> Did you know 99.99% availability means only acceptable downtime of only **4m 23.0s** per month :O
+> Did you know 99.99% availability means only acceptable downtime of only **4m 23.0s** per month :O
 
 #### Areas I worked on:
  - Applied ML, Unsupervised Learning, Bayesian Networks, Knowledge Graphs
