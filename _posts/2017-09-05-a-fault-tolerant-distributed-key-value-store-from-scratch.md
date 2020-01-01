@@ -60,8 +60,8 @@ node process\index.js <portno> <introducer>
 `<introducer>` – port number of the introducer to which join request will be sent; Not needed for first instance – it will assume itself to be first instance because of this; I’m not going for any automatic discovery or centralized discovery mechanism here;
 
 ## Top level architecture
-<img src="../images/post2_picture1.png" alt="architecture" width=500>
-_Figure 1: Architecture_
+![architecture](../images/post2_picture1.png){:width="750px"}
+<br /><span class="image-caption"> _Figure: Architecture_</span>
 
 ### TASK 1.1: Membership Protocol
 Implementing SWIM Protocol, where the membership gossips are piggibacked on PING, PING_REQ, JOINREQ, ACK messages. In a given protocol period a node will select a random node and send a ping. If it get’s ACK well and good. It’d stay idle till completion of protocol period.
@@ -70,15 +70,15 @@ If it doesn’t get an ACK, it’d send a PING_REQ message to K random nodes, an
 
 These screenshots are when 8 nodes were joined and two of them crashed
 
-<img src="../images/post2_image2.png" alt="Nine nodes detecting other nodes joining in gossip style" width=500>
-_Figure 2: Nine nodes detecting other nodes joining in gossip style_
+![Nine nodes detecting other nodes joining in gossip style](../images/post2_image2.png){:width="750px"}
+<br /><span class="image-caption"> _Figure: Nine nodes detecting other nodes joining in gossip style_ </span>
 
-<img src="../images/post2_image3.png" alt="After killing two nodes, other seven nodes detected the failure by failure detection and gossip style messaging" width=500>
-_Figure 3: After killing two nodes, other seven nodes detected the failure by failure detection and gossip style messaging_
+![After killing two nodes, other seven nodes detected the failure by failure detection and gossip style messaging](../images/post2_image3.png){:width="750px"}
+<br /><span class="image-caption"> _Figure: After killing two nodes, other seven nodes detected the failure by failure detection and gossip style messaging_ </span>
 
 #### Detecting failures in 24 nodes 😀
-<img src="../images/post2_image4.png" alt="Did the same with 24 Nodes :D; If you look at the console logs, you can see some nodes detected the failure while others got the information as a gossip" width=500>
-_Figure 4: Did the same with 24 Nodes :D; If you look at the console logs, you can see some nodes detected the failure while others got the information as a gossip_
+![](../images/post2_image4.png){:width="750px"}
+<br /><span class="image-caption"> _Figure: Did the same with 24 Nodes :D; If you look at the console logs, you can see some nodes detected the failure while others got the information as a gossip_ </span>
 
 ### TASK 1.2: Testing Membership Protocol
 1. Simple unit testing using mocha framework for node js. It’s pretty new to me but seems pretty powerful. I have done basic testing will do advanced ones later. Also since the library depends on HTTP calls some mocks / stubs shall be needed.
