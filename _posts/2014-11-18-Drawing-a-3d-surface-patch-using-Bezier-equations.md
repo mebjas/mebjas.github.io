@@ -13,17 +13,16 @@ toc: false
  - Creating a 3d surface patch using Bezier curves
  - Making it interactive
 
-<img src="../images/Screen-Shot-2014-11-17-at-11.27.12-am.png.jpg" alt="Screenshot" height=400>
-_figure 1: Screenshot of experiment_
+{:.iw-limiter}
+![Screenshot](../images/Screen-Shot-2014-11-17-at-11.27.12-am.png.jpg)
+<span class="image-caption"> _Screenshot of experiment_ <span>
 
 ### So what’s a Bezier curve:
 
 Its a cubic parametric curve used to draw smooth curves, we can draw a bezier curve using two endpoints and two control points. It looks something like:
 
-<img src="../images/quad01.png" alt="bezier curve">
-
-![bezier curve](../images/quad01.png)
-_figure 1: Bezier Curve - [Wikipedia](http://en.wikipedia.org/wiki/B%C3%A9zier_curve)_
+![bezier curve](../images/quad01.png)<br>
+<span class="image-caption"> _Bezier Curve - [Wikipedia](http://en.wikipedia.org/wiki/B%C3%A9zier_curve)_</span>
 
 So how to draw the surface using multiple bezier curves:
 
