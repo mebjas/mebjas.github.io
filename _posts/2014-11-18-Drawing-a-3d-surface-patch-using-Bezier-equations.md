@@ -13,9 +13,8 @@ toc: false
  - Creating a 3d surface patch using Bezier curves
  - Making it interactive
 
-{:.iw-limiter}
-![Screenshot](../images/Screen-Shot-2014-11-17-at-11.27.12-am.png.jpg)
-<span class="image-caption"> _Screenshot of experiment_ <span>
+![Screenshot](../images/Screen-Shot-2014-11-17-at-11.27.12-am.png.jpg){:width="500px"}
+<br><span class="image-caption"> _Screenshot of experiment_ <span>
 
 ### So what’s a Bezier curve:
 
