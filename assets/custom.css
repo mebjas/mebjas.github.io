@@ -1,3 +1,56 @@
 .iw-limiter {
     max-width: 500px;
 }
+
+/** Style associated with image viewer. */
+.capture-box {
+    margin-bottom: 20px;
+    justify-content: center;
+    display: flex;
+}
+
+.capture-box .image-block {
+    /* max-width: 60%; */
+    /* flex: 1 1 auto; */
+    width: 60vw;
+}
+
+.capture-box .info-block {
+    width: 40vw;
+    color: rgb(66, 66, 66);
+    flex: 0 1 auto;
+    padding-top: 5px;
+    padding-left: 30px;
+}
+
+.capture-box .image-block img {
+    width: 100%;
+}
+
+.capture-box .info-block .title {
+    color: rgb(59, 58, 91);
+    font-size: 20px;
+    font-weight: bold;
+    padding-bottom: 2px;
+    border-bottom: 1px solid #80808029;
+    margin-bottom: 5px;
+}
+
+.capture-box .info-block .metadata {
+    margin-top: 10px;
+}
+
+.capture-box .info-block .categories {
+    padding: 5px 0px;
+    font-style: italic;
+    margin-top: 10px;
+}
+
+.capture-box .info-block .categories .category a {
+    color: grey;
+}
+
+.capture-box .info-block .links {
+    padding: 5px;
+    margin-top: 10px;
+}

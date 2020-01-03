@@ -1,0 +1,60 @@
+---
+layout: default
+---
+<!-- TODO(mebjas): Add categories as well. -->
+<!--
+<header class="page-header">
+    <h1 class="page-title">Top Categories</h1>
+</header>
+
+<div class="top-categories"></div>
+-->
+<header class="page-header">
+    <h1 class="page-title">Recent Captures</h1>
+</header>
+
+<div class="all-captures">
+    {% for imageInfo in site.photography_data %}
+        <div class="capture-box">
+            <div class="image-block">
+                <img src="../{{ site.photography_data_path }}{{ imageInfo.src }}">
+            </div>
+            <div class="info-block">
+                <div class="title">{{ imageInfo.title }}</div>
+                <div>
+                    <span class="location">
+                        <img src="{{ '/assets/img/black-placeholder-variant.svg' | relative_url }}" width="20">
+                        {{ imageInfo.location }}
+                    </span>&nbsp;&nbsp;
+                    <span class="date">{{ imageInfo.date }}</span>
+                </div>
+                <div class="metadata">
+                    <!-- <div class="camera">
+                        {{ imageInfo.camera }} •
+                        {{ imageInfo.lens }}
+                    </div> -->
+                    <div class="capture">
+                        {{ imageInfo.meta.focal }} •
+                        {{ imageInfo.meta.aperture }} •
+                        {{ imageInfo.meta.ss }} •
+                        {{ imageInfo.meta.iso }}
+                    </div>
+                </div>
+                <div class="categories">
+                {% for category in imageInfo.categories %}
+                    <span class="category">
+                        <a href="#todo-{{ category }}">#{{ category }}</a>
+                    </span>
+                {% endfor %}
+                </div>
+                <div class="links">
+                {% for link in imageInfo.links %}
+                    <span class="link">
+                        <a href="{{ link.href }}">{{ link.title }}</a>
+                    </span>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

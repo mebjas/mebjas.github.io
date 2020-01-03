@@ -7,7 +7,7 @@ email: minhazav@gmail.com
 copyright_year: 2019
 copyright_owner: minhazav.dev
 category_dir: category
-url: "http://mebjas.github.io"
+url: "https://blog.minhazav.dev"
 # repository: "mebjas/mebjas.github.io"
 # If you're hosting your site at a Project repository on GitHub pages
 # (http://yourusername.github.io/repository-name)
@@ -20,8 +20,9 @@ footer-links:
   email: minhazav@gmail.com
   facebook:
   github: mebjas
+  github_full: "https://github.com/mebjas"
   instagram: mebjas
-  linkedin: https://www.linkedin.com/in/minhazav
+  linkedin: "https://www.linkedin.com/in/minhazav"
   twitter: minhazav
   stackoverflow: users/2614250/mebjas
 
@@ -75,3 +76,98 @@ category_descriptions:
   - { name: "html Canvas", description: "" }
   - { name: "javascript", description: "" }
   - { name: "mathematics", description: "" }
+
+photography_data_path: "photography/assets/"
+photography_data:
+  - { 
+      src: img_1.jpg,
+      title: "NYE 2020 Fireworks",
+      location: "Singapore",
+      date: "Jan 1, 2020",
+      categories: ["NoPeople","Firework","Display","Photography","Night","Celebration","Exploding","Sky","Outdoors","Event","Illuminated","LongExposure","Glowing","Motion"],
+      camera: "Sony Alpha 6100",
+      lens: "Sony SEL55210 55-210",
+      meta: {
+        focal: "55mm",
+        aperture: "f/4.5",
+        ss: "1/160s",
+        iso: "ISO 6400"
+      },
+      links: [
+        {
+           title: 500px,
+           href: "https://web.500px.com/photo/1008509517/fireworks-on-new-year-eve-1-by-minhaz-a-v"
+        },
+        {
+          title: Instagram,
+          href: "https://www.instagram.com/p/B6v1u-2liHv/"
+        }
+      ]
+    }
+  - {
+      src: img_2.jpg,
+      title: "NYE 2020 Gathering",
+      location: "Singapore",
+      date: "Jan 1, 2020",
+      categories: ["Photography","Outdoors","City","Restaurant","Table","Cafe","Travel","CityLife","Tourism","Street","Chair","CityStreet","Eating","Relaxation"],
+      camera: "Sony Alpha 6100",
+      lens: "Sony SEL50F18 50mm F1.8",
+      meta: {
+        focal: "50mm",
+        aperture: "f/2",
+        ss: "1/160s",
+        iso: "ISO 6400"
+      },
+      links: [
+        {
+           title: 500px,
+           href: "https://500px.com/photo/1008508330/Gathering-before-the-new-year-eve-by-Minhaz-A-V"
+        }
+      ]
+    }
+  - {
+      src: img_3.jpg,
+      title: "Candy Sticks Closeup",
+      location: "Singapore",
+      date: "Dec 31, 2019",
+      categories: ["NoPeople","Photography","Food","Freshness","Market","Outdoors","Day","Fruit","Vegetable","husk","market","street","color","night"],
+      camera: "Sony Alpha 6100",
+      lens: "Sony SEL50F18 50mm F1.8",
+      meta: {
+        focal: "50mm",
+        aperture: "f/2.8",
+        ss: "1/160s",
+        iso: "ISO 6400"
+      },
+      links: [
+        {
+           title: 500px,
+           href: "https://500px.com/photo/1008508280/Candy-sticks-by-Minhaz-A-V"
+        }
+      ]
+    }
+  - {
+      src: img_4.jpg,
+      title: "Leaf on bench",
+      location: "Chiang Main, Thailand",
+      date: "Nov 29, 2019",
+      categories: ["Nature","NoPeople","Growth","Green","Plant","CloseUp","Outdoors","Day","BeautyInNature","Focus","Freshness","Leaf","TranquilScene","SelectiveFocus","PlantPart","bokeh","highaperture"],
+      camera: "Sony Alpha 6100",
+      lens: "7 Artisans 55mm F1.4",
+      meta: {
+        focal: "55mm",
+        aperture: "f/1.4",
+        ss: "1/250s",
+        iso: "ISO 100"
+      },
+      links: [
+        {
+           title: 500px,
+           href: "https://500px.com/photo/1006910024/Bench-color-pop-1-by-Minhaz-A-V"
+        },
+        {
+           title: Instagram,
+           href: "https://www.instagram.com/p/B5brJQ-lXPK"
+        }
+      ]
+    }
