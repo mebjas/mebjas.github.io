@@ -171,3 +171,78 @@ photography_data:
         }
       ]
     }
+  - {
+    src: img_5.jpg,
+      title: "Sunset with no chroma",
+      location: "Krabi, Thailand",
+      date: "Nov 29, 2019",
+      categories: ["TranquilScene", "Sky", "Sea", "Nature", "Beach", "Outdoors", "Scenics", "Water", "Cloud", "BeautyInNature", "BlackAndWhite", "Sunset", "NoPeople", "HorizonOverWater", "NonUrbanScene"],
+      camera: "Google Pixel 3",
+      lens: "f/1.8, 1.4 micron",
+      meta: {
+        focal: "4.44mm",
+        aperture: "f/1.8",
+        ss: "1/23000s",
+        iso: "ISO 99"
+      },
+      links: [
+        {
+           title: 500px,
+           href: "https://500px.com/photo/1006928841/Sunset-with-no-chroma-by-Minhaz-A-V"
+        },
+        {
+           title: Instagram,
+           href: "https://www.instagram.com/p/B50GobRlJgw"
+        }
+      ]
+  }
+  - {
+    src: img_6.jpg,
+      title: "Sunset by Sea",
+      location: "Krabi, Thailand",
+      date: "Nov 30, 2019",
+      categories: ["Sunset", "Outdoors", "Sky", "Sea", "Transportation", "TranquilScene", "Silhouette", "OrangeColor", "Water", "Travel", "People", "HorizonOverWater", "BeautyInNature", "Cloud", ],
+      camera: "Sony Alpha 6100",
+      lens: "Sony SEL55210 55-210",
+      meta: {
+        focal: "187mm",
+        aperture: "f/6.3",
+        ss: "1/320s",
+        iso: "ISO 320"
+      },
+      links: [
+        {
+           title: 500px,
+           href: "https://500px.com/photo/1007442759/Sunset-by-the-sea-by-Minhaz-A-V"
+        },
+        {
+           title: Instagram,
+           href: "https://www.instagram.com/p/B50HomilC-e"
+        }
+      ]
+  }
+  - {
+    src: img_7.jpg,
+      title: "JEWEL at Singapore",
+      location: "Singapore",
+      date: "Dec 1, 2019",
+      categories: ["Waterfall", "Airport", "Nature", "Architecture", "Indoors", "Travel", "Design", "FamousPlace", "TravelDestinations", "Green", "Tourism", "Tree", "ShoppingMall", "Business", "Modern"],
+      camera: "Sony Alpha 6100",
+      lens: "Sony SEL1655",
+      meta: {
+        focal: "16mm",
+        aperture: "f/7.1",
+        ss: "1/100s",
+        iso: "ISO 100"
+      },
+      links: [
+        {
+           title: 500px,
+           href: "https://500px.com/photo/1007442809/JEWEL-at-Singapore-by-Minhaz-A-V?"
+        },
+        {
+           title: Instagram,
+           href: "https://www.instagram.com/p/B50HomilC-e"
+        }
+      ]
+  }

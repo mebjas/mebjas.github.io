@@ -3,6 +3,7 @@
 }
 
 /** Style associated with image viewer. */
+
 .capture-box {
     margin-bottom: 20px;
     justify-content: center;
@@ -18,10 +19,28 @@
 .capture-box .info-block {
     width: 40vw;
     color: rgb(66, 66, 66);
-    flex: 0 1 auto;
     padding-top: 5px;
     padding-left: 30px;
 }
+
+@media(max-width: 600px) {
+    .capture-box {
+       display: block;
+    }
+
+    .capture-box .image-block {
+        width: 100%;
+    }
+    
+    .capture-box .info-block {
+        width: 100%;
+        color: rgb(66, 66, 66);
+        padding-top: 15px;
+        padding-left: 0px;
+    }
+}
+
+/* @media only screen and (min-width: 600px) {} */
 
 .capture-box .image-block img {
     width: 100%;
