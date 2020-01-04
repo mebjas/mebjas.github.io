@@ -12,6 +12,8 @@ toc: false
 from [OWASP WIKI](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet)
 
 ## Introduction
+![Introduction](../images/post3_image1.jpg){:width="750px"}
+
 CSRF has been on OWASP Top 10 for a long time, and several methods have been implemented to mitigate it. Most of the web frameworks have inbuilt methods, which can be used to make a website safe against CSRF. 
 
 However lot of web applications are still vulnerable to CSRF and its partially because developer tend to forget to implement it with every FORM or AJAX requests. And that is because the approach used for CSRF Mitigation in most of the frameworks is not centralised, we have to attach a token with every FORM we want to protect. OWASP CSRF Protector on the other hand used centralised approach, it employs javascript on client side to ensure, tokens are sent with every request sent from client, so that is correctly validated on server. This saves developer from adding a token everywhere. I’ll discuss more about the concept later in this article.
