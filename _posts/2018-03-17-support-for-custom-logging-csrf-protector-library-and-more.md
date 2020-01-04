@@ -3,7 +3,7 @@ layout: post
 title: Support for custom logging in CSRF Protector Library and more
 category: csrf, javascript, open-source, owasp, security, web-security, php
 description: "Added some new feature to CSRF Protector library (version 1.0.1) like: <ol><li>Support for custom logger.</li><li>X-CSRF-Protection removed from response header.</li><li>Options added to make CSRF Token in cookie https only and it’s expiry time configurable.</li><li>More...</li></ol>"
-post-no: 5
+post-no: 6
 toc: false
 ---
 
@@ -32,15 +32,14 @@ In case the parameter is not provided – the default file based logger – [csr
 ### 2. X-CSRF-Protection removed from response header.
 This can make applications vulnerable to known vulnerabilities in libraries. This was reported by a developer.
 
-### 3. Options added to make CSRF Token in cookie https only and it’s expiry time configurable.
-
-### 4. Log path in configuration file (logDirectory) can be absolute or relative.
-
-### 5. Url path in the configuration file can be set to false if developers want to include it themselves in HTML output.
+### And more minor improvements like:
+ 3. Options added to make CSRF Token in cookie https only and it’s expiry time configurable.
+ 4. Log path in configuration file (logDirectory) can be absolute or relative.
+ 5. Url path in the configuration file can be set to false if developers want to include it themselves in HTML output.
 
 Last three changes (including this) were done by [Brad Stoney](https://github.com/bstoney), thanks to him! 
 
-Also, here’s link to latest release: https://github.com/mebjas/CSRF-Protector-PHP/releases
+Also, here’s link to latest release: [https://github.com/mebjas/CSRF-Protector-PHP/releases](https://github.com/mebjas/CSRF-Protector-PHP/releases)
 
 <!--
 
