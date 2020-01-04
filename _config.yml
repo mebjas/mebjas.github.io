@@ -72,6 +72,8 @@ category_descriptions:
   - { name: "graphics", description: "" }
   - { name: "html Canvas", description: "" }
   - { name: "javascript", description: "" }
+  - { name: "php", description: "" }
+  - { name: "apache", description: "" }
   - { name: "mathematics", description: "" }
   - { name: "csrf", description: "" }
   - { name: "open-source", description: "" }
