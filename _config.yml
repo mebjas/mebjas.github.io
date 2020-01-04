@@ -64,9 +64,6 @@ defaults:
     values:
       layout: "post"
 
-# The release of Jekyll Now that you're using
-# version: v3.0
-
 category_descriptions:
   - { name: "distributed systems", description: "" }
   - { name: "hackathon", description: "" }
@@ -76,6 +73,11 @@ category_descriptions:
   - { name: "html Canvas", description: "" }
   - { name: "javascript", description: "" }
   - { name: "mathematics", description: "" }
+  - { name: "csrf", description: "" }
+  - { name: "open-source", description: "" }
+  - { name: "owasp", description: "" }
+  - { name: "security", description: "" }
+  - { name: "web-security", description: "" }
 
 photography_data_path: "photography/assets/"
 photography_data:
