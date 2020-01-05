@@ -3,10 +3,11 @@ layout: page
 title: About
 permalink: /about/
 ---
+![myself](./images/self_1_1.jpg){:width="300px"}<br>
 
 > TL;DR; Mostly 404 otherwise figuring out solutions or next problem to solve.
 
-[LinkedIn](https://www.linkedin.com/in/minhazav/) . [Github](https://github.com/mebjas) . [Twitter](https://twitter.com/minhazav) . [500px](https://500px.com/mebjas)
+[LinkedIn](https://www.linkedin.com/in/minhazav/) . [Github](https://github.com/mebjas) . [Twitter](https://twitter.com/minhazav) . [Some of my photographs](./photography/) . [500px](https://500px.com/mebjas)
 
 ## `now()` SWE III @Google
 
