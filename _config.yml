@@ -72,6 +72,7 @@ category_descriptions:
   - { name: "graphics", description: "" }
   - { name: "html Canvas", description: "" }
   - { name: "javascript", description: "" }
+  - { name: "vc++", description: "" }
   - { name: "php", description: "" }
   - { name: "apache", description: "" }
   - { name: "mathematics", description: "" }
@@ -80,6 +81,10 @@ category_descriptions:
   - { name: "owasp", description: "" }
   - { name: "security", description: "" }
   - { name: "web-security", description: "" }
+  - { name: "compression", description: "" }
+  - { name: "encoding", description: "" }
+  - { name: "decoding", description: "" }
+  - { name: "bits-manipulation", description: "" }
 
 photography_data_path: "photography/assets/"
 photography_data:
