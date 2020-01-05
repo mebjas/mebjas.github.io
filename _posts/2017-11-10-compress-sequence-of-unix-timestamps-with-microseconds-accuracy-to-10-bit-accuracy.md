@@ -101,6 +101,7 @@ SO FAR: **23.127 bits / timestamp :)**
 ### Attempt 2
 Looking at the integer value and decimal value is adding overheads. I’d rather look at the number on the whole. Quickly calculated the delta values between consecutive numbers using simple python script ` = helper.py`. Using Microsoft Excel - here’s the histogram based on no of bits needed to store the delta values:
 
+
 | bits needed | bin        | frequency | Percentage  |
 |-------------|------------|-----------|-------------|
 | 1           | 1          | 235916    | 52.28530459 |
@@ -134,6 +135,7 @@ Looking at the integer value and decimal value is adding overheads. I’d rather
 | 29          | 268435456  | 0         | 0           |
 | 30          | 536870912  | 0         | 0           |
 | 31          | 1073741824 | 0         | 0           |
+
 ![histogram](../images/post6_image2.png){:width="750px"}<br>
 <span class="image-caption">_Figure: Distribution of decimal values_</span>
 
