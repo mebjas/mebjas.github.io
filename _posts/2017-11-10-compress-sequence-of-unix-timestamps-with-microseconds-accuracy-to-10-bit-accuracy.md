@@ -16,7 +16,7 @@ There is a stream of timestamps that need to be transferred across some network 
  - Consider it a stream of timestamps, so classical compression algorithms might not work. The alogrithm should be able to start and stop at any index of timestamp.
 
 ### Expected Flow
-```
+```cmd
 timestamps ->­­ ENCODER -> encoded_timestamps ->­­ DECODER -> decoded_timestamps
 
 IF timestamps == decoded_timestamps: SUCCESS
@@ -26,7 +26,7 @@ ELSE: FAIL
 ## Solution
 So a single timestamp looks like `1364281200.078739` with micro seconds accuracy. The input file it is stored in, is in raw format and it’s treated as charecters so every timestamp along with newline charecter will take:
 
-`18 charecters` = `18 bytes` = `144 bits`
+`18 charecters = 18 bytes = 144 bits`
 
 Total no of timestamps in file = `451210 = 7.74MB = 8121779 bytes`
 
@@ -39,40 +39,40 @@ However, in the first approach itself I’d like to take advantage of the fact t
 
 Here’s some analysis before I do the math for the given dataset: the distribution of delta of the integer part:
 
-```
-DeltaValue	    Frequency
-0	            423898
-1	            17439
-2	            4215
-3	            1892
-4	            1092
-5               2348
-6               105
-7               68
-8               50
-9               29
-10              22
-11              19
-12              5 
-13              7 
-14              3 
-15              4 
-16              3
-17              1
-18              2
-19              1
-20              2
-22              1
-24              1
-28              1
-32              2
-```
+| DeltaValue | Frequency |
+|------------|-----------|
+| 0          | 423898    |
+| 1          | 17439     |
+| 2          | 4215      |
+| 3          | 1892      |
+| 4          | 1092      |
+| 5          | 2348      |
+| 6          | 105       |
+| 7          | 68        |
+| 8          | 50        |
+| 9          | 29        |
+| 10         | 22        |
+| 11         | 19        |
+| 12         | 5         |
+| 13         | 7         |
+| 14         | 3         |
+| 15         | 4         |
+| 16         | 3         |
+| 17         | 1         |
+| 18         | 2         |
+| 19         | 1         |
+| 20         | 2         |
+| 22         | 1         |
+| 24         | 1         |
+| 28         | 1         |
+| 32         | 2         |
+
 ![histogram](../images/post6_image1.png){:width="750px"}<br>
 <span class="image-caption">_Figure: Distribution of delta values_</span>
 
 So majorly (> 50%) is 0 delta or 1 delta. Since the smallest size of data that can be written to a file is `1 byte`, we shall encode data in byte by byte format. We’d want to store delta values with high distribution in smaller size chunks to reduce size. So I’ll encode them with bit prefixes something like this:
 
-```
+```cmd
 00 000000 - indicates zero delta.
 01 000000 - indicates '1' delta
 10 xxxxxx xxxxxxxx xxxxxxxx - indicates delta between [2,32], will have to read next 22 bits to encode information about the delta value.
@@ -81,7 +81,7 @@ So majorly (> 50%) is 0 delta or 1 delta. Since the smallest size of data that c
 
 For now Will plainly encode the decimal value (with `999999` as maxvalue) in `20 bits` after the int value. We will need one more bit to store negative value. So total `21 bits` for decimal value. This way size requirements shall be:
 
-```
+```cmd
 4Byte + 3Byte + (21bits * 452109) + (2*423898 + 2*17439 + 8*9873) = 10456003 bits
 ```
 Which gives us
@@ -101,48 +101,45 @@ SO FAR: **23.127 bits / timestamp :)**
 ### Attempt 2
 Looking at the integer value and decimal value is adding overheads. I’d rather look at the number on the whole. Quickly calculated the delta values between consecutive numbers using simple python script ` = helper.py`. Using Microsoft Excel - here’s the histogram based on no of bits needed to store the delta values:
 
-```
-Bits    Bin         Frequ   Percentage
-needed              ency   
-1	    1	        235916	52.28530459
-2   	2	        357	    0.079120762
-3	    4	        58	    0.012854354
-4	    8	        24	    0.005319043
-5	    16	        24	    0.005319043
-6	    32	        17	    0.003767655
-7	    64	        78	    0.017286889
-8	    128	        9073	2.01081982
-9	    256	        35824	7.939557943
-10	    512	        35823	7.939336316
-11	    1024	    23095	5.118470598
-12	    2048	    11143	2.469587264
-13	    4096	    9505	2.106562591
-14	    8192	    9338	2.06955091
-15	    16384	    10605	2.350352054
-16	    32768	    10017	2.220035505
-17	    65536	    9048	2.00527915
-18	    131072	    9690	2.147563546
-19	    262144	    9818	2.175931774
-20	    524288	    9622	2.132492925
-21	    1048576	    8796	1.9494292
-22	    2097152	    6608	1.464509795
-23	    4194304	    3819	0.846392692
-24	    8388608	    2806	0.621884759
-25	    16777216	95	    0.021054545
-26	    33554432	10	    0.002216268
-27	    67108864	0	    0
-28	    134217728	0	    0
-29	    268435456	0	    0
-30	    536870912	0   	0
-31	    1073741824	0	    0
-```
+| bits needed | bin        | frequency | Percentage  |
+|-------------|------------|-----------|-------------|
+| 1           | 1          | 235916    | 52.28530459 |
+| 2           | 2          | 357       | 0.079120762 |
+| 3           | 4          | 58        | 0.012854354 |
+| 4           | 8          | 24        | 0.005319043 |
+| 5           | 16         | 24        | 0.005319043 |
+| 6           | 32         | 17        | 0.003767655 |
+| 7           | 64         | 78        | 0.017286889 |
+| 8           | 128        | 9073      | 2.01081982  |
+| 9           | 256        | 35824     | 7.939557943 |
+| 10          | 512        | 35823     | 7.939336316 |
+| 11          | 1024       | 23095     | 5.118470598 |
+| 12          | 2048       | 11143     | 2.469587264 |
+| 13          | 4096       | 9505      | 2.106562591 |
+| 14          | 8192       | 9338      | 2.06955091  |
+| 15          | 16384      | 10605     | 2.350352054 |
+| 16          | 32768      | 10017     | 2.220035505 |
+| 17          | 65536      | 9048      | 2.00527915  |
+| 18          | 131072     | 9690      | 2.147563546 |
+| 19          | 262144     | 9818      | 2.175931774 |
+| 20          | 524288     | 9622      | 2.132492925 |
+| 21          | 1048576    | 8796      | 1.9494292   |
+| 22          | 2097152    | 6608      | 1.464509795 |
+| 23          | 4194304    | 3819      | 0.846392692 |
+| 24          | 8388608    | 2806      | 0.621884759 |
+| 25          | 16777216   | 95        | 0.021054545 |
+| 26          | 33554432   | 10        | 0.002216268 |
+| 27          | 67108864   | 0         | 0           |
+| 28          | 134217728  | 0         | 0           |
+| 29          | 268435456  | 0         | 0           |
+| 30          | 536870912  | 0         | 0           |
+| 31          | 1073741824 | 0         | 0           |
 ![histogram](../images/post6_image2.png){:width="750px"}<br>
 <span class="image-caption">_Figure: Distribution of decimal values_</span>
 
 So greater than 50% of delta values are between [0,1]. And a good portion of them lie between [2, 14] bits needed. So if we encode it as following:
-```
-Summaries	Count	BITS	Storage pattern
-                    NEEDED
+```cmd
+Summaries   Count	BITS	Storage pattern
 [0,1]	    235916	2	    00 000000 = 0 & 01 000000 = 1
 [2, 14]	    125021	16	    10 xxxxxx xxxxxxxx
 REST	    90272	32	    11 xxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
@@ -161,7 +158,7 @@ SO FAR: **13.115 bits / timestamp**
 
 ### Attempt 03
 Untill now the algorithm was purely looking at information that came so far. To compress further I’m going to have look ahead logic now. There were a lot of cases where large delta’s were followed by single 0 or 1. So shall reserve the two bits at the end of bigger models => (2, 3 & 4 byte models) with following information:
-```
+```cmd
 01 - if followed by a 0
 10 - if followed by a 1
 ```
@@ -200,7 +197,7 @@ The code is written as a `VC++` project. You might need Visual Studio (Windows) 
 In windows, open `VSProject\TC.sln`, build the solution and run. the dataset file is included in the solution (& copied to output path during build. the output file is generated in `VSProject\TC\`). An executable is generated at `VSProject\Debug\TC.exe` after the build is complete.
 
 You can run against the binary I built in my system, it’s there in root folder of the zip: `TC.exe`
-```cmd
+```console
 # encoding
 TC.exe -e timestamps.txt timestamps_encoded.txt
 # decoding
@@ -242,12 +239,15 @@ FC: no differences encountered
 
 #### Metrics (also available in .\metrics.txt)
 **Degree of compression**
+
 In the final attemp was able to reduce the data to: `569463 bytes = 10.097 bits / timestamp` which is equivalent to `92.98% lossless compression`
 
 **Time taken: (Encoding)**
+
 Encoding: `9798.17ms` (total) => `0.0217153ms / timestamp`
 
 **Time taken: (Decoding)**
+
 Decoding: `8218.85ms` (total) => `0.0182151 / timestamp`
 
 ### Ideas to further improve the model
