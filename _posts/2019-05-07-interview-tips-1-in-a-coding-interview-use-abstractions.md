@@ -17,12 +17,14 @@ Now, this is a fairly simple question when first looked at – however, it has s
 > Please feel free to use as much abstraction as needed, if there is something particular I am interested in I’ll dig into it.
 
 Of course with this sober simple face.
+
 ![My sober face](../images/post10_image1.jpeg){:width="500px"}<br>
 
 Now, amongst other possible approach the one that is most general is to split the string on “.” as a delimiter and convert the values to integer and then compare left to right, assuming the given value is a valid version number. I have seen many spend time on the first sub problem
 > splitting and converting to integer.
 
 In my experience I have seen folks attempt it as follows:
+
 ![python approach](../images/post10_image5.png){:width="750px"}<br>
 <span class="image-caption">_So far only one person chose to go with Python – and the kind of syntaxes that are available makes it super easy to deal with these kinda things._</span>
 
