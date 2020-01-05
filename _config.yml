@@ -68,7 +68,7 @@ category_descriptions:
   - { name: "distributed systems", description: "" }
   - { name: "hackathon", description: "" }
   - { name: "Key Value Store", description: "" }
-  - { name: "node js", description: "" }
+  - { name: "nodejs", description: "" }
   - { name: "graphics", description: "" }
   - { name: "html Canvas", description: "" }
   - { name: "javascript", description: "" }
@@ -89,8 +89,10 @@ category_descriptions:
   - { name: "system design", description: "" }
   - { name: "azure", description: "" }
   - { name: "azure storage blob", description: "" }
+  - { name: "azure storage table", description: "" }
   - { name: "machine learning", description: "" }
   - { name: "microsoft", description: "" }
+  - { name: "cloud", description: "" }
 
 photography_data_path: "photography/assets/"
 photography_data:

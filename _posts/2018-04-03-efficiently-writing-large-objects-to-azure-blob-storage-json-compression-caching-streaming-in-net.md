@@ -101,7 +101,7 @@ void CopyTo(Stream src, Stream dest)
 }
 ```
 
-** Downloading the model: you can unzip and download data from blob without double de-serialization**
+**Downloading the model: you can unzip and download data from blob without double de-serialization**
 ```csharp
 public DataModel BlobToMemoryStream(string blobName)
 {
@@ -146,10 +146,9 @@ The steps involved in this can be very costly with respect to CPU time and thus 
 ### Caching – In Memory Private caching
 If you are working with same data again and again you can reduce the no of time you have download the data from Azure Storage Blob by implementing a simple in memory cache. However, this has it’s own set of limitations – it can come in handy if the size of the objects can grow really large and your system can handle concurrency.
 
-In this post I’ll share how to use in memory cache but note that for highly distributed systems with multiple nodes shared caches could be a good solution in many cases – but is out of scope of this article.
+In this post I’ll share how to use in memory cache but note that for highly distributed systems with multiple nodes shared caches could be a good solution in many cases – but is out of scope of this article. The flow for In Memory Caching would be something like this:
 
-The flow for In Memory Caching would be something like this:
-![Abstract Architecture for In Memory caching](../images/post8_image4.png){:width="500px"}<br>
+![Abstract Architecture for In Memory caching](../images/post8_image4.png){:width="750px"}<br>
 <span class="image-caption">_Figure: Abstract Architecture for In Memory caching_</span>
 
 [MemoryCache Class](https://msdn.microsoft.com/en-us/library/system.runtime.caching.memorycache(v=vs.110).aspx) is available in .Net & can be leverage for this purpose. Memory cache provides abstraction to store data in named caches in memory. It supports couple of features on top of that like:

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: A fault tolerant distributed key value store from scratch
-categories: distributed systems, hackathon, Key Value Store, node js
+categories: distributed-systems, hackathon, Key-Value-Store, nodejs
 description: "We had a B-Tech course on Distributed Systems and I took a course on on Cloud Computing Concepts 1 by Dr Indranil Gupta (UIUC) a year back and for long, I have been thinking about trying out different concepts explained in the course together as something meaningful. In this article I have attempted to describe how to build a fault tolerant distributed key value store from scratch. A key-value store, or key-value database, is a data storage paradigm designed for storing, retrieving, and managing associative arrays, a data structure more commonly known today as a dictionary or hash. A distributed Key Value store is one where data is replicated across different nodes such that there is High Availability and No single point of failure"
 post-no: 4
 ---
