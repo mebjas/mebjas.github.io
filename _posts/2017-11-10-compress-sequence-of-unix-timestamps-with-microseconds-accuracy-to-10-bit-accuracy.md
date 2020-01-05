@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Compress sequence of UNIX timestamps with microseconds accuracy to ~10bits/timestamp
-category: compression, mathematics, vc++, encoding, decoding, bits-manipulation
+categories: compression, mathematics, vc++, encoding, decoding, bits-manipulation
 description: "I was given a problem statement by interviewer: <i>There is a stream of timestamps that need to be transferred across some network stream. The goal is to compress this sequence of timestamps with microseconds accuracy, in lossless fashion. Also the encoding and decoding process should be very fast so that it can scale for time critical processes.</i>. <br> I found the problem statement very intriguing and went through with it and it was a an amazing learning experience. In this article I have explained the problem statemenet and how I solved it."
 post-no: 6
 toc: false
