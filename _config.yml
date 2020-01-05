@@ -73,6 +73,9 @@ category_descriptions:
   - { name: "html Canvas", description: "" }
   - { name: "javascript", description: "" }
   - { name: "vc++", description: "" }
+  - { name: "c++", description: "" }
+  - { name: "python", description: "" }
+  - { name: "dotnet", description: "" }
   - { name: "php", description: "" }
   - { name: "apache", description: "" }
   - { name: "mathematics", description: "" }
@@ -93,6 +96,8 @@ category_descriptions:
   - { name: "machine learning", description: "" }
   - { name: "microsoft", description: "" }
   - { name: "cloud", description: "" }
+  - { name: "interview", description: "" }
+  - { name: "interview tips", description: "" }
 
 photography_data_path: "photography/assets/"
 photography_data:

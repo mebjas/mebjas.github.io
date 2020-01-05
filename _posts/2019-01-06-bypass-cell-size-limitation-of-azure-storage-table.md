@@ -55,7 +55,7 @@ If you intend to store data like `1.5MB` in size in Azure Storage Table in a sin
 
 ## References
 1. Implementation on 
-Github - [mebjas/AzureStorageTableLargeDataWriter]()https://github.com/mebjas/AzureStorageTableLargeDataWriter/blob/master/AzureStorageTableLargeDataWriter/StorageTableWriter.cs
+Github - [mebjas/AzureStorageTableLargeDataWriter](https://github.com/mebjas/AzureStorageTableLargeDataWriter/blob/master/AzureStorageTableLargeDataWriter/StorageTableWriter.cs)
 2. [Extend Table Storage Property Limit (Azure Feedback)](https://feedback.azure.com/forums/217298-storage/suggestions/1623951-extend-table-storage-property-limit)
 3. Currently, Azure Tables only support 255 properties (columns) on a single entity (row) and a max row size of 1MB. This should be greatly extended (e.g. 10x+), particularly since Azure does not offer Join query support.
 4. Limit to the column size in azure table : [Stack Overflow](https://stackoverflow.com/questions/44840195/limit-to-the-column-size-in-azure-table)
