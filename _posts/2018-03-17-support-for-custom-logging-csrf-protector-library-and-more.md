@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Support for custom logging in CSRF Protector Library and more
-categories: csrf, javascript, open-source, owasp, security, web-security, php
+categories: csrf, javascript, open-source, owasp, security, web security, php
 description: "Added some new feature to CSRF Protector library (version 1.0.1) like: <ol><li>Support for custom logger.</li><li>X-CSRF-Protection removed from response header.</li><li>Options added to make CSRF Token in cookie https only and it’s expiry time configurable.</li><li>More...</li></ol>"
 post-no: 7
 toc: false

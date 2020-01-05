@@ -77,14 +77,20 @@ category_descriptions:
   - { name: "apache", description: "" }
   - { name: "mathematics", description: "" }
   - { name: "csrf", description: "" }
-  - { name: "open-source", description: "" }
+  - { name: "open source", description: "" }
   - { name: "owasp", description: "" }
   - { name: "security", description: "" }
-  - { name: "web-security", description: "" }
+  - { name: "web security", description: "" }
   - { name: "compression", description: "" }
   - { name: "encoding", description: "" }
   - { name: "decoding", description: "" }
-  - { name: "bits-manipulation", description: "" }
+  - { name: "bits manipulation", description: "" }
+  - { name: "architecture", description: "" }
+  - { name: "system design", description: "" }
+  - { name: "azure", description: "" }
+  - { name: "azure storage blob", description: "" }
+  - { name: "machine learning", description: "" }
+  - { name: "microsoft", description: "" }
 
 photography_data_path: "photography/assets/"
 photography_data:
