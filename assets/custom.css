@@ -73,3 +73,48 @@
     padding: 5px;
     margin-top: 10px;
 }
+
+/** CSS for widget-self **/
+.widget-self {
+    display: flex;
+    margin-bottom: 20px;
+    background: #f7f7f7;
+    padding: 10px;
+}
+
+.widget-self .section-image {
+    width: 30vw;
+}
+
+.widget-self .section-info {
+    width: 70vw;
+    padding-left: 20px;
+}
+
+.widget-self .section-info .quote {
+    font-style: italic;
+    margin-top: 10px;
+}
+
+@media(max-width: 750px) {
+    .widget-self {
+        display: block;
+        margin-bottom: 20px;
+        background: #f7f7f7;
+        padding: 10px;
+    }
+    
+    .widget-self .section-image {
+        width: 100%;
+    }
+    
+    .widget-self .section-info {
+        width: 100%;
+        padding: 10px;
+    }
+    
+    .widget-self .section-info .quote {
+        font-style: italic;
+        margin-top: 10px;
+    }
+}
