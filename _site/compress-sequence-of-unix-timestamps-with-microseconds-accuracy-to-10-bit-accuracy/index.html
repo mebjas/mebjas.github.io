@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+ <meta charset="utf-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="google-site-verification" content="Xs4Y8kOjxCHZvery6v-Y6yVIptmWsSjownRLWpRDDlc" />
+ <meta name="msvalidate.01" content="C21F82032619E6AE38AEC7FFE4D05827" />
+<link rel="stylesheet" href=/assets/main.css>
+<link rel="stylesheet" href=/assets/custom.css>
+<link rel="alternate" type="application/rss+xml" title="Minhaz&#39;s Blog" href="/feed.xml">
+<link rel="shortcut icon" href=/assets/favicon.ico>
+<link rel="icon" type="image/png" sizes="32x32" href=/assets/favicon.ico>
+  <script src="/assets/js/jquery.js"></script>
+<title>Compress sequence of UNIX timestamps with microseconds accuracy to ~10bits/timestamp | Minhaz’s Blog</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Compress sequence of UNIX timestamps with microseconds accuracy to ~10bits/timestamp" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="I was given a problem statement by interviewer: There is a stream of timestamps that need to be transferred across some network stream. The goal is to compress this sequence of timestamps with microseconds accuracy, in lossless fashion. Also the encoding and decoding process should be very fast so that it can scale for time critical processes.. I found the problem statement very intriguing and went through with it and it was a an amazing learning experience. In this article I have explained the problem statemenet and how I solved it." />
+<meta property="og:description" content="I was given a problem statement by interviewer: There is a stream of timestamps that need to be transferred across some network stream. The goal is to compress this sequence of timestamps with microseconds accuracy, in lossless fashion. Also the encoding and decoding process should be very fast so that it can scale for time critical processes.. I found the problem statement very intriguing and went through with it and it was a an amazing learning experience. In this article I have explained the problem statemenet and how I solved it." />
+<link rel="canonical" href="http://localhost:4000/compress-sequence-of-unix-timestamps-with-microseconds-accuracy-to-10-bit-accuracy/" />
+<meta property="og:url" content="http://localhost:4000/compress-sequence-of-unix-timestamps-with-microseconds-accuracy-to-10-bit-accuracy/" />
+<meta property="og:site_name" content="Minhaz’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-11-10T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Compress sequence of UNIX timestamps with microseconds accuracy to ~10bits/timestamp" />
+<meta name="twitter:site" content="@minhazav" />
+<meta name="twitter:creator" content="@minhazav" />
+<script type="application/ld+json">
+{"headline":"Compress sequence of UNIX timestamps with microseconds accuracy to ~10bits/timestamp","dateModified":"2017-11-10T00:00:00+00:00","datePublished":"2017-11-10T00:00:00+00:00","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.minhazav.dev/images/rsz_self_1_1.jpg"}},"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/compress-sequence-of-unix-timestamps-with-microseconds-accuracy-to-10-bit-accuracy/"},"url":"http://localhost:4000/compress-sequence-of-unix-timestamps-with-microseconds-accuracy-to-10-bit-accuracy/","description":"I was given a problem statement by interviewer: There is a stream of timestamps that need to be transferred across some network stream. The goal is to compress this sequence of timestamps with microseconds accuracy, in lossless fashion. Also the encoding and decoding process should be very fast so that it can scale for time critical processes.. I found the problem statement very intriguing and went through with it and it was a an amazing learning experience. In this article I have explained the problem statemenet and how I solved it.","@context":"https://schema.org"}</script>
+</head>
+ <body data-instant-allow-query-string data-instant-allow-external-links>
+  <header class="site-header">
+   <div class="wrapper-header">
+     <div class="header-left">
+       <div>
+          <a class="site-title" href="/">
+            <b>Minhaz's Blog</b>
+          </a>
+       </div>
+       <div>
+          <a class="site-subtitle" href="/">
+            <b>Hack your way out!</b>
+          </a>
+       </div>
+     </div>
+     <div class="header-right">
+        <a class="page-link" href="https://github.com/mebjas">Github</a>
+        <a class="page-link" href="https://www.linkedin.com/in/minhazav">LinkedIn</a>
+        <a class="page-link" href="/about/">About Me</a>
+        <a class="page-link" href="/photography/">Photography</a>
+     </div>
+   </div>
+ </header>
+   <main class="default-content" aria-label="Content">
+     <div class="wrapper-content">
+       <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+<header class="page-header">
+   <h1 class="post-title" itemprop="name headline">Compress sequence of UNIX timestamps with microseconds accuracy to ~10bits/timestamp</h1>
+   <p class="post-meta">
+      <time datetime="2017-11-10T00:00:00+00:00" itemprop="datePublished">
+        Nov 10, 2017
+      </time>
+      •
+<a class="category-link" href="/category/compression/" rel="category">compression</a> 
+<a class="category-link" href="/category/mathematics/" rel="category">mathematics</a> 
+<a class="category-link" href="/category/encoding/" rel="category">encoding</a> 
+<a class="category-link" href="/category/decoding/" rel="category">decoding</a> 
+<a class="category-link" href="/category/bits-manipulation/" rel="category">bits-manipulation</a> 
+   </p>
+ </header>
+ <div class="post-content" itemprop="articleBody">
+   <h2 id="problem-setup">Problem Setup</h2>
+<p>There is a stream of timestamps that need to be transferred across some network stream. The goal is to compress this sequence of timestamps with microseconds accuracy, in lossless fashion. Also the encoding and decoding process should be very fast so that it can scale for time critical processes;</p>
+<h3 id="some-assumptions">Some assumptions</h3>
+<ul>
+ <li>The data to be transmitted consists of a sequence of real time unix timestamps with microsecond accuracy.</li>
+ <li>Timestamps are always increasing.</li>
+ <li>In this dataset timestamps belong to 24 hour range (however this shouldn’t affect the algorithm).</li>
+ <li>Consider it a stream of timestamps, so classical compression algorithms might not work. The alogrithm should be able to start and stop at any index of timestamp.</li>
+</ul>
+<h3 id="expected-flow">Expected Flow</h3><pre><code class="language-cmd">timestamps -&gt;­­ ENCODER -&gt; encoded_timestamps -&gt;­­ DECODER -&gt; decoded_timestamps
+
+IF timestamps == decoded_timestamps: SUCCESS
+ELSE: FAIL
+</code></pre>
+<h2 id="solution">Solution</h2>
+<p>So a single timestamp looks like <code class="highlighter-rouge">1364281200.078739</code> with micro seconds accuracy. The input file it is stored in, is in raw format and it’s treated as charecters so every timestamp along with newline charecter will take:</p>
+<p><code class="highlighter-rouge">18 charecters = 18 bytes = 144 bits</code></p>
+<p>Total no of timestamps in file = <code class="highlighter-rouge">451210 = 7.74MB = 8121779 bytes</code></p>
+<h3 id="attempt-01">Attempt 01</h3>
+<p>The data need not be stored as raw text, if we simply remove the dot and newline charecter itself, it reduces the data to <code class="highlighter-rouge">16 bytes/timestamp</code> i.e. <code class="highlighter-rouge">128 bits/timestamp</code>.</p>
+<p>Now each timestamp in here can be stored in <code class="highlighter-rouge">7 bytes</code> (either store it as a single value, removing dot or consider both of them separate – A.B, such that A part need <code class="highlighter-rouge">4 bytes</code> (<code class="highlighter-rouge">32 bits</code>) &amp; B part needs <code class="highlighter-rouge">3 bytes</code> (max value possible is 999999 – it can be stored in <code class="highlighter-rouge">20 bits</code>, but reserving space for now, will optimize later)). So with this we can reduce the data to <code class="highlighter-rouge">7Bytes = 56bits/timestamp</code> if stored in binary format.</p>
+<p>However, in the first approach itself I’d like to take advantage of the fact that these are increasing timestamps. So rather than storing the whole value we can store the delta. So I will store the first value as is: <code class="highlighter-rouge">7Bytes</code>. From the 2nd timestamp I’ll store them as delta with previous value.</p>
+<p>Here’s some analysis before I do the math for the given dataset: the distribution of delta of the integer part:</p>
+<table>
+<thead>
+   <tr>
+     <th>DeltaValue</th>
+     <th>Frequency</th>
+   </tr>
+ </thead>
+ <tbody>
+   <tr>
+     <td>0</td>
+     <td>423898</td>
+   </tr>
+   <tr>
+     <td>1</td>
+     <td>17439</td>
+   </tr>
+   <tr>
+     <td>2</td>
+     <td>4215</td>
+   </tr>
+   <tr>
+     <td>3</td>
+     <td>1892</td>
+   </tr>
+   <tr>
+     <td>4</td>
+     <td>1092</td>
+   </tr>
+   <tr>
+     <td>5</td>
+     <td>2348</td>
+   </tr>
+   <tr>
+     <td>6</td>
+     <td>105</td>
+   </tr>
+   <tr>
+     <td>7</td>
+     <td>68</td>
+   </tr>
+   <tr>
+     <td>8</td>
+     <td>50</td>
+   </tr>
+   <tr>
+     <td>9</td>
+     <td>29</td>
+   </tr>
+   <tr>
+     <td>10</td>
+     <td>22</td>
+   </tr>
+   <tr>
+     <td>11</td>
+     <td>19</td>
+   </tr>
+   <tr>
+     <td>12</td>
+     <td>5</td>
+   </tr>
+   <tr>
+     <td>13</td>
+     <td>7</td>
+   </tr>
+   <tr>
+     <td>14</td>
+     <td>3</td>
+   </tr>
+   <tr>
+     <td>15</td>
+     <td>4</td>
+   </tr>
+   <tr>
+     <td>16</td>
+     <td>3</td>
+   </tr>
+   <tr>
+     <td>17</td>
+     <td>1</td>
+   </tr>
+   <tr>
+     <td>18</td>
+     <td>2</td>
+   </tr>
+   <tr>
+     <td>19</td>
+     <td>1</td>
+   </tr>
+   <tr>
+     <td>20</td>
+     <td>2</td>
+   </tr>
+   <tr>
+     <td>22</td>
+     <td>1</td>
+   </tr>
+   <tr>
+     <td>24</td>
+     <td>1</td>
+   </tr>
+   <tr>
+     <td>28</td>
+     <td>1</td>
+   </tr>
+   <tr>
+     <td>32</td>
+     <td>2</td>
+   </tr>
+ </tbody>
+</table>
+<p><img src="../images/post6_image1.png" alt="histogram" width="750px" /><br />
+<span class="image-caption"><em>Figure: Distribution of delta values</em></span></p>
+<p>So majorly (&gt; 50%) is 0 delta or 1 delta. Since the smallest size of data that can be written to a file is <code class="highlighter-rouge">1 byte</code>, we shall encode data in byte by byte format. We’d want to store delta values with high distribution in smaller size chunks to reduce size. So I’ll encode them with bit prefixes something like this:</p><pre><code class="language-cmd">00 000000 - indicates zero delta.
+01 000000 - indicates '1' delta
+10 xxxxxx xxxxxxxx xxxxxxxx - indicates delta between [2,32], will have to read next 22 bits to encode information about the delta value.
+11 xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx - indicates possible delta value 4bytes will be read.
+</code></pre>
+<p>For now Will plainly encode the decimal value (with <code class="highlighter-rouge">999999</code> as maxvalue) in <code class="highlighter-rouge">20 bits</code> after the int value. We will need one more bit to store negative value. So total <code class="highlighter-rouge">21 bits</code> for decimal value. This way size requirements shall be:</p><pre><code class="language-cmd">4Byte + 3Byte + (21bits * 452109) + (2*423898 + 2*17439 + 8*9873) = 10456003 bits
+</code></pre>
+<p>Which gives us</p>
+<blockquote>
+ <p>= 23.127 bits/timestamp</p>
+</blockquote>
+<p>I’ll implement this as first version and try to achieve this theoretical number.</p>
+<h4 id="summary-of-implementation">SUMMARY of implementation</h4>
+<p>As mentioned before, without buffering values in memory, we can only write byte by byte to file. Hence, for first two cases (<code class="highlighter-rouge">00 &amp; 01</code>) <code class="highlighter-rouge">1 byte</code> is used and for case 3 (<code class="highlighter-rouge">10</code>) – <code class="highlighter-rouge">4 bytes</code> are used and for case 4 (not found in testfile) – <code class="highlighter-rouge">7 bytes</code> are supposed to be used.</p>
+<p>After running the code, it reduced the file to <code class="highlighter-rouge">1345 Kb</code> = <code class="highlighter-rouge">1377280 bytes</code> which is equal to <code class="highlighter-rouge">24.419Bits / timestamp</code>. So this satisfies the minimum criteria but it is pretty far away from <code class="highlighter-rouge">10bits/timestamp</code>.</p>
+<p>Ok, compression ratio is not awesome, <strong>but C++, IO &amp; Bits manipulation skills are now brushed up</strong>. Will try a better approach now.</p>
+<p>SO FAR: <strong>23.127 bits / timestamp :)</strong></p>
+<h3 id="attempt-2">Attempt 2</h3>
+<p>Looking at the integer value and decimal value is adding overheads. I’d rather look at the number on the whole. Quickly calculated the delta values between consecutive numbers using simple python script ` = helper.py`. Using Microsoft Excel - here’s the histogram based on no of bits needed to store the delta values:</p>
+<table>
+<thead>
+   <tr>
+     <th>bits needed</th>
+     <th>bin</th>
+     <th>frequency</th>
+     <th>Percentage</th>
+   </tr>
+ </thead>
+ <tbody>
+   <tr>
+     <td>1</td>
+     <td>1</td>
+     <td>235916</td>
+     <td>52.28530459</td>
+   </tr>
+   <tr>
+     <td>2</td>
+     <td>2</td>
+     <td>357</td>
+     <td>0.079120762</td>
+   </tr>
+   <tr>
+     <td>3</td>
+     <td>4</td>
+     <td>58</td>
+     <td>0.012854354</td>
+   </tr>
+   <tr>
+     <td>4</td>
+     <td>8</td>
+     <td>24</td>
+     <td>0.005319043</td>
+   </tr>
+   <tr>
+     <td>5</td>
+     <td>16</td>
+     <td>24</td>
+     <td>0.005319043</td>
+   </tr>
+   <tr>
+     <td>6</td>
+     <td>32</td>
+     <td>17</td>
+     <td>0.003767655</td>
+   </tr>
+   <tr>
+     <td>7</td>
+     <td>64</td>
+     <td>78</td>
+     <td>0.017286889</td>
+   </tr>
+   <tr>
+     <td>8</td>
+     <td>128</td>
+     <td>9073</td>
+     <td>2.01081982</td>
+   </tr>
+   <tr>
+     <td>9</td>
+     <td>256</td>
+     <td>35824</td>
+     <td>7.939557943</td>
+   </tr>
+   <tr>
+     <td>10</td>
+     <td>512</td>
+     <td>35823</td>
+     <td>7.939336316</td>
+   </tr>
+   <tr>
+     <td>11</td>
+     <td>1024</td>
+     <td>23095</td>
+     <td>5.118470598</td>
+   </tr>
+   <tr>
+     <td>12</td>
+     <td>2048</td>
+     <td>11143</td>
+     <td>2.469587264</td>
+   </tr>
+   <tr>
+     <td>13</td>
+     <td>4096</td>
+     <td>9505</td>
+     <td>2.106562591</td>
+   </tr>
+   <tr>
+     <td>14</td>
+     <td>8192</td>
+     <td>9338</td>
+     <td>2.06955091</td>
+   </tr>
+   <tr>
+     <td>15</td>
+     <td>16384</td>
+     <td>10605</td>
+     <td>2.350352054</td>
+   </tr>
+   <tr>
+     <td>16</td>
+     <td>32768</td>
+     <td>10017</td>
+     <td>2.220035505</td>
+   </tr>
+   <tr>
+     <td>17</td>
+     <td>65536</td>
+     <td>9048</td>
+     <td>2.00527915</td>
+   </tr>
+   <tr>
+     <td>18</td>
+     <td>131072</td>
+     <td>9690</td>
+     <td>2.147563546</td>
+   </tr>
+   <tr>
+     <td>19</td>
+     <td>262144</td>
+     <td>9818</td>
+     <td>2.175931774</td>
+   </tr>
+   <tr>
+     <td>20</td>
+     <td>524288</td>
+     <td>9622</td>
+     <td>2.132492925</td>
+   </tr>
+   <tr>
+     <td>21</td>
+     <td>1048576</td>
+     <td>8796</td>
+     <td>1.9494292</td>
+   </tr>
+   <tr>
+     <td>22</td>
+     <td>2097152</td>
+     <td>6608</td>
+     <td>1.464509795</td>
+   </tr>
+   <tr>
+     <td>23</td>
+     <td>4194304</td>
+     <td>3819</td>
+     <td>0.846392692</td>
+   </tr>
+   <tr>
+     <td>24</td>
+     <td>8388608</td>
+     <td>2806</td>
+     <td>0.621884759</td>
+   </tr>
+   <tr>
+     <td>25</td>
+     <td>16777216</td>
+     <td>95</td>
+     <td>0.021054545</td>
+   </tr>
+   <tr>
+     <td>26</td>
+     <td>33554432</td>
+     <td>10</td>
+     <td>0.002216268</td>
+   </tr>
+   <tr>
+     <td>27</td>
+     <td>67108864</td>
+     <td>0</td>
+     <td>0</td>
+   </tr>
+   <tr>
+     <td>28</td>
+     <td>134217728</td>
+     <td>0</td>
+     <td>0</td>
+   </tr>
+   <tr>
+     <td>29</td>
+     <td>268435456</td>
+     <td>0</td>
+     <td>0</td>
+   </tr>
+   <tr>
+     <td>30</td>
+     <td>536870912</td>
+     <td>0</td>
+     <td>0</td>
+   </tr>
+   <tr>
+     <td>31</td>
+     <td>1073741824</td>
+     <td>0</td>
+     <td>0</td>
+   </tr>
+ </tbody>
+</table>
+<p><img src="../images/post6_image2.png" alt="histogram" width="750px" /><br />
+<span class="image-caption"><em>Figure: Distribution of decimal values</em></span></p>
+<p>So greater than 50% of delta values are between [0,1]. And a good portion of them lie between [2, 14] bits needed. So if we encode it as following:</p><pre><code class="language-cmd">Summaries   Count	BITS	Storage pattern
+[0,1]	    235916	2	    00 000000 = 0 &amp; 01 000000 = 1
+[2, 14]	    125021	16	    10 xxxxxx xxxxxxxx
+REST	    90272	32	    11 xxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+</code></pre>
+<p>This way total no of bits needed will be: <code class="highlighter-rouge">64 + 8 * 235916 + 16 * 125021 + 32 * 90272 = 6776432</code> i.e. <code class="highlighter-rouge">15.0183 bits / timestamp</code>.</p>
+<p>Now we are wasting around 75% space when storing 0 or 1, as only two bits are needed to encode them. Will try to encode more information in these regions in coming attempts.</p>
+<p>The result after experimentation are - sample dataset reduced to</p>
+<blockquote>
+ <p>807168 bytes = 14.311 bits / timestamp</p>
+</blockquote>
+<p>As a minor optimisation, I have changed code to store <code class="highlighter-rouge">[15, 22] bit</code> delta values in <code class="highlighter-rouge">3 bytes</code>. After this size of encoded file is:</p>
+<blockquote>
+ <p>739750 bytes = 13.1158 bits / Timestamp</p>
+</blockquote>
+<p>SO FAR: <strong>13.115 bits / timestamp</strong></p>
+<h3 id="attempt-03">Attempt 03</h3>
+<p>Untill now the algorithm was purely looking at information that came so far. To compress further I’m going to have look ahead logic now. There were a lot of cases where large delta’s were followed by single 0 or 1. So shall reserve the two bits at the end of bigger models =&gt; (2, 3 &amp; 4 byte models) with following information:</p><pre><code class="language-cmd">01 - if followed by a 0
+10 - if followed by a 1
+</code></pre>
+<p>So everytime we observe a large delta, rather than writing to file immediately we’ll buffer the data and write if next timestamp match the condition (delta being 0 or 1). By just encoding next one or zero in previous set of information, was able to reduce the encoded data to:</p>
+<blockquote>
+ <p>600125 bytes = 10.64 bits / timestamp</p>
+</blockquote>
+<p>After this added one more level of buffering to encode sequence of two zeros (two consequtive zeros) as <code class="highlighter-rouge">11</code>. That brought encoded file size down to</p>
+<blockquote>
+ <p>584352 bytes = 10.36 bits / timestamp</p>
+</blockquote>
+<p>SO FAR: <strong>10.36 bits / timestamp</strong></p>
+<h3 id="attempt-04">Attempt 04</h3>
+<p>In case of one byte model where we encode 0 or 1 (without any buffering) as <code class="highlighter-rouge">00000000</code> and <code class="highlighter-rouge">00100000</code> respectively, the last <code class="highlighter-rouge">5 bits</code> do not contain any information and are free and it can be used to store <code class="highlighter-rouge">32 unique sequences of 0 &amp; 1</code>.</p>
+<p>Now if the sequence of delta is like <code class="highlighter-rouge">0 0 0 1 0 1 0</code>, we can use the remaining bits in <code class="highlighter-rouge">1 byte</code> model to encode them. I tried doing this - ffter a 0 or 1 if next delta is 0 or 1 I’d encode 10 or 01 in free bit space in <code class="highlighter-rouge">1 byte</code> model. With this I got an encoded file of:</p>
+<blockquote>
+ <p>569463 bytes = 10.097 bits / timestamp</p>
+</blockquote>
+<p>If we build a mapping of sequences based on popularity and encode them in these bits when observed we’d be able to reduce the data further.</p>
+<blockquote>
+ <p>TODO(mebjas): Find the most popular sequence and encode them in free bits.</p>
+</blockquote>
+<h3 id="so-finally-10097-bitstimestamp">SO FINALLY: 10.097 bits/timestamp</h3>
+<p>Also, this one is not the part of solution I implemented but if we zip the encoded file it’s further reduced to</p>
+<blockquote>
+ <p>527355 bytes = 9.35 bits / timestamp</p>
+</blockquote>
+<p>Which is: <strong>93.50 % Lossless compression</strong></p>
+<h2 id="appendix">Appendix</h2>
+<h3 id="source-code">Source Code</h3>
+<p>Find the source code here: <a href="https://github.com/mebjas/timestamp_compression">mebjas/timestamp_compression</a></p>
+<h4 id="how-to-build-and-test">How to build and test</h4>
+<p>The code is written as a <code class="highlighter-rouge">VC++</code> project. You might need Visual Studio (Windows) to compile &amp; test. It has some dependency on Windows (I have used <code class="highlighter-rouge">windows.h</code> header for some profiling tasks, but that can be removed). If you face troube compiling this project, check this out - <a href="https://stackoverflow.com/questions/37575454/how-to-compile-windows-visual-c-code-on-linux">How to compile windows visual C++ code on linux</a></p>
+<p>In windows, open <code class="highlighter-rouge">VSProject\TC.sln</code>, build the solution and run. the dataset file is included in the solution (&amp; copied to output path during build. the output file is generated in <code class="highlighter-rouge">VSProject\TC\</code>). An executable is generated at <code class="highlighter-rouge">VSProject\Debug\TC.exe</code> after the build is complete.</p>
+<p>You can run against the binary I built in my system, it’s there in root folder of the zip: <code class="highlighter-rouge">TC.exe</code></p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">#</span><span class="w"> </span>encoding
+<span class="go">TC.exe -e timestamps.txt timestamps_encoded.txt
+</span><span class="gp">#</span><span class="w"> </span>decoding
+<span class="go">TC.exe -d timestamps_encoded.txt timestamps_decoded.txt
+</span><span class="gp">#</span><span class="w"> </span>validation <span class="o">(</span>using FC utility, alternative to diff <span class="k">in </span>linux<span class="o">)</span>
+<span class="go">FC timestamps.txt timestamps_decoded.txt
+</span></code></pre></div></div>
+<p>There is <code class="highlighter-rouge">test.cmd</code> to try this out. Here’s sample output I got:</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>TC.exe <span class="nt">-e</span> timestamps.txt timestamps_encoded.txt
+<span class="go">Begin Encoding
+</span><span class="gp">Encoding done;</span><span class="w"> </span>Processed: 451210 rows
+<span class="go">Time taken (in micro seconds) : 9798.17
+Avg Time taken (in micro seconds) : 0.0217153
+
+</span><span class="gp">$</span><span class="w"> </span>TC.exe <span class="nt">-d</span> timestamps_encoded.txt timestamps_decoded.txt
+<span class="go">Begin Decoding
+</span><span class="gp">Decoding done;</span><span class="w"> </span>Processed: 451210 rows
+<span class="go">Time taken (in micro seconds) : 8218.85
+Avg Time taken (in micro seconds) : 0.0182151
+
+</span><span class="gp">$</span><span class="w"> </span>FC timestamps.txt timestamps_decoded.txt
+<span class="go">Comparing files timestamps.txt and TIMESTAMPS_DECODED.TXT
+FC: no differences encountered
+</span></code></pre></div></div>
+<h4 id="how-to-validate">How to validate</h4>
+<p>In windows:</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">cd VSProject\TC\
+FC timestamps.txt timestamps_decoded.txt\
+</span></code></pre></div></div>
+<p>Output I got:</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">Comparing files timestamps.txt and TIMESTAMPS_DECODED.TXT
+FC: no differences encountered
+</span></code></pre></div></div>
+<h4 id="metrics-also-available-in-metricstxt">Metrics (also available in .\metrics.txt)</h4>
+<p><strong>Degree of compression</strong></p>
+<p>In the final attemp was able to reduce the data to: <code class="highlighter-rouge">569463 bytes = 10.097 bits / timestamp</code> which is equivalent to <code class="highlighter-rouge">92.98% lossless compression</code></p>
+<p><strong>Time taken: (Encoding)</strong></p>
+<p>Encoding: <code class="highlighter-rouge">9798.17ms</code> (total) =&gt; <code class="highlighter-rouge">0.0217153ms / timestamp</code></p>
+<p><strong>Time taken: (Decoding)</strong></p>
+<p>Decoding: <code class="highlighter-rouge">8218.85ms</code> (total) =&gt; <code class="highlighter-rouge">0.0182151 / timestamp</code></p>
+<h3 id="ideas-to-further-improve-the-model">Ideas to further improve the model</h3>
+<p>1 byte model has 5 (can even use 6) empty bits, can use that to represent 63 different sequences.</p>
+<h3 id="summary">Summary:</h3>
+<ul>
+ <li>This was a very goof fun exercise to refresh VC++ skills, IO skills &amp; Bits Manipulation skills.</li>
+ <li>Also a good reminder of how many things we just take for granted when working on high level languages.</li>
+</ul>
+ </div>
+ <div class="post-footer">
+<div class="related-posts">
+  <span class="related-posts-text">Related posts:</span>
+ <ul>
+ </ul>
+</div>
+<div class="post-filed">
+   <p class="post-meta">
+      Filed under
+<a class="category-link" href="/category/compression/" rel="category">compression</a>
+<a class="category-link" href="/category/mathematics/" rel="category">mathematics</a>
+<a class="category-link" href="/category/encoding/" rel="category">encoding</a>
+<a class="category-link" href="/category/decoding/" rel="category">decoding</a>
+<a class="category-link" href="/category/bits-manipulation/" rel="category">bits-manipulation</a>
+   </p>
+   <p>
+      <a href="#top">top&nbsp;&#8673;</a>
+   </p>
+ </div>
+<div class="post-nav">
+   <p>
+      <a href="/introducing-minor-improvements-to-csrf-protector-php/">&#8672;&nbsp;Introducing minor improvements to CSRF Protector PHP</a>
+   </p>
+   <p>
+      <a href="/support-for-custom-logging-csrf-protector-library-and-more/">Support for custom logging in CSRF Protector Library and more&nbsp;&#8674;</a>
+   </p>
+ </div>
+<div style="border-top: 1px solid #cfcfcf; margin-top: 30px">
+   <div class="widget-self">
+   <div class="section-image">
+        <a href="/about">
+            <img src="/images/rsz_self_1_1.jpg" width="200px">
+        </a>
+   </div>
+   <div class="section-info">
+        <strong><a href="/about">Minhaz | Google | Singapore</a></strong>
+       <div class="quote">
+            I am working with Next Billion Users Org at Google. My team builds technologies for emerging markets.
+            I feel, the goal of delivering cutting edge technologies to resource constrained devices with seamless performance is hard, at times frustating but worthwhile.
+            Hoping for positive impact, good Karma and unbounded learning ;)
+       </div>
+       <div class="quote">
+            These days I am working on #Computational-Photography and try hard at #Photography as well.
+            I have good experience with #Distributed-Systems and #Applied-ML.
+       </div>
+   </div>
+</div>
+</div>
+ </div>
+ <div class="just-comments" data-apikey="014acd23-9a26-4415-a7ea-80f4253d1295" data-recaptcha="true"></div>
+  <script async src="https://just-comments.com/w2.js"></script>
+</article>
+     </div>
+   </main>
+   <footer class="site-footer">
+   <div class="wrapper-footer">
+     <div class="footer-col-wrapper">
+<a href="mailto:minhazav@gmail.com"><i class="svg-icon email"></i></a>
+<a href="http://github.com/mebjas"><i class="svg-icon github"></i></a>
+<a href="http://instagram.com/mebjas"><i class="svg-icon instagram"></i></a>
+<a href="http://linkedin.com/in/https://www.linkedin.com/in/minhazav"><i class="svg-icon linkedin"></i></a>
+<a href="http://twitter.com/minhazav"><i class="svg-icon twitter"></i></a>
+<a href="http://stackoverflow.com/users/2614250/mebjas"><i class="svg-icon stackoverflow"></i></a>
+     </div>
+     <div class="copyright">
+        © 2019 minhazav.dev
+     </div>
+   </div>
+    <script src="/assets/js/anchorize.js"></script>
+ </footer>
+    <script src="/assets/js/instantpage.js" type="module" integrity="sha384-/IkE5iZAM/RxPto8B0nvKlMzIyCWtYocF01PbGGp1qElJuxv9J4whdWBRtzZltWn"></script>
+ </body>
+</html>

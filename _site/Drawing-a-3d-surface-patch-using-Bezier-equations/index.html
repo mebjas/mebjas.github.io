@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+ <meta charset="utf-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="google-site-verification" content="Xs4Y8kOjxCHZvery6v-Y6yVIptmWsSjownRLWpRDDlc" />
+ <meta name="msvalidate.01" content="C21F82032619E6AE38AEC7FFE4D05827" />
+<link rel="stylesheet" href=/assets/main.css>
+<link rel="stylesheet" href=/assets/custom.css>
+<link rel="alternate" type="application/rss+xml" title="Minhaz&#39;s Blog" href="/feed.xml">
+<link rel="shortcut icon" href=/assets/favicon.ico>
+<link rel="icon" type="image/png" sizes="32x32" href=/assets/favicon.ico>
+  <script src="/assets/js/jquery.js"></script>
+<title>Drawing a 3d surface patch using Bezier equations | Minhaz’s Blog</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Drawing a 3d surface patch using Bezier equations" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This post covers: &lt;ul&gt;&lt;li&gt;What’s a bezier equation?&lt;/li&gt;&lt;li&gt;Creating a 3d surface patch using Bezier curves&lt;/li&gt;&lt;li&gt;Making it interactive&lt;/li&gt;&lt;ul&gt;Its a cubic parametric curve used to draw smooth curves, we can draw a bezier curve using two endpoints and two control points." />
+<meta property="og:description" content="This post covers: &lt;ul&gt;&lt;li&gt;What’s a bezier equation?&lt;/li&gt;&lt;li&gt;Creating a 3d surface patch using Bezier curves&lt;/li&gt;&lt;li&gt;Making it interactive&lt;/li&gt;&lt;ul&gt;Its a cubic parametric curve used to draw smooth curves, we can draw a bezier curve using two endpoints and two control points." />
+<link rel="canonical" href="http://localhost:4000/Drawing-a-3d-surface-patch-using-Bezier-equations/" />
+<meta property="og:url" content="http://localhost:4000/Drawing-a-3d-surface-patch-using-Bezier-equations/" />
+<meta property="og:site_name" content="Minhaz’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2014-11-18T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Drawing a 3d surface patch using Bezier equations" />
+<meta name="twitter:site" content="@minhazav" />
+<meta name="twitter:creator" content="@minhazav" />
+<script type="application/ld+json">
+{"headline":"Drawing a 3d surface patch using Bezier equations","dateModified":"2014-11-18T00:00:00+00:00","datePublished":"2014-11-18T00:00:00+00:00","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.minhazav.dev/images/rsz_self_1_1.jpg"}},"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/Drawing-a-3d-surface-patch-using-Bezier-equations/"},"url":"http://localhost:4000/Drawing-a-3d-surface-patch-using-Bezier-equations/","description":"This post covers: &lt;ul&gt;&lt;li&gt;What’s a bezier equation?&lt;/li&gt;&lt;li&gt;Creating a 3d surface patch using Bezier curves&lt;/li&gt;&lt;li&gt;Making it interactive&lt;/li&gt;&lt;ul&gt;Its a cubic parametric curve used to draw smooth curves, we can draw a bezier curve using two endpoints and two control points.","@context":"https://schema.org"}</script>
+</head>
+ <body data-instant-allow-query-string data-instant-allow-external-links>
+  <header class="site-header">
+   <div class="wrapper-header">
+     <div class="header-left">
+       <div>
+          <a class="site-title" href="/">
+            <b>Minhaz's Blog</b>
+          </a>
+       </div>
+       <div>
+          <a class="site-subtitle" href="/">
+            <b>Hack your way out!</b>
+          </a>
+       </div>
+     </div>
+     <div class="header-right">
+        <a class="page-link" href="https://github.com/mebjas">Github</a>
+        <a class="page-link" href="https://www.linkedin.com/in/minhazav">LinkedIn</a>
+        <a class="page-link" href="/about/">About Me</a>
+        <a class="page-link" href="/photography/">Photography</a>
+     </div>
+   </div>
+ </header>
+   <main class="default-content" aria-label="Content">
+     <div class="wrapper-content">
+       <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+<header class="page-header">
+   <h1 class="post-title" itemprop="name headline">Drawing a 3d surface patch using Bezier equations</h1>
+   <p class="post-meta">
+      <time datetime="2014-11-18T00:00:00+00:00" itemprop="datePublished">
+        Nov 18, 2014
+      </time>
+      •
+<a class="category-link" href="/category/graphics/" rel="category">graphics</a> 
+<a class="category-link" href="/category/html-canvas/" rel="category">html-canvas</a> 
+<a class="category-link" href="/category/javascript/" rel="category">javascript</a> 
+<a class="category-link" href="/category/mathematics/" rel="category">mathematics</a> 
+   </p>
+ </header>
+ <div class="post-content" itemprop="articleBody">
+   <h3 id="this-post-covers-">This post covers :</h3>
+<ul>
+ <li>What’s a bezier equation?</li>
+ <li>Creating a 3d surface patch using Bezier curves</li>
+ <li>Making it interactive</li>
+</ul>
+<p><img src="../images/Screen-Shot-2014-11-17-at-11.27.12-am.png.jpg" alt="Screenshot" width="500px" />
+<br /><span class="image-caption"> <em>Screenshot of experiment</em> <span></span></span></p>
+<h3 id="so-whats-a-bezier-curve">So what’s a Bezier curve:</h3>
+<p>Its a cubic parametric curve used to draw smooth curves, we can draw a bezier curve using two endpoints and two control points. It looks something like:</p>
+<p><img src="../images/quad01.png" alt="bezier curve" /><br />
+<span class="image-caption"> <em>Bezier Curve - <a href="http://en.wikipedia.org/wiki/B%C3%A9zier_curve">Wikipedia</a></em></span></p>
+<p>So how to draw the surface using multiple bezier curves:</p>
+<h3 id="well-there-are-multiple-ways-heres-what-i-did">Well there are multiple ways, here’s what I did:</h3>
+<ul>
+ <li>Drew my first Bezier curve (The top one) and kept track of 10 equidistant points on that curve say HP.</li>
+ <li>Drew first vertical Bezier curve (The left one) and kept track of 10 equidistant points on that curve say VP.</li>
+ <li>Now for each point in HP draw a vertical bezier with same control points. Similarly for all points in VP draw horizontal Bezier curves with same control points.</li>
+ <li>In the meanwhile you can draw points at equidistant points on each bezier curve.</li>
+ <li>The code looks something like:</li>
+</ul>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">plot</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">ctx</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+    <span class="c1">// draw top line and find the points</span>
+    <span class="kd">set</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="kd">set</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="nx">ctx</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
+    <span class="nx">ctx</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="nx">drawPoint</span><span class="p">(</span><span class="nx">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">t</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">t</span> <span class="o">+=</span> <span class="p">.</span><span class="mi">001</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">),</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="nx">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="nx">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="nx">p3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="p">(</span><span class="nx">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nx">width</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">),</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="nx">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="nx">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nx">d1</span><span class="p">)</span>
+                <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="nx">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span><span class="nx">d2</span><span class="p">)</span> <span class="o">+</span> <span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="nx">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+        <span class="nx">ctx</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">);</span>
+        <span class="o">++</span><span class="nx">c</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">c</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">set</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="kd">set</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">length</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">];</span>
+            <span class="nx">ctx</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
+            <span class="nx">drawPoint</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">);</span>
+            <span class="nx">ctx</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
+        <span class="p">}</span>
+        
+    <span class="p">}</span>
+    <span class="c1">// draw first verticle line and collect the points </span>
+    <span class="nx">ctx</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">t</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">t</span> <span class="o">+=</span> <span class="p">.</span><span class="mi">001</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">),</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="nx">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="nx">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nx">d1</span><span class="p">)</span>
+                <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="nx">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span><span class="nx">d2</span><span class="p">)</span> <span class="o">+</span> <span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="nx">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">),</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="nx">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="nx">p5</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="nx">p6</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="p">(</span><span class="nx">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="nx">height</span><span class="p">);</span>
+        <span class="nx">ctx</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">);</span>
+        <span class="o">++</span><span class="nx">c</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">c</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">set</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="kd">set</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">length</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">];</span>
+            <span class="nx">ctx</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
+            <span class="nx">drawPoint</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">);</span>
+            <span class="nx">ctx</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
+        <span class="p">}</span>
+        
+    <span class="p">}</span>
+    <span class="c1">// draw all vertical lines in a loop</span>
+    <span class="c1">// then draw horizontal lines in a loop</span>
+    <span class="k">for</span><span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="mi">9</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">ctx</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="kd">set</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="nx">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="kd">set</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="nx">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]);</span>
+        <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">t</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">t</span> <span class="o">+=</span> <span class="p">.</span><span class="mi">001</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">),</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="kd">set</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="nx">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="kd">set</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="nx">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nx">d1</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="kd">set</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="nx">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nx">d2</span><span class="p">)</span> <span class="o">+</span> <span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="kd">set</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="nx">i</span><span class="p">][</span><span class="mi">0</span><span class="p">];</span>
+            <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">),</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="kd">set</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="nx">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">180</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span> <span class="o">+</span> <span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="p">(</span><span class="kd">set</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="nx">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nx">height</span><span class="p">);</span>
+            <span class="nx">ctx</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">);</span>
+            <span class="o">++</span><span class="nx">c</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">c</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">set</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="kd">set</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">length</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">];</span>
+                <span class="nx">ctx</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
+                <span class="nx">drawPoint</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">);</span>
+                <span class="nx">ctx</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">for</span><span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="mi">9</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">ctx</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="kd">set</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="nx">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="kd">set</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="nx">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]);</span>
+        <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">t</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">t</span> <span class="o">+=</span> <span class="p">.</span><span class="mi">001</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">),</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="kd">set</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="nx">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="kd">set</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="nx">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nx">d1</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="kd">set</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="nx">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nx">d2</span><span class="p">)</span> <span class="o">+</span> <span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="kd">set</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="nx">i</span><span class="p">][</span><span class="mi">1</span><span class="p">];</span>
+            <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">),</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="kd">set</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="nx">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">180</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span> <span class="o">+</span> <span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="nx">t</span><span class="o">*</span><span class="p">(</span><span class="kd">set</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="nx">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nx">width</span><span class="p">);</span>
+            <span class="nx">ctx</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">);</span>
+            <span class="o">++</span><span class="nx">c</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">c</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">set</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="kd">set</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">length</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">];</span>
+                <span class="nx">ctx</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
+                <span class="nx">drawPoint</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">);</span>
+                <span class="nx">ctx</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="nx">ctx</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
+<span class="p">}</span></code></pre></figure>
+<p><strong>How to make it interactive</strong>: Simply change the control points according to input (mouse move, key press in my case)</p>
+<p>Complete code available at my github repo: <a href="https://github.com/mebjas/my-playground/blob/master/is%20inside%20the%20mesh%3F/cloath.htm">My-Playground/inside-the-mesh</a></p>
+<p>How about we add a star to it?</p>
+ </div>
+ <div class="post-footer">
+<div class="related-posts">
+  <span class="related-posts-text">Related posts:</span>
+ <ul>
+ </ul>
+</div>
+<div class="post-filed">
+   <p class="post-meta">
+      Filed under
+<a class="category-link" href="/category/graphics/" rel="category">graphics</a>
+<a class="category-link" href="/category/html-canvas/" rel="category">html-canvas</a>
+<a class="category-link" href="/category/javascript/" rel="category">javascript</a>
+<a class="category-link" href="/category/mathematics/" rel="category">mathematics</a>
+   </p>
+   <p>
+      <a href="#top">top&nbsp;&#8673;</a>
+   </p>
+ </div>
+<div class="post-nav">
+   <p>
+   </p>
+   <p>
+      <a href="/CSRF-Protector-concept-design-and-future/">CSRF protector – Concept, Design and Future&nbsp;&#8674;</a>
+   </p>
+ </div>
+<div style="border-top: 1px solid #cfcfcf; margin-top: 30px">
+   <div class="widget-self">
+   <div class="section-image">
+        <a href="/about">
+            <img src="/images/rsz_self_1_1.jpg" width="200px">
+        </a>
+   </div>
+   <div class="section-info">
+        <strong><a href="/about">Minhaz | Google | Singapore</a></strong>
+       <div class="quote">
+            I am working with Next Billion Users Org at Google. My team builds technologies for emerging markets.
+            I feel, the goal of delivering cutting edge technologies to resource constrained devices with seamless performance is hard, at times frustating but worthwhile.
+            Hoping for positive impact, good Karma and unbounded learning ;)
+       </div>
+       <div class="quote">
+            These days I am working on #Computational-Photography and try hard at #Photography as well.
+            I have good experience with #Distributed-Systems and #Applied-ML.
+       </div>
+   </div>
+</div>
+</div>
+ </div>
+ <div class="just-comments" data-apikey="014acd23-9a26-4415-a7ea-80f4253d1295" data-recaptcha="true"></div>
+  <script async src="https://just-comments.com/w2.js"></script>
+</article>
+     </div>
+   </main>
+   <footer class="site-footer">
+   <div class="wrapper-footer">
+     <div class="footer-col-wrapper">
+<a href="mailto:minhazav@gmail.com"><i class="svg-icon email"></i></a>
+<a href="http://github.com/mebjas"><i class="svg-icon github"></i></a>
+<a href="http://instagram.com/mebjas"><i class="svg-icon instagram"></i></a>
+<a href="http://linkedin.com/in/https://www.linkedin.com/in/minhazav"><i class="svg-icon linkedin"></i></a>
+<a href="http://twitter.com/minhazav"><i class="svg-icon twitter"></i></a>
+<a href="http://stackoverflow.com/users/2614250/mebjas"><i class="svg-icon stackoverflow"></i></a>
+     </div>
+     <div class="copyright">
+        © 2019 minhazav.dev
+     </div>
+   </div>
+    <script src="/assets/js/anchorize.js"></script>
+ </footer>
+    <script src="/assets/js/instantpage.js" type="module" integrity="sha384-/IkE5iZAM/RxPto8B0nvKlMzIyCWtYocF01PbGGp1qElJuxv9J4whdWBRtzZltWn"></script>
+ </body>
+</html>

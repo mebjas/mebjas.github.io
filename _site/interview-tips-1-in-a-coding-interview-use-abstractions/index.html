@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+ <meta charset="utf-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="google-site-verification" content="Xs4Y8kOjxCHZvery6v-Y6yVIptmWsSjownRLWpRDDlc" />
+ <meta name="msvalidate.01" content="C21F82032619E6AE38AEC7FFE4D05827" />
+<link rel="stylesheet" href=/assets/main.css>
+<link rel="stylesheet" href=/assets/custom.css>
+<link rel="alternate" type="application/rss+xml" title="Minhaz&#39;s Blog" href="/feed.xml">
+<link rel="shortcut icon" href=/assets/favicon.ico>
+<link rel="icon" type="image/png" sizes="32x32" href=/assets/favicon.ico>
+  <script src="/assets/js/jquery.js"></script>
+<title>Interview tips 1 – In a coding interview use abstractions! | Minhaz’s Blog</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Interview tips 1 – In a coding interview use abstractions!" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="While I was working with Microsoft, I had opportunity to take around 10 – 20 coding or design interviews (candidates with 1 – 12 years of experience). There was this one thing that I felt was too common, which would lead to bad impression and potential rejection – it’s that the candidate attempts to solve every part of the question rather than focusing on what is important. This is particularly prevalent amongst candidates who chose C / C++ as programming language of choice. And, this was common irrespective of years of experience. In this article I have shared the problem and my opinion on how to tackle it." />
+<meta property="og:description" content="While I was working with Microsoft, I had opportunity to take around 10 – 20 coding or design interviews (candidates with 1 – 12 years of experience). There was this one thing that I felt was too common, which would lead to bad impression and potential rejection – it’s that the candidate attempts to solve every part of the question rather than focusing on what is important. This is particularly prevalent amongst candidates who chose C / C++ as programming language of choice. And, this was common irrespective of years of experience. In this article I have shared the problem and my opinion on how to tackle it." />
+<link rel="canonical" href="http://localhost:4000/interview-tips-1-in-a-coding-interview-use-abstractions/" />
+<meta property="og:url" content="http://localhost:4000/interview-tips-1-in-a-coding-interview-use-abstractions/" />
+<meta property="og:site_name" content="Minhaz’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-05-07T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Interview tips 1 – In a coding interview use abstractions!" />
+<meta name="twitter:site" content="@minhazav" />
+<meta name="twitter:creator" content="@minhazav" />
+<script type="application/ld+json">
+{"headline":"Interview tips 1 – In a coding interview use abstractions!","dateModified":"2019-05-07T00:00:00+00:00","datePublished":"2019-05-07T00:00:00+00:00","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.minhazav.dev/images/rsz_self_1_1.jpg"}},"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/interview-tips-1-in-a-coding-interview-use-abstractions/"},"url":"http://localhost:4000/interview-tips-1-in-a-coding-interview-use-abstractions/","description":"While I was working with Microsoft, I had opportunity to take around 10 – 20 coding or design interviews (candidates with 1 – 12 years of experience). There was this one thing that I felt was too common, which would lead to bad impression and potential rejection – it’s that the candidate attempts to solve every part of the question rather than focusing on what is important. This is particularly prevalent amongst candidates who chose C / C++ as programming language of choice. And, this was common irrespective of years of experience. In this article I have shared the problem and my opinion on how to tackle it.","@context":"https://schema.org"}</script>
+</head>
+ <body data-instant-allow-query-string data-instant-allow-external-links>
+  <header class="site-header">
+   <div class="wrapper-header">
+     <div class="header-left">
+       <div>
+          <a class="site-title" href="/">
+            <b>Minhaz's Blog</b>
+          </a>
+       </div>
+       <div>
+          <a class="site-subtitle" href="/">
+            <b>Hack your way out!</b>
+          </a>
+       </div>
+     </div>
+     <div class="header-right">
+        <a class="page-link" href="https://github.com/mebjas">Github</a>
+        <a class="page-link" href="https://www.linkedin.com/in/minhazav">LinkedIn</a>
+        <a class="page-link" href="/about/">About Me</a>
+        <a class="page-link" href="/photography/">Photography</a>
+     </div>
+   </div>
+ </header>
+   <main class="default-content" aria-label="Content">
+     <div class="wrapper-content">
+       <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+<header class="page-header">
+   <h1 class="post-title" itemprop="name headline">Interview tips 1 – In a coding interview use abstractions!</h1>
+   <p class="post-meta">
+      <time datetime="2019-05-07T00:00:00+00:00" itemprop="datePublished">
+        May 7, 2019
+      </time>
+      •
+<a class="category-link" href="/category/dotnet/" rel="category">dotnet</a> 
+<a class="category-link" href="/category/interview/" rel="category">interview</a> 
+<a class="category-link" href="/category/microsoft/" rel="category">microsoft</a> 
+<a class="category-link" href="/category/python/" rel="category">python</a> 
+<a class="category-link" href="/category/interview-tips/" rel="category">interview-tips</a> 
+   </p>
+ </header>
+ <div class="post-content" itemprop="articleBody">
+   <p>While I was working with Microsoft, I had opportunity to take around 10 – 20 coding or design interviews (candidates with 1 – 12 years of experience). There was this one thing that I felt was too common, which would lead to bad impression and potential rejection – it’s that the candidate attempts to solve every part of the question rather than focusing on what is important. This is particularly prevalent amongst candidates who chose C / C++ as programming language of choice. And, this was common irrespective of years of experience.</p>
+<p>Here’s an example – <a href="https://leetcode.com/problems/compare-version-numbers/">165 – Compare version numbers</a></p>
+<blockquote>
+ <p>Given two version numbers for example “1.4.5” and “1.3.6” return the greater one</p>
+</blockquote>
+<p>Now, this is a fairly simple question when first looked at – however, it has some ambiguity that you need to resolve. But yes that’s not the focus of this post. When I present this question, before the candidate is about to start coding – I explicitly mention:</p>
+<blockquote>
+ <p>Please feel free to use as much abstraction as needed, if there is something particular I am interested in I’ll dig into it.</p>
+</blockquote>
+<p>Of course with this sober simple face.</p>
+<p><img src="/images/post10_image1.jpeg" alt="My sober face" width="500px" /><br /></p>
+<p>Now, amongst other possible approach the one that is most general is to split the string on “.” as a delimiter and convert the values to integer and then compare left to right, assuming the given value is a valid version number. I have seen many spend time on the first sub problem</p>
+<blockquote>
+ <p>splitting and converting to integer.</p>
+</blockquote>
+<p>In my experience I have seen folks attempt it as follows:</p>
+<p><img src="/images/post10_image5.png" alt="python approach" width="750px" /><br />
+<span class="image-caption"><em>So far only one person chose to go with Python – and the kind of syntaxes that are available makes it super easy to deal with these kinda things.</em></span></p>
+<p><img src="/images/post10_image3.png" alt="dotnet approach" width="750px" /><br />
+<span class="image-caption"><em>A DotNet person may go around this way.</em></span></p>
+<p><img src="/images/post10_image2.png" alt="c++ approach" width="750px" /><br />
+<span class="image-caption"><em>And this is how majority of folks using C++ have dealt with the question. Many of them seemed to struggle to correctly implement this sub logic.</em></span></p>
+<p><strong>Now as an Interviewer</strong> - This gives me a very bad first impression. When I give a question to a candidate, amongst other things I am judging how it’d be like to have:</p>
+<ol>
+ <li>The candidate in my team working on a project along with me.</li>
+ <li>Doing my code reviews</li>
+ <li>Pushing code to production which we maintain.</li>
+ <li>Have high level discussions with this person</li>
+</ol>
+<p>I’d want the other person to talk important things and dig as needed – more like use as much abstraction as needed. This may be subjective, but this is how I may answer things and would expect similar approach from an experienced candidate.</p>
+<p><img src="/images/post10_image7.png" alt="python expected approach" width="750px" /><br />
+<span class="image-caption"><em>Python: As an interviewer this shows me that the candidate modularise well, can focus on important part of discussion. And if needed, I can ask them to implement the <code class="highlighter-rouge">Validate()</code> method – if the time permits, thus resulting in a clean modular code at the end of interview. It’s a WIN.</em></span></p>
+<p><img src="/images/post10_image4.png" alt="dotnet expected approach" width="750px" /><br />
+<span class="image-caption"><em>C#: I’d expect a simple private method that takes care of the sub problems. The implementation is also not necessary in the first approach.</em></span></p>
+<p><img src="/images/post10_image6.png" alt="c++ expected approach" width="750px" /><br />
+<span class="image-caption"><em>C++: This is how I expect candidates to go ahead with his question. There is no need to implement the <code class="highlighter-rouge">ConverToIntVector()</code> method in the first approach.</em></span></p>
+<h2 id="summary">Summary</h2>
+<p>The major idea I wish to share here is for candidates to focus on problem at hand and not try to solve all the sub problems unless explicitly asked. <strong>There is a limited time at hand to show your best</strong>.</p>
+<p>If you feel this is too subjective opinion, share it over comments – I’d like to learn and grow further as an interviewer myself.</p>
+ </div>
+ <div class="post-footer">
+<div class="related-posts">
+  <span class="related-posts-text">Related posts:</span>
+ <ul>
+ </ul>
+</div>
+<div class="post-filed">
+   <p class="post-meta">
+      Filed under
+<a class="category-link" href="/category/dotnet/" rel="category">dotnet</a>
+<a class="category-link" href="/category/interview/" rel="category">interview</a>
+<a class="category-link" href="/category/microsoft/" rel="category">microsoft</a>
+<a class="category-link" href="/category/python/" rel="category">python</a>
+<a class="category-link" href="/category/interview-tips/" rel="category">interview-tips</a>
+   </p>
+   <p>
+      <a href="#top">top&nbsp;&#8673;</a>
+   </p>
+ </div>
+<div class="post-nav">
+   <p>
+      <a href="/bypass-cell-size-limitation-of-azure-storage-table/">&#8672;&nbsp;Bypass cell size limitation (64KB) of Azure Storage Table</a>
+   </p>
+   <p>
+   </p>
+ </div>
+<div style="border-top: 1px solid #cfcfcf; margin-top: 30px">
+   <div class="widget-self">
+   <div class="section-image">
+        <a href="/about">
+            <img src="/images/rsz_self_1_1.jpg" width="200px">
+        </a>
+   </div>
+   <div class="section-info">
+        <strong><a href="/about">Minhaz | Google | Singapore</a></strong>
+       <div class="quote">
+            I am working with Next Billion Users Org at Google. My team builds technologies for emerging markets.
+            I feel, the goal of delivering cutting edge technologies to resource constrained devices with seamless performance is hard, at times frustating but worthwhile.
+            Hoping for positive impact, good Karma and unbounded learning ;)
+       </div>
+       <div class="quote">
+            These days I am working on #Computational-Photography and try hard at #Photography as well.
+            I have good experience with #Distributed-Systems and #Applied-ML.
+       </div>
+   </div>
+</div>
+</div>
+ </div>
+ <div class="just-comments" data-apikey="014acd23-9a26-4415-a7ea-80f4253d1295" data-recaptcha="true"></div>
+  <script async src="https://just-comments.com/w2.js"></script>
+</article>
+     </div>
+   </main>
+   <footer class="site-footer">
+   <div class="wrapper-footer">
+     <div class="footer-col-wrapper">
+<a href="mailto:minhazav@gmail.com"><i class="svg-icon email"></i></a>
+<a href="http://github.com/mebjas"><i class="svg-icon github"></i></a>
+<a href="http://instagram.com/mebjas"><i class="svg-icon instagram"></i></a>
+<a href="http://linkedin.com/in/https://www.linkedin.com/in/minhazav"><i class="svg-icon linkedin"></i></a>
+<a href="http://twitter.com/minhazav"><i class="svg-icon twitter"></i></a>
+<a href="http://stackoverflow.com/users/2614250/mebjas"><i class="svg-icon stackoverflow"></i></a>
+     </div>
+     <div class="copyright">
+        © 2019 minhazav.dev
+     </div>
+   </div>
+    <script src="/assets/js/anchorize.js"></script>
+ </footer>
+    <script src="/assets/js/instantpage.js" type="module" integrity="sha384-/IkE5iZAM/RxPto8B0nvKlMzIyCWtYocF01PbGGp1qElJuxv9J4whdWBRtzZltWn"></script>
+ </body>
+</html>

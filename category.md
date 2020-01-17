@@ -1,4 +1,4 @@
 ---
-layout: category_index
-permalink: /category/
+layout: categories
+permalink: /category
 ---

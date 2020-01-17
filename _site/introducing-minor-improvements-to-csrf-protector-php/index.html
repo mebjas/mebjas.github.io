@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+ <meta charset="utf-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="google-site-verification" content="Xs4Y8kOjxCHZvery6v-Y6yVIptmWsSjownRLWpRDDlc" />
+ <meta name="msvalidate.01" content="C21F82032619E6AE38AEC7FFE4D05827" />
+<link rel="stylesheet" href=/assets/main.css>
+<link rel="stylesheet" href=/assets/custom.css>
+<link rel="alternate" type="application/rss+xml" title="Minhaz&#39;s Blog" href="/feed.xml">
+<link rel="shortcut icon" href=/assets/favicon.ico>
+<link rel="icon" type="image/png" sizes="32x32" href=/assets/favicon.ico>
+  <script src="/assets/js/jquery.js"></script>
+<title>Introducing minor improvements to CSRF Protector PHP | Minhaz’s Blog</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Introducing minor improvements to CSRF Protector PHP" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The OWASP CSRF Protector project started with an aim to develop a solution that can mitigate Cross Site Request Forgery in web applications without much developer effort. We have recently released v1.0.0 of CSRF Protector PHP. These improvements / fixes were based on issues raised by different users. Here’s the two major changes that we have introduced and why:&lt;ol&gt;&lt;li&gt;Added support for application/json content-type.&lt;/li&gt;&lt;li&gt;Made path, domain and secure property of CSRF Token Cookie configurable.&lt;/li&gt;&lt;/ol&gt;" />
+<meta property="og:description" content="The OWASP CSRF Protector project started with an aim to develop a solution that can mitigate Cross Site Request Forgery in web applications without much developer effort. We have recently released v1.0.0 of CSRF Protector PHP. These improvements / fixes were based on issues raised by different users. Here’s the two major changes that we have introduced and why:&lt;ol&gt;&lt;li&gt;Added support for application/json content-type.&lt;/li&gt;&lt;li&gt;Made path, domain and secure property of CSRF Token Cookie configurable.&lt;/li&gt;&lt;/ol&gt;" />
+<link rel="canonical" href="http://localhost:4000/introducing-minor-improvements-to-csrf-protector-php/" />
+<meta property="og:url" content="http://localhost:4000/introducing-minor-improvements-to-csrf-protector-php/" />
+<meta property="og:site_name" content="Minhaz’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-10-07T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Introducing minor improvements to CSRF Protector PHP" />
+<meta name="twitter:site" content="@minhazav" />
+<meta name="twitter:creator" content="@minhazav" />
+<script type="application/ld+json">
+{"headline":"Introducing minor improvements to CSRF Protector PHP","dateModified":"2017-10-07T00:00:00+00:00","datePublished":"2017-10-07T00:00:00+00:00","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.minhazav.dev/images/rsz_self_1_1.jpg"}},"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/introducing-minor-improvements-to-csrf-protector-php/"},"url":"http://localhost:4000/introducing-minor-improvements-to-csrf-protector-php/","description":"The OWASP CSRF Protector project started with an aim to develop a solution that can mitigate Cross Site Request Forgery in web applications without much developer effort. We have recently released v1.0.0 of CSRF Protector PHP. These improvements / fixes were based on issues raised by different users. Here’s the two major changes that we have introduced and why:&lt;ol&gt;&lt;li&gt;Added support for application/json content-type.&lt;/li&gt;&lt;li&gt;Made path, domain and secure property of CSRF Token Cookie configurable.&lt;/li&gt;&lt;/ol&gt;","@context":"https://schema.org"}</script>
+</head>
+ <body data-instant-allow-query-string data-instant-allow-external-links>
+  <header class="site-header">
+   <div class="wrapper-header">
+     <div class="header-left">
+       <div>
+          <a class="site-title" href="/">
+            <b>Minhaz's Blog</b>
+          </a>
+       </div>
+       <div>
+          <a class="site-subtitle" href="/">
+            <b>Hack your way out!</b>
+          </a>
+       </div>
+     </div>
+     <div class="header-right">
+        <a class="page-link" href="https://github.com/mebjas">Github</a>
+        <a class="page-link" href="https://www.linkedin.com/in/minhazav">LinkedIn</a>
+        <a class="page-link" href="/about/">About Me</a>
+        <a class="page-link" href="/photography/">Photography</a>
+     </div>
+   </div>
+ </header>
+   <main class="default-content" aria-label="Content">
+     <div class="wrapper-content">
+       <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+<header class="page-header">
+   <h1 class="post-title" itemprop="name headline">Introducing minor improvements to CSRF Protector PHP</h1>
+   <p class="post-meta">
+      <time datetime="2017-10-07T00:00:00+00:00" itemprop="datePublished">
+        Oct 7, 2017
+      </time>
+      •
+<a class="category-link" href="/category/csrf/" rel="category">csrf</a> 
+<a class="category-link" href="/category/javascript/" rel="category">javascript</a> 
+<a class="category-link" href="/category/open-source/" rel="category">open-source</a> 
+<a class="category-link" href="/category/owasp/" rel="category">owasp</a> 
+<a class="category-link" href="/category/security/" rel="category">security</a> 
+<a class="category-link" href="/category/web-security/" rel="category">web-security</a> 
+<a class="category-link" href="/category/php/" rel="category">php</a> 
+   </p>
+ </header>
+ <div class="post-content" itemprop="articleBody">
+   <p>The OWASP CSRF Protector project started with an aim to develop a solution that can mitigate Cross Site Request Forgery in web applications without much developer effort. The most common solution for mitigating CSRF is using a token which cannot be retrieved by the attacker, thus ensuring the authenticity of the incoming request to the server. <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">OWASP Wiki on CSRF</a> is a good place to learn more about CSRF. Unlike most of other solutions CSRFProtector works as an interceptor and take care of the inner details like – attaching the token with every request from client and validating them at the server. This project started as a part of Google Summer of Code 2014.</p>
+<p>We have recently released v1.0.0 of <a href="https://github.com/mebjas/CSRF-Protector-PHP">CSRF Protector PHP</a>. These improvements / fixes were based on issues raised by different users. Here’s the two major changes that we have introduced and why:</p>
+<h3 id="1-added-support-for-applicationjson-content-type">1. Added support for application/json content-type.</h3>
+<p>This issue was raised by couple of users – <a href="https://github.com/mebjas/CSRF-Protector-PHP/issues/80">issue#80</a>. The problem here was:</p>
+<blockquote>
+ <p>we were getting false negative when requests were sent as a POST request with application/json Content-Type.</p>
+</blockquote>
+<p>The reason for this was the design of the library itself. Until now, for all POST requests the CSRF token was expected to come as a POST payload. The server read it from super global <code class="highlighter-rouge">$_POST</code> array. Now in case of POST request the payload can also be sent with request body and in such cases the payload is not available in <code class="highlighter-rouge">$_POST</code> array. The payload is then retrieved via php input stream (<code class="highlighter-rouge">php://input</code>). That was causing the false negative in this case.</p>
+<h4 id="to-solve-this-we-thought-of-couple-of-solutions-like">To solve this, we thought of couple of solutions like:</h4>
+<p>If the <code class="highlighter-rouge">Content-Type header</code> is set as <code class="highlighter-rouge">application/json</code> on client side, we have a wrapper around the <code class="highlighter-rouge">XMLHttpRequest</code> Send method, which can intercept the stringified JSON payload, deserialize it, attach the token as a <code class="highlighter-rouge">{key: value}</code> and send it to server. On the server side, the CSRFProtector interceptor will read the payload from <code class="highlighter-rouge">php://input</code>. You can read more about wrappers like <code class="highlighter-rouge">php://input</code> here.</p>
+<blockquote>
+ <p>php://input is a read-only stream that allows you to read raw data from the request body. However the problem here is – it can only be read once, which makes it inaccessible to actual business logic.</p>
+</blockquote>
+<p>Another suggestion was to just append the token in front of the serialized JSON and send it as a POST payload. On the server side since the length of the token in known, if the <code class="highlighter-rouge">$_REQUEST Content-Type</code> is <code class="highlighter-rouge">application/json</code> (or some variety of that) the interceptor will read X characters from the <code class="highlighter-rouge">php://input</code> input stream (X = length of token) such that rest of the payload will still be seekable. This however, seemed to be an ugly hack. Imagine your data being transferred like this:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>abcde323{“key1”: “value1”, “key2”: “value2”}
+</code></pre></div></div>
+<p>Also, it was a lot of overhead from client side as well.</p>
+<h5 id="final-solution">Final Solution</h5>
+<p>So to deal with this issue, some fundamental design changes were made. So far, the CSRF Token was always carried by the GET request query parameters or simple POST Form payload. With this change, the token will now be carried by a request header in case of AJAX POST request. This is done in the <code class="highlighter-rouge">XMLHttpRequest</code> Send method wrapper by calling <code class="highlighter-rouge">setRequestHeader()</code> method of <code class="highlighter-rouge">XMLHttpRequest</code> class. On the server side, in case of POST request the token is first fetched from <code class="highlighter-rouge">$_POST</code> super global variable. After that it falls back to look for token in request header. If the token is found it’s validated against the values stored at server otherwise the request is set as failed.</p>
+<p>It was fixed with this <a href="https://github.com/mebjas/CSRF-Protector-PHP/pull/88">pull request</a>.</p>
+<h3 id="2-made-path-domain-and-secure-property-of-csrf-token-cookie-configurable">2. Made path, domain and secure property of CSRF Token Cookie configurable.</h3>
+<p>This issue was raised by different users – <a href="https://github.com/mebjas/CSRF-Protector-PHP/issues/87">issue#87</a>, <a href="https://github.com/mebjas/CSRF-Protector-PHP/issues/86">issue#86</a>, <a href="https://github.com/mebjas/CSRF-Protector-PHP/issues/68">issue#68</a> in different manners. The CSRF token is transferred from server to client as a set cookie response header. This header has different properties like – expiry time, path, domain and secure flag. You can read more about them in the <a href="http://php.net/manual/en/function.setcookie.php">php.net setcookie reference page</a>.</p>
+<p>In the previous version, these properties were set internally by the library and users didn’t have any control over them. However, some users suggested they were using different applications and the cookie was not being set in path they needed, while other asked for control over the secure flag – so that cookies are only set for https requests. In this new version, the properties like: path, domain and secure flag can now be set in config file. The expiry time shall be exposed in upcoming versions.</p>
+<p>It was fixed with this <a href="https://github.com/mebjas/CSRF-Protector-PHP/pull/89">pull request</a>.</p>
+<h3 id="future-items">Future Items</h3>
+<p>We have following things in pipeline based on active issues:</p>
+<ul>
+ <li>Make expiry time of the cookie configurable.</li>
+ <li>Full support for HHVM</li>
+ <li>IE &lt;= 8 support. This issue has been there open for a while now.
+That said, I’m excited to see how it’s used and what new issues are going to come up in future.</li>
+</ul>
+<p>After all, issues translates to new features and improvements. The code is hosted on Github under the Apache License, Version 2.0. Feel free to use, raise issues or make improvements and send a pull request.</p>
+<h3 id="references">References:</h3>
+<ul>
+ <li><a href="https://www.owasp.org/index.php/CSRFProtector_Project">CSRF Protector PHP OWASP Wiki</a></li>
+ <li>
+   <table>
+     <tbody>
+       <tr>
+         <td>CSRF Protector PHP <a href="https://github.com/mebjas/CSRF-Protector-PHP">Github Repo</a></td>
+         <td><a href="https://github.com/mebjas/CSRF-Protector-PHP/issues">Issues</a></td>
+         <td><a href="https://github.com/mebjas/CSRF-Protector-PHP/wiki">Wiki</a></td>
+       </tr>
+     </tbody>
+   </table>
+ </li>
+ <li><a href="https://www.slideshare.net/MinhazAv/csrf-protector">CSRF Protector Slide Deck</a></li>
+ <li><a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">Cross Site Request Forgery</a></li>
+</ul>
+ </div>
+ <div class="post-footer">
+<div class="related-posts">
+  <span class="related-posts-text">Related posts:</span>
+ <ul>
+ </ul>
+</div>
+<div class="post-filed">
+   <p class="post-meta">
+      Filed under
+<a class="category-link" href="/category/csrf/" rel="category">csrf</a>
+<a class="category-link" href="/category/javascript/" rel="category">javascript</a>
+<a class="category-link" href="/category/open-source/" rel="category">open-source</a>
+<a class="category-link" href="/category/owasp/" rel="category">owasp</a>
+<a class="category-link" href="/category/security/" rel="category">security</a>
+<a class="category-link" href="/category/web-security/" rel="category">web-security</a>
+<a class="category-link" href="/category/php/" rel="category">php</a>
+   </p>
+   <p>
+      <a href="#top">top&nbsp;&#8673;</a>
+   </p>
+ </div>
+<div class="post-nav">
+   <p>
+      <a href="/a-fault-tolerant-distributed-key-value-store-from-scratch/">&#8672;&nbsp;A fault tolerant distributed key value store from scratch</a>
+   </p>
+   <p>
+      <a href="/compress-sequence-of-unix-timestamps-with-microseconds-accuracy-to-10-bit-accuracy/">Compress sequence of UNIX timestamps with microseconds accuracy to ~10bits/timestamp&nbsp;&#8674;</a>
+   </p>
+ </div>
+<div style="border-top: 1px solid #cfcfcf; margin-top: 30px">
+   <div class="widget-self">
+   <div class="section-image">
+        <a href="/about">
+            <img src="/images/rsz_self_1_1.jpg" width="200px">
+        </a>
+   </div>
+   <div class="section-info">
+        <strong><a href="/about">Minhaz | Google | Singapore</a></strong>
+       <div class="quote">
+            I am working with Next Billion Users Org at Google. My team builds technologies for emerging markets.
+            I feel, the goal of delivering cutting edge technologies to resource constrained devices with seamless performance is hard, at times frustating but worthwhile.
+            Hoping for positive impact, good Karma and unbounded learning ;)
+       </div>
+       <div class="quote">
+            These days I am working on #Computational-Photography and try hard at #Photography as well.
+            I have good experience with #Distributed-Systems and #Applied-ML.
+       </div>
+   </div>
+</div>
+</div>
+ </div>
+ <div class="just-comments" data-apikey="014acd23-9a26-4415-a7ea-80f4253d1295" data-recaptcha="true"></div>
+  <script async src="https://just-comments.com/w2.js"></script>
+</article>
+     </div>
+   </main>
+   <footer class="site-footer">
+   <div class="wrapper-footer">
+     <div class="footer-col-wrapper">
+<a href="mailto:minhazav@gmail.com"><i class="svg-icon email"></i></a>
+<a href="http://github.com/mebjas"><i class="svg-icon github"></i></a>
+<a href="http://instagram.com/mebjas"><i class="svg-icon instagram"></i></a>
+<a href="http://linkedin.com/in/https://www.linkedin.com/in/minhazav"><i class="svg-icon linkedin"></i></a>
+<a href="http://twitter.com/minhazav"><i class="svg-icon twitter"></i></a>
+<a href="http://stackoverflow.com/users/2614250/mebjas"><i class="svg-icon stackoverflow"></i></a>
+     </div>
+     <div class="copyright">
+        © 2019 minhazav.dev
+     </div>
+   </div>
+    <script src="/assets/js/anchorize.js"></script>
+ </footer>
+    <script src="/assets/js/instantpage.js" type="module" integrity="sha384-/IkE5iZAM/RxPto8B0nvKlMzIyCWtYocF01PbGGp1qElJuxv9J4whdWBRtzZltWn"></script>
+ </body>
+</html>

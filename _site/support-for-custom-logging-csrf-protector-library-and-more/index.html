@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+ <meta charset="utf-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="google-site-verification" content="Xs4Y8kOjxCHZvery6v-Y6yVIptmWsSjownRLWpRDDlc" />
+ <meta name="msvalidate.01" content="C21F82032619E6AE38AEC7FFE4D05827" />
+<link rel="stylesheet" href=/assets/main.css>
+<link rel="stylesheet" href=/assets/custom.css>
+<link rel="alternate" type="application/rss+xml" title="Minhaz&#39;s Blog" href="/feed.xml">
+<link rel="shortcut icon" href=/assets/favicon.ico>
+<link rel="icon" type="image/png" sizes="32x32" href=/assets/favicon.ico>
+  <script src="/assets/js/jquery.js"></script>
+<title>Support for custom logging in CSRF Protector Library and more | Minhaz’s Blog</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Support for custom logging in CSRF Protector Library and more" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Added some new feature to CSRF Protector library (version 1.0.1) like: &lt;ol&gt;&lt;li&gt;Support for custom logger.&lt;/li&gt;&lt;li&gt;X-CSRF-Protection removed from response header.&lt;/li&gt;&lt;li&gt;Options added to make CSRF Token in cookie https only and it’s expiry time configurable.&lt;/li&gt;&lt;li&gt;More…&lt;/li&gt;&lt;/ol&gt;" />
+<meta property="og:description" content="Added some new feature to CSRF Protector library (version 1.0.1) like: &lt;ol&gt;&lt;li&gt;Support for custom logger.&lt;/li&gt;&lt;li&gt;X-CSRF-Protection removed from response header.&lt;/li&gt;&lt;li&gt;Options added to make CSRF Token in cookie https only and it’s expiry time configurable.&lt;/li&gt;&lt;li&gt;More…&lt;/li&gt;&lt;/ol&gt;" />
+<link rel="canonical" href="http://localhost:4000/support-for-custom-logging-csrf-protector-library-and-more/" />
+<meta property="og:url" content="http://localhost:4000/support-for-custom-logging-csrf-protector-library-and-more/" />
+<meta property="og:site_name" content="Minhaz’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-03-17T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Support for custom logging in CSRF Protector Library and more" />
+<meta name="twitter:site" content="@minhazav" />
+<meta name="twitter:creator" content="@minhazav" />
+<script type="application/ld+json">
+{"headline":"Support for custom logging in CSRF Protector Library and more","dateModified":"2018-03-17T00:00:00+00:00","datePublished":"2018-03-17T00:00:00+00:00","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.minhazav.dev/images/rsz_self_1_1.jpg"}},"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/support-for-custom-logging-csrf-protector-library-and-more/"},"url":"http://localhost:4000/support-for-custom-logging-csrf-protector-library-and-more/","description":"Added some new feature to CSRF Protector library (version 1.0.1) like: &lt;ol&gt;&lt;li&gt;Support for custom logger.&lt;/li&gt;&lt;li&gt;X-CSRF-Protection removed from response header.&lt;/li&gt;&lt;li&gt;Options added to make CSRF Token in cookie https only and it’s expiry time configurable.&lt;/li&gt;&lt;li&gt;More…&lt;/li&gt;&lt;/ol&gt;","@context":"https://schema.org"}</script>
+</head>
+ <body data-instant-allow-query-string data-instant-allow-external-links>
+  <header class="site-header">
+   <div class="wrapper-header">
+     <div class="header-left">
+       <div>
+          <a class="site-title" href="/">
+            <b>Minhaz's Blog</b>
+          </a>
+       </div>
+       <div>
+          <a class="site-subtitle" href="/">
+            <b>Hack your way out!</b>
+          </a>
+       </div>
+     </div>
+     <div class="header-right">
+        <a class="page-link" href="https://github.com/mebjas">Github</a>
+        <a class="page-link" href="https://www.linkedin.com/in/minhazav">LinkedIn</a>
+        <a class="page-link" href="/about/">About Me</a>
+        <a class="page-link" href="/photography/">Photography</a>
+     </div>
+   </div>
+ </header>
+   <main class="default-content" aria-label="Content">
+     <div class="wrapper-content">
+       <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+<header class="page-header">
+   <h1 class="post-title" itemprop="name headline">Support for custom logging in CSRF Protector Library and more</h1>
+   <p class="post-meta">
+      <time datetime="2018-03-17T00:00:00+00:00" itemprop="datePublished">
+        Mar 17, 2018
+      </time>
+      •
+<a class="category-link" href="/category/csrf/" rel="category">csrf</a> 
+<a class="category-link" href="/category/javascript/" rel="category">javascript</a> 
+<a class="category-link" href="/category/open-source/" rel="category">open-source</a> 
+<a class="category-link" href="/category/owasp/" rel="category">owasp</a> 
+<a class="category-link" href="/category/security/" rel="category">security</a> 
+<a class="category-link" href="/category/web-security/" rel="category">web-security</a> 
+<a class="category-link" href="/category/php/" rel="category">php</a> 
+   </p>
+ </header>
+ <div class="post-content" itemprop="articleBody">
+   <h1 id="here-are-a-few-updates-to-csrf-protector-library-lets-call-it-version-101">Here are a few updates to CSRF Protector Library. Let’s call it version 1.0.1</h1>
+<h2 id="major-features">Major features</h2>
+<h3 id="1-support-for-custom-logger">1. Support for custom logger</h3>
+<p>So with insufficient logging and monitoring in OWASP Top 10 2017, logging and monitoring is more serious concern than ever now. So far, CSRF Protector had support for file based logging only, and it was required by the library to have logging path (absolute or relative) mentioned in the config file. It’s a problem for developers who try to integrate it with an existing application which has it’s own logger implemented or if there are organisational policies in place which enforces certain kind of logging.</p>
+<p>Only way to deal with this was modifying the logger method coupled with the library. In latest change I have decoupled the logger object with the library and developer can initialize the library to use custom logger.The <code class="highlighter-rouge">csrfProtector::init</code> method now accepts an additional optional parameter <code class="highlighter-rouge">$logger</code>.</p>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">init</span><span class="p">(</span><span class="nv">$length</span> <span class="o">=</span> <span class="kc">null</span><span class="p">,</span> <span class="nv">$action</span> <span class="o">=</span> <span class="kc">null</span><span class="p">,</span> <span class="nv">$logger</span> <span class="o">=</span> <span class="kc">null</span><span class="p">);</span>
+</code></pre></div></div>
+<p>This is supposed to be an object of a class that implements the <a href="https://github.com/mebjas/CSRF-Protector-PHP/blob/master/libs/csrf/LoggerInterface.php">LoggerInterface</a> interface.</p>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">LoggerInterface</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">log</span><span class="p">(</span><span class="nv">$message</span><span class="p">,</span> <span class="nv">$context</span> <span class="o">=</span> <span class="k">array</span><span class="p">());</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>In case the parameter is not provided – the default file based logger – <a href="https://github.com/mebjas/CSRF-Protector-PHP/blob/master/libs/csrf/csrfpDefaultLogger.php">csrfpDefaultLogger</a> is used;</p>
+<h3 id="2-x-csrf-protection-removed-from-response-header">2. X-CSRF-Protection removed from response header.</h3>
+<p>This can make applications vulnerable to known vulnerabilities in libraries. This was reported by a developer.</p>
+<h3 id="and-more-minor-improvements-like">And more minor improvements like:</h3>
+<ol>
+ <li>Options added to make CSRF Token in cookie https only and it’s expiry time configurable.</li>
+ <li>Log path in configuration file (logDirectory) can be absolute or relative.</li>
+ <li>Url path in the configuration file can be set to false if developers want to include it themselves in HTML output.</li>
+</ol>
+<p>Last three changes (including this) were done by <a href="https://github.com/bstoney">Brad Stoney</a>, thanks to him!</p>
+<p>Also, here’s link to latest release: <a href="https://github.com/mebjas/CSRF-Protector-PHP/releases">https://github.com/mebjas/CSRF-Protector-PHP/releases</a></p>
+ </div>
+ <div class="post-footer">
+<div class="related-posts">
+  <span class="related-posts-text">Related posts:</span>
+ <ul>
+ </ul>
+</div>
+<div class="post-filed">
+   <p class="post-meta">
+      Filed under
+<a class="category-link" href="/category/csrf/" rel="category">csrf</a>
+<a class="category-link" href="/category/javascript/" rel="category">javascript</a>
+<a class="category-link" href="/category/open-source/" rel="category">open-source</a>
+<a class="category-link" href="/category/owasp/" rel="category">owasp</a>
+<a class="category-link" href="/category/security/" rel="category">security</a>
+<a class="category-link" href="/category/web-security/" rel="category">web-security</a>
+<a class="category-link" href="/category/php/" rel="category">php</a>
+   </p>
+   <p>
+      <a href="#top">top&nbsp;&#8673;</a>
+   </p>
+ </div>
+<div class="post-nav">
+   <p>
+      <a href="/compress-sequence-of-unix-timestamps-with-microseconds-accuracy-to-10-bit-accuracy/">&#8672;&nbsp;Compress sequence of UNIX timestamps with microseconds accuracy to ~10bits/timestamp</a>
+   </p>
+   <p>
+      <a href="/efficiently-writing-large-objects-to-azure-blob-storage-json-compression-caching-streaming-in-net/">Efficiently writing large objects to Azure Blob Storage – JSON, Compression, Caching, Streaming in .Net&nbsp;&#8674;</a>
+   </p>
+ </div>
+<div style="border-top: 1px solid #cfcfcf; margin-top: 30px">
+   <div class="widget-self">
+   <div class="section-image">
+        <a href="/about">
+            <img src="/images/rsz_self_1_1.jpg" width="200px">
+        </a>
+   </div>
+   <div class="section-info">
+        <strong><a href="/about">Minhaz | Google | Singapore</a></strong>
+       <div class="quote">
+            I am working with Next Billion Users Org at Google. My team builds technologies for emerging markets.
+            I feel, the goal of delivering cutting edge technologies to resource constrained devices with seamless performance is hard, at times frustating but worthwhile.
+            Hoping for positive impact, good Karma and unbounded learning ;)
+       </div>
+       <div class="quote">
+            These days I am working on #Computational-Photography and try hard at #Photography as well.
+            I have good experience with #Distributed-Systems and #Applied-ML.
+       </div>
+   </div>
+</div>
+</div>
+ </div>
+ <div class="just-comments" data-apikey="014acd23-9a26-4415-a7ea-80f4253d1295" data-recaptcha="true"></div>
+  <script async src="https://just-comments.com/w2.js"></script>
+</article>
+     </div>
+   </main>
+   <footer class="site-footer">
+   <div class="wrapper-footer">
+     <div class="footer-col-wrapper">
+<a href="mailto:minhazav@gmail.com"><i class="svg-icon email"></i></a>
+<a href="http://github.com/mebjas"><i class="svg-icon github"></i></a>
+<a href="http://instagram.com/mebjas"><i class="svg-icon instagram"></i></a>
+<a href="http://linkedin.com/in/https://www.linkedin.com/in/minhazav"><i class="svg-icon linkedin"></i></a>
+<a href="http://twitter.com/minhazav"><i class="svg-icon twitter"></i></a>
+<a href="http://stackoverflow.com/users/2614250/mebjas"><i class="svg-icon stackoverflow"></i></a>
+     </div>
+     <div class="copyright">
+        © 2019 minhazav.dev
+     </div>
+   </div>
+    <script src="/assets/js/anchorize.js"></script>
+ </footer>
+    <script src="/assets/js/instantpage.js" type="module" integrity="sha384-/IkE5iZAM/RxPto8B0nvKlMzIyCWtYocF01PbGGp1qElJuxv9J4whdWBRtzZltWn"></script>
+ </body>
+</html>

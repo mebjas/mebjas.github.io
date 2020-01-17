@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+ <meta charset="utf-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="google-site-verification" content="Xs4Y8kOjxCHZvery6v-Y6yVIptmWsSjownRLWpRDDlc" />
+ <meta name="msvalidate.01" content="C21F82032619E6AE38AEC7FFE4D05827" />
+<link rel="stylesheet" href=/assets/main.css>
+<link rel="stylesheet" href=/assets/custom.css>
+<link rel="alternate" type="application/rss+xml" title="Minhaz&#39;s Blog" href="/feed.xml">
+<link rel="shortcut icon" href=/assets/favicon.ico>
+<link rel="icon" type="image/png" sizes="32x32" href=/assets/favicon.ico>
+  <script src="/assets/js/jquery.js"></script>
+<title>Logging out and then logging in throws 403 error with CSRF Protector PHP – fix / workaround | Minhaz’s Blog</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Logging out and then logging in throws 403 error with CSRF Protector PHP – fix / workaround" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Recently an interesting bug came up in CSRF Protector PHP. If you log out of your website and then try to login again there only, CSRF Protector throws 403 – forbidden response. So this comes by design because first thing that you do in your logout script is, initiate CSRF Protector &gt; let it do it’s stuff and then destroy session to logout the user. Now this screws everything because CSRFP is dependent on tokens it store in session variables. So next time you try to login again which is a POST request, it’s unable to validate the incoming token and throws 403 or whatever is the failedValdiationResponse in your config." />
+<meta property="og:description" content="Recently an interesting bug came up in CSRF Protector PHP. If you log out of your website and then try to login again there only, CSRF Protector throws 403 – forbidden response. So this comes by design because first thing that you do in your logout script is, initiate CSRF Protector &gt; let it do it’s stuff and then destroy session to logout the user. Now this screws everything because CSRFP is dependent on tokens it store in session variables. So next time you try to login again which is a POST request, it’s unable to validate the incoming token and throws 403 or whatever is the failedValdiationResponse in your config." />
+<link rel="canonical" href="http://localhost:4000/logging-out-and-then-logging-in-throws-403-error-with-csrf-protector/" />
+<meta property="og:url" content="http://localhost:4000/logging-out-and-then-logging-in-throws-403-error-with-csrf-protector/" />
+<meta property="og:site_name" content="Minhaz’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-11-04T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Logging out and then logging in throws 403 error with CSRF Protector PHP – fix / workaround" />
+<meta name="twitter:site" content="@minhazav" />
+<meta name="twitter:creator" content="@minhazav" />
+<script type="application/ld+json">
+{"headline":"Logging out and then logging in throws 403 error with CSRF Protector PHP – fix / workaround","dateModified":"2016-11-04T00:00:00+00:00","datePublished":"2016-11-04T00:00:00+00:00","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.minhazav.dev/images/rsz_self_1_1.jpg"}},"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/logging-out-and-then-logging-in-throws-403-error-with-csrf-protector/"},"url":"http://localhost:4000/logging-out-and-then-logging-in-throws-403-error-with-csrf-protector/","description":"Recently an interesting bug came up in CSRF Protector PHP. If you log out of your website and then try to login again there only, CSRF Protector throws 403 – forbidden response. So this comes by design because first thing that you do in your logout script is, initiate CSRF Protector &gt; let it do it’s stuff and then destroy session to logout the user. Now this screws everything because CSRFP is dependent on tokens it store in session variables. So next time you try to login again which is a POST request, it’s unable to validate the incoming token and throws 403 or whatever is the failedValdiationResponse in your config.","@context":"https://schema.org"}</script>
+</head>
+ <body data-instant-allow-query-string data-instant-allow-external-links>
+  <header class="site-header">
+   <div class="wrapper-header">
+     <div class="header-left">
+       <div>
+          <a class="site-title" href="/">
+            <b>Minhaz's Blog</b>
+          </a>
+       </div>
+       <div>
+          <a class="site-subtitle" href="/">
+            <b>Hack your way out!</b>
+          </a>
+       </div>
+     </div>
+     <div class="header-right">
+        <a class="page-link" href="https://github.com/mebjas">Github</a>
+        <a class="page-link" href="https://www.linkedin.com/in/minhazav">LinkedIn</a>
+        <a class="page-link" href="/about/">About Me</a>
+        <a class="page-link" href="/photography/">Photography</a>
+     </div>
+   </div>
+ </header>
+   <main class="default-content" aria-label="Content">
+     <div class="wrapper-content">
+       <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+<header class="page-header">
+   <h1 class="post-title" itemprop="name headline">Logging out and then logging in throws 403 error with CSRF Protector PHP – fix / workaround</h1>
+   <p class="post-meta">
+      <time datetime="2016-11-04T00:00:00+00:00" itemprop="datePublished">
+        Nov 4, 2016
+      </time>
+      •
+<a class="category-link" href="/category/csrf/" rel="category">csrf</a> 
+<a class="category-link" href="/category/javascript/" rel="category">javascript</a> 
+<a class="category-link" href="/category/open-source/" rel="category">open-source</a> 
+<a class="category-link" href="/category/owasp/" rel="category">owasp</a> 
+<a class="category-link" href="/category/security/" rel="category">security</a> 
+<a class="category-link" href="/category/web-security/" rel="category">web-security</a> 
+<a class="category-link" href="/category/php/" rel="category">php</a> 
+   </p>
+ </header>
+ <div class="post-content" itemprop="articleBody">
+   <p><img src="../images/post4_image1.jpg" alt="Introduction" width="750px" /></p>
+<h2 id="problem">Problem</h2>
+<p>Recently an interesting bug came up in CSRF Protector PHP. Read the entire <a href="https://github.com/mebjas/CSRF-Protector-PHP/issues/51">issue thread on Github</a>.</p>
+<blockquote>
+ <p>If you log out of your website and then try to login again there only, CSRF Protector throws 403 – forbidden response.</p>
+</blockquote>
+<p>So this comes by design, because first thing that you do in your logout script is, initiate CSRF Protector and then let it do it’s stuff and then destroy session to logout the user. Now this screws everything because CSRFP is dependent on tokens it store in session variables. So next time you try to login again which is a POST request, it’s unable to validate the incoming token and throws 403 or whatever is the <code class="highlighter-rouge">failedValdiationResponse</code> in your config.</p>
+<h2 id="solution">Solution</h2>
+<p>Now since, this is a very particular issue I don’t feel library should handle it implicitly. What needs to be done is:</p>
+<ol>
+ <li>Do not destroy entire session in logout – just unset the key you deal with for authentication. Now this might need you to change the design, which is far difficult than not using CSRFP itself. So use this if your user authentication is dependent on particular keys in session vars.</li>
+ <li>Now this would look like a university student workaround. Store existing tokens in temp variable, destroy session then start session again and restore <code class="highlighter-rouge">$temp</code> back to session.
+   <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s2">"CSRFP_TOKEN"</span><span class="p">]))</span> <span class="nv">$temp</span> <span class="o">=</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="s2">"CSRFP_TOKEN"</span><span class="p">];</span>
+    <span class="c1">// Now CSRF_TOKEN key need to be pulled from config.</span>
+    <span class="o">@</span><span class="nb">session_unset</span><span class="p">();</span>
+    <span class="o">@</span><span class="nb">session_destroy</span><span class="p">();</span>
+    <span class="o">@</span><span class="nb">session_start</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$temp</span><span class="p">))</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="s2">"CSRFP_TOKEN"</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$temp</span><span class="p">;</span>
+</code></pre></div>  </div>
+ </li>
+ <li><strong>Best way to deal with this would be</strong>: if you are using <code class="highlighter-rouge">session_destroy()</code> to logout, call <code class="highlighter-rouge">csrfp::csrfProtector::init();</code>. This would ensure user logs out and init() would create a new session with new tokens in it.</li>
+</ol>
+<p>Hope these workaround works for you. Else feel free to reach out to me by posting another issue on <a href="https://github.com/mebjas/CSRF-Protector-PHP">mebjas/CSRF-Protector-PHP</a></p>
+ </div>
+ <div class="post-footer">
+<div class="related-posts">
+  <span class="related-posts-text">Related posts:</span>
+ <ul>
+ </ul>
+</div>
+<div class="post-filed">
+   <p class="post-meta">
+      Filed under
+<a class="category-link" href="/category/csrf/" rel="category">csrf</a>
+<a class="category-link" href="/category/javascript/" rel="category">javascript</a>
+<a class="category-link" href="/category/open-source/" rel="category">open-source</a>
+<a class="category-link" href="/category/owasp/" rel="category">owasp</a>
+<a class="category-link" href="/category/security/" rel="category">security</a>
+<a class="category-link" href="/category/web-security/" rel="category">web-security</a>
+<a class="category-link" href="/category/php/" rel="category">php</a>
+   </p>
+   <p>
+      <a href="#top">top&nbsp;&#8673;</a>
+   </p>
+ </div>
+<div class="post-nav">
+   <p>
+      <a href="/CSRF-Protector-concept-design-and-future/">&#8672;&nbsp;CSRF protector – Concept, Design and Future</a>
+   </p>
+   <p>
+      <a href="/a-fault-tolerant-distributed-key-value-store-from-scratch/">A fault tolerant distributed key value store from scratch&nbsp;&#8674;</a>
+   </p>
+ </div>
+<div style="border-top: 1px solid #cfcfcf; margin-top: 30px">
+   <div class="widget-self">
+   <div class="section-image">
+        <a href="/about">
+            <img src="/images/rsz_self_1_1.jpg" width="200px">
+        </a>
+   </div>
+   <div class="section-info">
+        <strong><a href="/about">Minhaz | Google | Singapore</a></strong>
+       <div class="quote">
+            I am working with Next Billion Users Org at Google. My team builds technologies for emerging markets.
+            I feel, the goal of delivering cutting edge technologies to resource constrained devices with seamless performance is hard, at times frustating but worthwhile.
+            Hoping for positive impact, good Karma and unbounded learning ;)
+       </div>
+       <div class="quote">
+            These days I am working on #Computational-Photography and try hard at #Photography as well.
+            I have good experience with #Distributed-Systems and #Applied-ML.
+       </div>
+   </div>
+</div>
+</div>
+ </div>
+ <div class="just-comments" data-apikey="014acd23-9a26-4415-a7ea-80f4253d1295" data-recaptcha="true"></div>
+  <script async src="https://just-comments.com/w2.js"></script>
+</article>
+     </div>
+   </main>
+   <footer class="site-footer">
+   <div class="wrapper-footer">
+     <div class="footer-col-wrapper">
+<a href="mailto:minhazav@gmail.com"><i class="svg-icon email"></i></a>
+<a href="http://github.com/mebjas"><i class="svg-icon github"></i></a>
+<a href="http://instagram.com/mebjas"><i class="svg-icon instagram"></i></a>
+<a href="http://linkedin.com/in/https://www.linkedin.com/in/minhazav"><i class="svg-icon linkedin"></i></a>
+<a href="http://twitter.com/minhazav"><i class="svg-icon twitter"></i></a>
+<a href="http://stackoverflow.com/users/2614250/mebjas"><i class="svg-icon stackoverflow"></i></a>
+     </div>
+     <div class="copyright">
+        © 2019 minhazav.dev
+     </div>
+   </div>
+    <script src="/assets/js/anchorize.js"></script>
+ </footer>
+    <script src="/assets/js/instantpage.js" type="module" integrity="sha384-/IkE5iZAM/RxPto8B0nvKlMzIyCWtYocF01PbGGp1qElJuxv9J4whdWBRtzZltWn"></script>
+ </body>
+</html>

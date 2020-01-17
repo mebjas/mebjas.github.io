@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+ <meta charset="utf-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="google-site-verification" content="Xs4Y8kOjxCHZvery6v-Y6yVIptmWsSjownRLWpRDDlc" />
+ <meta name="msvalidate.01" content="C21F82032619E6AE38AEC7FFE4D05827" />
+<link rel="stylesheet" href=/assets/main.css>
+<link rel="stylesheet" href=/assets/custom.css>
+<link rel="alternate" type="application/rss+xml" title="Minhaz&#39;s Blog" href="/feed.xml">
+<link rel="shortcut icon" href=/assets/favicon.ico>
+<link rel="icon" type="image/png" sizes="32x32" href=/assets/favicon.ico>
+  <script src="/assets/js/jquery.js"></script>
+<title>A fault tolerant distributed key value store from scratch | Minhaz’s Blog</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="A fault tolerant distributed key value store from scratch" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="We had a B-Tech course on Distributed Systems and I took a course on on Cloud Computing Concepts 1 by Dr Indranil Gupta (UIUC) a year back and for long, I have been thinking about trying out different concepts explained in the course together as something meaningful. In this article I have attempted to describe how to build a fault tolerant distributed key value store from scratch. A key-value store, or key-value database, is a data storage paradigm designed for storing, retrieving, and managing associative arrays, a data structure more commonly known today as a dictionary or hash. A distributed Key Value store is one where data is replicated across different nodes such that there is High Availability and No single point of failure" />
+<meta property="og:description" content="We had a B-Tech course on Distributed Systems and I took a course on on Cloud Computing Concepts 1 by Dr Indranil Gupta (UIUC) a year back and for long, I have been thinking about trying out different concepts explained in the course together as something meaningful. In this article I have attempted to describe how to build a fault tolerant distributed key value store from scratch. A key-value store, or key-value database, is a data storage paradigm designed for storing, retrieving, and managing associative arrays, a data structure more commonly known today as a dictionary or hash. A distributed Key Value store is one where data is replicated across different nodes such that there is High Availability and No single point of failure" />
+<link rel="canonical" href="http://localhost:4000/a-fault-tolerant-distributed-key-value-store-from-scratch/" />
+<meta property="og:url" content="http://localhost:4000/a-fault-tolerant-distributed-key-value-store-from-scratch/" />
+<meta property="og:site_name" content="Minhaz’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-09-05T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="A fault tolerant distributed key value store from scratch" />
+<meta name="twitter:site" content="@minhazav" />
+<meta name="twitter:creator" content="@minhazav" />
+<script type="application/ld+json">
+{"headline":"A fault tolerant distributed key value store from scratch","dateModified":"2017-09-05T00:00:00+00:00","datePublished":"2017-09-05T00:00:00+00:00","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.minhazav.dev/images/rsz_self_1_1.jpg"}},"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/a-fault-tolerant-distributed-key-value-store-from-scratch/"},"url":"http://localhost:4000/a-fault-tolerant-distributed-key-value-store-from-scratch/","description":"We had a B-Tech course on Distributed Systems and I took a course on on Cloud Computing Concepts 1 by Dr Indranil Gupta (UIUC) a year back and for long, I have been thinking about trying out different concepts explained in the course together as something meaningful. In this article I have attempted to describe how to build a fault tolerant distributed key value store from scratch. A key-value store, or key-value database, is a data storage paradigm designed for storing, retrieving, and managing associative arrays, a data structure more commonly known today as a dictionary or hash. A distributed Key Value store is one where data is replicated across different nodes such that there is High Availability and No single point of failure","@context":"https://schema.org"}</script>
+</head>
+ <body data-instant-allow-query-string data-instant-allow-external-links>
+  <header class="site-header">
+   <div class="wrapper-header">
+     <div class="header-left">
+       <div>
+          <a class="site-title" href="/">
+            <b>Minhaz's Blog</b>
+          </a>
+       </div>
+       <div>
+          <a class="site-subtitle" href="/">
+            <b>Hack your way out!</b>
+          </a>
+       </div>
+     </div>
+     <div class="header-right">
+        <a class="page-link" href="https://github.com/mebjas">Github</a>
+        <a class="page-link" href="https://www.linkedin.com/in/minhazav">LinkedIn</a>
+        <a class="page-link" href="/about/">About Me</a>
+        <a class="page-link" href="/photography/">Photography</a>
+     </div>
+   </div>
+ </header>
+   <main class="default-content" aria-label="Content">
+     <div class="wrapper-content">
+       <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+<header class="page-header">
+   <h1 class="post-title" itemprop="name headline">A fault tolerant distributed key value store from scratch</h1>
+   <p class="post-meta">
+      <time datetime="2017-09-05T00:00:00+00:00" itemprop="datePublished">
+        Sep 5, 2017
+      </time>
+      •
+<a class="category-link" href="/category/distributed-systems/" rel="category">distributed-systems</a> 
+<a class="category-link" href="/category/hackathon/" rel="category">hackathon</a> 
+<a class="category-link" href="/category/key-value-store/" rel="category">key-value-store</a> 
+<a class="category-link" href="/category/nodejs/" rel="category">nodejs</a> 
+   </p>
+ </header>
+ <div class="post-content" itemprop="articleBody">
+   <p>We had a B-Tech course on Distributed Systems and I took a course on on Cloud Computing Concepts 1 by Dr Indranil Gupta (UIUC) a year back and for long, I have been thinking about trying out different concepts explained in the course together as something meaningful. There are assignments in the course which you need to finish, but they don’t require you to just club all of them together. I wished to try something out where most of the major concepts are used.</p>
+<p>We use distributed systems a lot in our development pipelines, but most of the concepts are abstracted out by the cloud solutions. I work for Microsoft Azure, and we use concepts like scheduling, queuing, distributed caching all the time, but most of these are provided as a SaaS offering – hence it’s mostly:</p>
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">Azure</span><span class="p">.</span><span class="n">Client</span><span class="p">.</span><span class="n">CreateIfNotExists</span><span class="p">()</span>
+<span class="n">Azure</span><span class="p">.</span><span class="n">Client</span><span class="p">.</span><span class="n">JustDoMostOfItForMe</span><span class="p">()</span>
+<span class="n">Azure</span><span class="p">.</span><span class="n">Thanks</span><span class="p">()</span></code></pre></figure>
+<p>Well I’m actually grateful for all the offerings we have in 2017, it makes development much faster and takes a lot of headache away. So I’m picking up this fun exercise to refresh the underlying concepts IN MEMORY :D.</p>
+<h2 id="task-building-a-distributed-key-value-store">Task: Building a Distributed Key Value Store</h2>
+<p>A key-value store, or key-value database, is a data storage paradigm designed for storing, retrieving, and managing associative arrays, a data structure more commonly known today as a dictionary or hash. A distributed Key Value store is one where data is replicated across different nodes such that there is:</p>
+<ul>
+ <li>High Availability, and</li>
+ <li>No single point of failure</li>
+</ul>
+<h2 id="distributed-key-value-store">Distributed Key Value Store</h2>
+<p>This will provide simple abstraction for CRUD operation on a key value pair. The operations will be exposed using simple rest calls like</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST http://localhost:8000/ { key: &lt;key&gt;, value: &lt;value&gt; }
+GET http://localhost:8001/?key=&lt;key&gt;
+DELETE http://localhost:8002/?key=&lt;key&gt; 
+</code></pre></div></div>
+<p>Plan is to follow a cassandra like architecture where nodes maintain a virtual ring topology and location of key is retrieved based on hash function. Few things I’m gonna follow:</p>
+<ul>
+ <li>Consistency type: Strong, Quorum based</li>
+ <li>Membership protocol: SWIM</li>
+ <li>No authentication or SSL support of as of now – plain old open http</li>
+ <li>Local clocks will be used, as they are already in sync with system clock.</li>
+ <li>The data will be stored in memory (in context of the process), no commit logs will be maintained; If all process die or some most die before replication data will be lost.</li>
+</ul>
+<h2 id="setup-and-tests">Setup and tests</h2>
+<p>Pre requisite</p>
+<ul>
+ <li>Download nodejs and npm for windows</li>
+ <li>Clone this repo: git clone https://github.com/mebjas/dht-node.git</li>
+ <li>CD to process dir: cd process – this path contain the code for process</li>
+ <li>Install the libraries – npm install</li>
+ <li>Run Tests – npm test</li>
+ <li>Initialize 24 nodes: cd ..\ &amp;&amp; .\init.cmd</li>
+ <li>To run just N nodes skip the last step and manually invoke an instance using:</li>
+</ul>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>node process\index.js &lt;portno&gt; &lt;introducer&gt;
+</code></pre></div></div>
+<p><code class="highlighter-rouge">&lt;portno&gt;</code> – port number or this instance
+<code class="highlighter-rouge">&lt;introducer&gt;</code> – port number of the introducer to which join request will be sent; Not needed for first instance – it will assume itself to be first instance because of this; I’m not going for any automatic discovery or centralized discovery mechanism here;</p>
+<h2 id="top-level-architecture">Top level architecture</h2>
+<p><img src="../images/post2_picture1.png" alt="architecture" width="750px" />
+<br /><span class="image-caption"> <em>Figure: Architecture</em></span></p>
+<h3 id="task-11-membership-protocol">TASK 1.1: Membership Protocol</h3>
+<p>Implementing SWIM Protocol, where the membership gossips are piggibacked on PING, PING_REQ, JOINREQ, ACK messages. In a given protocol period a node will select a random node and send a ping. If it get’s ACK well and good. It’d stay idle till completion of protocol period.</p>
+<p>If it doesn’t get an ACK, it’d send a PING_REQ message to K random nodes, and they will ping the target node. If any of then send an ACK with in the target period the node is conisedered alive else it’s moved to suspicions state; it no one confirms it’s alive in time &lt; 2 * protocol period – it’s removed from the list; Eventually every other node will detect the node’s failure by pinging it first hand or due to piggybacked response;</p>
+<p>These screenshots are when 8 nodes were joined and two of them crashed</p>
+<p><img src="../images/post2_image2.png" alt="Nine nodes detecting other nodes joining in gossip style" width="750px" />
+<br /><span class="image-caption"> <em>Figure: Nine nodes detecting other nodes joining in gossip style</em> </span></p>
+<p><img src="../images/post2_image3.png" alt="After killing two nodes, other seven nodes detected the failure by failure detection and gossip style messaging" width="750px" />
+<br /><span class="image-caption"> <em>Figure: After killing two nodes, other seven nodes detected the failure by failure detection and gossip style messaging</em> </span></p>
+<h4 id="detecting-failures-in-24-nodes-">Detecting failures in 24 nodes 😀</h4>
+<p><img src="../images/post2_image4.png" alt="" width="750px" />
+<br /><span class="image-caption"> <em>Figure: Did the same with 24 Nodes :D; If you look at the console logs, you can see some nodes detected the failure while others got the information as a gossip</em> </span></p>
+<h3 id="task-12-testing-membership-protocol">TASK 1.2: Testing Membership Protocol</h3>
+<ol>
+ <li>Simple unit testing using mocha framework for node js. It’s pretty new to me but seems pretty powerful. I have done basic testing will do advanced ones later. Also since the library depends on HTTP calls some mocks / stubs shall be needed.</li>
+ <li>To Be Done is end to end testing of membership protocol<br />
+   <ul>
+     <li>Create nodes</li>
+     <li>JOIN nodes</li>
+     <li>FAILURES &amp; Failure detection</li>
+     <li>Time to detection, accuracy of detection</li>
+     <li>Emulation of Congestion / Message Drop scenario</li>
+     <li>High load setup</li>
+   </ul>
+ </li>
+</ol>
+<h2 id="task-2-virtual-ring-topology">TASK 2: Virtual ring topology</h2>
+<p>Now that underlying membership protocol works reasonably well and it can both detect failures and diseminate information in Gossip style to other nodes we can build the next layer – the virtual topology. In Cassandra nodes are placed in a virtual ring and the mapping of both keys and nodes position is done using a hash function.</p>
+<p>Each node is a member of the ring and their position is calculated based on a hash function. I have picked the most basic one, as simple as this:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hash: function(key) {
+        return key - 8080;
+}
+
+positionInRing = hash(port_no)
+</code></pre></div></div>
+<h5 id="changed-hash-function-to-be-as-simple-as-key---8080-it-can-take-values-between-8080--8336-and-give-a-unique-ring-id-between-0-256-thus-max-ring-size-if-256-for-now">Changed hash function to be as simple as key - 8080. It can take values between 8080 &amp; 8336 and give a unique ring id between [0, 256). Thus max ring size if 256 for now;</h5>
+<h3 id="some-other-points">Some other points</h3>
+<ul>
+ <li>Ideally, any number of nodes can be created; given their hash shouldn’t collide;</li>
+ <li>Max Replication per key was set to 3, can be tested with more;</li>
+ <li>Quorum count in this case was set to 2;</li>
+</ul>
+<h4 id="flow">Flow:</h4>
+<ul>
+ <li>For every request (CRUD) the hash of key is computed and it gives an index in range [0, no of nodes). Replication is done from this index to next X nodes in ring (given by MaxReplicationCount). If number of nodes is less than this value all nodes replicate all key value pair;</li>
+ <li>Requests are sent to all replicas and once the quorum has replied with +ve response the response is sent to client – CRUD;</li>
+ <li>In case of failure to obtain a quorum request is replied with failure;</li>
+</ul>
+<h2 id="task-3-storage-replication--stabilization">TASK 3: Storage Replication &amp; Stabilization</h2>
+<p>Storage of data is abstracted out by datastore.js. Replication is done based on this approach:</p>
+<h3 id="31-write-request">3.1 WRITE REQUEST:</h3>
+<p>Client can send a WRITE REQUEST to any node, with a key-value pair; During the life-cycle of this request, this node will act as a coordinator; The coordinator will calculate the hash of the key and will be able to identify the nodes where this key should be stored. Essentially the hash function will point to one node, let’s call it primary store for the key. In my approach there will be NoOfReplicas = MaxReplicationCount - 1 replicas as well. The NoOfReplicas nodes after the primary store for the key in the ring will be selected as replicas; The coordinator will send the internal write request to each of this node and wait for response; As soon as responses from quorumCount no of nodes come back, the write request will be set as done and success code is returned to client; Otherwise in case of timeout or failed requests &gt; MaxReplicationCount - quorumCount write request will be considered as failed; Here,</p>
+<ul>
+ <li>Concepts like hinted hand-off is not implemented as out of scope;</li>
+ <li>In case of internal write if some of the nodes actually write the response in their memory, but quorum is not achieved, they should revert back – this is not implemented;</li>
+</ul>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Note: Sending a WRITE REQUEST with a key that already exists will act like Update
+</code></pre></div></div>
+<h3 id="32-read-request">3.2 READ REQUEST</h3>
+<p>Pretty much similar to WRITE Request, the request is sent to replicas and once response is received from at lease quorumCountno of replicas and values are consistent, the value is responded back. In case some the replicas have older values – READ REPAIR is initiated for them by the coordinator; If response is not recieved from quorumCount with value – 404, Not Found is responded back; If less than quorumCount respond with a value, it might be because DELETE failed them or failed writeworked for them. In any case we can either initiate an internal DELETE request to these or leave it be;</p>
+<h3 id="33-delete-request">3.3 DELETE REQUEST</h3>
+<p>Similar to above two, initiate request to all replicas and respond back OK if quorum responds with that number;</p>
+<h3 id="34-stabilization">3.4: Stabilization</h3>
+<p>Stabilization need to be done every time a new node joins or an existing one leaves the system. In both the cases the structure of the ring changes a little and mapping of the keys to the server changes; (In my implementation! There are better methods like <a href="https://en.wikipedia.org/wiki/Consistent_hashing">Consistent Hashing</a> where only K/n keys need to be remapped) and every node that detect a failure or the joining of the node kicks in the stabilization protocol; I have gone for most naive implementation where every key in the store is checked for it’s mapping and respective mappings are sent to the replicas. These replicas will store the key value pair if they dont already have it. Once it has received response from each node, the node that detected will remove unwanted keys from it’s store;</p>
+<h2 id="task-4-rest-api--final-test">TASK 4: Rest API + Final Test</h2>
+<p>To the client the nodes expose three apis</p>
+<p>To the client the nodes expose three apis</p>
+<h4 id="get-a-key">/Get a Key</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /s/key?key=key9 HTTP/1.1
+Host: localhost:8083
+</code></pre></div></div>
+<h4 id="set-a-key">/Set a key</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /s/key HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+    "key": "key9",
+    "value": "value9"
+}
+</code></pre></div></div>
+<h4 id="delete-a-key">/Delete a key</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DELETE /s/key?key=key9 HTTP/1.1
+Host: localhost:8081
+</code></pre></div></div>
+<h2 id="final-test">Final test</h2>
+<p>I’m yet to write automated End to End tests, however I have manually tested the code and it seem to work pretty well; You could Write / Update a key from one node, and read it from other; Since the data is stored in memory – the request response time is pretty fast;</p>
+<p>It’s cool to see all nodes detect a new node has joined, and when all consoles are up you can actually see gossip spreading; Then every node kicks in stabilization protocol and all keys can be accessed from this new node;</p>
+<p>Similarly, when a node fails, eventually each node detects the failure and kicks stabilization so that data is not lost; However, if all replicas of a set of keys die together – that data is lost;</p>
+<h2 id="todos">TODOS:</h2>
+<ul>
+ <li>Automated E2E testing, unit testing bug fixes
+Change localhost hard-coding, test it in different machines on a network</li>
+ <li>Performance testing – Same Machine / Different Machines</li>
+ <li>Add more advanced functionalities, more optimised algorithms,</li>
+ <li>Leader Elections, Clock Syncing :O</li>
+ <li>Missile launcher and self driving car!</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>Distributed systems are super awesome; Concepts are pretty cool; It’s fair to use abstractions provided to us by well tested libraries and cloud offerings but I’d totally recommend to try things out from scratch if you have a free weekend; The code for a node is available in .\process directory; I know code design might not be up-to mark – it was a more of a hackathon; I’ll try to find some time to refactor it!</p>
+<p>References:</p>
+<ol>
+ <li>Coursera Cloud Computing Concepts, Part 1 – https://www.coursera.org/learn/cloud-computing/home/welcome</li>
+ <li>Building a Distributed Fault-Tolerant Key-Value Store – http://blog.fourthbit.com/2015/04/12/building-a-distributed-fault-tolerant-key-value-store</li>
+ <li>Consistent hashing in Cassandra – https://blog.imaginea.com/consistent-hashing-in-cassandra/</li>
+</ol>
+ </div>
+ <div class="post-footer">
+<div class="related-posts">
+  <span class="related-posts-text">Related posts:</span>
+ <ul>
+ </ul>
+</div>
+<div class="post-filed">
+   <p class="post-meta">
+      Filed under
+<a class="category-link" href="/category/distributed-systems/" rel="category">distributed-systems</a>
+<a class="category-link" href="/category/hackathon/" rel="category">hackathon</a>
+<a class="category-link" href="/category/key-value-store/" rel="category">key-value-store</a>
+<a class="category-link" href="/category/nodejs/" rel="category">nodejs</a>
+   </p>
+   <p>
+      <a href="#top">top&nbsp;&#8673;</a>
+   </p>
+ </div>
+<div class="post-nav">
+   <p>
+      <a href="/logging-out-and-then-logging-in-throws-403-error-with-csrf-protector/">&#8672;&nbsp;Logging out and then logging in throws 403 error with CSRF Protector PHP – fix / workaround</a>
+   </p>
+   <p>
+      <a href="/introducing-minor-improvements-to-csrf-protector-php/">Introducing minor improvements to CSRF Protector PHP&nbsp;&#8674;</a>
+   </p>
+ </div>
+<div style="border-top: 1px solid #cfcfcf; margin-top: 30px">
+   <div class="widget-self">
+   <div class="section-image">
+        <a href="/about">
+            <img src="/images/rsz_self_1_1.jpg" width="200px">
+        </a>
+   </div>
+   <div class="section-info">
+        <strong><a href="/about">Minhaz | Google | Singapore</a></strong>
+       <div class="quote">
+            I am working with Next Billion Users Org at Google. My team builds technologies for emerging markets.
+            I feel, the goal of delivering cutting edge technologies to resource constrained devices with seamless performance is hard, at times frustating but worthwhile.
+            Hoping for positive impact, good Karma and unbounded learning ;)
+       </div>
+       <div class="quote">
+            These days I am working on #Computational-Photography and try hard at #Photography as well.
+            I have good experience with #Distributed-Systems and #Applied-ML.
+       </div>
+   </div>
+</div>
+</div>
+ </div>
+ <div class="just-comments" data-apikey="014acd23-9a26-4415-a7ea-80f4253d1295" data-recaptcha="true"></div>
+  <script async src="https://just-comments.com/w2.js"></script>
+</article>
+     </div>
+   </main>
+   <footer class="site-footer">
+   <div class="wrapper-footer">
+     <div class="footer-col-wrapper">
+<a href="mailto:minhazav@gmail.com"><i class="svg-icon email"></i></a>
+<a href="http://github.com/mebjas"><i class="svg-icon github"></i></a>
+<a href="http://instagram.com/mebjas"><i class="svg-icon instagram"></i></a>
+<a href="http://linkedin.com/in/https://www.linkedin.com/in/minhazav"><i class="svg-icon linkedin"></i></a>
+<a href="http://twitter.com/minhazav"><i class="svg-icon twitter"></i></a>
+<a href="http://stackoverflow.com/users/2614250/mebjas"><i class="svg-icon stackoverflow"></i></a>
+     </div>
+     <div class="copyright">
+        © 2019 minhazav.dev
+     </div>
+   </div>
+    <script src="/assets/js/anchorize.js"></script>
+ </footer>
+    <script src="/assets/js/instantpage.js" type="module" integrity="sha384-/IkE5iZAM/RxPto8B0nvKlMzIyCWtYocF01PbGGp1qElJuxv9J4whdWBRtzZltWn"></script>
+ </body>
+</html>

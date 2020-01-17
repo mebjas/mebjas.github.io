@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+ <meta charset="utf-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="google-site-verification" content="Xs4Y8kOjxCHZvery6v-Y6yVIptmWsSjownRLWpRDDlc" />
+ <meta name="msvalidate.01" content="C21F82032619E6AE38AEC7FFE4D05827" />
+<link rel="stylesheet" href=/assets/main.css>
+<link rel="stylesheet" href=/assets/custom.css>
+<link rel="alternate" type="application/rss+xml" title="Minhaz&#39;s Blog" href="/feed.xml">
+<link rel="shortcut icon" href=/assets/favicon.ico>
+<link rel="icon" type="image/png" sizes="32x32" href=/assets/favicon.ico>
+  <script src="/assets/js/jquery.js"></script>
+<title>Category: system-design | Minhaz’s Blog</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Category: system-design" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Category: system-design" />
+<meta property="og:description" content="Category: system-design" />
+<link rel="canonical" href="http://localhost:4000/category/system-design/" />
+<meta property="og:url" content="http://localhost:4000/category/system-design/" />
+<meta property="og:site_name" content="Minhaz’s Blog" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Category: system-design" />
+<meta name="twitter:site" content="@minhazav" />
+<meta name="twitter:creator" content="@minhazav" />
+<script type="application/ld+json">
+{"headline":"Category: system-design","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.minhazav.dev/images/rsz_self_1_1.jpg"}},"@type":"WebPage","url":"http://localhost:4000/category/system-design/","description":"Category: system-design","@context":"https://schema.org"}</script>
+</head>
+ <body data-instant-allow-query-string data-instant-allow-external-links>
+  <header class="site-header">
+   <div class="wrapper-header">
+     <div class="header-left">
+       <div>
+          <a class="site-title" href="/">
+            <b>Minhaz's Blog</b>
+          </a>
+       </div>
+       <div>
+          <a class="site-subtitle" href="/">
+            <b>Hack your way out!</b>
+          </a>
+       </div>
+     </div>
+     <div class="header-right">
+        <a class="page-link" href="https://github.com/mebjas">Github</a>
+        <a class="page-link" href="https://www.linkedin.com/in/minhazav">LinkedIn</a>
+        <a class="page-link" href="/about/">About Me</a>
+        <a class="page-link" href="/photography/">Photography</a>
+     </div>
+   </div>
+ </header>
+   <main class="default-content" aria-label="Content">
+     <div class="wrapper-content">
+      <header class="page-header">
+ <h1 class="page-title">Category: system-design</h1>
+</header>
+<div class="page-content">
+<div class="post-info">
+   <h3 class="post-header"><a class="post-link" href="/bypass-cell-size-limitation-of-azure-storage-table/">Bypass cell size limitation (64KB) of Azure Storage Table</a></h3>
+   <p class="post-meta post-meta-home">
+      Jan 6, 2019
+      •
+<a class="category-link" href="/category/architecture/" rel="category">architecture</a> 
+<a class="category-link" href="/category/system-design/" rel="category">system-design</a> 
+<a class="category-link" href="/category/azure/" rel="category">azure</a> 
+<a class="category-link" href="/category/azure-storage-table/" rel="category">azure-storage-table</a> 
+<a class="category-link" href="/category/compression/" rel="category">compression</a> 
+<a class="category-link" href="/category/distributed-systems/" rel="category">distributed-systems</a> 
+<a class="category-link" href="/category/microsoft/" rel="category">microsoft</a> 
+<a class="category-link" href="/category/open-source/" rel="category">open-source</a> 
+<a class="category-link" href="/category/cloud/" rel="category">cloud</a> 
+   </p>
+    <span class="post-description">Azure Storage Table is Azure’s NoSQL offering to store large number of data (upto peta bytes) in a table (tables have rows and columns). It provides indexing on two keys namely partition key and row key which allows you to retrieve data efficiently. No other columns are indexed, but that’s expected behavior. It has limitations on size of a single row (1 MB), size of a single column (64KB), number of columns per row (255) and so on. While I don’t really know why some of them exist – they just do. In this article <b>I have proposed a naughty but elegant</b> way of bypassing this issue. </span>
+    <span class="read-more"><a href="/bypass-cell-size-limitation-of-azure-storage-table/">[&nbsp;Read&nbsp;more&nbsp;]</a></span>
+ </div>
+<div class="post-info">
+   <h3 class="post-header"><a class="post-link" href="/efficiently-writing-large-objects-to-azure-blob-storage-json-compression-caching-streaming-in-net/">Efficiently writing large objects to Azure Blob Storage – JSON, Compression, Caching, Streaming in .Net</a></h3>
+   <p class="post-meta post-meta-home">
+      Apr 3, 2018
+      •
+<a class="category-link" href="/category/architecture/" rel="category">architecture</a> 
+<a class="category-link" href="/category/system-design/" rel="category">system-design</a> 
+<a class="category-link" href="/category/azure/" rel="category">azure</a> 
+<a class="category-link" href="/category/azure-storage-blob/" rel="category">azure-storage-blob</a> 
+<a class="category-link" href="/category/compression/" rel="category">compression</a> 
+<a class="category-link" href="/category/distributed-systems/" rel="category">distributed-systems</a> 
+<a class="category-link" href="/category/machine-learning/" rel="category">machine-learning</a> 
+<a class="category-link" href="/category/microsoft/" rel="category">microsoft</a> 
+   </p>
+    <span class="post-description">Azure Storage Blob is an Azure Storage offering that allows you to store giga bytes of data in from hundreds to billions of objects in hot, cool, or archive tiers, depending on how often data access is needed. Store any type of unstructured data—images, videos, audio, documents and more—easily and cost-effectively. These features make it a strong candidate for storing serialized Machine Learning Models if you have models per tenant. But, if the application is READ + WRITE heavy and the size of objects are large it can lead to a variety of issues, primarily:<ol><li>Large I/O calls</li><li>OutOfMemory Exceptions (OOM)</li></ol>In this article I have explained why the issues occur and what are the ways to mitigate them.</span>
+    <span class="read-more"><a href="/efficiently-writing-large-objects-to-azure-blob-storage-json-compression-caching-streaming-in-net/">[&nbsp;Read&nbsp;more&nbsp;]</a></span>
+ </div>
+</div>
+     </div>
+   </main>
+   <footer class="site-footer">
+   <div class="wrapper-footer">
+     <div class="footer-col-wrapper">
+<a href="mailto:minhazav@gmail.com"><i class="svg-icon email"></i></a>
+<a href="http://github.com/mebjas"><i class="svg-icon github"></i></a>
+<a href="http://instagram.com/mebjas"><i class="svg-icon instagram"></i></a>
+<a href="http://linkedin.com/in/https://www.linkedin.com/in/minhazav"><i class="svg-icon linkedin"></i></a>
+<a href="http://twitter.com/minhazav"><i class="svg-icon twitter"></i></a>
+<a href="http://stackoverflow.com/users/2614250/mebjas"><i class="svg-icon stackoverflow"></i></a>
+     </div>
+     <div class="copyright">
+        © 2019 minhazav.dev
+     </div>
+   </div>
+    <script src="/assets/js/anchorize.js"></script>
+ </footer>
+    <script src="/assets/js/instantpage.js" type="module" integrity="sha384-/IkE5iZAM/RxPto8B0nvKlMzIyCWtYocF01PbGGp1qElJuxv9J4whdWBRtzZltWn"></script>
+ </body>
+</html>

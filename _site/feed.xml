@@ -1,0 +1,1486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Minhaz's Blog</title>
+    <description>I work full time as a Software Engineer at Google. Time to time I come across problems I don't find solutions to on web and I try to pen it down here. My area of expertise are distributed systems, android, android camera, emerging markets, applied ML and computational photography. I am sometimes identified as mebjas or minhazav.</description>
+    <link>http://localhost:4000</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+    
+      <item>
+        <title>Interview tips 1 – In a coding interview use abstractions!</title>
+        <description>&lt;p&gt;While I was working with Microsoft, I had opportunity to take around 10 – 20 coding or design interviews (candidates with 1 – 12 years of experience). There was this one thing that I felt was too common, which would lead to bad impression and potential rejection – it’s that the candidate attempts to solve every part of the question rather than focusing on what is important. This is particularly prevalent amongst candidates who chose C / C++ as programming language of choice. And, this was common irrespective of years of experience.&lt;/p&gt;
+
+&lt;p&gt;Here’s an example – &lt;a href=&quot;https://leetcode.com/problems/compare-version-numbers/&quot;&gt;165 – Compare version numbers&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Given two version numbers for example “1.4.5” and “1.3.6” return the greater one&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Now, this is a fairly simple question when first looked at – however, it has some ambiguity that you need to resolve. But yes that’s not the focus of this post. When I present this question, before the candidate is about to start coding – I explicitly mention:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Please feel free to use as much abstraction as needed, if there is something particular I am interested in I’ll dig into it.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Of course with this sober simple face.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/post10_image1.jpeg&quot; alt=&quot;My sober face&quot; width=&quot;500px&quot; /&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now, amongst other possible approach the one that is most general is to split the string on “.” as a delimiter and convert the values to integer and then compare left to right, assuming the given value is a valid version number. I have seen many spend time on the first sub problem&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;splitting and converting to integer.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;In my experience I have seen folks attempt it as follows:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/post10_image5.png&quot; alt=&quot;python approach&quot; width=&quot;750px&quot; /&gt;&lt;br /&gt;
+&lt;span class=&quot;image-caption&quot;&gt;&lt;em&gt;So far only one person chose to go with Python – and the kind of syntaxes that are available makes it super easy to deal with these kinda things.&lt;/em&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/post10_image3.png&quot; alt=&quot;dotnet approach&quot; width=&quot;750px&quot; /&gt;&lt;br /&gt;
+&lt;span class=&quot;image-caption&quot;&gt;&lt;em&gt;A DotNet person may go around this way.&lt;/em&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/post10_image2.png&quot; alt=&quot;c++ approach&quot; width=&quot;750px&quot; /&gt;&lt;br /&gt;
+&lt;span class=&quot;image-caption&quot;&gt;&lt;em&gt;And this is how majority of folks using C++ have dealt with the question. Many of them seemed to struggle to correctly implement this sub logic.&lt;/em&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Now as an Interviewer&lt;/strong&gt; - This gives me a very bad first impression. When I give a question to a candidate, amongst other things I am judging how it’d be like to have:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The candidate in my team working on a project along with me.&lt;/li&gt;
+  &lt;li&gt;Doing my code reviews&lt;/li&gt;
+  &lt;li&gt;Pushing code to production which we maintain.&lt;/li&gt;
+  &lt;li&gt;Have high level discussions with this person&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;I’d want the other person to talk important things and dig as needed – more like use as much abstraction as needed. This may be subjective, but this is how I may answer things and would expect similar approach from an experienced candidate.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/post10_image7.png&quot; alt=&quot;python expected approach&quot; width=&quot;750px&quot; /&gt;&lt;br /&gt;
+&lt;span class=&quot;image-caption&quot;&gt;&lt;em&gt;Python: As an interviewer this shows me that the candidate modularise well, can focus on important part of discussion. And if needed, I can ask them to implement the &lt;code class=&quot;highlighter-rouge&quot;&gt;Validate()&lt;/code&gt; method – if the time permits, thus resulting in a clean modular code at the end of interview. It’s a WIN.&lt;/em&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/post10_image4.png&quot; alt=&quot;dotnet expected approach&quot; width=&quot;750px&quot; /&gt;&lt;br /&gt;
+&lt;span class=&quot;image-caption&quot;&gt;&lt;em&gt;C#: I’d expect a simple private method that takes care of the sub problems. The implementation is also not necessary in the first approach.&lt;/em&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/post10_image6.png&quot; alt=&quot;c++ expected approach&quot; width=&quot;750px&quot; /&gt;&lt;br /&gt;
+&lt;span class=&quot;image-caption&quot;&gt;&lt;em&gt;C++: This is how I expect candidates to go ahead with his question. There is no need to implement the &lt;code class=&quot;highlighter-rouge&quot;&gt;ConverToIntVector()&lt;/code&gt; method in the first approach.&lt;/em&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+&lt;p&gt;The major idea I wish to share here is for candidates to focus on problem at hand and not try to solve all the sub problems unless explicitly asked. &lt;strong&gt;There is a limited time at hand to show your best&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you feel this is too subjective opinion, share it over comments – I’d like to learn and grow further as an interviewer myself.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 07 May 2019 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/interview-tips-1-in-a-coding-interview-use-abstractions/</link>
+        <guid isPermaLink="true">http://localhost:4000/interview-tips-1-in-a-coding-interview-use-abstractions/</guid>
+      </item>
+    
+      <item>
+        <title>Bypass cell size limitation (64KB) of Azure Storage Table</title>
+        <description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Azure Storage Table is Azure’s NoSQL offering to store large number of data (upto peta bytes) in a table (tables have rows and columns). It provides indexing on two keys namely partition key and row key which allows you to retrieve data efficiently. No other columns are indexed, but that’s expected behavior. Azure Storage is dirt cheap – it costs like &lt;code class=&quot;highlighter-rouge&quot;&gt;$0.07 per GB / month&lt;/code&gt; for locally redundant storage model. It promotes creating multiple redundant copies of the data so that you don’t need foreign keys or so anymore. Not requiring any schema upfront gives this flexibility.&lt;/p&gt;
+
+&lt;h2 id=&quot;problem&quot;&gt;Problem&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Azure Storage Table was not created by God, it was created by folks like us (much smarter though)&lt;/strong&gt;. It has limitations on size of a single row (1 MB), size of a single column (64KB), number of columns per row (255) and so on. While I don’t really know why some of them exist – they just do.&lt;/p&gt;
+
+&lt;p&gt;One of them that really tickled me off recently was a limitation of 64K size of cell size. On top of that, if it’s a &lt;code class=&quot;highlighter-rouge&quot;&gt;string type&lt;/code&gt; it supports only &lt;code class=&quot;highlighter-rouge&quot;&gt;32K characters&lt;/code&gt;.  They have documented this in some mystical way I couldn’t understand much.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A UTF-16-encoded value. String values may be up to 64 KB in size. Note that the maximum number of characters supported is about 32 K or less.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Reference: &lt;a href=&quot;https://docs.microsoft.com/en-us/rest/api/storageservices/Understanding-the-Table-Service-Data-Model?redirectedfrom=MSDN#tables-entities-and-properties&quot;&gt;MSDN Article  Understanding the Table Service Data Model&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/post9_image2.png&quot; alt=&quot;&quot; width=&quot;300px&quot; /&gt;&lt;br /&gt;
+With a bhushshshs!&lt;/p&gt;
+
+&lt;h2 id=&quot;the-solution&quot;&gt;The solution&lt;/h2&gt;
+&lt;p&gt;Now if you have a requirement of storing data as rows referenced by a Partition Key and Row Key, and want to store data larger that 32K in a single column – you can do one of these:&lt;/p&gt;
+
+&lt;h3 id=&quot;1-put-data-to-blob-and-link-to-table-bla-bla-bla&quot;&gt;1. Put data to blob and link to table bla bla bla&lt;/h3&gt;
+&lt;p&gt;This is what everyone else would tell you:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Put data in a blob, and put blob details in a cell.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I dont like this option – I hate the cost of making another network calls. It adds latency, it reduces my availability numbers, adds more dependency and thus more scope of failure. And if that is not enough – this happens with both Read and Write operation. I don’t like this approach, I won’t follow it unless I have no other option.&lt;/p&gt;
+
+&lt;h3 id=&quot;2-the-smarter-way&quot;&gt;2. The smarter way&lt;/h3&gt;
+&lt;p&gt;Well, lets compress the data, split it into multiple chunks of &lt;code class=&quot;highlighter-rouge&quot;&gt;32K columns&lt;/code&gt;, construct a metadata with information just enough to reconstruct this data when reading and put it all to a single row.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Single network call&lt;/li&gt;
+  &lt;li&gt;Lower latency&lt;/li&gt;
+  &lt;li&gt;Lower chances of failure.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You can find reference to my code implementation below. Following diagram explains this simple concept in a fancy way, which I know is not really required.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/post9_image1.png&quot; alt=&quot;reference desing&quot; width=&quot;750px&quot; /&gt;&lt;br /&gt;
+&lt;span class=&quot;image-caption&quot;&gt;&lt;em&gt;Figure: Reference design to compress, split, store, retrieve, reconstruct, decompress and yeyy!&lt;/em&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;but-if&quot;&gt;But if,&lt;/h4&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;But Minhaz, my data is bigger than 1MB even after compression? Now what?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;– Some random guy&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Oh, in that case maybe option one. Maybe don’t reveal my worries to the manager. Or, maybe take the approach mentioned in point two and extend it to rows and leverage Bulk Read and Bulk Write APIs of Azure Storage Table. That would be cool!&lt;/p&gt;
+
+&lt;p&gt;It’s just, whenever possible avoid multiple network (or API) calls. And yes I am aware of all async paradigms – I’d still say, resources are always limited.&lt;/p&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+&lt;p&gt;If you intend to store data like &lt;code class=&quot;highlighter-rouge&quot;&gt;1.5MB&lt;/code&gt; in size in Azure Storage Table in a single column, you can use option two. One of the scenario is for those who want to use Azure Storage Table as key value pair.&lt;/p&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Implementation on 
+Github - &lt;a href=&quot;https://github.com/mebjas/AzureStorageTableLargeDataWriter/blob/master/AzureStorageTableLargeDataWriter/StorageTableWriter.cs&quot;&gt;mebjas/AzureStorageTableLargeDataWriter&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://feedback.azure.com/forums/217298-storage/suggestions/1623951-extend-table-storage-property-limit&quot;&gt;Extend Table Storage Property Limit (Azure Feedback)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Currently, Azure Tables only support 255 properties (columns) on a single entity (row) and a max row size of 1MB. This should be greatly extended (e.g. 10x+), particularly since Azure does not offer Join query support.&lt;/li&gt;
+  &lt;li&gt;Limit to the column size in azure table : &lt;a href=&quot;https://stackoverflow.com/questions/44840195/limit-to-the-column-size-in-azure-table&quot;&gt;Stack Overflow&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://medium.com/@madhufuture/azure-table-storage-column-size-limitations-and-alternative-approach-for-storing-large-data-9279eb301c7b&quot;&gt;Some alternative approaches&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Sun, 06 Jan 2019 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/bypass-cell-size-limitation-of-azure-storage-table/</link>
+        <guid isPermaLink="true">http://localhost:4000/bypass-cell-size-limitation-of-azure-storage-table/</guid>
+      </item>
+    
+      <item>
+        <title>Efficiently writing large objects to Azure Blob Storage – JSON, Compression, Caching, Streaming in .Net</title>
+        <description>&lt;h2 id=&quot;introduction-azure-storage-blob&quot;&gt;Introduction: Azure Storage Blob&lt;/h2&gt;
+&lt;p&gt;Azure Storage Blob is an Azure Storage offering that allows you to store GigaBytes of data in from hundreds to billions of objects in hot, cool, or archive tiers, depending on how often data access is needed. Store any type of unstructured data—images, videos, audio, documents and more—easily and cost-effectively.
+Reference: https://azure.microsoft.com/en-in/services/storage/blobs/&lt;/p&gt;
+
+&lt;p&gt;In the latest offering it comes with &lt;strong&gt;strong consistency, geo redundant storage, multiple blob types (Block Blob vs Page Blob vs Append Blob)&lt;/strong&gt;. There is also option to update portion of blobs thus making it bandwidth efficient if used as such. Azure guarantees &lt;code class=&quot;highlighter-rouge&quot;&gt;99.99% up-time&lt;/code&gt; and have support for reading from secondary region in case of failure (Eventual consistency).&lt;/p&gt;
+
+&lt;h2 id=&quot;the-problem&quot;&gt;The problem&lt;/h2&gt;
+&lt;p&gt;These features make it a strong candidate for storing serialized Machine Learning Models if you have models per tenant. But, if the application is READ + WRITE heavy and the size of objects are large it can lead to a variety of issues, primarily:&lt;/p&gt;
+
+&lt;h3 id=&quot;large-io-calls&quot;&gt;Large I/O calls&lt;/h3&gt;
+&lt;p&gt;If the size of objects that are persisted and read from the blob is large, the process will spend decent amount of time and network bandwidth in uploading and downloading data respectively from blob.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/post8_image1.png&quot; alt=&quot;Service Level Agreement (SLA) guarantees on uploading and downloading blobs&quot; width=&quot;750px&quot; /&gt;&lt;br /&gt;
+&lt;span class=&quot;image-caption&quot;&gt;&lt;em&gt;Figure: Service Level Agreement (SLA) guarantees on uploading and downloading blobs.&lt;/em&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;If not properly implemented this could lead to low throughput and large overall processing time. If you are dealing with a 100 Mb serialized file – it could take upto &lt;code class=&quot;highlighter-rouge&quot;&gt;200 seconds&lt;/code&gt; (worst case!).&lt;/p&gt;
+
+&lt;h3 id=&quot;outofmemory-exceptions-oom&quot;&gt;OutOfMemory Exceptions (OOM)&lt;/h3&gt;
+&lt;p&gt;JSON is very popular schema for serializing objects for persistence and transport. There are a variety of libraries available for serializing and de-serializing objects in &lt;code class=&quot;highlighter-rouge&quot;&gt;.net&lt;/code&gt;. However, when dealing with really large objects you can encounter out of memory issues.&lt;/p&gt;
+
+&lt;h4 id=&quot;primary-causes&quot;&gt;Primary causes:&lt;/h4&gt;
+&lt;p&gt;The Common Language Runtime (CLR) cannot allocate enough contiguous memory to successfully perform an operation. This exception can be thrown by any property assignment or method call that requires a memory allocation. Following cases are popular reasons for OOM exceptions:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Your app runs as a &lt;code class=&quot;highlighter-rouge&quot;&gt;32-bit process&lt;/code&gt;&lt;/strong&gt;: 32-bit processes can allocate a maximum of &lt;code class=&quot;highlighter-rouge&quot;&gt;2GB&lt;/code&gt; of virtual user-mode memory on &lt;code class=&quot;highlighter-rouge&quot;&gt;32-bit&lt;/code&gt; systems, and &lt;code class=&quot;highlighter-rouge&quot;&gt;4GB&lt;/code&gt; of virtual user-mode memory on &lt;code class=&quot;highlighter-rouge&quot;&gt;64-bit&lt;/code&gt; systems. This can make it more difficult for the common language runtime to allocate sufficient contiguous memory when a large allocation is needed. In contrast, &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;64-bit&lt;/code&gt; processes can allocate up to &lt;code class=&quot;highlighter-rouge&quot;&gt;8TB&lt;/code&gt; of virtual memory&lt;/strong&gt;. This kind of issues are particularly popular when testing code in debug environment in local system.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Lack of available memory due to memory leaks&lt;/strong&gt;: Although the garbage collector is able to free memory allocated to managed types, it does not manage memory allocated to unmanaged resources such as operating system handles (including handles to files, memory-mapped files, pipes, registry keys, and wait handles) and memory blocks allocated directly by Windows API calls or by calls to memory allocation functions such as malloc.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;You are repeatedly concatenating large strings&lt;/strong&gt;: Because strings are immutable, each string concatenation operation creates a new string. The impact for small strings, or for a small number of concatenation operations, is negligible. But for large strings or a very large number of concatenation operations, string concatenation can lead to a large number of memory allocations and memory fragmentation, poor performance, and possibly OutOfMemoryExceptionexceptions.&lt;/li&gt;
+  &lt;li&gt;And many more: &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/system.outofmemoryexception(v=vs.110).aspx&quot;&gt;MSDN Detailed Documentation on OOM Exception&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;solutions&quot;&gt;Solutions&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;../images/post8_image2.jpg&quot; alt=&quot;The Goal - Efficiency &amp;amp; Throughput&quot; width=&quot;750px&quot; /&gt;&lt;br /&gt;
+&lt;span class=&quot;image-caption&quot;&gt;&lt;em&gt;Figure: The Goal – Efficiency &amp;amp; Throughput&lt;/em&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;So far I have experimented with following ways to improve efficiency and throughput of the system using Azure Storage Blob:&lt;/p&gt;
+
+&lt;h3 id=&quot;json-serialization--de-serialization-libraries&quot;&gt;JSON Serialization &amp;amp; De-serialization libraries&lt;/h3&gt;
+&lt;p&gt;A lot of libraries are available in &lt;code class=&quot;highlighter-rouge&quot;&gt;.net&lt;/code&gt; to deal with JSON format – primarily serialization and de-serialization. &lt;code class=&quot;highlighter-rouge&quot;&gt;JSON.Net&lt;/code&gt; is the most popular package available. While it comes with a lot of features it’s not necessarily the fastest library out there. However, you need to ensure if other libraries works best for you. Based on performance tests I did results looked like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/post8_image3.png&quot; alt=&quot;Performance of different JSON libraries in .Net&quot; width=&quot;500px&quot; /&gt;&lt;br /&gt;
+&lt;span class=&quot;image-caption&quot;&gt;&lt;em&gt;Figure: Performance of different JSON libraries in .Net&lt;/em&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/mebjas/DotNetTests/tree/master/JSONSerializationDesrialization&quot;&gt;Sample Code for this test&lt;/a&gt; is available on Github. However, the difference is not much given the richness of features that comes with &lt;code class=&quot;highlighter-rouge&quot;&gt;JSON.Net&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;compression--lower-io-more-cpu&quot;&gt;Compression – Lower I/O more CPU&lt;/h3&gt;
+&lt;p&gt;The amount of time to download / upload data to blob can be considered proportional to the size of object in question. Thus, a machine will spend decent amount of time in I/O if the size of objects are large. Generally, the flow is:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-cmd&quot;&gt;# Saving the model
+.Net Objects &amp;gt; Serialized to JSON String &amp;gt; Upload to blob
+
+# Reading the model
+Download from Blob &amp;gt; Deserialize the JSON String &amp;gt; .Net Objects
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now if the size of object is large, compression can come in really handy. For JSON Strings GZIP can give as good as 10:1 compression ratio. This can help reduce I/O time and increase CPU cycles – thus increase the throughput and efficiency of the system.&lt;/p&gt;
+
+&lt;h4 id=&quot;code-example&quot;&gt;Code example&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;Saving the model: you can zip and upload data to blob without double serialization&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;UploadDataModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataModel&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;MemoryStream&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stream&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;MemoryStream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sw&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;StreamWriter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;JsonWriter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;writer&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;JsonTextWriter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;serializer&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;JsonSerializer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;serializer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Serialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;writer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;sw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Flush&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;stream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Position&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mso&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;MemoryStream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gs&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;GZipStream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mso&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CompressionMode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Compress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nf&quot;&gt;CopyTo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+            &lt;span class=&quot;n&quot;&gt;mso&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Flush&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mso&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ToArray&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;CloudBlockBlob&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockBlob&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cloudBlobContainer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;GetBlockBlobReference&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;blobName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;blockBlob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;UploadFromByteArray&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;CopyTo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Stream&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Stream&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4096&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cnt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cnt&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;dest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cnt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Downloading the model: you can unzip and download data from blob without double de-serialization&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DataModel&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;BlobToMemoryStream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blobName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;CloudBlockBlob&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockBlob&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cloudBlobContainer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;GetBlockBlobReference&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;blobName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MemoryStream&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ms&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;MemoryStream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;blockBlob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;DownloadToStream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ms&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;ms&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Seek&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SeekOrigin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;ms&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Flush&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;ms&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Position&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ms&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ToArray&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        
+        &lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msi&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;MemoryStream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mso&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;MemoryStream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gs&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;GZipStream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CompressionMode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Decompress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nf&quot;&gt;CopyTo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mso&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+            &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jsonString&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Encoding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;UTF8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;GetString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mso&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ToArray&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;msi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Dispose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JsonConvert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DeserializeObject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jsonString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;CopyTo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Stream&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Stream&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4096&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cnt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cnt&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;dest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cnt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;caveat-of-this-approach&quot;&gt;Caveat of this approach&lt;/h4&gt;
+&lt;p&gt;The steps involved in this can be very costly with respect to CPU time and thus the overall processing time if the objects are really large. This is however caused by lot of redundant information in the serialized string data. Thus can be solved by writing a custom serializer that serialized data to &lt;code class=&quot;highlighter-rouge&quot;&gt;byte array&lt;/code&gt; and an opposite deserializer. This would &lt;strong&gt;decrease the size of serialized data and compression time drastically&lt;/strong&gt; but could be &lt;strong&gt;difficult to maintain&lt;/strong&gt; as compared to simply using some standard serialization approach.&lt;/p&gt;
+
+&lt;h3 id=&quot;caching--in-memory-private-caching&quot;&gt;Caching – In Memory Private caching&lt;/h3&gt;
+&lt;p&gt;If you are working with same data again and again you can reduce the no of time you have download the data from Azure Storage Blob by implementing a simple in memory cache. However, this has it’s own set of limitations – it can come in handy if the size of the objects can grow really large and your system can handle concurrency.&lt;/p&gt;
+
+&lt;p&gt;In this post I’ll share how to use in memory cache but note that for highly distributed systems with multiple nodes shared caches could be a good solution in many cases – but is out of scope of this article. The flow for In Memory Caching would be something like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/post8_image4.png&quot; alt=&quot;Abstract Architecture for In Memory caching&quot; width=&quot;750px&quot; /&gt;&lt;br /&gt;
+&lt;span class=&quot;image-caption&quot;&gt;&lt;em&gt;Figure: Abstract Architecture for In Memory caching&lt;/em&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://msdn.microsoft.com/en-us/library/system.runtime.caching.memorycache(v=vs.110).aspx&quot;&gt;MemoryCache Class&lt;/a&gt; is available in .Net &amp;amp; can be leverage for this purpose. Memory cache provides abstraction to store data in named caches in memory. It supports couple of features on top of that like:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Support for different eviction policies.&lt;/li&gt;
+  &lt;li&gt;Callbacks on eviction&lt;/li&gt;
+  &lt;li&gt;Restrictions on percentage of total memory or absolute memory usage.&lt;/li&gt;
+  &lt;li&gt;Option to store data as .Net objects in Memory
+There is a &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/system.runtime.caching.memorycache(v=vs.110).aspx&quot;&gt;very good read here&lt;/a&gt;, if you are interested in learning more.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;pros&quot;&gt;Pros&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;Improve efficiency by reducing I/O involved with downloading data from Azure Storage Blob.&lt;/li&gt;
+  &lt;li&gt;Leverage available memory with virtual machines.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;cons&quot;&gt;Cons&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;Can lead to Out of Memory exceptions if not handled appropriately.&lt;/li&gt;
+  &lt;li&gt;Data still need to be persisted to blob storage as cache is volatile in nature.&lt;/li&gt;
+  &lt;li&gt;In case of multiple worker roles or nodes – the cache miss could be much greater than cache hit; It might not be as useful.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;All that said, using private cache can come in really handy if coupled with partitioned queues available with Service Bus queues.&lt;/p&gt;
+
+&lt;h3 id=&quot;streaming--work-with-streams&quot;&gt;Streaming – work with streams&lt;/h3&gt;
+&lt;p&gt;Most naive approach to working with Blobs could be:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-cmd&quot;&gt;# Saving to blob
+DataModel &amp;gt; Serialization to JSON String &amp;gt; convert to bytes []
+    &amp;gt; Zip to byte[] &amp;gt; Serialize &amp;gt; Upload to blob as string
+
+# Reading from blob
+Download from blob to string &amp;gt; Deserialize to byte[] 
+    &amp;gt; Unzip to byte [] &amp;gt; Deserialize to JSON String
+    &amp;gt; DataModel
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Yes, the last serialization is an overhead but it’s possibly a general approach. This can be made more optimized like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-cmd&quot;&gt;# Saving to blob
+DataModel &amp;gt; JSONWriter &amp;gt; MemoryStream &amp;gt; GZipStream 
+    &amp;gt; Upload byte [] to blob
+
+# Reading from blob
+Download byte[] from blob &amp;gt; GZipStream &amp;gt; MemoryStream
+    &amp;gt; JSONWriter &amp;gt; DataModel
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This can help resolve multiple serialization, de-serialization and OOM issues.&lt;/p&gt;
+
+&lt;h3 id=&quot;md5-checks--remove-redundant-integrity-checks&quot;&gt;MD5 Checks – remove redundant integrity checks&lt;/h3&gt;
+&lt;p&gt;Azure Storage Blob uses MD5 hash check for checking the integrity of data. This is done at different levels; In case of PUT operations – the MD5 is computed at the client and checked at the service and vice versa in case of GET operations. However, this is not needed if you enforce HTTPS only transport mechanism – which can be done in Azure Storage Blob. If HTTPS only is enabled then MD5 check is a redundant integrity check. It can be done in following way:&lt;/p&gt;
+
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//// Upload data to blob&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;UploadData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataModel&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blobName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;BlobRequestOptions&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blobRequestOption&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;BlobRequestOptions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;DisableContentMD5Validation&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;false&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+            
+  &lt;span class=&quot;c1&quot;&gt;//// define cloudBlobContainer above&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;CloudBlockBlob&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockBlob&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cloudBlobContainer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;GetBlockBlobReference&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;blobName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;blockBlob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;UploadText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;JsonConvert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;SerializeObject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blobRequestOption&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;//// Upload data to blob&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DataModel&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;DownloadData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blobName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;BlobRequestOptions&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blobRequestOption&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;BlobRequestOptions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;DisableContentMD5Validation&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;false&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+            
+  &lt;span class=&quot;c1&quot;&gt;//// define cloudBlobContainer above&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;CloudBlockBlob&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockBlob&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cloudBlobContainer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;GetBlockBlobReference&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;blobName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockBlob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;DownloadText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blobRequestOption&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JsonConvert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DeserializeObject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;protocol-buffer&quot;&gt;Protocol Buffer?&lt;/h3&gt;
+&lt;p&gt;I haven’t done much research on this topic but a top level reading suggests promising results. Following article may help further, I’ll perform some experiments and share the results:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://auth0.com/blog/beating-json-performance-with-protobuf/&quot;&gt;https://auth0.com/blog/beating-json-performance-with-protobuf/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/36477423/serializing-a-very-large-list-of-items-into-azure-blob-storage-using-c-sharp?utm_medium=organic&amp;amp;utm_source=google_rich_qa&amp;amp;utm_campaign=google_rich_qa&quot;&gt;A decent stack-overflow read on this&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/49613999/how-to-serialize-a-large-object-zip-it-and-upload-to-azure-storage-blob-in-effi&quot;&gt;StackOverflow question&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;If you are consuming a type that uses unmanaged resources, you should be sure to call its &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/system.idisposable.dispose(v=vs.110).aspx&quot;&gt;IDisposable.Dispose&lt;/a&gt; method when you have finished using it.&lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+        <pubDate>Tue, 03 Apr 2018 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/efficiently-writing-large-objects-to-azure-blob-storage-json-compression-caching-streaming-in-net/</link>
+        <guid isPermaLink="true">http://localhost:4000/efficiently-writing-large-objects-to-azure-blob-storage-json-compression-caching-streaming-in-net/</guid>
+      </item>
+    
+      <item>
+        <title>Support for custom logging in CSRF Protector Library and more</title>
+        <description>&lt;h1 id=&quot;here-are-a-few-updates-to-csrf-protector-library-lets-call-it-version-101&quot;&gt;Here are a few updates to CSRF Protector Library. Let’s call it version 1.0.1&lt;/h1&gt;
+
+&lt;h2 id=&quot;major-features&quot;&gt;Major features&lt;/h2&gt;
+&lt;h3 id=&quot;1-support-for-custom-logger&quot;&gt;1. Support for custom logger&lt;/h3&gt;
+&lt;p&gt;So with insufficient logging and monitoring in OWASP Top 10 2017, logging and monitoring is more serious concern than ever now. So far, CSRF Protector had support for file based logging only, and it was required by the library to have logging path (absolute or relative) mentioned in the config file. It’s a problem for developers who try to integrate it with an existing application which has it’s own logger implemented or if there are organisational policies in place which enforces certain kind of logging.&lt;/p&gt;
+
+&lt;p&gt;Only way to deal with this was modifying the logger method coupled with the library. In latest change I have decoupled the logger object with the library and developer can initialize the library to use custom logger.The &lt;code class=&quot;highlighter-rouge&quot;&gt;csrfProtector::init&lt;/code&gt; method now accepts an additional optional parameter &lt;code class=&quot;highlighter-rouge&quot;&gt;$logger&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$action&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$logger&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This is supposed to be an object of a class that implements the &lt;a href=&quot;https://github.com/mebjas/CSRF-Protector-PHP/blob/master/libs/csrf/LoggerInterface.php&quot;&gt;LoggerInterface&lt;/a&gt; interface.&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LoggerInterface&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$context&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In case the parameter is not provided – the default file based logger – &lt;a href=&quot;https://github.com/mebjas/CSRF-Protector-PHP/blob/master/libs/csrf/csrfpDefaultLogger.php&quot;&gt;csrfpDefaultLogger&lt;/a&gt; is used;&lt;/p&gt;
+
+&lt;h3 id=&quot;2-x-csrf-protection-removed-from-response-header&quot;&gt;2. X-CSRF-Protection removed from response header.&lt;/h3&gt;
+&lt;p&gt;This can make applications vulnerable to known vulnerabilities in libraries. This was reported by a developer.&lt;/p&gt;
+
+&lt;h3 id=&quot;and-more-minor-improvements-like&quot;&gt;And more minor improvements like:&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Options added to make CSRF Token in cookie https only and it’s expiry time configurable.&lt;/li&gt;
+  &lt;li&gt;Log path in configuration file (logDirectory) can be absolute or relative.&lt;/li&gt;
+  &lt;li&gt;Url path in the configuration file can be set to false if developers want to include it themselves in HTML output.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Last three changes (including this) were done by &lt;a href=&quot;https://github.com/bstoney&quot;&gt;Brad Stoney&lt;/a&gt;, thanks to him!&lt;/p&gt;
+
+&lt;p&gt;Also, here’s link to latest release: &lt;a href=&quot;https://github.com/mebjas/CSRF-Protector-PHP/releases&quot;&gt;https://github.com/mebjas/CSRF-Protector-PHP/releases&lt;/a&gt;&lt;/p&gt;
+
+&lt;!--
+
+comment
+&gt; Michael : August 6, 2018
+Hi Hector,
+I am a developer and I use structured PHP for my websites. How do I implement CSRF protection the simplest way posible??
+
+&gt;&gt; admin: September 9, 2018
+
+Hello Michael,
+You can either use composer to install this library or download this offline and place this in appropriate location with respect to the project you want to protect against CSRF;
+
+After that, you need to copy the config file ./libs/config.sample.php to ./libs/config.php and change certain values as explained here – https://github.com/mebjas/CSRF-Protector-PHP/blob/master/libs/README.md
+
+After that, just add this to the files you want to protect or one common file included by all;
+
+
+&lt; ?php
+include_once __DIR__ .’/vendor/owasp/csrf-protector-php/libs/csrf/csrfprotector.php’;
+
+//Initialise CSRFGuard library
+csrfProtector::init();
+
+Find more details here – https://github.com/mebjas/CSRF-Protector-PHP
+
+&gt; faten hamamah : September 25, 2018
+hi hector,
+I am a developer and I use structured PHP for my website. I’d already implement CSRF protection and included in my config but when I try to login to my website, it always display “403” error. how do i fix this?
+ 
+&gt;&gt; admin : October 14, 2018
+Thanks for creating an issue for this at Github Repository; I’ll follow up there – https://github.com/mebjas/CSRF-Protector-PHP/issues/100
+
+--&gt;
+</description>
+        <pubDate>Sat, 17 Mar 2018 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/support-for-custom-logging-csrf-protector-library-and-more/</link>
+        <guid isPermaLink="true">http://localhost:4000/support-for-custom-logging-csrf-protector-library-and-more/</guid>
+      </item>
+    
+      <item>
+        <title>Compress sequence of UNIX timestamps with microseconds accuracy to ~10bits/timestamp</title>
+        <description>&lt;h2 id=&quot;problem-setup&quot;&gt;Problem Setup&lt;/h2&gt;
+&lt;p&gt;There is a stream of timestamps that need to be transferred across some network stream. The goal is to compress this sequence of timestamps with microseconds accuracy, in lossless fashion. Also the encoding and decoding process should be very fast so that it can scale for time critical processes;&lt;/p&gt;
+
+&lt;h3 id=&quot;some-assumptions&quot;&gt;Some assumptions&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;The data to be transmitted consists of a sequence of real time unix timestamps with microsecond accuracy.&lt;/li&gt;
+  &lt;li&gt;Timestamps are always increasing.&lt;/li&gt;
+  &lt;li&gt;In this dataset timestamps belong to 24 hour range (however this shouldn’t affect the algorithm).&lt;/li&gt;
+  &lt;li&gt;Consider it a stream of timestamps, so classical compression algorithms might not work. The alogrithm should be able to start and stop at any index of timestamp.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;expected-flow&quot;&gt;Expected Flow&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&quot;language-cmd&quot;&gt;timestamps -&amp;gt;­­ ENCODER -&amp;gt; encoded_timestamps -&amp;gt;­­ DECODER -&amp;gt; decoded_timestamps
+
+IF timestamps == decoded_timestamps: SUCCESS
+ELSE: FAIL
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
+&lt;p&gt;So a single timestamp looks like &lt;code class=&quot;highlighter-rouge&quot;&gt;1364281200.078739&lt;/code&gt; with micro seconds accuracy. The input file it is stored in, is in raw format and it’s treated as charecters so every timestamp along with newline charecter will take:&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;18 charecters = 18 bytes = 144 bits&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Total no of timestamps in file = &lt;code class=&quot;highlighter-rouge&quot;&gt;451210 = 7.74MB = 8121779 bytes&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;attempt-01&quot;&gt;Attempt 01&lt;/h3&gt;
+&lt;p&gt;The data need not be stored as raw text, if we simply remove the dot and newline charecter itself, it reduces the data to &lt;code class=&quot;highlighter-rouge&quot;&gt;16 bytes/timestamp&lt;/code&gt; i.e. &lt;code class=&quot;highlighter-rouge&quot;&gt;128 bits/timestamp&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now each timestamp in here can be stored in &lt;code class=&quot;highlighter-rouge&quot;&gt;7 bytes&lt;/code&gt; (either store it as a single value, removing dot or consider both of them separate – A.B, such that A part need &lt;code class=&quot;highlighter-rouge&quot;&gt;4 bytes&lt;/code&gt; (&lt;code class=&quot;highlighter-rouge&quot;&gt;32 bits&lt;/code&gt;) &amp;amp; B part needs &lt;code class=&quot;highlighter-rouge&quot;&gt;3 bytes&lt;/code&gt; (max value possible is 999999 – it can be stored in &lt;code class=&quot;highlighter-rouge&quot;&gt;20 bits&lt;/code&gt;, but reserving space for now, will optimize later)). So with this we can reduce the data to &lt;code class=&quot;highlighter-rouge&quot;&gt;7Bytes = 56bits/timestamp&lt;/code&gt; if stored in binary format.&lt;/p&gt;
+
+&lt;p&gt;However, in the first approach itself I’d like to take advantage of the fact that these are increasing timestamps. So rather than storing the whole value we can store the delta. So I will store the first value as is: &lt;code class=&quot;highlighter-rouge&quot;&gt;7Bytes&lt;/code&gt;. From the 2nd timestamp I’ll store them as delta with previous value.&lt;/p&gt;
+
+&lt;p&gt;Here’s some analysis before I do the math for the given dataset: the distribution of delta of the integer part:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;DeltaValue&lt;/th&gt;
+      &lt;th&gt;Frequency&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;423898&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;17439&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;4215&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;1892&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;1092&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;2348&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;105&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;7&lt;/td&gt;
+      &lt;td&gt;68&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;8&lt;/td&gt;
+      &lt;td&gt;50&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;9&lt;/td&gt;
+      &lt;td&gt;29&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td&gt;22&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;11&lt;/td&gt;
+      &lt;td&gt;19&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;12&lt;/td&gt;
+      &lt;td&gt;5&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;13&lt;/td&gt;
+      &lt;td&gt;7&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;14&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;15&lt;/td&gt;
+      &lt;td&gt;4&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;16&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;17&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;18&lt;/td&gt;
+      &lt;td&gt;2&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;19&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;20&lt;/td&gt;
+      &lt;td&gt;2&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;22&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;24&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;28&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;32&lt;/td&gt;
+      &lt;td&gt;2&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/post6_image1.png&quot; alt=&quot;histogram&quot; width=&quot;750px&quot; /&gt;&lt;br /&gt;
+&lt;span class=&quot;image-caption&quot;&gt;&lt;em&gt;Figure: Distribution of delta values&lt;/em&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;So majorly (&amp;gt; 50%) is 0 delta or 1 delta. Since the smallest size of data that can be written to a file is &lt;code class=&quot;highlighter-rouge&quot;&gt;1 byte&lt;/code&gt;, we shall encode data in byte by byte format. We’d want to store delta values with high distribution in smaller size chunks to reduce size. So I’ll encode them with bit prefixes something like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-cmd&quot;&gt;00 000000 - indicates zero delta.
+01 000000 - indicates '1' delta
+10 xxxxxx xxxxxxxx xxxxxxxx - indicates delta between [2,32], will have to read next 22 bits to encode information about the delta value.
+11 xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx - indicates possible delta value 4bytes will be read.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For now Will plainly encode the decimal value (with &lt;code class=&quot;highlighter-rouge&quot;&gt;999999&lt;/code&gt; as maxvalue) in &lt;code class=&quot;highlighter-rouge&quot;&gt;20 bits&lt;/code&gt; after the int value. We will need one more bit to store negative value. So total &lt;code class=&quot;highlighter-rouge&quot;&gt;21 bits&lt;/code&gt; for decimal value. This way size requirements shall be:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-cmd&quot;&gt;4Byte + 3Byte + (21bits * 452109) + (2*423898 + 2*17439 + 8*9873) = 10456003 bits
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Which gives us&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;= 23.127 bits/timestamp&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I’ll implement this as first version and try to achieve this theoretical number.&lt;/p&gt;
+
+&lt;h4 id=&quot;summary-of-implementation&quot;&gt;SUMMARY of implementation&lt;/h4&gt;
+&lt;p&gt;As mentioned before, without buffering values in memory, we can only write byte by byte to file. Hence, for first two cases (&lt;code class=&quot;highlighter-rouge&quot;&gt;00 &amp;amp; 01&lt;/code&gt;) &lt;code class=&quot;highlighter-rouge&quot;&gt;1 byte&lt;/code&gt; is used and for case 3 (&lt;code class=&quot;highlighter-rouge&quot;&gt;10&lt;/code&gt;) – &lt;code class=&quot;highlighter-rouge&quot;&gt;4 bytes&lt;/code&gt; are used and for case 4 (not found in testfile) – &lt;code class=&quot;highlighter-rouge&quot;&gt;7 bytes&lt;/code&gt; are supposed to be used.&lt;/p&gt;
+
+&lt;p&gt;After running the code, it reduced the file to &lt;code class=&quot;highlighter-rouge&quot;&gt;1345 Kb&lt;/code&gt; = &lt;code class=&quot;highlighter-rouge&quot;&gt;1377280 bytes&lt;/code&gt; which is equal to &lt;code class=&quot;highlighter-rouge&quot;&gt;24.419Bits / timestamp&lt;/code&gt;. So this satisfies the minimum criteria but it is pretty far away from &lt;code class=&quot;highlighter-rouge&quot;&gt;10bits/timestamp&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Ok, compression ratio is not awesome, &lt;strong&gt;but C++, IO &amp;amp; Bits manipulation skills are now brushed up&lt;/strong&gt;. Will try a better approach now.&lt;/p&gt;
+
+&lt;p&gt;SO FAR: &lt;strong&gt;23.127 bits / timestamp :)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;attempt-2&quot;&gt;Attempt 2&lt;/h3&gt;
+&lt;p&gt;Looking at the integer value and decimal value is adding overheads. I’d rather look at the number on the whole. Quickly calculated the delta values between consecutive numbers using simple python script ` = helper.py`. Using Microsoft Excel - here’s the histogram based on no of bits needed to store the delta values:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;bits needed&lt;/th&gt;
+      &lt;th&gt;bin&lt;/th&gt;
+      &lt;th&gt;frequency&lt;/th&gt;
+      &lt;th&gt;Percentage&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;235916&lt;/td&gt;
+      &lt;td&gt;52.28530459&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;357&lt;/td&gt;
+      &lt;td&gt;0.079120762&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;58&lt;/td&gt;
+      &lt;td&gt;0.012854354&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;8&lt;/td&gt;
+      &lt;td&gt;24&lt;/td&gt;
+      &lt;td&gt;0.005319043&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;16&lt;/td&gt;
+      &lt;td&gt;24&lt;/td&gt;
+      &lt;td&gt;0.005319043&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;32&lt;/td&gt;
+      &lt;td&gt;17&lt;/td&gt;
+      &lt;td&gt;0.003767655&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;7&lt;/td&gt;
+      &lt;td&gt;64&lt;/td&gt;
+      &lt;td&gt;78&lt;/td&gt;
+      &lt;td&gt;0.017286889&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;8&lt;/td&gt;
+      &lt;td&gt;128&lt;/td&gt;
+      &lt;td&gt;9073&lt;/td&gt;
+      &lt;td&gt;2.01081982&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;9&lt;/td&gt;
+      &lt;td&gt;256&lt;/td&gt;
+      &lt;td&gt;35824&lt;/td&gt;
+      &lt;td&gt;7.939557943&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td&gt;512&lt;/td&gt;
+      &lt;td&gt;35823&lt;/td&gt;
+      &lt;td&gt;7.939336316&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;11&lt;/td&gt;
+      &lt;td&gt;1024&lt;/td&gt;
+      &lt;td&gt;23095&lt;/td&gt;
+      &lt;td&gt;5.118470598&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;12&lt;/td&gt;
+      &lt;td&gt;2048&lt;/td&gt;
+      &lt;td&gt;11143&lt;/td&gt;
+      &lt;td&gt;2.469587264&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;13&lt;/td&gt;
+      &lt;td&gt;4096&lt;/td&gt;
+      &lt;td&gt;9505&lt;/td&gt;
+      &lt;td&gt;2.106562591&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;14&lt;/td&gt;
+      &lt;td&gt;8192&lt;/td&gt;
+      &lt;td&gt;9338&lt;/td&gt;
+      &lt;td&gt;2.06955091&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;15&lt;/td&gt;
+      &lt;td&gt;16384&lt;/td&gt;
+      &lt;td&gt;10605&lt;/td&gt;
+      &lt;td&gt;2.350352054&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;16&lt;/td&gt;
+      &lt;td&gt;32768&lt;/td&gt;
+      &lt;td&gt;10017&lt;/td&gt;
+      &lt;td&gt;2.220035505&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;17&lt;/td&gt;
+      &lt;td&gt;65536&lt;/td&gt;
+      &lt;td&gt;9048&lt;/td&gt;
+      &lt;td&gt;2.00527915&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;18&lt;/td&gt;
+      &lt;td&gt;131072&lt;/td&gt;
+      &lt;td&gt;9690&lt;/td&gt;
+      &lt;td&gt;2.147563546&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;19&lt;/td&gt;
+      &lt;td&gt;262144&lt;/td&gt;
+      &lt;td&gt;9818&lt;/td&gt;
+      &lt;td&gt;2.175931774&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;20&lt;/td&gt;
+      &lt;td&gt;524288&lt;/td&gt;
+      &lt;td&gt;9622&lt;/td&gt;
+      &lt;td&gt;2.132492925&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;21&lt;/td&gt;
+      &lt;td&gt;1048576&lt;/td&gt;
+      &lt;td&gt;8796&lt;/td&gt;
+      &lt;td&gt;1.9494292&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;22&lt;/td&gt;
+      &lt;td&gt;2097152&lt;/td&gt;
+      &lt;td&gt;6608&lt;/td&gt;
+      &lt;td&gt;1.464509795&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;23&lt;/td&gt;
+      &lt;td&gt;4194304&lt;/td&gt;
+      &lt;td&gt;3819&lt;/td&gt;
+      &lt;td&gt;0.846392692&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;24&lt;/td&gt;
+      &lt;td&gt;8388608&lt;/td&gt;
+      &lt;td&gt;2806&lt;/td&gt;
+      &lt;td&gt;0.621884759&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;25&lt;/td&gt;
+      &lt;td&gt;16777216&lt;/td&gt;
+      &lt;td&gt;95&lt;/td&gt;
+      &lt;td&gt;0.021054545&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;26&lt;/td&gt;
+      &lt;td&gt;33554432&lt;/td&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td&gt;0.002216268&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;27&lt;/td&gt;
+      &lt;td&gt;67108864&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;28&lt;/td&gt;
+      &lt;td&gt;134217728&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;29&lt;/td&gt;
+      &lt;td&gt;268435456&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;30&lt;/td&gt;
+      &lt;td&gt;536870912&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;31&lt;/td&gt;
+      &lt;td&gt;1073741824&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/post6_image2.png&quot; alt=&quot;histogram&quot; width=&quot;750px&quot; /&gt;&lt;br /&gt;
+&lt;span class=&quot;image-caption&quot;&gt;&lt;em&gt;Figure: Distribution of decimal values&lt;/em&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;So greater than 50% of delta values are between [0,1]. And a good portion of them lie between [2, 14] bits needed. So if we encode it as following:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-cmd&quot;&gt;Summaries   Count	BITS	Storage pattern
+[0,1]	    235916	2	    00 000000 = 0 &amp;amp; 01 000000 = 1
+[2, 14]	    125021	16	    10 xxxxxx xxxxxxxx
+REST	    90272	32	    11 xxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This way total no of bits needed will be: &lt;code class=&quot;highlighter-rouge&quot;&gt;64 + 8 * 235916 + 16 * 125021 + 32 * 90272 = 6776432&lt;/code&gt; i.e. &lt;code class=&quot;highlighter-rouge&quot;&gt;15.0183 bits / timestamp&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now we are wasting around 75% space when storing 0 or 1, as only two bits are needed to encode them. Will try to encode more information in these regions in coming attempts.&lt;/p&gt;
+
+&lt;p&gt;The result after experimentation are - sample dataset reduced to&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;807168 bytes = 14.311 bits / timestamp&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;As a minor optimisation, I have changed code to store &lt;code class=&quot;highlighter-rouge&quot;&gt;[15, 22] bit&lt;/code&gt; delta values in &lt;code class=&quot;highlighter-rouge&quot;&gt;3 bytes&lt;/code&gt;. After this size of encoded file is:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;739750 bytes = 13.1158 bits / Timestamp&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;SO FAR: &lt;strong&gt;13.115 bits / timestamp&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;attempt-03&quot;&gt;Attempt 03&lt;/h3&gt;
+&lt;p&gt;Untill now the algorithm was purely looking at information that came so far. To compress further I’m going to have look ahead logic now. There were a lot of cases where large delta’s were followed by single 0 or 1. So shall reserve the two bits at the end of bigger models =&amp;gt; (2, 3 &amp;amp; 4 byte models) with following information:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-cmd&quot;&gt;01 - if followed by a 0
+10 - if followed by a 1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So everytime we observe a large delta, rather than writing to file immediately we’ll buffer the data and write if next timestamp match the condition (delta being 0 or 1). By just encoding next one or zero in previous set of information, was able to reduce the encoded data to:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;600125 bytes = 10.64 bits / timestamp&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;After this added one more level of buffering to encode sequence of two zeros (two consequtive zeros) as &lt;code class=&quot;highlighter-rouge&quot;&gt;11&lt;/code&gt;. That brought encoded file size down to&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;584352 bytes = 10.36 bits / timestamp&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;SO FAR: &lt;strong&gt;10.36 bits / timestamp&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;attempt-04&quot;&gt;Attempt 04&lt;/h3&gt;
+&lt;p&gt;In case of one byte model where we encode 0 or 1 (without any buffering) as &lt;code class=&quot;highlighter-rouge&quot;&gt;00000000&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;00100000&lt;/code&gt; respectively, the last &lt;code class=&quot;highlighter-rouge&quot;&gt;5 bits&lt;/code&gt; do not contain any information and are free and it can be used to store &lt;code class=&quot;highlighter-rouge&quot;&gt;32 unique sequences of 0 &amp;amp; 1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now if the sequence of delta is like &lt;code class=&quot;highlighter-rouge&quot;&gt;0 0 0 1 0 1 0&lt;/code&gt;, we can use the remaining bits in &lt;code class=&quot;highlighter-rouge&quot;&gt;1 byte&lt;/code&gt; model to encode them. I tried doing this - ffter a 0 or 1 if next delta is 0 or 1 I’d encode 10 or 01 in free bit space in &lt;code class=&quot;highlighter-rouge&quot;&gt;1 byte&lt;/code&gt; model. With this I got an encoded file of:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;569463 bytes = 10.097 bits / timestamp&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;If we build a mapping of sequences based on popularity and encode them in these bits when observed we’d be able to reduce the data further.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;TODO(mebjas): Find the most popular sequence and encode them in free bits.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;so-finally-10097-bitstimestamp&quot;&gt;SO FINALLY: 10.097 bits/timestamp&lt;/h3&gt;
+&lt;p&gt;Also, this one is not the part of solution I implemented but if we zip the encoded file it’s further reduced to&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;527355 bytes = 9.35 bits / timestamp&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Which is: &lt;strong&gt;93.50 % Lossless compression&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;appendix&quot;&gt;Appendix&lt;/h2&gt;
+&lt;h3 id=&quot;source-code&quot;&gt;Source Code&lt;/h3&gt;
+&lt;p&gt;Find the source code here: &lt;a href=&quot;https://github.com/mebjas/timestamp_compression&quot;&gt;mebjas/timestamp_compression&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;how-to-build-and-test&quot;&gt;How to build and test&lt;/h4&gt;
+&lt;p&gt;The code is written as a &lt;code class=&quot;highlighter-rouge&quot;&gt;VC++&lt;/code&gt; project. You might need Visual Studio (Windows) to compile &amp;amp; test. It has some dependency on Windows (I have used &lt;code class=&quot;highlighter-rouge&quot;&gt;windows.h&lt;/code&gt; header for some profiling tasks, but that can be removed). If you face troube compiling this project, check this out - &lt;a href=&quot;https://stackoverflow.com/questions/37575454/how-to-compile-windows-visual-c-code-on-linux&quot;&gt;How to compile windows visual C++ code on linux&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;In windows, open &lt;code class=&quot;highlighter-rouge&quot;&gt;VSProject\TC.sln&lt;/code&gt;, build the solution and run. the dataset file is included in the solution (&amp;amp; copied to output path during build. the output file is generated in &lt;code class=&quot;highlighter-rouge&quot;&gt;VSProject\TC\&lt;/code&gt;). An executable is generated at &lt;code class=&quot;highlighter-rouge&quot;&gt;VSProject\Debug\TC.exe&lt;/code&gt; after the build is complete.&lt;/p&gt;
+
+&lt;p&gt;You can run against the binary I built in my system, it’s there in root folder of the zip: &lt;code class=&quot;highlighter-rouge&quot;&gt;TC.exe&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;encoding
+&lt;span class=&quot;go&quot;&gt;TC.exe -e timestamps.txt timestamps_encoded.txt
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;decoding
+&lt;span class=&quot;go&quot;&gt;TC.exe -d timestamps_encoded.txt timestamps_decoded.txt
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;validation &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;using FC utility, alternative to diff &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;linux&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;FC timestamps.txt timestamps_decoded.txt
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There is &lt;code class=&quot;highlighter-rouge&quot;&gt;test.cmd&lt;/code&gt; to try this out. Here’s sample output I got:&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;TC.exe &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; timestamps.txt timestamps_encoded.txt
+&lt;span class=&quot;go&quot;&gt;Begin Encoding
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;Encoding done;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;Processed: 451210 rows
+&lt;span class=&quot;go&quot;&gt;Time taken (in micro seconds) : 9798.17
+Avg Time taken (in micro seconds) : 0.0217153
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;TC.exe &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; timestamps_encoded.txt timestamps_decoded.txt
+&lt;span class=&quot;go&quot;&gt;Begin Decoding
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;Decoding done;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;Processed: 451210 rows
+&lt;span class=&quot;go&quot;&gt;Time taken (in micro seconds) : 8218.85
+Avg Time taken (in micro seconds) : 0.0182151
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;FC timestamps.txt timestamps_decoded.txt
+&lt;span class=&quot;go&quot;&gt;Comparing files timestamps.txt and TIMESTAMPS_DECODED.TXT
+FC: no differences encountered
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;how-to-validate&quot;&gt;How to validate&lt;/h4&gt;
+&lt;p&gt;In windows:&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;cd VSProject\TC\
+FC timestamps.txt timestamps_decoded.txt\
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Output I got:&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;Comparing files timestamps.txt and TIMESTAMPS_DECODED.TXT
+FC: no differences encountered
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;metrics-also-available-in-metricstxt&quot;&gt;Metrics (also available in .\metrics.txt)&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;Degree of compression&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;In the final attemp was able to reduce the data to: &lt;code class=&quot;highlighter-rouge&quot;&gt;569463 bytes = 10.097 bits / timestamp&lt;/code&gt; which is equivalent to &lt;code class=&quot;highlighter-rouge&quot;&gt;92.98% lossless compression&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Time taken: (Encoding)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Encoding: &lt;code class=&quot;highlighter-rouge&quot;&gt;9798.17ms&lt;/code&gt; (total) =&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;0.0217153ms / timestamp&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Time taken: (Decoding)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Decoding: &lt;code class=&quot;highlighter-rouge&quot;&gt;8218.85ms&lt;/code&gt; (total) =&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;0.0182151 / timestamp&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;ideas-to-further-improve-the-model&quot;&gt;Ideas to further improve the model&lt;/h3&gt;
+&lt;p&gt;1 byte model has 5 (can even use 6) empty bits, can use that to represent 63 different sequences.&lt;/p&gt;
+
+&lt;h3 id=&quot;summary&quot;&gt;Summary:&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;This was a very goof fun exercise to refresh VC++ skills, IO skills &amp;amp; Bits Manipulation skills.&lt;/li&gt;
+  &lt;li&gt;Also a good reminder of how many things we just take for granted when working on high level languages.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Fri, 10 Nov 2017 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/compress-sequence-of-unix-timestamps-with-microseconds-accuracy-to-10-bit-accuracy/</link>
+        <guid isPermaLink="true">http://localhost:4000/compress-sequence-of-unix-timestamps-with-microseconds-accuracy-to-10-bit-accuracy/</guid>
+      </item>
+    
+      <item>
+        <title>Introducing minor improvements to CSRF Protector PHP</title>
+        <description>&lt;p&gt;The OWASP CSRF Protector project started with an aim to develop a solution that can mitigate Cross Site Request Forgery in web applications without much developer effort. The most common solution for mitigating CSRF is using a token which cannot be retrieved by the attacker, thus ensuring the authenticity of the incoming request to the server. &lt;a href=&quot;https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)&quot;&gt;OWASP Wiki on CSRF&lt;/a&gt; is a good place to learn more about CSRF. Unlike most of other solutions CSRFProtector works as an interceptor and take care of the inner details like – attaching the token with every request from client and validating them at the server. This project started as a part of Google Summer of Code 2014.&lt;/p&gt;
+
+&lt;p&gt;We have recently released v1.0.0 of &lt;a href=&quot;https://github.com/mebjas/CSRF-Protector-PHP&quot;&gt;CSRF Protector PHP&lt;/a&gt;. These improvements / fixes were based on issues raised by different users. Here’s the two major changes that we have introduced and why:&lt;/p&gt;
+
+&lt;h3 id=&quot;1-added-support-for-applicationjson-content-type&quot;&gt;1. Added support for application/json content-type.&lt;/h3&gt;
+&lt;p&gt;This issue was raised by couple of users – &lt;a href=&quot;https://github.com/mebjas/CSRF-Protector-PHP/issues/80&quot;&gt;issue#80&lt;/a&gt;. The problem here was:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;we were getting false negative when requests were sent as a POST request with application/json Content-Type.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The reason for this was the design of the library itself. Until now, for all POST requests the CSRF token was expected to come as a POST payload. The server read it from super global &lt;code class=&quot;highlighter-rouge&quot;&gt;$_POST&lt;/code&gt; array. Now in case of POST request the payload can also be sent with request body and in such cases the payload is not available in &lt;code class=&quot;highlighter-rouge&quot;&gt;$_POST&lt;/code&gt; array. The payload is then retrieved via php input stream (&lt;code class=&quot;highlighter-rouge&quot;&gt;php://input&lt;/code&gt;). That was causing the false negative in this case.&lt;/p&gt;
+
+&lt;h4 id=&quot;to-solve-this-we-thought-of-couple-of-solutions-like&quot;&gt;To solve this, we thought of couple of solutions like:&lt;/h4&gt;
+&lt;p&gt;If the &lt;code class=&quot;highlighter-rouge&quot;&gt;Content-Type header&lt;/code&gt; is set as &lt;code class=&quot;highlighter-rouge&quot;&gt;application/json&lt;/code&gt; on client side, we have a wrapper around the &lt;code class=&quot;highlighter-rouge&quot;&gt;XMLHttpRequest&lt;/code&gt; Send method, which can intercept the stringified JSON payload, deserialize it, attach the token as a &lt;code class=&quot;highlighter-rouge&quot;&gt;{key: value}&lt;/code&gt; and send it to server. On the server side, the CSRFProtector interceptor will read the payload from &lt;code class=&quot;highlighter-rouge&quot;&gt;php://input&lt;/code&gt;. You can read more about wrappers like &lt;code class=&quot;highlighter-rouge&quot;&gt;php://input&lt;/code&gt; here.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;php://input is a read-only stream that allows you to read raw data from the request body. However the problem here is – it can only be read once, which makes it inaccessible to actual business logic.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Another suggestion was to just append the token in front of the serialized JSON and send it as a POST payload. On the server side since the length of the token in known, if the &lt;code class=&quot;highlighter-rouge&quot;&gt;$_REQUEST Content-Type&lt;/code&gt; is &lt;code class=&quot;highlighter-rouge&quot;&gt;application/json&lt;/code&gt; (or some variety of that) the interceptor will read X characters from the &lt;code class=&quot;highlighter-rouge&quot;&gt;php://input&lt;/code&gt; input stream (X = length of token) such that rest of the payload will still be seekable. This however, seemed to be an ugly hack. Imagine your data being transferred like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;abcde323{“key1”: “value1”, “key2”: “value2”}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Also, it was a lot of overhead from client side as well.&lt;/p&gt;
+
+&lt;h5 id=&quot;final-solution&quot;&gt;Final Solution&lt;/h5&gt;
+&lt;p&gt;So to deal with this issue, some fundamental design changes were made. So far, the CSRF Token was always carried by the GET request query parameters or simple POST Form payload. With this change, the token will now be carried by a request header in case of AJAX POST request. This is done in the &lt;code class=&quot;highlighter-rouge&quot;&gt;XMLHttpRequest&lt;/code&gt; Send method wrapper by calling &lt;code class=&quot;highlighter-rouge&quot;&gt;setRequestHeader()&lt;/code&gt; method of &lt;code class=&quot;highlighter-rouge&quot;&gt;XMLHttpRequest&lt;/code&gt; class. On the server side, in case of POST request the token is first fetched from &lt;code class=&quot;highlighter-rouge&quot;&gt;$_POST&lt;/code&gt; super global variable. After that it falls back to look for token in request header. If the token is found it’s validated against the values stored at server otherwise the request is set as failed.&lt;/p&gt;
+
+&lt;p&gt;It was fixed with this &lt;a href=&quot;https://github.com/mebjas/CSRF-Protector-PHP/pull/88&quot;&gt;pull request&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;2-made-path-domain-and-secure-property-of-csrf-token-cookie-configurable&quot;&gt;2. Made path, domain and secure property of CSRF Token Cookie configurable.&lt;/h3&gt;
+
+&lt;p&gt;This issue was raised by different users – &lt;a href=&quot;https://github.com/mebjas/CSRF-Protector-PHP/issues/87&quot;&gt;issue#87&lt;/a&gt;, &lt;a href=&quot;https://github.com/mebjas/CSRF-Protector-PHP/issues/86&quot;&gt;issue#86&lt;/a&gt;, &lt;a href=&quot;https://github.com/mebjas/CSRF-Protector-PHP/issues/68&quot;&gt;issue#68&lt;/a&gt; in different manners. The CSRF token is transferred from server to client as a set cookie response header. This header has different properties like – expiry time, path, domain and secure flag. You can read more about them in the &lt;a href=&quot;http://php.net/manual/en/function.setcookie.php&quot;&gt;php.net setcookie reference page&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In the previous version, these properties were set internally by the library and users didn’t have any control over them. However, some users suggested they were using different applications and the cookie was not being set in path they needed, while other asked for control over the secure flag – so that cookies are only set for https requests. In this new version, the properties like: path, domain and secure flag can now be set in config file. The expiry time shall be exposed in upcoming versions.&lt;/p&gt;
+
+&lt;p&gt;It was fixed with this &lt;a href=&quot;https://github.com/mebjas/CSRF-Protector-PHP/pull/89&quot;&gt;pull request&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;future-items&quot;&gt;Future Items&lt;/h3&gt;
+&lt;p&gt;We have following things in pipeline based on active issues:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Make expiry time of the cookie configurable.&lt;/li&gt;
+  &lt;li&gt;Full support for HHVM&lt;/li&gt;
+  &lt;li&gt;IE &amp;lt;= 8 support. This issue has been there open for a while now.
+That said, I’m excited to see how it’s used and what new issues are going to come up in future.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;After all, issues translates to new features and improvements. The code is hosted on Github under the Apache License, Version 2.0. Feel free to use, raise issues or make improvements and send a pull request.&lt;/p&gt;
+
+&lt;h3 id=&quot;references&quot;&gt;References:&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.owasp.org/index.php/CSRFProtector_Project&quot;&gt;CSRF Protector PHP OWASP Wiki&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;CSRF Protector PHP &lt;a href=&quot;https://github.com/mebjas/CSRF-Protector-PHP&quot;&gt;Github Repo&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;a href=&quot;https://github.com/mebjas/CSRF-Protector-PHP/issues&quot;&gt;Issues&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;a href=&quot;https://github.com/mebjas/CSRF-Protector-PHP/wiki&quot;&gt;Wiki&lt;/a&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.slideshare.net/MinhazAv/csrf-protector&quot;&gt;CSRF Protector Slide Deck&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)&quot;&gt;Cross Site Request Forgery&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Sat, 07 Oct 2017 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/introducing-minor-improvements-to-csrf-protector-php/</link>
+        <guid isPermaLink="true">http://localhost:4000/introducing-minor-improvements-to-csrf-protector-php/</guid>
+      </item>
+    
+      <item>
+        <title>A fault tolerant distributed key value store from scratch</title>
+        <description>&lt;p&gt;We had a B-Tech course on Distributed Systems and I took a course on on Cloud Computing Concepts 1 by Dr Indranil Gupta (UIUC) a year back and for long, I have been thinking about trying out different concepts explained in the course together as something meaningful. There are assignments in the course which you need to finish, but they don’t require you to just club all of them together. I wished to try something out where most of the major concepts are used.&lt;/p&gt;
+
+&lt;p&gt;We use distributed systems a lot in our development pipelines, but most of the concepts are abstracted out by the cloud solutions. I work for Microsoft Azure, and we use concepts like scheduling, queuing, distributed caching all the time, but most of these are provided as a SaaS offering – hence it’s mostly:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;n&quot;&gt;Azure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CreateIfNotExists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Azure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;JustDoMostOfItForMe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Azure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Thanks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Well I’m actually grateful for all the offerings we have in 2017, it makes development much faster and takes a lot of headache away. So I’m picking up this fun exercise to refresh the underlying concepts IN MEMORY :D.&lt;/p&gt;
+
+&lt;h2 id=&quot;task-building-a-distributed-key-value-store&quot;&gt;Task: Building a Distributed Key Value Store&lt;/h2&gt;
+&lt;p&gt;A key-value store, or key-value database, is a data storage paradigm designed for storing, retrieving, and managing associative arrays, a data structure more commonly known today as a dictionary or hash. A distributed Key Value store is one where data is replicated across different nodes such that there is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;High Availability, and&lt;/li&gt;
+  &lt;li&gt;No single point of failure&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;distributed-key-value-store&quot;&gt;Distributed Key Value Store&lt;/h2&gt;
+&lt;p&gt;This will provide simple abstraction for CRUD operation on a key value pair. The operations will be exposed using simple rest calls like&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;POST http://localhost:8000/ { key: &amp;lt;key&amp;gt;, value: &amp;lt;value&amp;gt; }
+GET http://localhost:8001/?key=&amp;lt;key&amp;gt;
+DELETE http://localhost:8002/?key=&amp;lt;key&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Plan is to follow a cassandra like architecture where nodes maintain a virtual ring topology and location of key is retrieved based on hash function. Few things I’m gonna follow:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Consistency type: Strong, Quorum based&lt;/li&gt;
+  &lt;li&gt;Membership protocol: SWIM&lt;/li&gt;
+  &lt;li&gt;No authentication or SSL support of as of now – plain old open http&lt;/li&gt;
+  &lt;li&gt;Local clocks will be used, as they are already in sync with system clock.&lt;/li&gt;
+  &lt;li&gt;The data will be stored in memory (in context of the process), no commit logs will be maintained; If all process die or some most die before replication data will be lost.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;setup-and-tests&quot;&gt;Setup and tests&lt;/h2&gt;
+&lt;p&gt;Pre requisite&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Download nodejs and npm for windows&lt;/li&gt;
+  &lt;li&gt;Clone this repo: git clone https://github.com/mebjas/dht-node.git&lt;/li&gt;
+  &lt;li&gt;CD to process dir: cd process – this path contain the code for process&lt;/li&gt;
+  &lt;li&gt;Install the libraries – npm install&lt;/li&gt;
+  &lt;li&gt;Run Tests – npm test&lt;/li&gt;
+  &lt;li&gt;Initialize 24 nodes: cd ..\ &amp;amp;&amp;amp; .\init.cmd&lt;/li&gt;
+  &lt;li&gt;To run just N nodes skip the last step and manually invoke an instance using:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;node process\index.js &amp;lt;portno&amp;gt; &amp;lt;introducer&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;portno&amp;gt;&lt;/code&gt; – port number or this instance
+&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;introducer&amp;gt;&lt;/code&gt; – port number of the introducer to which join request will be sent; Not needed for first instance – it will assume itself to be first instance because of this; I’m not going for any automatic discovery or centralized discovery mechanism here;&lt;/p&gt;
+
+&lt;h2 id=&quot;top-level-architecture&quot;&gt;Top level architecture&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;../images/post2_picture1.png&quot; alt=&quot;architecture&quot; width=&quot;750px&quot; /&gt;
+&lt;br /&gt;&lt;span class=&quot;image-caption&quot;&gt; &lt;em&gt;Figure: Architecture&lt;/em&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;task-11-membership-protocol&quot;&gt;TASK 1.1: Membership Protocol&lt;/h3&gt;
+&lt;p&gt;Implementing SWIM Protocol, where the membership gossips are piggibacked on PING, PING_REQ, JOINREQ, ACK messages. In a given protocol period a node will select a random node and send a ping. If it get’s ACK well and good. It’d stay idle till completion of protocol period.&lt;/p&gt;
+
+&lt;p&gt;If it doesn’t get an ACK, it’d send a PING_REQ message to K random nodes, and they will ping the target node. If any of then send an ACK with in the target period the node is conisedered alive else it’s moved to suspicions state; it no one confirms it’s alive in time &amp;lt; 2 * protocol period – it’s removed from the list; Eventually every other node will detect the node’s failure by pinging it first hand or due to piggybacked response;&lt;/p&gt;
+
+&lt;p&gt;These screenshots are when 8 nodes were joined and two of them crashed&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/post2_image2.png&quot; alt=&quot;Nine nodes detecting other nodes joining in gossip style&quot; width=&quot;750px&quot; /&gt;
+&lt;br /&gt;&lt;span class=&quot;image-caption&quot;&gt; &lt;em&gt;Figure: Nine nodes detecting other nodes joining in gossip style&lt;/em&gt; &lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/post2_image3.png&quot; alt=&quot;After killing two nodes, other seven nodes detected the failure by failure detection and gossip style messaging&quot; width=&quot;750px&quot; /&gt;
+&lt;br /&gt;&lt;span class=&quot;image-caption&quot;&gt; &lt;em&gt;Figure: After killing two nodes, other seven nodes detected the failure by failure detection and gossip style messaging&lt;/em&gt; &lt;/span&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;detecting-failures-in-24-nodes-&quot;&gt;Detecting failures in 24 nodes 😀&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;../images/post2_image4.png&quot; alt=&quot;&quot; width=&quot;750px&quot; /&gt;
+&lt;br /&gt;&lt;span class=&quot;image-caption&quot;&gt; &lt;em&gt;Figure: Did the same with 24 Nodes :D; If you look at the console logs, you can see some nodes detected the failure while others got the information as a gossip&lt;/em&gt; &lt;/span&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;task-12-testing-membership-protocol&quot;&gt;TASK 1.2: Testing Membership Protocol&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Simple unit testing using mocha framework for node js. It’s pretty new to me but seems pretty powerful. I have done basic testing will do advanced ones later. Also since the library depends on HTTP calls some mocks / stubs shall be needed.&lt;/li&gt;
+  &lt;li&gt;To Be Done is end to end testing of membership protocol&lt;br /&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Create nodes&lt;/li&gt;
+      &lt;li&gt;JOIN nodes&lt;/li&gt;
+      &lt;li&gt;FAILURES &amp;amp; Failure detection&lt;/li&gt;
+      &lt;li&gt;Time to detection, accuracy of detection&lt;/li&gt;
+      &lt;li&gt;Emulation of Congestion / Message Drop scenario&lt;/li&gt;
+      &lt;li&gt;High load setup&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;task-2-virtual-ring-topology&quot;&gt;TASK 2: Virtual ring topology&lt;/h2&gt;
+&lt;p&gt;Now that underlying membership protocol works reasonably well and it can both detect failures and diseminate information in Gossip style to other nodes we can build the next layer – the virtual topology. In Cassandra nodes are placed in a virtual ring and the mapping of both keys and nodes position is done using a hash function.&lt;/p&gt;
+
+&lt;p&gt;Each node is a member of the ring and their position is calculated based on a hash function. I have picked the most basic one, as simple as this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hash: function(key) {
+        return key - 8080;
+}
+
+positionInRing = hash(port_no)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;changed-hash-function-to-be-as-simple-as-key---8080-it-can-take-values-between-8080--8336-and-give-a-unique-ring-id-between-0-256-thus-max-ring-size-if-256-for-now&quot;&gt;Changed hash function to be as simple as key - 8080. It can take values between 8080 &amp;amp; 8336 and give a unique ring id between [0, 256). Thus max ring size if 256 for now;&lt;/h5&gt;
+
+&lt;h3 id=&quot;some-other-points&quot;&gt;Some other points&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Ideally, any number of nodes can be created; given their hash shouldn’t collide;&lt;/li&gt;
+  &lt;li&gt;Max Replication per key was set to 3, can be tested with more;&lt;/li&gt;
+  &lt;li&gt;Quorum count in this case was set to 2;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;flow&quot;&gt;Flow:&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;For every request (CRUD) the hash of key is computed and it gives an index in range [0, no of nodes). Replication is done from this index to next X nodes in ring (given by MaxReplicationCount). If number of nodes is less than this value all nodes replicate all key value pair;&lt;/li&gt;
+  &lt;li&gt;Requests are sent to all replicas and once the quorum has replied with +ve response the response is sent to client – CRUD;&lt;/li&gt;
+  &lt;li&gt;In case of failure to obtain a quorum request is replied with failure;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;task-3-storage-replication--stabilization&quot;&gt;TASK 3: Storage Replication &amp;amp; Stabilization&lt;/h2&gt;
+&lt;p&gt;Storage of data is abstracted out by datastore.js. Replication is done based on this approach:&lt;/p&gt;
+
+&lt;h3 id=&quot;31-write-request&quot;&gt;3.1 WRITE REQUEST:&lt;/h3&gt;
+&lt;p&gt;Client can send a WRITE REQUEST to any node, with a key-value pair; During the life-cycle of this request, this node will act as a coordinator; The coordinator will calculate the hash of the key and will be able to identify the nodes where this key should be stored. Essentially the hash function will point to one node, let’s call it primary store for the key. In my approach there will be NoOfReplicas = MaxReplicationCount - 1 replicas as well. The NoOfReplicas nodes after the primary store for the key in the ring will be selected as replicas; The coordinator will send the internal write request to each of this node and wait for response; As soon as responses from quorumCount no of nodes come back, the write request will be set as done and success code is returned to client; Otherwise in case of timeout or failed requests &amp;gt; MaxReplicationCount - quorumCount write request will be considered as failed; Here,&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Concepts like hinted hand-off is not implemented as out of scope;&lt;/li&gt;
+  &lt;li&gt;In case of internal write if some of the nodes actually write the response in their memory, but quorum is not achieved, they should revert back – this is not implemented;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Note: Sending a WRITE REQUEST with a key that already exists will act like Update
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;32-read-request&quot;&gt;3.2 READ REQUEST&lt;/h3&gt;
+&lt;p&gt;Pretty much similar to WRITE Request, the request is sent to replicas and once response is received from at lease quorumCountno of replicas and values are consistent, the value is responded back. In case some the replicas have older values – READ REPAIR is initiated for them by the coordinator; If response is not recieved from quorumCount with value – 404, Not Found is responded back; If less than quorumCount respond with a value, it might be because DELETE failed them or failed writeworked for them. In any case we can either initiate an internal DELETE request to these or leave it be;&lt;/p&gt;
+
+&lt;h3 id=&quot;33-delete-request&quot;&gt;3.3 DELETE REQUEST&lt;/h3&gt;
+&lt;p&gt;Similar to above two, initiate request to all replicas and respond back OK if quorum responds with that number;&lt;/p&gt;
+
+&lt;h3 id=&quot;34-stabilization&quot;&gt;3.4: Stabilization&lt;/h3&gt;
+&lt;p&gt;Stabilization need to be done every time a new node joins or an existing one leaves the system. In both the cases the structure of the ring changes a little and mapping of the keys to the server changes; (In my implementation! There are better methods like &lt;a href=&quot;https://en.wikipedia.org/wiki/Consistent_hashing&quot;&gt;Consistent Hashing&lt;/a&gt; where only K/n keys need to be remapped) and every node that detect a failure or the joining of the node kicks in the stabilization protocol; I have gone for most naive implementation where every key in the store is checked for it’s mapping and respective mappings are sent to the replicas. These replicas will store the key value pair if they dont already have it. Once it has received response from each node, the node that detected will remove unwanted keys from it’s store;&lt;/p&gt;
+
+&lt;h2 id=&quot;task-4-rest-api--final-test&quot;&gt;TASK 4: Rest API + Final Test&lt;/h2&gt;
+&lt;p&gt;To the client the nodes expose three apis&lt;/p&gt;
+
+&lt;p&gt;To the client the nodes expose three apis&lt;/p&gt;
+
+&lt;h4 id=&quot;get-a-key&quot;&gt;/Get a Key&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GET /s/key?key=key9 HTTP/1.1
+Host: localhost:8083
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;set-a-key&quot;&gt;/Set a key&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;POST /s/key HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+    &quot;key&quot;: &quot;key9&quot;,
+    &quot;value&quot;: &quot;value9&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;delete-a-key&quot;&gt;/Delete a key&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;DELETE /s/key?key=key9 HTTP/1.1
+Host: localhost:8081
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;final-test&quot;&gt;Final test&lt;/h2&gt;
+&lt;p&gt;I’m yet to write automated End to End tests, however I have manually tested the code and it seem to work pretty well; You could Write / Update a key from one node, and read it from other; Since the data is stored in memory – the request response time is pretty fast;&lt;/p&gt;
+
+&lt;p&gt;It’s cool to see all nodes detect a new node has joined, and when all consoles are up you can actually see gossip spreading; Then every node kicks in stabilization protocol and all keys can be accessed from this new node;&lt;/p&gt;
+
+&lt;p&gt;Similarly, when a node fails, eventually each node detects the failure and kicks stabilization so that data is not lost; However, if all replicas of a set of keys die together – that data is lost;&lt;/p&gt;
+
+&lt;h2 id=&quot;todos&quot;&gt;TODOS:&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Automated E2E testing, unit testing bug fixes
+Change localhost hard-coding, test it in different machines on a network&lt;/li&gt;
+  &lt;li&gt;Performance testing – Same Machine / Different Machines&lt;/li&gt;
+  &lt;li&gt;Add more advanced functionalities, more optimised algorithms,&lt;/li&gt;
+  &lt;li&gt;Leader Elections, Clock Syncing :O&lt;/li&gt;
+  &lt;li&gt;Missile launcher and self driving car!&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Distributed systems are super awesome; Concepts are pretty cool; It’s fair to use abstractions provided to us by well tested libraries and cloud offerings but I’d totally recommend to try things out from scratch if you have a free weekend; The code for a node is available in .\process directory; I know code design might not be up-to mark – it was a more of a hackathon; I’ll try to find some time to refactor it!&lt;/p&gt;
+
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Coursera Cloud Computing Concepts, Part 1 – https://www.coursera.org/learn/cloud-computing/home/welcome&lt;/li&gt;
+  &lt;li&gt;Building a Distributed Fault-Tolerant Key-Value Store – http://blog.fourthbit.com/2015/04/12/building-a-distributed-fault-tolerant-key-value-store&lt;/li&gt;
+  &lt;li&gt;Consistent hashing in Cassandra – https://blog.imaginea.com/consistent-hashing-in-cassandra/&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Tue, 05 Sep 2017 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/a-fault-tolerant-distributed-key-value-store-from-scratch/</link>
+        <guid isPermaLink="true">http://localhost:4000/a-fault-tolerant-distributed-key-value-store-from-scratch/</guid>
+      </item>
+    
+      <item>
+        <title>Logging out and then logging in throws 403 error with CSRF Protector PHP – fix / workaround</title>
+        <description>&lt;p&gt;&lt;img src=&quot;../images/post4_image1.jpg&quot; alt=&quot;Introduction&quot; width=&quot;750px&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;problem&quot;&gt;Problem&lt;/h2&gt;
+
+&lt;p&gt;Recently an interesting bug came up in CSRF Protector PHP. Read the entire &lt;a href=&quot;https://github.com/mebjas/CSRF-Protector-PHP/issues/51&quot;&gt;issue thread on Github&lt;/a&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;If you log out of your website and then try to login again there only, CSRF Protector throws 403 – forbidden response.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;So this comes by design, because first thing that you do in your logout script is, initiate CSRF Protector and then let it do it’s stuff and then destroy session to logout the user. Now this screws everything because CSRFP is dependent on tokens it store in session variables. So next time you try to login again which is a POST request, it’s unable to validate the incoming token and throws 403 or whatever is the &lt;code class=&quot;highlighter-rouge&quot;&gt;failedValdiationResponse&lt;/code&gt; in your config.&lt;/p&gt;
+
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
+&lt;p&gt;Now since, this is a very particular issue I don’t feel library should handle it implicitly. What needs to be done is:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Do not destroy entire session in logout – just unset the key you deal with for authentication. Now this might need you to change the design, which is far difficult than not using CSRFP itself. So use this if your user authentication is dependent on particular keys in session vars.&lt;/li&gt;
+  &lt;li&gt;Now this would look like a university student workaround. Store existing tokens in temp variable, destroy session then start session again and restore &lt;code class=&quot;highlighter-rouge&quot;&gt;$temp&lt;/code&gt; back to session.
+    &lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;isset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_SESSION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;CSRFP_TOKEN&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]))&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$temp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$_SESSION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;CSRFP_TOKEN&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Now CSRF_TOKEN key need to be pulled from config.&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;session_unset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;session_destroy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;session_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;isset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$temp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$_SESSION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;CSRFP_TOKEN&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$temp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Best way to deal with this would be&lt;/strong&gt;: if you are using &lt;code class=&quot;highlighter-rouge&quot;&gt;session_destroy()&lt;/code&gt; to logout, call &lt;code class=&quot;highlighter-rouge&quot;&gt;csrfp::csrfProtector::init();&lt;/code&gt;. This would ensure user logs out and init() would create a new session with new tokens in it.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Hope these workaround works for you. Else feel free to reach out to me by posting another issue on &lt;a href=&quot;https://github.com/mebjas/CSRF-Protector-PHP&quot;&gt;mebjas/CSRF-Protector-PHP&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Fri, 04 Nov 2016 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/logging-out-and-then-logging-in-throws-403-error-with-csrf-protector/</link>
+        <guid isPermaLink="true">http://localhost:4000/logging-out-and-then-logging-in-throws-403-error-with-csrf-protector/</guid>
+      </item>
+    
+      <item>
+        <title>CSRF protector – Concept, Design and Future</title>
+        <description>&lt;h2 id=&quot;csrf--cross-site-request-forgery&quot;&gt;CSRF – Cross Site Request Forgery&lt;/h2&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;em&gt;Cross-Site Request Forgery (CSRF) is a type of attack that occurs when a malicious Web site, email, blog, instant message, or program causes a user’s Web browser to perform an unwanted action on a trusted site for which the user is currently authenticated. The impact of a successful cross-site request forgery attack is limited to the capabilities exposed by the vulnerable application. For example, this attack could result in a transfer of funds, changing a password, or purchasing an item in the user’s context. In effect, CSRF attacks are used by an attacker to make a target system perform a function (funds Transfer, form submission etc.) via the target’s browser without knowledge of the target user, at least until the unauthorised function has been committed.&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;from &lt;a href=&quot;https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet&quot;&gt;OWASP WIKI&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;../images/post3_image1.jpg&quot; alt=&quot;Introduction&quot; width=&quot;750px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;CSRF has been on OWASP Top 10 for a long time, and several methods have been implemented to mitigate it. Most of the web frameworks have inbuilt methods, which can be used to make a website safe against CSRF.&lt;/p&gt;
+
+&lt;p&gt;However lot of web applications are still vulnerable to CSRF and its partially because developer tend to forget to implement it with every FORM or AJAX requests. And that is because the approach used for CSRF Mitigation in most of the frameworks is not centralised, we have to attach a token with every FORM we want to protect. OWASP CSRF Protector on the other hand used centralised approach, it employs javascript on client side to ensure, tokens are sent with every request sent from client, so that is correctly validated on server. This saves developer from adding a token everywhere. I’ll discuss more about the concept later in this article.&lt;/p&gt;
+
+&lt;p&gt;I did my Google Summer of Code in 2014 with OWASP Foundation on CSRF Protector Project, which introduced an easy way to mitigate CSRF in web application. Its based on a research paper “&lt;a href=&quot;http://seclab.cs.sunysb.edu/seclab/pubs/acsac11.pdf&quot;&gt;A Server- and Browser-Transparent CSRF Defense for Web 2.0 Applications&lt;/a&gt;” by Riccardo Pelizzi and R Sekar . The project was implemented in two part:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/mebjas/CSRF-Protector-PHP&quot;&gt;Standalone PHP library&lt;/a&gt;: A super cool (easy) plug and play library for PHP projects and frameworks. Just follow these steps:
+    &lt;ul&gt;
+      &lt;li&gt;Download the library!&lt;/li&gt;
+      &lt;li&gt;Configure it, by simply modifying the config file.&lt;/li&gt;
+      &lt;li&gt;In your code include the library: &lt;code class=&quot;highlighter-rouge&quot;&gt;include __DIR__ .'/path/to/library/file';&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;Call the init method: &lt;code class=&quot;highlighter-rouge&quot;&gt;csrfprotector::init();&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://github.com/mebjas/mod_csrfprotector&quot;&gt;Apache 2.2.x module&lt;/a&gt;: If you are a server administrator and wish to mitigate CSRF without changing a single line of code, simply install this apache module and you are good to go!.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;concept&quot;&gt;Concept&lt;/h2&gt;
+&lt;p&gt;The concept is pretty cool. It takes advantage of the &lt;strong&gt;same origin policy of the cookies&lt;/strong&gt;, which makes sure only scripts running on the web page can access cookies associated with that domain. Now what happens is when ever a script is run, which includes the library, &lt;strong&gt;it validates&lt;/strong&gt; the incoming request for CSRF Tokens. I’ll cover concept of validation later. So lets us assume the validation is successful, it starts buffering the output generated by the application and at the end, it check if its a HTML output, and on success it attaches the javascript code, and some other metadata to the output using regex replace method. A new token is generated each time its consumed, i.e. on successful validation. So this new token is stored as a list in SESSION variables, and sent to the client as cookie.&lt;/p&gt;
+
+&lt;p&gt;The javascript code running on the client side, creates a wrapper around the &lt;strong&gt;XMLHttpRequest&lt;/strong&gt; class (used for AJAX request), defined in javascript which makes sure whenever a POST or GET request is sent the token is picked from cookie and attached with the request payload. Similarly it attaches a listener around every FORM element, and creates a wrapper around HTMLFormElement submit method. So javascript code makes sure, it attaches a token to every request that is generated from the client, that needs validation. By need validation it means, every POST request and certain GET requests which are specified in the config file of the library.&lt;/p&gt;
+
+&lt;h3 id=&quot;validation&quot;&gt;Validation&lt;/h3&gt;
+&lt;p&gt;When a request is recieved, it goes through the input filter of the library and there the token sent in the payload is compared with one stored in the session variable. If successfully matched, all tokens older to that are removed from server and new token is generated. If the validation fails, one of the few actions specified (it can be changed in the config file) is taken and the event is logged.&lt;/p&gt;
+
+&lt;p&gt;Conclusion is, its pretty easy to use: &lt;strong&gt;Download, Configure, Include, Smile!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;I recently implemented a lighter version of the library. and its used by &lt;a href=&quot;https://todofy.org/&quot;&gt;todofy&lt;/a&gt;, . it brings certain performance improvement over the original once, but is comparatively difficult to implement. Code available open source at Github &lt;a href=&quot;https://github.com/todofy/CSRF-Protector-PHP-LITE&quot;&gt;todofy/CSRF-Protector-PHP-LITE&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;OWASP Wiki on CSRF Protector: https://www.owasp.org/index.php/CSRFProtector_Project&lt;/li&gt;
+  &lt;li&gt;Github: CSRF Protector PHP: https://github.com/mebjas/CSRF-Protector-PHP/&lt;/li&gt;
+  &lt;li&gt;Github: mod_csrfprotector: http://github.com/mebjas/mod_csrfprotector&lt;/li&gt;
+  &lt;li&gt;Research Paper: A Server- and Browser-Transparent CSRF Defense for Web 2.0 Applications&lt;/li&gt;
+  &lt;li&gt;CSRF Protector PHP Lite by todofy – https://github.com/todofy/CSRF-Protector-PHP-LITE&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Sat, 28 Nov 2015 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/CSRF-Protector-concept-design-and-future/</link>
+        <guid isPermaLink="true">http://localhost:4000/CSRF-Protector-concept-design-and-future/</guid>
+      </item>
+    
+      <item>
+        <title>Drawing a 3d surface patch using Bezier equations</title>
+        <description>&lt;h3 id=&quot;this-post-covers-&quot;&gt;This post covers :&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;What’s a bezier equation?&lt;/li&gt;
+  &lt;li&gt;Creating a 3d surface patch using Bezier curves&lt;/li&gt;
+  &lt;li&gt;Making it interactive&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/Screen-Shot-2014-11-17-at-11.27.12-am.png.jpg&quot; alt=&quot;Screenshot&quot; width=&quot;500px&quot; /&gt;
+&lt;br /&gt;&lt;span class=&quot;image-caption&quot;&gt; &lt;em&gt;Screenshot of experiment&lt;/em&gt; &lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;so-whats-a-bezier-curve&quot;&gt;So what’s a Bezier curve:&lt;/h3&gt;
+
+&lt;p&gt;Its a cubic parametric curve used to draw smooth curves, we can draw a bezier curve using two endpoints and two control points. It looks something like:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/quad01.png&quot; alt=&quot;bezier curve&quot; /&gt;&lt;br /&gt;
+&lt;span class=&quot;image-caption&quot;&gt; &lt;em&gt;Bezier Curve - &lt;a href=&quot;http://en.wikipedia.org/wiki/B%C3%A9zier_curve&quot;&gt;Wikipedia&lt;/a&gt;&lt;/em&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;So how to draw the surface using multiple bezier curves:&lt;/p&gt;
+
+&lt;h3 id=&quot;well-there-are-multiple-ways-heres-what-i-did&quot;&gt;Well there are multiple ways, here’s what I did:&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Drew my first Bezier curve (The top one) and kept track of 10 equidistant points on that curve say HP.&lt;/li&gt;
+  &lt;li&gt;Drew first vertical Bezier curve (The left one) and kept track of 10 equidistant points on that curve say VP.&lt;/li&gt;
+  &lt;li&gt;Now for each point in HP draw a vertical bezier with same control points. Similarly for all points in VP draw horizontal Bezier curves with same control points.&lt;/li&gt;
+  &lt;li&gt;In the meanwhile you can draw points at equidistant points on each bezier curve.&lt;/li&gt;
+  &lt;li&gt;The code looks something like:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fillRect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;canvas&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;canvas&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// draw top line and find the points&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[];&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[];&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;beginPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;moveTo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;drawPoint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;001&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;d1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;lineTo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stroke&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;drawPoint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;beginPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// draw first verticle line and collect the points &lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;moveTo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;001&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;d1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;lineTo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stroke&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;drawPoint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;beginPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// draw all vertical lines in a loop&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// then draw horizontal lines in a loop&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;moveTo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;001&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;d1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;d2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+            &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;180&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;lineTo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stroke&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;drawPoint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;beginPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;moveTo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;001&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;d1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;d2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+            &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;180&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;lineTo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stroke&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;drawPoint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;beginPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;ctx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stroke&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;How to make it interactive&lt;/strong&gt;: Simply change the control points according to input (mouse move, key press in my case)&lt;/p&gt;
+
+&lt;p&gt;Complete code available at my github repo: &lt;a href=&quot;https://github.com/mebjas/my-playground/blob/master/is%20inside%20the%20mesh%3F/cloath.htm&quot;&gt;My-Playground/inside-the-mesh&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;How about we add a star to it?&lt;/p&gt;
+</description>
+        <pubDate>Tue, 18 Nov 2014 00:00:00 +0000</pubDate>
+        <link>http://localhost:4000/Drawing-a-3d-surface-patch-using-Bezier-equations/</link>
+        <guid isPermaLink="true">http://localhost:4000/Drawing-a-3d-surface-patch-using-Bezier-equations/</guid>
+      </item>
+    
+  </channel>
+</rss>
