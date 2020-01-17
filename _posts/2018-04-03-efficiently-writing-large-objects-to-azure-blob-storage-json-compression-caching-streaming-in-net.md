@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Efficiently writing large objects to Azure Blob Storage – JSON, Compression, Caching, Streaming in .Net
-categories: architecture, system design, azure, azure storage blob, compression, distributed systems, machine learning, microsoft 
+categories: [architecture, system-design, azure, azure-storage-blob, compression, distributed-systems, machine-learning, microsoft]
 description: "Azure Storage Blob is an Azure Storage offering that allows you to store giga bytes of data in from hundreds to billions of objects in hot, cool, or archive tiers, depending on how often data access is needed. Store any type of unstructured data—images, videos, audio, documents and more—easily and cost-effectively. These features make it a strong candidate for storing serialized Machine Learning Models if you have models per tenant. But, if the application is READ + WRITE heavy and the size of objects are large it can lead to a variety of issues, primarily: <ol><li>Large I/O calls</li><li>OutOfMemory Exceptions (OOM)</li></ol> In this article I have explained why the issues occur and what are the ways to mitigate them."
 post-no: 8
 toc: false

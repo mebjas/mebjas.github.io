@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Introducing minor improvements to CSRF Protector PHP
-categories: csrf, javascript, open-source, owasp, security, web-security, php
+categories: [csrf, javascript, open-source, owasp, security, web-security, php]
 description: "The OWASP CSRF Protector project started with an aim to develop a solution that can mitigate Cross Site Request Forgery in web applications without much developer effort. We have recently released v1.0.0 of CSRF Protector PHP. These improvements / fixes were based on issues raised by different users. Here’s the two major changes that we have introduced and why:<ol><li>Added support for application/json content-type.</li><li>Made path, domain and secure property of CSRF Token Cookie configurable.</li></ol>"
 post-no: 5
 toc: false

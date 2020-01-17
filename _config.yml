@@ -1,9 +1,25 @@
-name: Hector's Blog
-title: Hector's Blog
-description: Hack your way out
-avatar: https://avatars0.githubusercontent.com/u/3007365?s=460&v=4
+name: Minhaz's Blog
+title: Minhaz's Blog
+small_description: "Hack your way out!"
+description: "I work full time as a Software Engineer at Google. Time to time I come across problems I don't find solutions to on web and I try to pen it down here. My area of expertise are distributed systems, android, android camera, emerging markets, applied ML and computational photography. I am sometimes identified as mebjas or minhazav."
+avatar: https://blog.minhazav.dev/images/rsz_self_1_1.jpg
+logo: https://blog.minhazav.dev/images/rsz_self_1_1.jpg
 github: mebjas
 email: minhazav@gmail.com
+author:
+  twitter: minhazav
+  picture: https://blog.minhazav.dev/images/rsz_self_1_1.jpg
+twitter:
+  username: minhazav
+  card: summary
+social:
+  name: A V Minhaz
+  links:
+    - https://twitter.com/minhazav
+    - https://www.instagram.com/mebjas
+    - https://www.linkedin.com/in/minhazav
+    - https://github.com/mebjas
+    - https://500px.com/mebjas
 
 copyright_year: 2019
 copyright_owner: minhazav.dev
@@ -66,12 +82,12 @@ defaults:
       layout: "post"
 
 category_descriptions:
-  - { name: "distributed systems", description: "" }
+  - { name: "distributed-systems", description: "" }
   - { name: "hackathon", description: "" }
-  - { name: "Key Value Store", description: "" }
+  - { name: "key-value-store", description: "" }
   - { name: "nodejs", description: "" }
   - { name: "graphics", description: "" }
-  - { name: "html Canvas", description: "" }
+  - { name: "html-canvas", description: "" }
   - { name: "javascript", description: "" }
   - { name: "vc++", description: "" }
   - { name: "c++", description: "" }
@@ -81,24 +97,24 @@ category_descriptions:
   - { name: "apache", description: "" }
   - { name: "mathematics", description: "" }
   - { name: "csrf", description: "" }
-  - { name: "open source", description: "" }
+  - { name: "open-source", description: "" }
   - { name: "owasp", description: "" }
   - { name: "security", description: "" }
-  - { name: "web security", description: "" }
+  - { name: "web-security", description: "" }
   - { name: "compression", description: "" }
   - { name: "encoding", description: "" }
   - { name: "decoding", description: "" }
-  - { name: "bits manipulation", description: "" }
+  - { name: "bits-manipulation", description: "" }
   - { name: "architecture", description: "" }
-  - { name: "system design", description: "" }
+  - { name: "system-design", description: "" }
   - { name: "azure", description: "" }
-  - { name: "azure storage blob", description: "" }
-  - { name: "azure storage table", description: "" }
-  - { name: "machine learning", description: "" }
+  - { name: "azure-storage-blob", description: "" }
+  - { name: "azure-storage-table", description: "" }
+  - { name: "machine-learning", description: "" }
   - { name: "microsoft", description: "" }
   - { name: "cloud", description: "" }
   - { name: "interview", description: "" }
-  - { name: "interview tips", description: "" }
+  - { name: "interview-tips", description: "" }
 
 photography_data_path: "photography/assets/"
 photography_data:

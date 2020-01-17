@@ -9,7 +9,7 @@
       {% include filed.html %}
     </p>
   
-    {% if page.description and include.description == 1 %}
+    {% if page.description  %}
     <span class="post-description">{{ page.description }}</span>
     <span class="read-more"><a href="{{ page.url | relative_url }}">[&nbsp;Read&nbsp;more&nbsp;]</a></span>
     {% endif %}

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Drawing a 3d surface patch using Bezier equations
-categories: graphics, html Canvas, javascript, mathematics
+categories: [graphics, html-canvas, javascript, mathematics]
 description: "This post covers: <ul><li>What’s a bezier equation?</li><li>Creating a 3d surface patch using Bezier curves</li><li>Making it interactive</li><ul><br><i>Its a cubic parametric curve used to draw smooth curves, we can draw a bezier curve using two endpoints and two control points.</i>"
 post-no: 1
 toc: false

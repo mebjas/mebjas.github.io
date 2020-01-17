@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Bypass cell size limitation (64KB) of Azure Storage Table
-categories: architecture, system-design, azure, azure-storage-table, compression, distributed-systems, microsoft, open-source, cloud
+categories: [architecture, system-design, azure, azure-storage-table, compression, distributed-systems, microsoft, open-source, cloud]
 description: "Azure Storage Table is Azure’s NoSQL offering to store large number of data (upto peta bytes) in a table (tables have rows and columns). It provides indexing on two keys namely partition key and row key which allows you to retrieve data efficiently. No other columns are indexed, but that’s expected behavior. It has limitations on size of a single row (1 MB), size of a single column (64KB), number of columns per row (255) and so on. While I don’t really know why some of them exist – they just do. In this article <b>I have proposed a naughty but elegant</b> way of bypassing this issue. "
 post-no: 9
 toc: false

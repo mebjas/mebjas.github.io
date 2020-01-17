@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Interview tips 1 – In a coding interview use abstractions!
-categories: c++, dotnet, interview, microsoft, python, interview tips
+categories: [c++, dotnet, interview, microsoft, python, interview-tips]
 description: "While I was working with Microsoft, I had opportunity to take around 10 – 20 coding or design interviews (candidates with 1 – 12 years of experience). There was this one thing that I felt was too common, which would lead to bad impression and potential rejection – it’s that the candidate attempts to solve every part of the question rather than focusing on what is important. This is particularly prevalent amongst candidates who chose C / C++ as programming language of choice. And, this was common irrespective of years of experience.<br> In this article I have shared the problem and my opinion on how to tackle it."
 post-no: 10
 toc: false

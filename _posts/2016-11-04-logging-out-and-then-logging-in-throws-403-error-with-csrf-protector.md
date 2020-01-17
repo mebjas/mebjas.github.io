@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Logging out and then logging in throws 403 error with CSRF Protector PHP – fix / workaround
-categories: csrf, javascript, open-source, owasp, security, web-security, php
+categories: [csrf, javascript, open-source, owasp, security, web-security, php]
 description: "Recently an interesting bug came up in CSRF Protector PHP. If you log out of your website and then try to login again there only, CSRF Protector throws 403 – forbidden response. So this comes by design because first thing that you do in your logout script is, initiate CSRF Protector > let it do it’s stuff and then destroy session to logout the user. Now this screws everything because CSRFP is dependent on tokens it store in session variables. So next time you try to login again which is a POST request, it’s unable to validate the incoming token and throws 403 or whatever is the failedValdiationResponse in your config."
 post-no: 3
 toc: false
