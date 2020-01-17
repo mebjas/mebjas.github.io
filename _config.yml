@@ -89,8 +89,6 @@ category_descriptions:
   - { name: "graphics", description: "" }
   - { name: "html-canvas", description: "" }
   - { name: "javascript", description: "" }
-  - { name: "vc++", description: "" }
-  - { name: "c++", description: "" }
   - { name: "python", description: "" }
   - { name: "dotnet", description: "" }
   - { name: "php", description: "" }
