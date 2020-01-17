@@ -40,37 +40,3 @@ This can make applications vulnerable to known vulnerabilities in libraries. Thi
 Last three changes (including this) were done by [Brad Stoney](https://github.com/bstoney), thanks to him! 
 
 Also, here’s link to latest release: [https://github.com/mebjas/CSRF-Protector-PHP/releases](https://github.com/mebjas/CSRF-Protector-PHP/releases)
-
-<!--
-
-comment
-> Michael : August 6, 2018
-Hi Hector,
-I am a developer and I use structured PHP for my websites. How do I implement CSRF protection the simplest way posible??
-
->> admin: September 9, 2018
-
-Hello Michael,
-You can either use composer to install this library or download this offline and place this in appropriate location with respect to the project you want to protect against CSRF;
-
-After that, you need to copy the config file ./libs/config.sample.php to ./libs/config.php and change certain values as explained here – https://github.com/mebjas/CSRF-Protector-PHP/blob/master/libs/README.md
-
-After that, just add this to the files you want to protect or one common file included by all;
-
-
-< ?php
-include_once __DIR__ .’/vendor/owasp/csrf-protector-php/libs/csrf/csrfprotector.php’;
-
-//Initialise CSRFGuard library
-csrfProtector::init();
-
-Find more details here – https://github.com/mebjas/CSRF-Protector-PHP
-
-> faten hamamah : September 25, 2018
-hi hector,
-I am a developer and I use structured PHP for my website. I’d already implement CSRF protection and included in my config but when I try to login to my website, it always display “403” error. how do i fix this?
- 
->> admin : October 14, 2018
-Thanks for creating an issue for this at Github Repository; I’ll follow up there – https://github.com/mebjas/CSRF-Protector-PHP/issues/100
-
--->
