@@ -8,10 +8,19 @@ layout: default
     {{ content }}
 
     {% for page in site.posts %}
+    <!-- for work in progress articles -->
+    {% if page.wip %}
+    <div class="wip-post" style="display: none">
+    {% endif %}
+
     {% include post-info.html description=1 %}
+
+    {% if page.wip %}
+    </div>div>
+    {% endif %}
     {% endfor %}
 
-  </div>
+  <//div>div>
 </article>
 
 <div style="border-top: 1px solid #cfcfcf; margin-top: 30px">
