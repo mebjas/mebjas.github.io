@@ -19,6 +19,7 @@ Android is the most popular mobile operation system in the market today. Towards
  - ISP: Image Signal Processor
  - DSP: Digital Singal Processor
  - 3A: Auto Exposure, Auto Focus, Auto White-Balance
+ - SOC: System on a Chip
 
 ### Lens
 > TODO(mebjas): tbd
@@ -33,16 +34,20 @@ Camera sensor detects light convering from the lens and convert it into analog s
 
 ### ISP: Image Signal Processor
 ![](../images/post11_image2.png){:width="700px"}<br>
-<span class="image-caption">_Figure: Android Camera low level architecture (source: source.android.com)_</span>
+<span class="image-caption">_Figure: Android Camera low level architecture ([source](source.android.com)). Many of the basic steps are done in specialized hardwares explained in detail below._</span>
 
-Taking light from the camera sensor and converting it to beutiful images requries complicated process involving large amount of math and processing. ISP is specialized hardware capable of performing these steps in energy efficient way. Some of the algorithms that are run on ISP are:
+Taking light from the camera sensor and converting it to beautiful images requries complicated process involving large amount of math and processing. ISP is specialized hardware capable of performing these steps in energy efficient way. Some of the algorithms that are run on ISP are:
 
- - **Auto Focus, Auto White Balance:** Auto focussing ensures the resulting images are sharp. There are different types of auto focus algorithms which an ISP can implement. This is explained in detail in [this post](https://blog.minhazav.dev/android-camera-subsystem-basic-image-processing-steps-done-at-hardware-level-in-android-camera/). ISP also monitors and adjust color and white balance as well as exposure in real time so that the pictures don't come out too dark or bright or off coloured. All of this happens even before the shutter button is clicked.
- - **Demosaic:** the ISP takes the reg, green and blue layer filtered from camera sensor and calculates the full resolution image from them. 
+ - **Auto Focus, Auto White Balance:** Auto focussing ensures the resulting images are sharp. There are different types of auto focus algorithms which an ISP can implement. This is explained in detail in my former article - [android camera subsystem](https://blog.minhazav.dev/android-camera-subsystem-basic-image-processing-steps-done-at-hardware-level-in-android-camera/). ISP also monitors and adjust color and white balance as well as exposure in real time so that the pictures don't come out too dark or bright or off coloured. All of this happens even before the shutter button is clicked.
+ - **Demosaic:** The CMOS sensors doesn't sense RED{: style="color: red"}, BLUE{: style="color: blue"} and GREEN{: style="color: blue"} for each pixel. It senses one color for each pixel and the RGB value for each pixel is guessed by ISP. This is called demosaicing and it's probably primary task taken care of by an ISP.
+ ![demosaic](../images/common_demosaic.png){:width="500px"} <br>
+ <span class="image-caption">_Figure: Image as captured by sensor (Right) and Image produced after processing (Left)._</span>
  - **Shading correction and geometric correction:** Once an ISP has RAW image data it runs algorithms to fix lens shading or curvature distortion. 
+  ![demosaic](../images/common_geometric.png){:width="500px"} <br>
+ <span class="image-caption">_Figure: Image before geometric correction._</span>
+ - **Statistics**: ISPs can efficiently peform statistical operations on incoming signals like - histogram, sharpness maps etc.
 
-An ISP is essentially one of the major limiter of how many Mega Pixels a camera (or smartphone) can efficiently process. For example Qualcomm's latest Spectra 380 ISP is engineered to support upto 48 MP or two 22 MP sensors at once.
-
+ISP is generally onboard SoC but can come discretely as well. An ISP is essentially one of the major limiter of how many Mega Pixels a camera (or smartphone) can efficiently process. For example Qualcomm's latest Spectra 380 ISP is engineered to support upto 48 MP or two 22 MP sensors at once.
 
 ### DSP: Digital Signal Processor
 
@@ -57,6 +62,7 @@ Apple has been bringing in A series chips like A13 Bionic chip introduced in Iph
 
 ## References
  - [Android Source - Camera](https://source.android.com/devices/camera)
+ - [Stanford lecture - camera processing pipeline](https://web.stanford.edu/class/cs231m/lectures/lecture-11-camera-isp.pdf)
  - [Android Authority - Pixel visual core](https://www.androidauthority.com/pixel-visual-core-808182/)
 - [The Verge - Apple's new A13 Bionic chip](https://www.theverge.com/circuitbreaker/2019/9/10/20857177/apple-iphone-11-processor-a13-cpu-speed-graphics-specs)
 
