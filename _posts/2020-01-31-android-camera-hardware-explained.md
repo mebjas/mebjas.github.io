@@ -39,10 +39,10 @@ Camera sensor detects light convering from the lens and convert it into analog s
 Taking light from the camera sensor and converting it to beautiful images requries complicated process involving large amount of math and processing. ISP is specialized hardware capable of performing these steps in energy efficient way. Some of the algorithms that are run on ISP are:
 
  - **Auto Focus, Auto White Balance:** Auto focussing ensures the resulting images are sharp. There are different types of auto focus algorithms which an ISP can implement. This is explained in detail in my former article - [android camera subsystem](https://blog.minhazav.dev/android-camera-subsystem-basic-image-processing-steps-done-at-hardware-level-in-android-camera/). ISP also monitors and adjust color and white balance as well as exposure in real time so that the pictures don't come out too dark or bright or off coloured. All of this happens even before the shutter button is clicked.
- - **Demosaic:** The CMOS sensors doesn't sense RED{: style="color: red"}, BLUE{: style="color: blue"} and GREEN{: style="color: blue"} for each pixel. It senses one color for each pixel and the RGB value for each pixel is guessed by ISP. This is called demosaicing and it's probably primary task taken care of by an ISP.
+ - **Demosaic:** The CMOS sensors doesn't sense <span style="color:red; font-weight:bold">RED</span>, <span style="color:blue; font-weight:bold">BLUE</span> and <span style="color:green; font-weight:bold">GREEN</span> for each pixel. It senses one color for each pixel and the RGB value for each pixel is guessed by ISP. This is called demosaicing and it's probably primary task taken care of by an ISP.
  ![demosaic](../images/common_demosaic.png){:width="500px"} <br>
  <span class="image-caption">_Figure: Image as captured by sensor (Right) and Image produced after processing (Left)._</span>
- - **Shading correction and geometric correction:** Once an ISP has RAW image data it runs algorithms to fix lens shading or curvature distortion. 
+ - **Shading correction and geometric correction:** Once an ISP has RAW image data it runs algorithms to fix lens shading or curvature distortion. <br>
   ![demosaic](../images/common_geometric.png){:width="500px"} <br>
  <span class="image-caption">_Figure: Image before geometric correction._</span>
  - **Statistics**: ISPs can efficiently peform statistical operations on incoming signals like - histogram, sharpness maps etc.
