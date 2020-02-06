@@ -2,13 +2,14 @@
 layout: post
 title: Android Camera Hardware explained
 categories: [android, android-camera, hal, image-processing, hardware, isp, dsp, lens, sensor]
-description: "Android is the most popular mobile operation system in the market today. Towards the end of last decade camera has emerged as one of the most important factor that contributes towards smartphone sales and different OEMs are trying to stay at the top of the throne. Smartphone cameras are built very similar to digital cameras in a compact packaging. With high end processing capabilities it has taken a big leap and is competing with digital cameras today. In this post I'll be covering the general hardware architecture of modern Android Camera."
+description: "Android is the most popular mobile operating system in the market today. Towards the end of last decade, camera has emerged as one of the most important factors that contributes towards smartphone sales and different OEMs are trying to stay at the top of the throne. Smartphone cameras are built very similar to digital cameras in a compact package. With high end processing capabilities it has taken a big leap and is competing with digital cameras today. In this post I'll be covering the general hardware architecture of modern Android Camera."
 post-no: 12
 toc: false
+image: '../images/post12_image1.webp'
 ---
 ![android camera hardware](../images/post12_image1.webp){:width="500px"}
 
-Android is the most popular mobile operation system in the market today. Towards the end of last decade camera has emerged as one of the most important factor that contributes towards smartphone sales and different OEMs are trying to stay at the top of the throne. Smartphone cameras are built very similar to digital cameras in a compact packaging. With high end processing capabilities it has taken a big leap and is competing with digital cameras today. In this post I'll be covering the general hardware architecture of modern Android Camera.
+Android is the most popular mobile operating system in the market today. Towards the end of last decade, camera has emerged as one of the most important factors that contributes towards smartphone sales and different OEMs are trying to stay at the top of the throne. Smartphone cameras are built very similar to digital cameras in a compact package. With high end processing capabilities it has taken a big leap and is competing with digital cameras today. In this post I'll be covering the general hardware architecture of modern Android Camera.
 
 ![](../images/post11_image2.png){:width="700px"}<br>
 <span class="image-caption">_Figure: Android Camera low level architecture ([source](source.android.com)). Many of the basic steps are done in specialized hardwares explained in detail below._</span>
@@ -16,10 +17,12 @@ Android is the most popular mobile operation system in the market today. Towards
 ## Components
 <!-- TODO(mebjas): add the cross section diagram -->
 
-![basic camera](../images/post12_image6.jpg){:width="500px"}
-Around 400BC to 300BC, ancient philosophers of more scientifically advanced cultures (such as China and Greece) were some of the first peoples to experiment with the camera obscura design for creating images. The idea is simple enough—set up a sufficiently dark room with only a tiny bit of light entering through a pinhole opposite a flat plane. The light travels in straight lines (this experiment was used to prove this), crosses at the pinhole, and create an image on the flat plane on the other side. The result is an upside-down version of the objects being beamed in from the opposite side of the pinhole—an incredible miracle, and an amazing scientific discovery for people that lived more than a millennium before the “middle ages.”
+![basic camera](../images/post12_image6.jpg){:width="500px"}<br>
+<span class="image-caption">_Figure: Pin hole camera._</span>
 
-1000 of years later cameras have taken a big leap and now tiny cameras are available on smartphones capable of capturing dense images competing with full fledged digital cameras. A standard camera on smartphone have following components:
+Around 400BC to 300BC, ancient philosophers of certain cultures were some of the first peoples to experiment with the camera _obscura design_ for creating images. The idea is simple enough — set up a sufficiently dark room with only a tiny bit of light entering through a pinhole opposite a flat plane. The light travels in straight lines, crosses at the pinhole, and create an image on the flat plane on the other side. The result is an upside-down version of the objects being beamed in from the opposite side of the pinhole—an incredible miracle, and an amazing scientific discovery for people that lived more than a millennium before the “middle ages.”
+
+1000 of years later cameras have taken a big leap and now tiny cameras are available on smartphones capable of capturing dense images competing with full-fledged digital cameras. A standard camera on the smartphone have following components:
 
 ### Legends:
  - HAL: Hardware Access Layer
@@ -30,17 +33,15 @@ Around 400BC to 300BC, ancient philosophers of more scientifically advanced cult
  - OIS: Optical Image Stabalisation
 
 ### Lens
-
-![lens](../images/post12_image5.jpg){:width="500px"} <br>
 The task of the lens is to focus the incoming light into the sensor. 
- - The horizontal movement of lens allow change in focus. 
- - Some camera chassis allow vertical or multi axis movement of lens (some times sensors) against the movement of the camera on the whole to provide stabalization against sudden movements. This is called Optical Image Stabalisation (OIS). It helps is capturing less blurry or stable videos.
- - The aperture is used to control the amount of light that enters the sensor is usually part of lens. Smartphones comes with fixed aperture lens. To provide functionalities similar to digital cameras which come with variable aperture lens smartphones these days comes with multiple lenses.
+ - The horizontal movement of the lens allow change in focus. 
+ - Some camera chassis allow vertical or multi axis movement of the lens (some times sensors) against the movement of the camera on the whole to provide stabilisation against sudden movements. This is called Optical Image Stabalisation (OIS). It helps is capturing less blurry or stable video.
+ - The aperture is used to control the amount of light that enters the sensor is usually part of lens. Smartphones comes with fixed aperture lens. To provide functionalities similar to digital cameras which come with variable aperture lens, smartphones these days comes with multiple lenses.
 
 ### Shutter
-Shutter speed is one of the factor that controls how much light is sensed by the sensor or for how long. This has traditionally been controlled by a mechanical component called shutter.
+Shutter speed is one of the factors that controls how much light is sensed by the sensor or for how long. This has traditionally been controlled by a mechanical component called shutter.
 
-Given that smartphones are very tiny devices, it shouldn’t be any surprise that the last mechanical camera part before the sensor—the shutter—has been omitted from their designs. Instead, they use what’s called an electronic shutter (E-shutter) to expose your photos. Essentially, your smartphone will tell the sensor to record your scene for a given time, recorded from top to bottom. While this is quite good for saving weight, there are tradeoffs. For example, if you shoot a fast-moving object, the sensor will record it at different points in time (due to the readout speed) skewing the object in your photo.
+Given that smartphones are very tiny devices, it shouldn’t be any surprise that the last mechanical camera part before the sensor — the shutter has been omitted from their designs. Instead, they use what’s called an electronic shutter (E-shutter) to expose your photos. Essentially, your smartphone will tell the sensor to record your scene for a given time, recorded from top to bottom. While this is quite good for saving weight, there are tradeoffs. For example, if you shoot a fast-moving object, the sensor will record it at different points in time (due to the readout speed) skewing the object in your photo.
 
 ### Sensor
 > Light travels through a lens, the shutter opens, and a moment is preserved by capturing it on the camera’s sensor.
@@ -115,6 +116,13 @@ Google introduced a secret chip in Google Pixel 2 and Pixel 2 XL alongside main 
 
 #### Apple Iphone bionic chips
 Apple has been bringing in A series chips like A13 Bionic chip introduced in Iphone 11. They claim to pack CPU, GPU and a _neural engine_ for boosting machine learning performance. In their latest chip Apple claimed to have boosted matrix multiplication to 6X faster which is core of many ML operation. Apple say's it's using ML in iphone 11's camerato help process their images.
+
+### CPU and GPU
+After getting the image from the camera in `RAW`, `YUV` or `JPEG` format the camera application can runt the image through more general image processing algorithms which are usually run on general purpose processors like CPU or GPU.
+
+In later version of `Android Reprocessing APIs` were introduced that allows the software layer to submit the image back to framework then HAL for running certain image processing algorithms on them in specialized hardwares mentioned above for better performance. I'll explaining this in detail in a separate architecture.
+
+<!-- TODO(mebjas): add link to the article. -->
 
 ## References
  - [Android Source - Camera](https://source.android.com/devices/camera)
