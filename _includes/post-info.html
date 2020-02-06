@@ -8,13 +8,14 @@
       •
       {% include filed.html %}
     </p>
-
-    {% if page.image %}
-    <image src="{{ page.image | relative_url }}" style="max-width: 100%;" />
-    {% endif %}
   
     {% if page.description  %}
-    <span class="post-description">{{ page.description }}</span>
+    <span class="post-description">
+      {% if page.image %}
+      <image src="{{ page.image | relative_url }}" style="max-width: 50%; float: left; margin: 0px 15px 10px 0px;" />
+      {% endif %}
+      {{ page.description }}
+    </span>
     <span class="read-more"><a href="{{ page.url | relative_url }}">[&nbsp;Read&nbsp;more&nbsp;]</a></span>
     {% endif %}
   
