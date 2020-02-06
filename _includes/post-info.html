@@ -8,6 +8,10 @@
       •
       {% include filed.html %}
     </p>
+
+    {% if page.image %}
+    <image src="{{ page.image | relative_url }}" style="max-width: 100%;" />
+    {% endif %}
   
     {% if page.description  %}
     <span class="post-description">{{ page.description }}</span>
