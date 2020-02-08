@@ -2,7 +2,7 @@
 layout: post
 title: Android Camera Subsystem - basic image processing steps done at hardware level in Android Camera
 categories: [android, android-camera, hal, image-processing, computational-photograhpy]
-description: "Android is the most popular mobile operation system in the market today. It's an open source mobile operating system by Google and is shipped by several OEMs like Samsung, Redmi, Oppo, Vivo, Nokia etc. Towards the end of last decade camera has emerged as one of the most important factor that contributes towards smartphone sales and different OEMs are trying to stay at the top of the throne. Differnt android flagships including Google owned Pixel(s) have been directly competing with Apple Iphone over the years and giving it a touch competition. In this post I'll be describing various algorithms implemented in Android camera subsystem that is consistent across OEMs which are used to produce stunning images that we capture from Camera Applications."
+description: "Android is one of the most popular mobile operation system in the market today. It's an open source mobile operating system by Google and is shipped by several OEMs like Samsung, Redmi, Oppo, Vivo, Nokia etc. Towards the end of last decade camera has emerged as one of the most important factor that contributes towards smartphone sales and different OEMs are trying to stay at the top of the throne. Differnt android flagships including Google owned Pixel(s) have been directly competing with Apple Iphone over the years and giving it a touch competition. In this post I'll be describing various algorithms implemented in Android camera subsystem that is consistent across OEMs which are used to produce stunning images that we capture from Camera Applications."
 post-no: 11
 toc: false
 wip: true
@@ -27,7 +27,7 @@ The camera susbsystem includes implementation of fundamental image processing al
 ![Camera Pipeline](../images/post11_image1.png){:width="500px"}<br>
 <span class="image-caption">_Figure: Camera Pipeline as per Android Source_</span>
 
-### Camera Sensor and RAW input
+### Camera Sensor and RAW output
 As described in [this post](https://blog.minhazav.dev/android-camera-hardware-explained/#sensor) the output of camera sensor only contains information on one color per pixel as compared to three color (RGB) per pixel we intutively assume.
 
 ![Output from sensor](../images/post12_image4.png){:width="500px"}<br>
@@ -92,4 +92,4 @@ If you request a YUV image and perform some image processing on top of it and fi
 
 ## References
  - [Android Camera Architecture explained - minhazav.dev](https://blog.minhazav.dev/android-camera-hardware-explained/)
-
+ - [Android Camera - source.google.com](https://source.android.com/devices/camera)

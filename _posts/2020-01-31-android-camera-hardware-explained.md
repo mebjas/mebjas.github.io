@@ -5,7 +5,7 @@ categories: [android, android-camera, hal, image-processing, hardware, isp, dsp,
 description: "Android is the most popular mobile operating system in the market today. Towards the end of last decade, camera has emerged as one of the most important factors that contributes towards smartphone sales and different OEMs are trying to stay at the top of the throne. Smartphone cameras are built very similar to digital cameras in a compact package. With high end processing capabilities it has taken a big leap and is competing with digital cameras today. In this post I'll be covering the general hardware architecture of modern Android Camera."
 post-no: 12
 toc: false
-image: '../images/post12_image.webp'
+image: '../images/post12_image1.webp'
 ---
 ![android camera hardware](../images/post12_image8.png){:width="500px"}<br>
 <span class="image-caption">_Figure: Anrdoid camera architecture block diagram._</span>
@@ -83,7 +83,7 @@ Taking light from the camera sensor and converting it to beautiful images requri
  ![demosaic](../images/common_demosaic.png){:width="500px"} <br>
  <span class="image-caption">_Figure: Image as captured by sensor (Right) and Image produced after processing (Left)._</span>
  - **Shading correction and geometric correction:** Once an ISP has RAW image data it runs algorithms to fix lens shading or curvature distortion. <br>
-  ![demosaic](../images/common_geometric.png){:width="500px"} <br>
+  ![geometric correction](../images/common_geometric.png){:width="500px"} <br>
  <span class="image-caption">_Figure: Image before geometric correction._</span>
  - **Statistics**: ISPs can efficiently peform statistical operations on incoming signals like - histogram, sharpness maps etc.
 
