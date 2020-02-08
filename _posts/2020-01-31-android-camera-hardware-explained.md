@@ -5,18 +5,18 @@ categories: [android, android-camera, hal, image-processing, hardware, isp, dsp,
 description: "Android is the most popular mobile operating system in the market today. Towards the end of last decade, camera has emerged as one of the most important factors that contributes towards smartphone sales and different OEMs are trying to stay at the top of the throne. Smartphone cameras are built very similar to digital cameras in a compact package. With high end processing capabilities it has taken a big leap and is competing with digital cameras today. In this post I'll be covering the general hardware architecture of modern Android Camera."
 post-no: 12
 toc: false
-image: '../images/post12_image1.webp'
+image: '../images/post12_image.webp'
 ---
-![android camera hardware](../images/post12_image1.webp){:width="500px"}
+![android camera hardware](../images/post12_image8.png){:width="500px"}<br>
+<span class="image-caption">_Figure: Anrdoid camera architecture block diagram._</span>
 
 Android is the most popular mobile operating system in the market today. Towards the end of last decade, camera has emerged as one of the most important factors that contributes towards smartphone sales and different OEMs are trying to stay at the top of the throne. Smartphone cameras are built very similar to digital cameras in a compact package. With high end processing capabilities it has taken a big leap and is competing with digital cameras today. In this post I'll be covering the general hardware architecture of modern Android Camera.
 
-![](../images/post11_image2.png){:width="700px"}<br>
-<span class="image-caption">_Figure: Android Camera low level architecture ([source](source.android.com)). Many of the basic steps are done in specialized hardwares explained in detail below._</span>
+![Android camera architecture](../images/post11_image2.png){:width="700px"}<br>
+<span class="image-caption">_Figure: Android camera low level architecture ([source](source.android.com)). Many of the basic steps are done in specialized hardwares explained in detail below._</span>
 
 ## Components
 <!-- TODO(mebjas): add the cross section diagram -->
-
 ![basic camera](../images/post12_image6.jpg){:width="500px"}<br>
 <span class="image-caption">_Figure: Pin hole camera._</span>
 
@@ -36,7 +36,7 @@ Around 400BC to 300BC, ancient philosophers of certain cultures were some of the
 The task of the lens is to focus the incoming light into the sensor. 
  - The horizontal movement of the lens allow change in focus. 
  - Some camera chassis allow vertical or multi axis movement of the lens (some times sensors) against the movement of the camera on the whole to provide stabilisation against sudden movements. This is called Optical Image Stabalisation (OIS). It helps is capturing less blurry or stable video.
- - The aperture is used to control the amount of light that enters the sensor is usually part of lens. Smartphones comes with fixed aperture lens. To provide functionalities similar to digital cameras which come with variable aperture lens, smartphones these days comes with multiple lenses.
+ - The aperture is used to control the amount of light that enters the sensor is usually part of lens. Smartphones usually comes with fixed aperture lens. To provide functionalities similar to digital cameras which come with variable aperture lens, smartphones these days comes with multiple lenses.
 
 ### Shutter
 Shutter speed is one of the factors that controls how much light is sensed by the sensor or for how long. This has traditionally been controlled by a mechanical component called shutter.
