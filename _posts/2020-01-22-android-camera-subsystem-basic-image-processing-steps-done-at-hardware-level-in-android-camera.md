@@ -35,7 +35,7 @@ As described in [this post](https://blog.minhazav.dev/android-camera-hardware-ex
 
 The output from camera sensors are preserved in a format called RAW. RAW image is often called digital negatives. A RAW image can only be consumed by specialized image viewing tools but is popular amongst photographers as it preserves the image as it was captured by Camera without loosing information.
 
-The outputs of Android camera subsystem are consumed by applications or application layer. Most OEMs add support for JPEG and YUV image as output from camera, while some add support for returning RAW image directly as well. You can think of YUV as a processed image which is ready to be consumed. While JPEG is compressed image format that represents a processed image.
+The output of Android camera subsystem are consumed by applications or application layer. Most OEMs add support for JPEG and YUV image as output from the camera, while some add support for returning RAW image directly as well. You can think of YUV as a processed image which is ready to be consumed. While JPEG is compressed image format that represents a compressed version of processed image.
 
 ### Image Processing done in Camera Subsystem
 
@@ -43,22 +43,48 @@ The outputs of Android camera subsystem are consumed by applications or applicat
  ![hot pixe correction](../images/common_hot_pixel.jpg){:width="500px"} <br>
  <span class="image-caption">_Figure: Image with incorrect red pixel ([Image via Shutterstock](http://www.shutterstock.com/pic-84216661/stock-photo-closeup-portrait-of-a-halloween-black-cat.html?src=M6Qs_EDxVIIVJ36sl_5sqQ-1-1))._</span>
 
-TBD
+Every sensor has pixels that do not react linearly to incident light. Often, these pixels appear brighter and especially in dark images they disturb as colored dots. This could easily happen if any pixel in the sensor array produce an incorrect result due to over heating or other hardware issues.
+
+##### Detection
+A bad pixel (superset of hot pixel) can be defined as a pixel that does not behave as expected, producing anomalous values and therefore, no valuable information. While many advanced methods exists, in naive terms the way to detect hot pixel is to check if a pixel is anamolous w.r.t it's neighbourhood.
+
+##### Correction
+Hot pixel correction is usually done with nearest neightbour interpolation techniques. The most naive algorithm would be to take average of all 8 neighbours (for non corner pixels) and apply it.
 
 #### Demosaic
  ![demosaic](../images/common_demosaic.png){:width="500px"} <br>
  <span class="image-caption">_Figure: Image as captured by sensor (Right) and Image produced after processing (Left)._</span>
 
-**Did you know almost 2/3 of image you see is made up?**
+> **Did you know almost 2/3 of image you see is made up?**
 
-TBD
+As mentioned in detail in [this article](https://blog.minhazav.dev/android-camera-hardware-explained/#isp-image-signal-processor) - the CMOS sensors doesn't sense <span style="color:red; font-weight:bold">RED</span>, <span style="color:blue; font-weight:bold">BLUE</span> and <span style="color:green; font-weight:bold">GREEN</span> for each pixel. The sensor senses one of these color per pixel (usually 2 Green, 1 Red and 1 Blue in 4 pixel group) and rest of the image is guessed programatically in the ISP. The input to the algorithm is called RAW Bayer Image.
+
+![raw bayer image](../images/common_raw_bayer.png){:width="400px"}<br>
+<span class="image-caption">_Figure: The Bayer arrangement of color filters on the pixel array of an image sensor. Each two-by-two cell contains two green, one blue, and one red filter._</span>
+
+The reconstruction of the image from the bayer image is done using different type of  [multivariate interpolation](https://en.wikipedia.org/wiki/Multivariate_interpolation) techniques. To dig more into different types of algorithms present today - refer to [this Wikipedia](https://en.wikipedia.org/wiki/Demosaicing) article.
 
 #### Noise reduction
-![noisy image](../images/common_noisy_image.jpg){:width="500px"} <br>
+![noisy image](../images/common_noisy_image.jpg){:width="400px"} <br>
 <span class="image-caption">_Figure: Image with noise._</span>
 
+Image noise is random variation in brightness or color in the produced image and is usually an aspect of electronic noise. It can be produced due to errors in camera sensor. The image noise can be of following types or more:
+ - [Gaussian Noise](https://en.wikipedia.org/wiki/Gaussian_noise)
+ - [Salt and Pepper Noise](https://en.wikipedia.org/wiki/Salt-and-pepper_noise)
+ - [Shot Noise](https://en.wikipedia.org/wiki/Shot_noise)
+ - Quantization Noise
+ - [Read more on Wikipedia](https://en.wikipedia.org/wiki/Image_noise)
 
-TBD
+##### Causes of noise
+ - In low light conditions the shutter speed, aperture or ISO (sensor's sensitivity) is increased to get higher exposure. On most cameras, slower shutter speeds lead to increased salt-and-pepper noise.
+ - The size of the image sensor, or effective light collection area per pixel sensor, is the largest determinant of signal levels that determine signal-to-noise ratio and hence apparent noise levels.
+ - Sensor heating - temperature can also have an effect on the amount of noise produced by an image sensor due to leakage. 
+ > Would your camera be more noisy in Summer as compared to winters?
+
+##### Noise Reduction (NR) techniques
+Noise reduction is a difficult problem and there is no sure shot algorithm that can deterministically fix any kind of noise. Noise identification and applying fix for that kind of noise can be one tecnique. For example, for Guassian noise one may want to apply a simple filter which apply average operation on certain convolution for each pixel.
+
+It's noteworthy that noise reduction is usually done separately for `luma` and `chroma` component of the image. In fact, NR is done more aggresively on `chroma` as most people find chrome noise more objectionable than luma noise. These days technique involving capturing multiple frames in short succession and merging them is also used for NR particularly in low light conditions.
 
 #### Shading correction
 ![geometric correction](../images/common_lens_shading.jpg){:width="500px"} <br>
@@ -93,3 +119,4 @@ If you request a YUV image and perform some image processing on top of it and fi
 ## References
  - [Android Camera Architecture explained - minhazav.dev](https://blog.minhazav.dev/android-camera-hardware-explained/)
  - [Android Camera - source.google.com](https://source.android.com/devices/camera)
+- [Hot pixel correction - ids-imaging.com](https://en.ids-imaging.com/tl_files/downloads/techtip/TechTip_uEyeHotpixelEditor_EN.pdf)
