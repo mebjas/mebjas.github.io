@@ -15,18 +15,21 @@ Towards the end of last decade `camera` has emerged as one of the key factors th
  - ISP: Image Signal Processor
  - DSP: Digital Singal Processor
  - 3A: Auto Exposure, Auto Focus, Auto White-Balance
+ - OEM: Original Equipment Manufacturers
+ - JPEG: Compressed image format - [Wikipedia](https://en.wikipedia.org/wiki/JPEG)
+ - YUV: An uncompressed image format - [Wikipedia](https://en.wikipedia.org/wiki/YUV)
 
 ## Android Camera Stack
 ![Camera Pipeline](../images/common_android_camera.png){:width="300px"}<br>
 <span class="image-caption">_Figure: Top level view of Android Camera Stack_</span>
 
-In this article image processing algorithms that are implemented at the HAL level that runs on specialized hardware like ISP are described.
+In this article I have focussed on image processing algorithms that are implemented at the HAL level.
 
 ## Camera Subsystem in Android
 As per [source.android.com](https://source.android.com/devices/camera) on Android Camera:
 > Android's camera hardware abstraction layer (HAL) connects the higher-level camera framework APIs in Camera 2 to your underlying camera driver and hardware. __The camera subsystem includes implementations for camera pipeline components__ while __the camera HAL provides interfaces__ for use in implementing your version of these components.
 
-The camera susbsystem includes implementation of fundamental image processing algorithms that converts `RAW Bayer output` from camera sensor to full fledged image that can be consumed by applications and users. I have explained [Android camera hardware architecture](https://blog.minhazav.dev/android-camera-hardware-explained/) in detail in another article.
+The camera susbsystem includes implementation of fundamental image processing algorithms that converts `RAW Bayer output` from camera sensor to full fledged image that can be consumed by applications and users. In another article I have attempted to explain -  [Android camera hardware architecture](https://blog.minhazav.dev/android-camera-hardware-explained/).
 
 ![Camera Pipeline](../images/post11_image1.png){:width="500px"}<br>
 <span class="image-caption">_Figure: Camera Pipeline as per Android Source_</span>
@@ -39,7 +42,7 @@ As described in [this post](https://blog.minhazav.dev/android-camera-hardware-ex
 
 The output from camera sensors are preserved in a format called RAW. RAW image is often called digital negatives. A RAW image can only be consumed by specialized image viewing tools but is popular amongst photographers as it preserves the image as it was captured by Camera without loosing information.
 
-The output of Android camera subsystem are consumed by applications or application layer. Most OEMs add support for JPEG and YUV image as output from the camera, while some add support for returning RAW image directly as well. You can think of YUV as a processed image which is ready to be consumed. While JPEG is compressed image format that represents a compressed version of processed image.
+The image output from HAL is consumed by applications and most OEMs add support for JPEG and YUV image as output from the camera, while some add support for returning RAW image directly as well. You can think of YUV as a processed image which is ready to be consumed. While JPEG is compressed image format that represents a compressed version of processed image.
 
 ### Image Processing done in Camera Subsystem
 
@@ -61,12 +64,12 @@ Hot pixel correction is usually done with nearest neightbour interpolation techn
 
 > **Did you know almost 2/3 of image you see is made up?**
 
-As mentioned in detail in [this article](https://blog.minhazav.dev/android-camera-hardware-explained/#isp-image-signal-processor) - the CMOS sensors doesn't sense <span style="color:red; font-weight:bold">RED</span>, <span style="color:blue; font-weight:bold">BLUE</span> and <span style="color:green; font-weight:bold">GREEN</span> for each pixel. The sensor senses one of these color per pixel (usually 2 Green, 1 Red and 1 Blue in 4 pixel group) and rest of the image is guessed programatically in the ISP. The input to the algorithm is called RAW Bayer Image.
+As mentioned in [this article](https://blog.minhazav.dev/android-camera-hardware-explained/#isp-image-signal-processor) - the CMOS sensors doesn't sense <span style="color:red; font-weight:bold">RED</span>, <span style="color:blue; font-weight:bold">BLUE</span> and <span style="color:green; font-weight:bold">GREEN</span> for each pixel. The sensor senses one of these color per pixel (usually 2 Green, 1 Red and 1 Blue in 4 pixel group) and rest of the image is guessed programatically in the ISP. The input to the algorithm is called RAW Bayer Image.
 
 ![raw bayer image](../images/common_raw_bayer.png){:width="400px"}<br>
 <span class="image-caption">_Figure: The Bayer arrangement of color filters on the pixel array of an image sensor. Each two-by-two cell contains two green, one blue, and one red filter._</span>
 
-The reconstruction of the image from the bayer image is done using different type of  [multivariate interpolation](https://en.wikipedia.org/wiki/Multivariate_interpolation) techniques. To dig more into different types of algorithms present today - refer to [this Wikipedia](https://en.wikipedia.org/wiki/Demosaicing) article.
+The reconstruction of the image from the bayer image is called `demosaicing`. It's done using different type of  [multivariate interpolation](https://en.wikipedia.org/wiki/Multivariate_interpolation) techniques. To dig more into different types of algorithms present today - refer to [this Wikipedia](https://en.wikipedia.org/wiki/Demosaicing) article.
 
 #### Noise reduction
 ![noisy image](../images/common_noisy_image.jpg){:width="400px"} <br>
@@ -83,7 +86,7 @@ Image noise is random variation in brightness or color in the produced image and
  - In low light conditions the shutter speed, aperture or ISO (sensor's sensitivity) is increased to get higher exposure. On most cameras, slower shutter speeds lead to increased salt-and-pepper noise.
  - The size of the image sensor, or effective light collection area per pixel sensor, is the largest determinant of signal levels that determine signal-to-noise ratio and hence apparent noise levels.
  - Sensor heating - temperature can also have an effect on the amount of noise produced by an image sensor due to leakage. 
- > Would your camera be more noisy in Summer as compared to winters?
+ > **Would your camera be more noisy in Summer as compared to winters?**
 
 ##### Noise Reduction (NR) techniques
 Noise reduction is a difficult problem and there is no sure shot algorithm that can deterministically fix any kind of noise. Noise identification and applying fix for that kind of noise can be one tecnique. For example, for Guassian noise one may want to apply a simple filter which apply average operation on certain convolution for each pixel.
@@ -115,10 +118,13 @@ There are more ways like `omomorphic filtering`, `Morphological filtering` etc t
 ![geometric correction](../images/common_geometric.png){:width="400px"} <br>
 <span class="image-caption">_Figure: Image before geometric correction._</span>
 
-In photography, distortion is generally referred to an optical aberration that deforms and bends physically straight lines and makes them appear curvy in images, which is why such distortion is also commonly referred to as “curvilinear”. This is caused by how the light is bent by the lens. Three common type of optical distortions are:
- - Barrel Distortion - When straight lines are curved inwards in a shape of a barrel
- - Pincushion Distortion - Straight lines are curved outwards from the center. This type of distortion is shown in the figure above.
- - Mustache Distortion - A combination of both barrel and pincushion distortion.
+In photography, distortion is generally referred to an optical aberration that deforms and bends physically straight lines and makes them appear curvy in images, which is why such distortion is also commonly referred to as `curvilinear`. This is caused by how the light is bent by the lens. Three common type of optical distortions are:
+ - `Barrel Distortion` - When straight lines are curved inwards in a shape of a barrel
+ - `Pincushion Distortion` - Straight lines are curved outwards from the center. This type of distortion is shown in the figure above.
+ - `Mustache Distortion` - A combination of both barrel and pincushion distortion.
+
+![different types of distortions](../images/common_distortions.jpeg){:width="500px"} <br>
+<span class="image-caption">_Figure: different types of geometric distortions._</span>
 
 [This article by photographylife.com](https://photographylife.com/what-is-distortion) describes in great details different kind of distortions (including Perspective distortion).
 
@@ -153,13 +159,13 @@ Usually, edge enhancement has possibility to introduce more noise. To mitigate t
 
 ## What after these low level steps?
 
-After applying these steps (or more as implemented by HAL of different OEMs) RAW image can be converted to YUV. YUV images are usually large in size with `1.5 Bytes per pixel`. This means a `12 MP image (4000 X 3000)` will occupy around `17.2 MB` in memory. To save size of output image written to disk an image is usually compressed and JPEG is more popular format for this at the moment. Jpeg encoding is supported at HAL level as it can be efficiently done at hardware level.
+After applying these steps (or more as implemented by HAL of different OEMs) RAW image can be converted to YUV. YUV images are usually large in size with `1.5 Bytes per pixel`. This means a `12 MP image (4000 X 3000)` will occupy around `17.2 MB` in memory. To save size of output image written to disk an image is usually compressed and `JPEG` is one fo the most popular formats for this. `JPEG encoding` is supported at HAL level as it can be efficiently done in the hardware.
 
 If you are writing an application on top of Android Camera and intend to perform your own processing on top of image returned by framework you should request image in `YUV` format. OTOH, if the goal is to directly write the image to disk `JPEG` image should be used.
 
 > If the goal is to just save the image to disk and then act on it, it'd both easier and faster to use [Android Camera Intent](https://developer.android.com/training/camera/photobasics) than implementing the camera.
 
-If you request a YUV image and perform some image processing on top of it and finally save to disk, you'd still need to pay cost of JPEG encoding. Jpeg encoding usually takes around `~ 800 ms` vs `~ 90 ms` at software vs hardware layer respectively for a 8MP image on a simple quad core system. This can however be optimised by using Reprocessing APIs supported in later version of Android. I'll be writing more about it soon.
+If you request a YUV image and perform some image processing on top of it and finally save to disk, you'd still need to pay cost of JPEG encoding. JPEG encoding usually takes around `~ 800 ms` vs `~ 90 ms` at software vs hardware layer respectively for a 8MP image on a simple quad core system. This can however be optimised by using Reprocessing APIs supported in later version of Android. I'll be writing more about it soon.
 <!-- TODO(mebjas): add link to article on reporcessing API. -->
 
 ## Interesting notes
