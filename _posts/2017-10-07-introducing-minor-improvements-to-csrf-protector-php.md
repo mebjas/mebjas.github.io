@@ -4,7 +4,7 @@ title: Introducing minor improvements to CSRF Protector PHP
 categories: [csrf, javascript, open-source, owasp, security, web-security, php]
 description: "The OWASP CSRF Protector project started with an aim to develop a solution that can mitigate Cross Site Request Forgery in web applications without much developer effort. We have recently released v1.0.0 of CSRF Protector PHP. These improvements / fixes were based on issues raised by different users. Here’s the two major changes that we have introduced and why:<ol><li>Added support for application/json content-type.</li><li>Made path, domain and secure property of CSRF Token Cookie configurable.</li></ol>"
 post-no: 5
-toc: false
+toc: true
 ---
 The OWASP CSRF Protector project started with an aim to develop a solution that can mitigate Cross Site Request Forgery in web applications without much developer effort. The most common solution for mitigating CSRF is using a token which cannot be retrieved by the attacker, thus ensuring the authenticity of the incoming request to the server. [OWASP Wiki on CSRF](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)) is a good place to learn more about CSRF. Unlike most of other solutions CSRFProtector works as an interceptor and take care of the inner details like – attaching the token with every request from client and validating them at the server. This project started as a part of Google Summer of Code 2014.
 
@@ -52,7 +52,7 @@ That said, I’m excited to see how it’s used and what new issues are going to
 
 After all, issues translates to new features and improvements. The code is hosted on Github under the Apache License, Version 2.0. Feel free to use, raise issues or make improvements and send a pull request.
 
-### References:
+### References
  - [CSRF Protector PHP OWASP Wiki](https://www.owasp.org/index.php/CSRFProtector_Project)
  - CSRF Protector PHP [Github Repo](https://github.com/mebjas/CSRF-Protector-PHP) | [Issues](https://github.com/mebjas/CSRF-Protector-PHP/issues) | [Wiki](https://github.com/mebjas/CSRF-Protector-PHP/wiki)
  - [CSRF Protector Slide Deck](https://www.slideshare.net/MinhazAv/csrf-protector)

@@ -4,10 +4,10 @@ title: Drawing a 3d surface patch using Bezier equations
 categories: [graphics, html-canvas, javascript, mathematics]
 description: "This post covers: <ul><li>What’s a bezier equation?</li><li>Creating a 3d surface patch using Bezier curves</li><li>Making it interactive</li><ul><br><i>Its a cubic parametric curve used to draw smooth curves, we can draw a bezier curve using two endpoints and two control points.</i>"
 post-no: 1
-toc: false
+toc: true
 ---
 
-### This post covers :
+### This post covers
 
  - What’s a bezier equation?
  - Creating a 3d surface patch using Bezier curves
@@ -16,7 +16,7 @@ toc: false
 ![Screenshot](../images/Screen-Shot-2014-11-17-at-11.27.12-am.png.jpg){:width="500px"}
 <br><span class="image-caption"> _Screenshot of experiment_ <span>
 
-### So what’s a Bezier curve:
+### So what’s a Bezier curve?
 
 Its a cubic parametric curve used to draw smooth curves, we can draw a bezier curve using two endpoints and two control points. It looks something like:
 
@@ -25,7 +25,7 @@ Its a cubic parametric curve used to draw smooth curves, we can draw a bezier cu
 
 So how to draw the surface using multiple bezier curves:
 
-### Well there are multiple ways, here’s what I did:
+### Well there are multiple ways, here’s what I did
 
  - Drew my first Bezier curve (The top one) and kept track of 10 equidistant points on that curve say HP.
  - Drew first vertical Bezier curve (The left one) and kept track of 10 equidistant points on that curve say VP.

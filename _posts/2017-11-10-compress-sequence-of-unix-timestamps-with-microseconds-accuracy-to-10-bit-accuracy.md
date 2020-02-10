@@ -4,7 +4,7 @@ title: Compress sequence of UNIX timestamps with microseconds accuracy to ~10bit
 categories: [compression, mathematics, encoding, decoding, bits-manipulation]
 description: "I was given a problem statement by interviewer: <i>There is a stream of timestamps that need to be transferred across some network stream. The goal is to compress this sequence of timestamps with microseconds accuracy, in lossless fashion. Also the encoding and decoding process should be very fast so that it can scale for time critical processes.</i>. <br> I found the problem statement very intriguing and went through with it and it was a an amazing learning experience. In this article I have explained the problem statemenet and how I solved it."
 post-no: 6
-toc: false
+toc: true
 ---
 ## Problem Setup
 There is a stream of timestamps that need to be transferred across some network stream. The goal is to compress this sequence of timestamps with microseconds accuracy, in lossless fashion. Also the encoding and decoding process should be very fast so that it can scale for time critical processes;
@@ -89,7 +89,7 @@ Which gives us
 
 I’ll implement this as first version and try to achieve this theoretical number.
 
-#### SUMMARY of implementation
+#### summary
 As mentioned before, without buffering values in memory, we can only write byte by byte to file. Hence, for first two cases (`00 & 01`) `1 byte` is used and for case 3 (`10`) – `4 bytes` are used and for case 4 (not found in testfile) – `7 bytes` are supposed to be used.
 
 After running the code, it reduced the file to `1345 Kb` = `1377280 bytes` which is equal to `24.419Bits / timestamp`. So this satisfies the minimum criteria but it is pretty far away from `10bits/timestamp`.
@@ -98,7 +98,7 @@ Ok, compression ratio is not awesome, **but C++, IO & Bits manipulation skills a
 
 SO FAR: **23.127 bits / timestamp :)**
 
-### Attempt 2
+### Attempt 02
 Looking at the integer value and decimal value is adding overheads. I’d rather look at the number on the whole. Quickly calculated the delta values between consecutive numbers using simple python script ` = helper.py`. Using Microsoft Excel - here’s the histogram based on no of bits needed to store the delta values:
 
 
@@ -183,7 +183,7 @@ Now if the sequence of delta is like `0 0 0 1 0 1 0`, we can use the remaining b
 If we build a mapping of sequences based on popularity and encode them in these bits when observed we’d be able to reduce the data further. 
 > TODO(mebjas): Find the most popular sequence and encode them in free bits.
 
-### SO FINALLY: 10.097 bits/timestamp
+### And finally: 10.097 bits/timestamp
 Also, this one is not the part of solution I implemented but if we zip the encoded file it’s further reduced to 
 > 527355 bytes = 9.35 bits / timestamp
 
@@ -239,7 +239,7 @@ Comparing files timestamps.txt and TIMESTAMPS_DECODED.TXT
 FC: no differences encountered
 ```
 
-#### Metrics (also available in .\metrics.txt)
+#### Metrics
 **Degree of compression**
 
 In the final attemp was able to reduce the data to: `569463 bytes = 10.097 bits / timestamp` which is equivalent to `92.98% lossless compression`

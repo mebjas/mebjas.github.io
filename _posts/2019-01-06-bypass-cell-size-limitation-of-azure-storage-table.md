@@ -4,7 +4,7 @@ title: Bypass cell size limitation (64KB) of Azure Storage Table
 categories: [architecture, system-design, azure, azure-storage-table, compression, distributed-systems, microsoft, open-source, cloud]
 description: "Azure Storage Table is Azure’s NoSQL offering to store large number of data (upto peta bytes) in a table (tables have rows and columns). It provides indexing on two keys namely partition key and row key which allows you to retrieve data efficiently. No other columns are indexed, but that’s expected behavior. It has limitations on size of a single row (1 MB), size of a single column (64KB), number of columns per row (255) and so on. While I don’t really know why some of them exist – they just do. In this article <b>I have proposed a naughty but elegant</b> way of bypassing this issue. "
 post-no: 9
-toc: false
+toc: true
 ---
 ## Introduction
 Azure Storage Table is Azure’s NoSQL offering to store large number of data (upto peta bytes) in a table (tables have rows and columns). It provides indexing on two keys namely partition key and row key which allows you to retrieve data efficiently. No other columns are indexed, but that’s expected behavior. Azure Storage is dirt cheap – it costs like `$0.07 per GB / month` for locally redundant storage model. It promotes creating multiple redundant copies of the data so that you don’t need foreign keys or so anymore. Not requiring any schema upfront gives this flexibility.
@@ -41,7 +41,7 @@ You can find reference to my code implementation below. Following diagram explai
 ![reference desing](../images/post9_image1.png){:width="750px"}<br>
 <span class="image-caption">_Figure: Reference design to compress, split, store, retrieve, reconstruct, decompress and yeyy!_</span>
 
-#### But if,
+#### But what if data is bigger than 1 mb?
 > But Minhaz, my data is bigger than 1MB even after compression? Now what?
 
 **– Some random guy**

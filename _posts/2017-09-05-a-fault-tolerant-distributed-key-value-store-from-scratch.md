@@ -4,6 +4,7 @@ title: A fault tolerant distributed key value store from scratch
 categories: [distributed-systems, hackathon, key-value-store, nodejs]
 description: "We had a B-Tech course on Distributed Systems and I took a course on on Cloud Computing Concepts 1 by Dr Indranil Gupta (UIUC) a year back and for long, I have been thinking about trying out different concepts explained in the course together as something meaningful. In this article I have attempted to describe how to build a fault tolerant distributed key value store from scratch. A key-value store, or key-value database, is a data storage paradigm designed for storing, retrieving, and managing associative arrays, a data structure more commonly known today as a dictionary or hash. A distributed Key Value store is one where data is replicated across different nodes such that there is High Availability and No single point of failure"
 post-no: 4
+toc: true
 ---
 
 We had a B-Tech course on Distributed Systems and I took a course on on Cloud Computing Concepts 1 by Dr Indranil Gupta (UIUC) a year back and for long, I have been thinking about trying out different concepts explained in the course together as something meaningful. There are assignments in the course which you need to finish, but they don’t require you to just club all of them together. I wished to try something out where most of the major concepts are used.
@@ -103,7 +104,7 @@ hash: function(key) {
 positionInRing = hash(port_no)
 ```
 
-##### Changed hash function to be as simple as key - 8080. It can take values between 8080 & 8336 and give a unique ring id between [0, 256). Thus max ring size if 256 for now;
+**Changed hash function to be as simple as key - 8080. It can take values between 8080 & 8336 and give a unique ring id between [0, 256). Thus max ring size if 256 for now.**
 
 ### Some other points
 
@@ -120,7 +121,7 @@ positionInRing = hash(port_no)
 ## TASK 3: Storage Replication & Stabilization
 Storage of data is abstracted out by datastore.js. Replication is done based on this approach:
 
-### 3.1 WRITE REQUEST:
+### 3.1 WRITE Request
 Client can send a WRITE REQUEST to any node, with a key-value pair; During the life-cycle of this request, this node will act as a coordinator; The coordinator will calculate the hash of the key and will be able to identify the nodes where this key should be stored. Essentially the hash function will point to one node, let’s call it primary store for the key. In my approach there will be NoOfReplicas = MaxReplicationCount - 1 replicas as well. The NoOfReplicas nodes after the primary store for the key in the ring will be selected as replicas; The coordinator will send the internal write request to each of this node and wait for response; As soon as responses from quorumCount no of nodes come back, the write request will be set as done and success code is returned to client; Otherwise in case of timeout or failed requests > MaxReplicationCount - quorumCount write request will be considered as failed; Here,
 
  - Concepts like hinted hand-off is not implemented as out of scope;
@@ -129,10 +130,10 @@ Client can send a WRITE REQUEST to any node, with a key-value pair; During the l
 ```
 Note: Sending a WRITE REQUEST with a key that already exists will act like Update
 ```
-### 3.2 READ REQUEST
+### 3.2 READ Request
 Pretty much similar to WRITE Request, the request is sent to replicas and once response is received from at lease quorumCountno of replicas and values are consistent, the value is responded back. In case some the replicas have older values – READ REPAIR is initiated for them by the coordinator; If response is not recieved from quorumCount with value – 404, Not Found is responded back; If less than quorumCount respond with a value, it might be because DELETE failed them or failed writeworked for them. In any case we can either initiate an internal DELETE request to these or leave it be;
 
-### 3.3 DELETE REQUEST
+### 3.3 DELETE Request
 Similar to above two, initiate request to all replicas and respond back OK if quorum responds with that number;
 
 ### 3.4: Stabilization
@@ -143,13 +144,13 @@ To the client the nodes expose three apis
 
 To the client the nodes expose three apis
 
-#### /Get a Key
+### /Get a Key
 ```
 GET /s/key?key=key9 HTTP/1.1
 Host: localhost:8083
 ```
 
-#### /Set a key
+### /Set a key
 ```
 POST /s/key HTTP/1.1
 Host: localhost:8080
@@ -161,7 +162,7 @@ Content-Type: application/json
 }
 ```
 
-#### /Delete a key
+### /Delete a key
 ```
 DELETE /s/key?key=key9 HTTP/1.1
 Host: localhost:8081
@@ -174,7 +175,7 @@ It’s cool to see all nodes detect a new node has joined, and when all consoles
 
 Similarly, when a node fails, eventually each node detects the failure and kicks stabilization so that data is not lost; However, if all replicas of a set of keys die together – that data is lost;
 
-## TODOS:
+## More Todos
  - Automated E2E testing, unit testing bug fixes
 Change localhost hard-coding, test it in different machines on a network
  - Performance testing – Same Machine / Different Machines
