@@ -4,13 +4,13 @@ title: Android Camera Subsystem - basic image processing steps done at hardware 
 categories: [android, android-camera, hal, image-processing, computational-photograhpy]
 description: "Towards the end of last decade camera has emerged as one of the key factors that contributes towards smartphone sales and different manufacturers are trying to stay at the top of the throne. While everyone loves using a camera - the set of things that happens in different layer of the hardware and software stack of Android Camera is not very popular knowledge. The design, implementation and usage of these systems governs metrics like image quality and camera performance (latency, throughput etc). In this post I'll be describing various algorithms implemented in android camera subsystem that is consistent across OEMs which are used to produce stunning images that we capture from camera applications."
 post-no: 11
-toc: false
+toc: true
 image: '../images/common_demosaic.png'
 ---
 ## Introduction
 Towards the end of last decade `camera` has emerged as one of the key factors that contributes towards smartphone sales and different manufacturers are trying to stay at the top of the throne. While everyone loves using a camera - the set of things that happens in different layer of the hardware and software stack of Android Camera is not very popular knowledge. The design, implementation and usage of these systems governs metrics like `image quality` and `camera performance (latency, throughput etc)`. In this post I'll be describing various algorithms implemented in android camera subsystem that is consistent across OEMs which are used to produce stunning images that we capture from camera applications.
 
-### Legends:
+### Legends
  - HAL: Hardware Access Layer
  - ISP: Image Signal Processor
  - DSP: Digital Singal Processor

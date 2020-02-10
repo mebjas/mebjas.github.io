@@ -21,7 +21,7 @@ layout: default
 
   <div class="post-content" itemprop="articleBody">
     {% if page.toc %}
-    {% include toc.html display="Table of Contents" %}
+    {% include toc.html html=content %}
     {% endif %}
     {{ content }}
   </div>

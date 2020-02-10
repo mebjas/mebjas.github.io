@@ -4,7 +4,7 @@ title: Android Camera Hardware Architecture explained
 categories: [android, android-camera, hal, image-processing, hardware, isp, dsp, lens, sensor]
 description: "Android is the most popular mobile operating system in the market today. Towards the end of last decade, camera has emerged as one of the most important factors that contributes towards smartphone sales and different OEMs are trying to stay at the top of the throne. Smartphone cameras are built very similar to digital cameras in a compact package. With high end processing capabilities it has taken a big leap and is competing with digital cameras today. In this post I'll be covering the general hardware architecture of modern Android Camera."
 post-no: 12
-toc: false
+toc: true
 image: '../images/post12_image1.webp'
 ---
 ![android camera hardware](../images/post12_image8.png){:width="500px"}<br>
@@ -24,7 +24,7 @@ Around 400BC to 300BC, ancient philosophers of certain cultures were some of the
 
 1000 of years later cameras have taken a big leap and now tiny cameras are available on smartphones capable of capturing dense images competing with full-fledged digital cameras. A standard camera on the smartphone have following components:
 
-### Legends:
+### Legends
  - HAL: Hardware Access Layer
  - ISP: Image Signal Processor
  - DSP: Digital Singal Processor
