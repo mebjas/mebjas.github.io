@@ -2,19 +2,25 @@
 layout: post
 title: Android Camera Subsystem - basic image processing steps done at hardware level in Android Camera
 categories: [android, android-camera, hal, image-processing, computational-photograhpy]
-description: "Android is one of the most popular mobile operation system in the market today. It's an open source mobile operating system by Google and is shipped by several OEMs like Samsung, Redmi, Oppo, Vivo, Nokia etc. Towards the end of last decade camera has emerged as one of the most important factor that contributes towards smartphone sales and different OEMs are trying to stay at the top of the throne. Differnt android flagships including Google owned Pixel(s) have been directly competing with Apple Iphone over the years and giving it a touch competition. In this post I'll be describing various algorithms implemented in Android camera subsystem that is consistent across OEMs which are used to produce stunning images that we capture from Camera Applications."
+description: "Towards the end of last decade camera has emerged as one of the key factors that contributes towards smartphone sales and different manufacturers are trying to stay at the top of the throne. While everyone loves using a camera - the set of things that happens in different layer of the hardware and software stack of Android Camera is not very popular knowledge. The design, implementation and usage of these systems governs metrics like image quality and camera performance (latency, throughput etc). In this post I'll be describing various algorithms implemented in android camera subsystem that is consistent across OEMs which are used to produce stunning images that we capture from camera applications."
 post-no: 11
 toc: false
 image: '../images/common_demosaic.png'
 ---
 ## Introduction
-Android is one of the most popular mobile operation system in the market today. It's an open source mobile operating system by Google and is shipped by several OEMs like Samsung, Redmi, Oppo, Vivo, Nokia etc. Towards the end of last decade camera has emerged as one of the most important factor that contributes towards smartphone sales and different OEMs are trying to stay at the top of the throne. Differnt android flagships including Google owned Pixel(s) have been directly competing with Apple Iphone over the years and giving it a touch competition. In this post I'll be describing various algorithms implemented in Android camera subsystem that is consistent across OEMs which are used to produce stunning images that we capture from Camera Applications.
+Towards the end of last decade `camera` has emerged as one of the key factors that contributes towards smartphone sales and different manufacturers are trying to stay at the top of the throne. While everyone loves using a camera - the set of things that happens in different layer of the hardware and software stack of Android Camera is not very popular knowledge. The design, implementation and usage of these systems governs metrics like `image quality` and `camera performance (latency, throughput etc)`. In this post I'll be describing various algorithms implemented in android camera subsystem that is consistent across OEMs which are used to produce stunning images that we capture from camera applications.
 
 ### Legends:
  - HAL: Hardware Access Layer
  - ISP: Image Signal Processor
  - DSP: Digital Singal Processor
  - 3A: Auto Exposure, Auto Focus, Auto White-Balance
+
+## Android Camera Stack
+![Camera Pipeline](../images/common_android_camera.png){:width="300px"}<br>
+<span class="image-caption">_Figure: Top level view of Android Camera Stack_</span>
+
+In this article image processing algorithms that are implemented at the HAL level that runs on specialized hardware like ISP are described.
 
 ## Camera Subsystem in Android
 As per [source.android.com](https://source.android.com/devices/camera) on Android Camera:
