@@ -20,7 +20,7 @@ Towards the end of last decade `camera` has emerged as one of the key factors th
  - YUV: An uncompressed image format - [Wikipedia](https://en.wikipedia.org/wiki/YUV)
 
 ## Android Camera Stack
-![Camera Pipeline](../images/common_android_camera.png)<br>
+![Camera Pipeline](../images/common_android_camera.png){:width="750px"}<br>
 <span class="image-caption">_Figure: Top level view of Android Camera Stack_</span>
 
 In this article I have focussed on image processing algorithms that are implemented at the HAL level.
