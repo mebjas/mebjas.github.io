@@ -35,12 +35,12 @@ The camera susbsystem includes implementation of fundamental image processing al
 <span class="image-caption">_Figure: Camera Pipeline as per Android Source_</span>
 
 ### Camera Sensor and RAW output
-As described in [this post](https://blog.minhazav.dev/android-camera-hardware-explained/#sensor) the output of camera sensor only contains information on one color per pixel as compared to three color (RGB) per pixel we intutively assume.
+As described in [this post](https://blog.minhazav.dev/android-camera-hardware-explained/#sensor) the output of camera sensor only contains information on one color per pixel as compared to three color (RGB) per pixel we intuitively assume.
 
 ![Output from sensor](../images/post12_image4.png){:width="500px"}<br>
 <span class="image-caption">_Figure: Output from camera sensor._</span>
 
-The output from camera sensors are preserved in a format called RAW. RAW image is often called digital negatives. A RAW image can only be consumed by specialized image viewing tools but is popular amongst photographers as it preserves the image as it was captured by Camera without loosing information.
+The output from camera sensors are preserved in a format called RAW. RAW image is often called digital negatives. A RAW image can only be consumed by specialised image viewing tools but is popular amongst photographers as it preserves the image as it was captured by Camera without loosing information.
 
 The image output from HAL is consumed by applications and most OEMs add support for JPEG and YUV image as output from the camera, while some add support for returning RAW image directly as well. You can think of YUV as a processed image which is ready to be consumed. While JPEG is compressed image format that represents a compressed version of processed image.
 

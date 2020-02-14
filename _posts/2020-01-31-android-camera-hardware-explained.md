@@ -8,12 +8,12 @@ toc: true
 image: '../images/post12_image1.webp'
 ---
 ![android camera hardware](../images/post12_image8.png){:width="500px"}<br>
-<span class="image-caption">_Figure: Anrdoid camera architecture block diagram._</span>
+<span class="image-caption">_Figure: Android camera architecture block diagram._</span>
 
 Android is the most popular mobile operating system in the market today. Towards the end of last decade, camera has emerged as one of the most important factors that contributes towards smartphone sales and different OEMs are trying to stay at the top of the throne. Smartphone cameras are built very similar to digital cameras in a compact package. With high end processing capabilities it has taken a big leap and is competing with digital cameras today. In this post I'll be covering the general hardware architecture of modern Android Camera.
 
 ![Android camera architecture](../images/post11_image2.png){:width="700px"}<br>
-<span class="image-caption">_Figure: Android camera low level architecture ([source](source.android.com)). Many of the basic steps are done in specialized hardwares explained in detail below._</span>
+<span class="image-caption">_Figure: Android camera low level architecture ([source](source.android.com)). Many of the basic steps are done in specialised hardwares explained in detail below._</span>
 
 ## Components
 <!-- TODO(mebjas): add the cross section diagram -->
