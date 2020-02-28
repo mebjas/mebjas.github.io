@@ -1,17 +1,37 @@
 ---
 layout: default_research
 ---
+<style>
+#qr {
+    width: 600px;
+    height: 450px;
+    border: 1px solid silver
+}
+
+@media(max-width: 600px) {
+    #qr {
+        width: 300px;
+        height: 450px;
+        border: 1px solid silver
+    }
+}
+
+button:disabled,
+button[disabled]{
+  opacity: 0.5;
+}
+</style>
 <div class="container" style="text-align: center">
     <h1> QR Code scanner Example </h1>
     <br><br>
 
-    <div id="qr" style="display: inline-block; width: 600px; height: 450px; border: 1px solid silver"></div>
+    <div id="qr" style="display: inline-block;"></div>
     <br><br>
 
     <div class="row">
         <button id="scan" class="btn btn-success btn-sm">start scaning</button>
-        <button id="stop" class="btn btn-warning btn-sm disabled">stop scanning</button>
-        <button id="change" class="btn btn-warning btn-sm disabled">change camera</button>
+        <button id="stop" class="btn btn-warning btn-sm" disabled>stop scanning</button>
+        <button id="change" class="btn btn-warning btn-sm" disabled>change camera</button>
     </div>
     <br><br>
     <div class="row">
@@ -46,7 +66,14 @@ layout: default_research
 <script>
 $(document).ready(function() {
     $("#scan").on('click', function() {
+        $("#scan").prop("disabled", true);
+        $("#stop").prop("disabled", false);
+        $("#change").prop("disabled", false);
+
         $("code").html('scanning');
+        // Empty the existing div to make sure double creation doesn't happen.
+        // TODO(mebjas): This should be supported in the library.
+        $('#qr').html("");
         $('#qr').html5_qrcode(function(data){
                     // do something when code is read
                     $(".feedback").html('Code scanned as: <strong>' +data +'</strong>');
@@ -59,26 +86,22 @@ $(document).ready(function() {
                 $(".feedback").html('Video error');
             }
         );
-
-        $("#scan").addClass('disabled');
-        $("#stop").removeClass('disabled');
-        $("#change").removeClass('disabled');
     });
 
     $("#stop").on('click', function() {
         $("#qr").html5_qrcode_stop();
         $("code").html('Click "Start Scanning" to <b>start scanning QR Code</b>');
 
-        $("#scan").removeClass('disabled');
-        $("#stop").addClass('disabled');
-        $("#change").addClass('disabled');
+        $("#scan").prop("disabled", false);
+        $("#stop").prop("disabled", true);
+        $("#change").prop("disabled", true);
         $(".feedback").html("");
     });
+
     $("#change").on('click', function() {
         $("#qr").html5_qrcode_changeCamera();
-
-        $("#scan").addClass('disabled');
-        $("#stop").removeClass('disabled');
+        $("#scan").prop("disabled", true);
+        $("#stop").prop("disabled", false);
     });
 });
     
