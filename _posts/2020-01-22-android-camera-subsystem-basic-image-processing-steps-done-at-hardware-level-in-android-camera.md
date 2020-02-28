@@ -3,10 +3,12 @@ layout: post
 title: Android Camera Subsystem - basic image processing steps done at hardware level in Android Camera
 categories: [android, android-camera, hal, image-processing, computational-photograhpy]
 description: "Towards the end of last decade camera has emerged as one of the key factors that contribute towards smartphone sales and different manufacturers are trying to stay at the top of the throne. While everyone loves using a camera - the set of things that happens in a different layer of the hardware and software stack of Android Camera is not very popular knowledge. The design, implementation, and usage of these systems govern metrics like image quality and camera performance (latency, throughput, etc). In this post, I'll be describing various algorithms implemented in the android camera subsystem that is consistent across OEMs which are used to produce stunning images that we capture from camera applications."
-post-no: 11
+post-no: 12
 toc: true
 image: '../images/common_demosaic.png'
 ---
+<!-- NOTE: this article will have assets under post 11 -->
+
 ## Introduction
 Towards the end of last decade `camera` has emerged as one of the key factors that contribute towards smartphone sales and different manufacturers are trying to stay at the top of the throne. While everyone loves using a camera - the set of things that happens in a different layer of the hardware and software stack of Android Camera is not very popular knowledge. The design, implementation, and usage of these systems govern metrics like `image quality` and `camera performance (latency, throughput, etc)`. In this post, I'll be describing various algorithms implemented in the android camera subsystem that is consistent across OEMs which are used to produce stunning images that we capture from camera applications.
 

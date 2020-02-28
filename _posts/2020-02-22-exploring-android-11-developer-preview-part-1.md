@@ -3,11 +3,12 @@ layout: post
 title: Exploring android 11 developer preview - Part 1
 categories: [android, android11, androidR]
 description: "Android has released <a href='https://android-developers.googleblog.com/2020/02/Android-11-developer-preview.html'>developer preview of Android 11 (aka Android R) for Pixel series (and emulator)</a> last week. As per the blog article many changes have been introduced to support upcoming technologies like 5G, foldable displays, machine learning APIs and to strengthen Android's position in privacy and security. On top of that I could see couple of additions to support ongoing trends like pinhole or waterfall screens or giving first class support for bokeh in Camera. In this article I'd be exploring some of these changes and explaining what it means for users and developers."
-post-no: 13
+post-no: 14
 toc: true
 image: '../images/post13_image3.png'
 wip: true
 ---
+<!-- NOTE: this article will have assets under post 13 -->
 
 Android has released [developer preview of Android 11 (aka Android R) for Pixel series (and emulator)](https://android-developers.googleblog.com/2020/02/Android-11-developer-preview.html) last week. As per the blog article many changes have been introduced to support upcoming technologies like 5G, foldable displays, machine learning APIs and to strengthen Android's position in privacy and security. On top of that I could see couple of additions to support ongoing trends like pinhole or waterfall screens or giving first class support for bokeh in Camera. In this article I'd be exploring some of these changes and explaining what it means for users and developers.
 
