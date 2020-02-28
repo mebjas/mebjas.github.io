@@ -22,7 +22,7 @@ button[disabled]{
 }
 </style>
 <div class="container" style="text-align: center">
-    <h1> QR Code scanner Example </h1>
+    <h1> HTML5 QR Code scanner </h1>
     <br><br>
 
     <div id="qr" style="display: inline-block;"></div>
@@ -75,15 +75,15 @@ $(document).ready(function() {
         // TODO(mebjas): This should be supported in the library.
         $('#qr').html("");
         $('#qr').html5_qrcode(function(data){
-                    // do something when code is read
-                    $(".feedback").html('Code scanned as: <strong>' +data +'</strong>');
+                // do something when code is read
+                $(".feedback").html('Code scanned as: <strong>' +data +'</strong>');
             },
             function(error){
                 //show read errors 
                 $(".feedback").html('Unable to scan the code! Error: ' +error)
             }, function(videoError){
                 //the video stream could be opened
-                $(".feedback").html('Video error');
+                $(".feedback").html('Video Error: ' +videoError);
             }
         );
     });
