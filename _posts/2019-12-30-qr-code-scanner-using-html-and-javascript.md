@@ -5,7 +5,7 @@ categories: [html, javascript, jquery, qrcode, camera]
 description: "LazarSoft had written an excellent set of <a href='https://github.com/LazarSoft/jsqrcode'>QR code decoding javascript libraries</a>. However, it still requires some efforts to integrate the work with a web project, as we need to take care of enumerating different camera devices, setting up <code>canvas</code> or the <code>video</code> element and hooking the stream with <code>qrcode library</code>. Also recently, in leu of privacy concers, some javascript APIs related to accessing the camera has changed and it requires some efforts to ensure different platforms like mobile or PC, chrome or safari support it. To reduce these pain points I wrote a jQuery based wrapper on to abstract tasks like camera enumeration and UI setup - it can be found at <a href='https://github.com/mebjas/html5-qrcode'>mebjas/html5-qrcode</a>. In this article I have documented some details on how to use it and what is happening under the hook."
 post-no: 11
 toc: true
-image: '../images/post14_image3.jpg'
+image: '../images/post14_image1.png'
 ---
 <!-- NOTE: this article will have assets not under post 14 -->
 
@@ -148,6 +148,7 @@ _Figure: Demo running on Safari browser on iPad_
 _Figure: Demo running on Chrome browser on Pixel 3 (Android)_
 
 ## References
+ - QR Code on Wikipedia - [Wikipedia](https://en.wikipedia.org/wiki/QR_code)
  - Project on Github - [mebjas/html5-qrcode](https://github.com/mebjas/html5-qrcode)
  - Demo link - [https://blog.minhazav.dev/research/html5-qrcode.html](https://blog.minhazav.dev/research/html5-qrcode.html)
  - QR Code decoding library - [LazarSoft/jsqrcode](https://github.com/LazarSoft/jsqrcode)
