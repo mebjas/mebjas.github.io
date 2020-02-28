@@ -12,7 +12,8 @@
     var SCAN_DEFAULT_FPS = 2;
 
     window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
-    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia 
+        || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
     function createVideoElement(width, height) {
         return '<video width="' + width + 'px" height="' + height + 'px"></video>';
@@ -43,8 +44,8 @@
          *              type: function (errorMessage) {}
          * @param: config extra configurations to tune QR code scanner.
          *          Supported fields:
-         *           - fps: expected framerate of qr code scanning. example { fps: 2 } means
-         *              the scanning would be done every 500 ms.
+         *           - fps: expected framerate of qr code scanning. example { fps: 2 }
+         *               means the scanning would be done every 500 ms.
          */
         html5_qrcode: function(
             cameraId,
@@ -114,21 +115,22 @@
                 };
 
                 // Call the getUserMedia method with our callback functions
-                if (navigator.getUserMedia) {
-                    var qrcodeConfig = { video : true };
-                    if (typeof currentElem.data(CAMERA_ID_TAG) != 'undefined') {
-                        qrcodeConfig = {
-                            video: {
-                                optional: [{
-                                    sourceId: currentElem.data(CAMERA_ID_TAG)
-                                }]
-                            }
-                        };
-                    }
-
-                    navigator.getUserMedia(qrcodeConfig, successCallback, videoErrorCallback);
-                } else {
-                    videoErrorCallback('Native web camera streaming (getUserMedia) not supported in this browser.');
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia(
+                        { audio: false, video: { deviceId: { exact: cameraId } } })
+                } else if (navigator.getUserMedia) {
+                    qrcodeConfig = {
+                        video: {
+                            optional: [{
+                                sourceId: currentElem.data(CAMERA_ID_TAG)
+                            }]
+                        }
+                    };
+                    navigator.getUserMedia(
+                        qrcodeConfig, successCallback, videoErrorCallback);
+                }  else {
+                    videoErrorCallback(
+                        "Native web camera streaming (getUserMedia) not supported in this browser.");
                 }
 
                 qrcode.callback = qrcodeSuccessCallback;
