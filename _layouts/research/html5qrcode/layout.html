@@ -39,6 +39,7 @@ button[disabled]{
             <code>Click "Start Scanning" to <b>start scanning QR Code</b></code>
             <br>
             <span class="feedback" style="margin: 10px; display: inline-block"></span>
+            <div id="logging"></div>
         </div>
     </div>
 </div>
@@ -65,33 +66,36 @@ button[disabled]{
 <script src="/assets/research/html5qrcode/html5-qrcode.js"></script>
 <script>
 $(document).ready(function() {
+    var onQRCodeFoundCallback = function (qrCodeMessage) {
+        $(".feedback").html('Code scanned as: <strong>' + qrCodeMessage + '</strong>');
+    }
+
+    var onQRCodeNotFoundCallback = function (error) {
+        $(".feedback").html('Unable to scan the code! Error: ' + error);
+    }
+
+    var onVideoErrorCallback = function (videoError) {
+        $(".feedback").html('Video Error: ' + videoError);
+    }
+
+    $("#logging").append("Number of cameras found: " +$(document).html5_qrcode_cameraCount());
     $("#scan").on('click', function() {
         $("#scan").prop("disabled", true);
         $("#stop").prop("disabled", false);
         $("#change").prop("disabled", false);
-
         $("code").html('scanning');
-        // Empty the existing div to make sure double creation doesn't happen.
-        // TODO(mebjas): This should be supported in the library.
-        $('#qr').html("");
-        $('#qr').html5_qrcode(function(data){
-                // do something when code is read
-                $(".feedback").html('Code scanned as: <strong>' +data +'</strong>');
-            },
-            function(error){
-                //show read errors 
-                $(".feedback").html('Unable to scan the code! Error: ' +error)
-            }, function(videoError){
-                //the video stream could be opened
-                $(".feedback").html('Video Error: ' +videoError);
-            }
+        $('#qr').html5_qrcode(
+            onQRCodeFoundCallback,
+            onQRCodeNotFoundCallback,
+            onVideoErrorCallback,
+            undefined,
+            { fps : 10 }
         );
     });
 
     $("#stop").on('click', function() {
         $("#qr").html5_qrcode_stop();
         $("code").html('Click "Start Scanning" to <b>start scanning QR Code</b>');
-
         $("#scan").prop("disabled", false);
         $("#stop").prop("disabled", true);
         $("#change").prop("disabled", true);
@@ -100,8 +104,6 @@ $(document).ready(function() {
 
     $("#change").on('click', function() {
         $("#qr").html5_qrcode_changeCamera();
-        $("#scan").prop("disabled", true);
-        $("#stop").prop("disabled", false);
     });
 });
     
