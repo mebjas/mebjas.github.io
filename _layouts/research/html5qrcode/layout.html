@@ -101,7 +101,7 @@ $(document).ready(function() {
         })
 
         $("#scanButton").prop("disabled", false);
-        $("#scan").on('click', function() {
+        $("#scanButton").on('click', function() {
             var cameraId = $("#cameraSelection").val();
             $("#cameraSelection").prop("disabled", true);
             $("#scanButton").prop("disabled", true);
@@ -116,7 +116,7 @@ $(document).ready(function() {
             );
         });
 
-        $("#stop").on('click', function() {
+        $("#stopButton").on('click', function() {
             $("#qr").html5_qrcode_stop();
             $("#cameraSelection").prop("disabled", false);
             $("#status").html('Click "Start Scanning" to <b>start scanning QR Code</b>');
