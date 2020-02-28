@@ -108,15 +108,15 @@ $(document).ready(function() {
             $("#stopButton").prop("disabled", false);
             $("#status").html('scanning');
             $('#qr').html5_qrcode(
+                cameraId,
                 onQRCodeFoundCallback,
                 onQRCodeNotFoundCallback,
                 onVideoErrorCallback,
-                cameraId,
                 { fps : 10 }
             );
         });
 
-        $("#stopButton").on('click', function() {
+        $("#stop").on('click', function() {
             $("#qr").html5_qrcode_stop();
             $("#cameraSelection").prop("disabled", false);
             $("#status").html('Click "Start Scanning" to <b>start scanning QR Code</b>');
