@@ -36,9 +36,9 @@ button[disabled]{
     <br><br>
     <div class="row">
         <div class="col-md-12">
-            <code>Click "Start Scanning" to <b>start scanning QR Code</b></code>
+            <code id="status">Click "Start Scanning" to <b>start scanning QR Code</b></code>
             <br>
-            <span class="feedback" style="margin: 10px; display: inline-block">
+            <span id="feedback" style="margin: 10px; display: inline-block">
                 querying for available camera options...
             </span>
             <div id="logging"></div>
@@ -69,22 +69,22 @@ button[disabled]{
 <script>
 $(document).ready(function() {
     var onQRCodeFoundCallback = function (qrCodeMessage) {
-        $(".feedback").html('Code scanned as: <strong>' + qrCodeMessage + '</strong>');
+        $("#feedback").html('Code scanned as: <strong>' + qrCodeMessage + '</strong>');
     }
 
     var onQRCodeNotFoundCallback = function (error) {
-        $(".feedback").html('Unable to scan the code! Error: ' + error);
+        $("#feedback").html('Unable to scan the code! Error: ' + error);
     }
 
     var onVideoErrorCallback = function (videoError) {
-        $(".feedback").html('Video Error: ' + videoError);
+        $("#feedback").html('Video Error: ' + videoError);
     }
 
     var onCamerasEnumerated = function (cameras) {
         // Cameras found.
         $("#logging").html("Number of camera(s) found: " +cameras.length);
         if (cameras.length == 0) {
-            $(".feedback").html("Error: Zero cameras found in the device");
+            $("#feedback").html("Error: Zero cameras found in the device");
             return;
         }
 
@@ -97,45 +97,41 @@ $(document).ready(function() {
         $("#cameraSelection").prop("disabled", false);
         $("#cameraSelection").on("change", function () {
             console.log("Option changed");
-            console.log($("#cameraSelection").value());
+            console.log($("#cameraSelection").val());
         })
 
-        // TODO(mebjas): Complete the flow.
+        $("#scanButton").prop("disabled", false);
+        $("#scan").on('click', function() {
+            var cameraId = $("#cameraSelection").val();
+            $("#cameraSelection").prop("disabled", true);
+            $("#scanButton").prop("disabled", true);
+            $("#stopButton").prop("disabled", false);
+            $("#status").html('scanning');
+            $('#qr').html5_qrcode(
+                onQRCodeFoundCallback,
+                onQRCodeNotFoundCallback,
+                onVideoErrorCallback,
+                cameraId,
+                { fps : 10 }
+            );
+        });
+
+        $("#stop").on('click', function() {
+            $("#qr").html5_qrcode_stop();
+            $("#cameraSelection").prop("disabled", false);
+            $("#status").html('Click "Start Scanning" to <b>start scanning QR Code</b>');
+            $("#scanButton").prop("disabled", false);
+            $("#stopButton").prop("disabled", true);
+            $("#feedback").html("");
+        });
     }
 
     var onCameraEnumerationFailed = function (errorMessage) {
-        $(".feedback").html("Error: Unable to query any cameras. Reason: " +errorMessage);
+        $("#feedback").html("Error: Unable to query any cameras. Reason: " +errorMessage);
     }
 
     $(document).html5_qrcode_getSupportedCameras(
         onCamerasEnumerated, onCameraEnumerationFailed);
-
-    // $("#scan").on('click', function() {
-    //     $("#scan").prop("disabled", true);
-    //     $("#stop").prop("disabled", false);
-    //     $("#change").prop("disabled", false);
-    //     $("code").html('scanning');
-    //     $('#qr').html5_qrcode(
-    //         onQRCodeFoundCallback,
-    //         onQRCodeNotFoundCallback,
-    //         onVideoErrorCallback,
-    //         undefined,
-    //         { fps : 10 }
-    //     );
-    // });
-
-    // $("#stop").on('click', function() {
-    //     $("#qr").html5_qrcode_stop();
-    //     $("code").html('Click "Start Scanning" to <b>start scanning QR Code</b>');
-    //     $("#scan").prop("disabled", false);
-    //     $("#stop").prop("disabled", true);
-    //     $("#change").prop("disabled", true);
-    //     $(".feedback").html("");
-    // });
-
-    // $("#change").on('click', function() {
-    //     $("#qr").html5_qrcode_changeCamera();
-    // });
 });
     
 </script>
