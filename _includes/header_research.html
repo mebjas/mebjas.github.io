@@ -1,0 +1,30 @@
+<header class="site-header">
+
+    <div class="wrapper-header">
+      {% assign default_paths = site.pages | map: "path" %}
+      {% assign page_paths = site.header_pages | default: default_paths %}
+      <div class="header-left">
+        <div>
+          <a class="site-title" href="{{ '/' | relative_url }}">
+            <b>{{ site.research_name }}</b>
+          </a>
+        </div>
+        <div>
+          <a class="site-subtitle" href="{{ '/' | relative_url }}">
+            <b>{{ site.small_description }}</b>
+          </a>
+        </div>
+      </div>
+      
+      {% if page_paths %}
+      <div class="header-right">
+        <a class="page-link" href="{{ '/' | relative_url }}">Blog</a>
+        <a class="page-link" href="{{ '/about/' | relative_url }}">About Me</a>
+        <!-- <a class="page-link" href="{{ '/photography/' | relative_url }}">Photography</a> -->
+        <a class="page-link" href="{{ site.footer-links.github_full }}">Github</a>
+        <a class="page-link" href="{{ site.footer-links.linkedin }}">LinkedIn</a>
+      </div>
+      {% endif %}
+    </div>
+    
+  </header>

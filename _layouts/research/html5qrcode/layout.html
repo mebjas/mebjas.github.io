@@ -1,0 +1,85 @@
+---
+layout: default_research
+---
+<div class="container" style="text-align: center">
+    <h1> QR Code scanner Example </h1>
+    <br><br>
+
+    <div id="qr" style="display: inline-block; width: 600px; height: 450px; border: 1px solid silver"></div>
+    <br><br>
+
+    <div class="row">
+        <button id="scan" class="btn btn-success btn-sm">start scaning</button>
+        <button id="stop" class="btn btn-warning btn-sm disabled">stop scanning</button>
+        <button id="change" class="btn btn-warning btn-sm disabled">change camera</button>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-md-12">
+            <code>Click "Start Scanning" to <b>start scanning QR Code</b></code>
+            <br>
+            <span class="feedback" style="margin: 10px; display: inline-block"></span>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h2>FAQs</h2>
+    <strong>Is this supported on smartphones?</strong>
+    <div>Yes! the solution is based on HTML5 and javascript. This should work on any HTML5 supported browser.</div>    
+</div>
+<div style="display: block; height: 30px"></div>
+<!-- TODO(mebjas): Add a section with blog article and title and description. -->
+
+<div class="container">
+    <h2>References</h2>
+    <ol>
+        <li>Project on Github - <a href="https://github.com/mebjas/html5-qrcode">mebjas/html5-qrcode</a></li>
+        <!-- TODO(mebjas): Add an article and add link here. -->
+        <li>How to use - <a href="#TODO">blog.minhazav.dev</a></li>
+    </ol>
+</div>
+
+<!-- Assuming JQUERY is already included -->
+<script src="/assets/research/html5qrcode/jsqrcode-combined.js"></script>
+<script src="/assets/research/html5qrcode/html5-qrcode.js"></script>
+<script>
+$(document).ready(function() {
+    $("#scan").on('click', function() {
+        $("code").html('scanning');
+        $('#qr').html5_qrcode(function(data){
+                    // do something when code is read
+                    $(".feedback").html('Code scanned as: <strong>' +data +'</strong>');
+            },
+            function(error){
+                //show read errors 
+                $(".feedback").html('Unable to scan the code! Error: ' +error)
+            }, function(videoError){
+                //the video stream could be opened
+                $(".feedback").html('Video error');
+            }
+        );
+
+        $("#scan").addClass('disabled');
+        $("#stop").removeClass('disabled');
+        $("#change").removeClass('disabled');
+    });
+
+    $("#stop").on('click', function() {
+        $("#qr").html5_qrcode_stop();
+        $("code").html('Click "Start Scanning" to <b>start scanning QR Code</b>');
+
+        $("#scan").removeClass('disabled');
+        $("#stop").addClass('disabled');
+        $("#change").addClass('disabled');
+        $(".feedback").html("");
+    });
+    $("#change").on('click', function() {
+        $("#qr").html5_qrcode_changeCamera();
+
+        $("#scan").addClass('disabled');
+        $("#stop").removeClass('disabled');
+    });
+});
+    
+</script>

@@ -1,4 +1,5 @@
 name: Minhaz's Blog
+research_name: Minhaz's Experiments
 title: Minhaz's Blog
 small_description: "Hack your way out!"
 description: "I work full time as a Software Engineer at Google. Time to time I come across problems I don't find solutions to on web and I try to pen it down here. My area of expertise are distributed systems, android, android camera, emerging markets, applied ML and computational photography. I am sometimes identified as mebjas or minhazav."
@@ -113,6 +114,16 @@ category_descriptions:
   - { name: "cloud", description: "" }
   - { name: "interview", description: "" }
   - { name: "interview-tips", description: "" }
+  - { name: "android", description: "" }
+  - { name: "hal", description: "" }
+  - { name: "image-processing", description: "" }
+  - { name: "hardware", description: "" }
+  - { name: "isp", description: "" }
+  - { name: "dsp", description: "" }
+  - { name: "lens", description: "" }
+  - { name: "sensor", description: "" }
+  - { name: "computational-photograhpy", description: "" }
+  - { name: "android-camera", description: "" }
 
 photography_data_path: "photography/assets/"
 photography_data:
