@@ -12,7 +12,9 @@
     var DEFAULT_WIDTH_OFFSET = 2;
     var SCAN_DEFAULT_FPS = 2;
 
-    var cameraIds = [];
+    var cameraIdsInitialized = false;
+    var cameraIdCallbacks = [];
+    var CAMERA_IDS = [];
 
     function createVideoElement(width, height) {
         return '<video width="' + width + 'px" height="' + height + 'px"></video>';
@@ -33,13 +35,19 @@
     /**
      * Code to initialise the cameraIds field
      */
-    function initializeCameraSources(sourceInfos) {
+    function initializeCameraSources (sourceInfos) {
         for (var i = 0; i !== sourceInfos.length; ++i) {
             var sourceInfo = sourceInfos[i];
             if (sourceInfo.kind === 'video') {
-                cameraIds.push(sourceInfo.id);
+                CAMERA_IDS.push(sourceInfo.id);
             }
         }
+
+        cameraIdsInitialized = true;
+        for (i = 0; i < cameraIdCallbacks.length; i++) {
+            cameraIdCallbacks[i](CAMERA_IDS.length);
+        }
+        cameraIdCallbacks = [];
     }
 
     if (typeof MediaStreamTrack === 'undefined' ||
@@ -54,9 +62,12 @@
          * Initializes QR code scanning on given element.
          *  
          * @param: qrcodeSuccessCallback (function) - callback on success
+         *              type: function (qrCodeMessage) {}
          * @param: qrcodeErrorCallback (function) - callback on QR parse error
+         *              type: function (errorMessage) {}
          * @param: videoErrorCallback (function) - callback on video error
-         * @param: cameraId (int) - which camera to use
+         *              type: function (errorMessage) {}
+         * @param: cameraId (int) - which camera to use (Optional)
          * @param: config extra configurations to tune QR code scanner.
          *          Supported fields:
          *           - fps: expected framerate of qr code scanning. example { fps: 2 } means
@@ -92,14 +103,14 @@
                 $.data(currentElem[0], QRCODE_ERROR_CALLBACK_TAG, qrcodeErrorCallback);
                 $.data(currentElem[0], VIDEO_ERROR_CALLBACK_TAG, videoErrorCallback);
 
-                if (typeof cameraIds[cameraId] != 'undefined') {
+                if (typeof CAMERA_IDS[cameraId] != 'undefined') {
                     $.data(currentElem[0], SOURCE_ID_TAG, cameraId);
                 } else {
                     $.data(currentElem[0], SOURCE_ID_TAG, 0);
                 }
 
-                if (typeof cameraIds[currentElem.data(SOURCE_ID_TAG)] != 'undefined') {
-                    $.data(currentElem[0], CAMERA_ID_TAG, cameraIds[currentElem.data(SOURCE_ID_TAG)]);
+                if (typeof CAMERA_IDS[currentElem.data(SOURCE_ID_TAG)] != 'undefined') {
+                    $.data(currentElem[0], CAMERA_ID_TAG, CAMERA_IDS[currentElem.data(SOURCE_ID_TAG)]);
                 }
 
                 var height = currentElem.height() == null ? DEFAULT_HEIGHT : currentElem.height();
@@ -184,7 +195,7 @@
                     $(this).data(QRCODE_SUCCESS_CALLBACK_TAG),
                     $(this).data(QRCODE_ERROR_CALLBACK_TAG),
                     $(this).data(VIDEO_ERROR_CALLBACK_TAG),
-                    ($(this).data(SOURCE_ID_TAG) + 1) % cameraIds.length
+                    ($(this).data(SOURCE_ID_TAG) + 1) % CAMERA_IDS.length
                 );
             });
         },
@@ -198,9 +209,20 @@
         },
         /**
          * Gets the count of number of available cameras.
+         * 
+         * @param callback (function) called when camera count is available.
+         *              type: function (cameraCount) {}   
          */
-        html5_qrcode_cameraCount: function() {
-            return cameraIds.length;
+        html5_qrcode_cameraCount: function(callback) {
+            if (callback == undefined) {
+                return;
+            }
+
+            if (cameraIdsInitialized) {
+                callback(CAMERA_IDS.length);
+            }
+            
+            cameraIdCallbacks.push(callback);
         }
     });
 })(jQuery);

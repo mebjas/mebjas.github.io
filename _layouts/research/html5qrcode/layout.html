@@ -78,7 +78,10 @@ $(document).ready(function() {
         $(".feedback").html('Video Error: ' + videoError);
     }
 
-    $("#logging").append("Number of cameras found: " +$(document).html5_qrcode_cameraCount());
+    $("#logging").html5_qrcode_cameraCount(function (cameraCount) {
+        $("#logging").html("Number of camera(s) found: " + cameraCount);
+    });
+
     $("#scan").on('click', function() {
         $("#scan").prop("disabled", true);
         $("#stop").prop("disabled", false);
