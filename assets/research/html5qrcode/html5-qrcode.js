@@ -197,6 +197,7 @@
                             });
                         }
                     }
+                    onSuccessCallback(results);
                 })
                 .catch(function (err) {
                     onErrorCallback(err.name + ": " + err.message);
