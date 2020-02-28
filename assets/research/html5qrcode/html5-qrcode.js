@@ -1,10 +1,6 @@
 (function($) {  
-    var QRCODE_SUCCESS_CALLBACK_TAG = "QRCODE_SUCCESS_CALLBACK_TAG";
-    var QRCODE_ERROR_CALLBACK_TAG = "QRCODE_ERROR_CALLBACK_TAG";
-    var VIDEO_ERROR_CALLBACK_TAG = "VIDEO_ERROR_CALLBACK_TAG";
     var TIMEOUT_TAG = "TIMEOUT_TAG";
     var STREAM_TAG = "STREAM_TAG";
-    var CAMERA_ID_TAG = "CAMERA_ID_TAG";
     var DEFAULT_HEIGHT = 250;
     var DEFAULT_HEIGHT_OFFSET = 2;
     var DEFAULT_WIDTH = 300;
@@ -69,18 +65,12 @@
                     console.log('Error callback is undefined or not a function.', error);
                 }
 
-                cameraId = typeof cameraId != 'undefined' ? cameraId : 0;
                 config = config ? config : {};
                 config.fps = config.fps ? config.fps : SCAN_DEFAULT_FPS;
 
                 var currentElem = $(this);
                 // Empty current item explicitly:
                 currentElem.html("");
-
-                $.data(currentElem[0], QRCODE_SUCCESS_CALLBACK_TAG, qrcodeSuccessCallback);
-                $.data(currentElem[0], QRCODE_ERROR_CALLBACK_TAG, qrcodeErrorCallback);
-                $.data(currentElem[0], VIDEO_ERROR_CALLBACK_TAG, videoErrorCallback);
-                $.data(currentElem[0], CAMERA_ID_TAG, cameraId);
 
                 var height = currentElem.height() == null ? DEFAULT_HEIGHT : currentElem.height();
                 var width = currentElem.width() == null ? DEFAULT_WIDTH : currentElem.width();
@@ -99,11 +89,8 @@
                         } catch (exception) {
                             qrcodeErrorCallback(exception, localMediaStream);
                         }
-
-                        $.data(currentElem[0], TIMEOUT_TAG, setTimeout(scan, getTimeoutFromFps(config.fps)));
-                    } else {
-                        $.data(currentElem[0], TIMEOUT_TAG, setTimeout(scan, getTimeoutFromFps(config.fps)));
                     }
+                    $.data(currentElem[0], TIMEOUT_TAG, setTimeout(scan, getTimeoutFromFps(config.fps)));
                 }; //end snapshot function
 
                 var successCallback = function (stream) {
@@ -117,15 +104,11 @@
                 // Call the getUserMedia method with our callback functions
                 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                     navigator.mediaDevices.getUserMedia(
-                        { audio: false, video: { deviceId: { exact: cameraId } } })
+                        { audio: false, video: { deviceId: { exact: cameraId }}})
+                        .then(successCallback)
+                        .catch(successCallback);
                 } else if (navigator.getUserMedia) {
-                    qrcodeConfig = {
-                        video: {
-                            optional: [{
-                                sourceId: currentElem.data(CAMERA_ID_TAG)
-                            }]
-                        }
-                    };
+                    qrcodeConfig = { video: { optional: [{ sourceId: cameraId }]}};
                     navigator.getUserMedia(
                         qrcodeConfig, successCallback, videoErrorCallback);
                 }  else {
@@ -142,7 +125,7 @@
         html5_qrcode_stop: function() {
             return this.each(function() {
                 // stop the stream and cancel timeouts
-                $(this).data(STREAM_TAG).getVideoTracks().forEach(function(videoTrack) {
+                $(this).data(STREAM_TAG).getVideoTracks().forEach(function (videoTrack) {
                     videoTrack.stop();
                 });
 
@@ -171,22 +154,7 @@
                     console.error("Unable to retreive supported cameras. Reason: ", error);
                 }
             
-            if (typeof MediaStreamTrack != 'undefined' && typeof MediaStreamTrack.getSources != 'undefined') {
-                var callback = function (sourceInfos) {
-                    var results = [];
-                    for (i = 0; i !== sourceInfos.length; ++i) {
-                        var sourceInfo = sourceInfos[i];
-                        if (sourceInfo.kind === 'video') {
-                            results.push({
-                                id: sourceInfo.id,
-                                label: sourceInfo.label
-                            });
-                        }
-                    }
-                    onSuccessCallback(results);
-                }
-                MediaStreamTrack.getSources(callback);
-            } else if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+            if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
                 navigator.mediaDevices.enumerateDevices()
                 .then(function (devices) {
                     var results = [];
@@ -204,6 +172,22 @@
                 .catch(function (err) {
                     onErrorCallback(err.name + ": " + err.message);
                 });
+            } else if (typeof MediaStreamTrack != 'undefined' 
+                && typeof MediaStreamTrack.getSources != 'undefined') {
+                var callback = function (sourceInfos) {
+                    var results = [];
+                    for (i = 0; i !== sourceInfos.length; ++i) {
+                        var sourceInfo = sourceInfos[i];
+                        if (sourceInfo.kind === 'video') {
+                            results.push({
+                                id: sourceInfo.id,
+                                label: sourceInfo.label
+                            });
+                        }
+                    }
+                    onSuccessCallback(results);
+                }
+                MediaStreamTrack.getSources(callback);
             } else {
                 onErrorCallback("unable to query supported devices.");
             } 
