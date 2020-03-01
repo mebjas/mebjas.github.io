@@ -55,9 +55,12 @@ a:hover {
 }
 </style>
 <div class="body">
-	<div class="menu" id="menu1" style="top: 100px;">This is menu, people place options here, we <code>stickify</code> it</div>
-	<div class="menu" id="menu2" style="position: absolute;top: 146px;z-index:1">
-		This is <code>stickified</code> menu, it hides according to user needs. 
+	<div class="menu" id="menu1" style="top: 100px;">
+		This is <code>stickified</code> menu, it hides according to user needs.
+	</div>
+	<div class="menu" id="menu2" style="top: 146px;">
+		This is menu, people place options here, we <code>stickify</code> it.
+		<br>
 		This project is very old and no longer well maintained.
 	</div>
 
@@ -151,8 +154,8 @@ a:hover {
 	$("#grid3").stikify({floor: 560, rate: 2, cieling: -240, trans: true});
 	$("#grid7").stikify({rate: 5, cieling: 100});
 
-	$("#menu1").stikify({floor: 100});
-	$("#menu2").stikify({floor: 146, rate: 1.2, cieling: -50});
+	$("#menu1").stikify({cieling: -100, floor: 100, trans: true});
+	$("#menu2").stikify({cieling: 0, floor: 146});
 
 	$("#share").stikify({rate: 100, cieling: 100});
 </script>
