@@ -2,6 +2,10 @@
 layout: default_research
 ---
 <style type='text/css'>
+.body {
+	display: block;
+	height: 300px;
+}
 div.grid {
 	border: 1px solid silver;
 	border-radius: 5px;
@@ -50,87 +54,89 @@ a:hover {
 	color: rgb(54, 91, 209);
 }
 </style>
-<div class="menu" id="menu1" style="top: 1000px;">This is menu, people place options here, we <code>stickify</code> it</div>
-<div class="menu" id="menu2" style="position: absolute;top: 146px;z-index:1">
-	This is <code>stickified</code> menu, it hides according to user needs. 
-	This project is very old and no longer well maintained.
-</div>
-
-<div class="main_1" style="margin-top: 120px; width: 310px; float:left">
-	<div class="grid" id="grid5" style="background: rgb(169, 199, 238);color: black;border: black 1px solid;">
-		<img src="/assets/research/jquerystickyelements/icons/external-link.png" class="icon">
-		This is a demo grid - V, position not fixed
-	</div>
-	<div class="clearfix"></div>
-	<div class="grid" id="grid1" style="background: rgb(169, 199, 238);color: black;border: black 1px solid;">
-		<img src="/assets/research/jquerystickyelements/icons/external-link.png" class="icon">
-		This is a demo grid - I, position not fixed
-	</div>
-	<div class="clearfix"></div>
-	<div class="grid" id="grid4" style="background: rgb(75, 141, 228);color: white;border: black 1px solid;height:200px;text-align:center;font-size: 17pt">
-		<img src="/assets/research/jquerystickyelements/icons/external-link.png" class="icon">
-		This is a demo grid - IV
-		<div class="clearfix"></div>
-		Position is not fixed
-		<div class="clearfix"></div>
-		But it moves well!!
-		<div class="clearfix"></div>
-		& Get transparent as it moves
-	</div>
-	<div class="clearfix"></div>
-	<div class="grid" id="grid6" style="background: rgba(209, 210, 211, 0.8);color: black;border: black 1px solid;height:200px;text-align:center;font-size: 17pt">
-		This is a demo grid - VI
-		<div class="clearfix"></div>
-		I made this div to move very slowly, coz I wanted you to know, how cool it would be if you could <code> 
-		<img src="/assets/research/jquerystickyelements/icons/share-alt-square.png" class="icon" style="top:2px">share</code>,
-		<code>like</code> or <code>star</code> this code!<br>
-		<img src="/assets/research/jquerystickyelements/icons/cool.png" class="icon">
+<div class="body">
+	<div class="menu" id="menu1" style="top: 100px;">This is menu, people place options here, we <code>stickify</code> it</div>
+	<div class="menu" id="menu2" style="position: absolute;top: 146px;z-index:1">
+		This is <code>stickified</code> menu, it hides according to user needs. 
+		This project is very old and no longer well maintained.
 	</div>
 
-</div>
-<div class="main_2" style="margin-top: 120px;margin-right: 50px; width: 400px; float:right">
-	<div class="clearfix"></div>
-	<div class="clearfix"></div>
-	<div class="clearfix"></div>
-	<div class="clearfix"></div>
-	<div class="grid" id="share" style="width:400px;box-shadow: 0px 0px 20px black">
-		<h3 style="text-align: center"><img src="/assets/research/jquerystickyelements/icons/github.png" class="icon">&nbsp;
-		<a href="https://gthub.com/mebjas/jQuery-sticky-elements" title="View Github Repository">jQuery-sticky-elements</a></h3>
-		<div style="text-align: center">
-			<iframe src="https://ghbtns.com/github-btn.html?user=mebjas&repo=jQuery-sticky-elements&type=watch" allowtransparency="true" frameborder="0" scrolling="0" width="60" height="20"></iframe>
-			<iframe src="https://ghbtns.com/github-btn.html?user=mebjas&repo=jQuery-sticky-elements&type=fork" allowtransparency="true" frameborder="0" scrolling="0" width="60" height="20"></iframe>
-			<iframe src="https://ghbtns.com/github-btn.html?user=mebjas&repo=jQuery-sticky-elements&type=follow" allowtransparency="true" frameborder="0" scrolling="0" width="120" height="20"></iframe>
+	<div class="main_1" style="margin-top: 120px; width: 310px; float:left">
+		<div class="grid" id="grid5" style="background: rgb(169, 199, 238);color: black;border: black 1px solid;">
+			<img src="/assets/research/jquerystickyelements/icons/external-link.png" class="icon">
+			This is a demo grid - V, position not fixed
 		</div>
-        <div>
-            <div class="fb-like" data-href="https://cistoner.org/sample/jQuery-sticky-elements" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
-        </div>
 		<div class="clearfix"></div>
-		<div class="clearfix"></div>
-		<div style="text-align:center">
-			<img src="/assets/research/jquerystickyelements/icons/html5.png" class="icon">&nbsp;
-			<img src="/assets/research/jquerystickyelements/icons/console.png" class="icon">&nbsp;
-			<img src="/assets/research/jquerystickyelements/icons/code.png" class="icon">&nbsp;&nbsp;&nbsp;&nbsp;
-			<img src="/assets/research/jquerystickyelements/icons/chrome.png" class="icon">&nbsp;
-			<img src="/assets/research/jquerystickyelements/icons/firefox.png" class="icon">&nbsp;
-			<img src="/assets/research/jquerystickyelements/icons/opera.png" class="icon">&nbsp;
-			<img src="/assets/research/jquerystickyelements/icons/IE.png" class="icon">&nbsp;
-			<img src="/assets/research/jquerystickyelements/icons/safari.png" class="icon">&nbsp;
+		<div class="grid" id="grid1" style="background: rgb(169, 199, 238);color: black;border: black 1px solid;">
+			<img src="/assets/research/jquerystickyelements/icons/external-link.png" class="icon">
+			This is a demo grid - I, position not fixed
 		</div>
-	</div>
-	<div class="clearfix"></div>
-</div>
+		<div class="clearfix"></div>
+		<div class="grid" id="grid4" style="background: rgb(75, 141, 228);color: white;border: black 1px solid;height:200px;text-align:center;font-size: 17pt">
+			<img src="/assets/research/jquerystickyelements/icons/external-link.png" class="icon">
+			This is a demo grid - IV
+			<div class="clearfix"></div>
+			Position is not fixed
+			<div class="clearfix"></div>
+			But it moves well!!
+			<div class="clearfix"></div>
+			& Get transparent as it moves
+		</div>
+		<div class="clearfix"></div>
+		<div class="grid" id="grid6" style="background: rgba(209, 210, 211, 0.8);color: black;border: black 1px solid;height:200px;text-align:center;font-size: 17pt">
+			This is a demo grid - VI
+			<div class="clearfix"></div>
+			I made this div to move very slowly, coz I wanted you to know, how cool it would be if you could <code> 
+			<img src="/assets/research/jquerystickyelements/icons/share-alt-square.png" class="icon" style="top:2px">share</code>,
+			<code>like</code> or <code>star</code> this code!<br>
+			<img src="/assets/research/jquerystickyelements/icons/cool.png" class="icon">
+		</div>
 
-<div class="grid" id="grid2" style="position: absolute; top:130px; left:10px; height: 200px; background: rgb(235, 240, 235); color: black; font-size: 18pt;">
-    This is a demo grid - II at (top, left) = (30, 500), position fixed!
-    <div class="clearfix"></div>
-    <div class="clearfix"></div>
-    <code>{floor: 30, rate: 3, cieling: -240}</code>
-</div>
-<div class="grid" id="grid3" style="position: absolute; top:360px; left:10px; background: rgb(235, 240, 235); color: black;font-size: 14pt;">
-    This is a demo grid - III, it goes transparent with <code>scroll</code>, position is fixed
-</div>
-<div class="grid" id="grid7" style="position: absolute; top:470px; left:10px; background: rgb(235, 240, 235); color: black;font-size: 14pt;">
-    This is a demo grid - VII, it has an awesome <code>ceiling</code>
+	</div>
+	<div class="main_2" style="margin-top: 120px;margin-right: 50px; width: 400px; float:right">
+		<div class="clearfix"></div>
+		<div class="clearfix"></div>
+		<div class="clearfix"></div>
+		<div class="clearfix"></div>
+		<div class="grid" id="share" style="width:400px;box-shadow: 0px 0px 20px black">
+			<h3 style="text-align: center"><img src="/assets/research/jquerystickyelements/icons/github.png" class="icon">&nbsp;
+			<a href="https://gthub.com/mebjas/jQuery-sticky-elements" title="View Github Repository">jQuery-sticky-elements</a></h3>
+			<div style="text-align: center">
+				<iframe src="https://ghbtns.com/github-btn.html?user=mebjas&repo=jQuery-sticky-elements&type=watch" allowtransparency="true" frameborder="0" scrolling="0" width="60" height="20"></iframe>
+				<iframe src="https://ghbtns.com/github-btn.html?user=mebjas&repo=jQuery-sticky-elements&type=fork" allowtransparency="true" frameborder="0" scrolling="0" width="60" height="20"></iframe>
+				<iframe src="https://ghbtns.com/github-btn.html?user=mebjas&repo=jQuery-sticky-elements&type=follow" allowtransparency="true" frameborder="0" scrolling="0" width="120" height="20"></iframe>
+			</div>
+			<div>
+				<div class="fb-like" data-href="https://cistoner.org/sample/jQuery-sticky-elements" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
+			</div>
+			<div class="clearfix"></div>
+			<div class="clearfix"></div>
+			<div style="text-align:center">
+				<img src="/assets/research/jquerystickyelements/icons/html5.png" class="icon">&nbsp;
+				<img src="/assets/research/jquerystickyelements/icons/console.png" class="icon">&nbsp;
+				<img src="/assets/research/jquerystickyelements/icons/code.png" class="icon">&nbsp;&nbsp;&nbsp;&nbsp;
+				<img src="/assets/research/jquerystickyelements/icons/chrome.png" class="icon">&nbsp;
+				<img src="/assets/research/jquerystickyelements/icons/firefox.png" class="icon">&nbsp;
+				<img src="/assets/research/jquerystickyelements/icons/opera.png" class="icon">&nbsp;
+				<img src="/assets/research/jquerystickyelements/icons/IE.png" class="icon">&nbsp;
+				<img src="/assets/research/jquerystickyelements/icons/safari.png" class="icon">&nbsp;
+			</div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+
+	<div class="grid" id="grid2" style="position: absolute; top:130px; left:10px; height: 200px; background: rgb(235, 240, 235); color: black; font-size: 18pt;">
+		This is a demo grid - II at (top, left) = (30, 500), position fixed!
+		<div class="clearfix"></div>
+		<div class="clearfix"></div>
+		<code>{floor: 30, rate: 3, cieling: -240}</code>
+	</div>
+	<div class="grid" id="grid3" style="position: absolute; top:360px; left:10px; background: rgb(235, 240, 235); color: black;font-size: 14pt;">
+		This is a demo grid - III, it goes transparent with <code>scroll</code>, position is fixed
+	</div>
+	<div class="grid" id="grid7" style="position: absolute; top:470px; left:10px; background: rgb(235, 240, 235); color: black;font-size: 14pt;">
+		This is a demo grid - VII, it has an awesome <code>ceiling</code>
+	</div>
 </div>
 
 <!-- Assuming JQUERY is already included -->
