@@ -2,59 +2,61 @@
 layout: default_research
 ---
 <style type='text/css'>
-	body {
-		height:3000px;
-		font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-	}
-	div.grid {
-		border: 1px solid silver;
-		border-radius: 5px;
-		background: white;
-		color: grey;
-		font-family: Calibri;
-		display: inline-block;
-		width: 300px;
-		padding: 10px;
-	}
-	.menu {
-		position: fixed;
-		left: 0px;
-		width: 100%;
-		z-index: 2;
-		background: white;
-		padding: 10px;
-		text-align: center;
-		height: 25px;
-		border-bottom: 1px solid rgba(0,0,0,.3);
-	}
-	code {
-		color: rgb(238, 66, 96);
-		padding: 2px 5px;
-		border: 1px solid rgba(238, 66, 96, .5);
-		border-radius: 5px;
-		display: inline-block;
-		background: white;
-	}
-	.clearfix {
-		width: 100%;
-		height: 10px;
-		display: block;
-	}
-	.icon {
-		height: 20px;
-		display: inline-block;
-		position: relative;
-		top: 5px;
-	}
-	a {
-		color: rgb(80, 148, 201);
-		text-decoration: none;
-	}
-	a:hover {
-		color: rgb(54, 91, 209);
-	}
+div.grid {
+	border: 1px solid silver;
+	border-radius: 5px;
+	background: white;
+	color: grey;
+	font-family: Calibri;
+	display: inline-block;
+	width: 300px;
+	padding: 10px;
+}
+.menu {
+	position: fixed;
+	left: 0px;
+	width: 100%;
+	z-index: 2;
+	background: white;
+	padding: 10px;
+	text-align: center;
+	height: 25px;
+	border-bottom: 1px solid rgba(0,0,0,.3);
+}
+code {
+	color: rgb(238, 66, 96);
+	padding: 2px 5px;
+	border: 1px solid rgba(238, 66, 96, .5);
+	border-radius: 5px;
+	display: inline-block;
+	background: white;
+}
+.clearfix {
+	width: 100%;
+	height: 10px;
+	display: block;
+}
+.icon {
+	height: 20px;
+	display: inline-block;
+	position: relative;
+	top: 5px;
+}
+a {
+	color: rgb(80, 148, 201);
+	text-decoration: none;
+}
+a:hover {
+	color: rgb(54, 91, 209);
+}
 </style>
-<div class="main_1" style="margin-top: 120px;width: 310px;float:left">
+<div class="menu" id="menu1" style="top: 1000px;">This is menu, people place options here, we <code>stickify</code> it</div>
+<div class="menu" id="menu2" style="position: absolute;top: 146px;z-index:1">
+	This is <code>stickified</code> menu, it hides according to user needs. 
+	This project is very old and no longer well maintained.
+</div>
+
+<div class="main_1" style="margin-top: 120px; width: 310px; float:left">
 	<div class="grid" id="grid5" style="background: rgb(169, 199, 238);color: black;border: black 1px solid;">
 		<img src="/assets/research/jquerystickyelements/icons/external-link.png" class="icon">
 		This is a demo grid - V, position not fixed
@@ -86,7 +88,7 @@ layout: default_research
 	</div>
 
 </div>
-<div class="main_2" style="margin-top: 120px;margin-right: 50px;width: 400px;float:right">
+<div class="main_2" style="margin-top: 120px;margin-right: 50px; width: 400px; float:right">
 	<div class="clearfix"></div>
 	<div class="clearfix"></div>
 	<div class="clearfix"></div>
@@ -117,20 +119,17 @@ layout: default_research
 	</div>
 	<div class="clearfix"></div>
 </div>
-<div class="menu" style="top: 0px;">This is menu, people place options here, we <code>stickify</code> it</div>
-<div class="menu" id="menu1" style="position: absolute;top: 46px;z-index:1">This is <code>stickified</code> menu, it hides according to user needs</div>
-	
-	
-<div class="grid" id="grid2" style="position: absolute;top:130px;left:400px;height: 200px;background: rgb(235, 240, 235);color: black;font-size: 18pt;">
+
+<div class="grid" id="grid2" style="position: absolute; top:130px; left:10px; height: 200px; background: rgb(235, 240, 235); color: black; font-size: 18pt;">
     This is a demo grid - II at (top, left) = (30, 500), position fixed!
     <div class="clearfix"></div>
     <div class="clearfix"></div>
     <code>{floor: 30, rate: 3, cieling: -240}</code>
 </div>
-<div class="grid" id="grid3" style="position: absolute;top:360px;left:400px;background: rgb(235, 240, 235);color: black;font-size: 14pt;">
+<div class="grid" id="grid3" style="position: absolute; top:360px; left:10px; background: rgb(235, 240, 235); color: black;font-size: 14pt;">
     This is a demo grid - III, it goes transparent with <code>scroll</code>, position is fixed
 </div>
-<div class="grid" id="grid7" style="position: absolute;top:470px;left:400px;background: rgb(235, 240, 235);color: black;font-size: 14pt;">
+<div class="grid" id="grid7" style="position: absolute; top:470px; left:10px; background: rgb(235, 240, 235); color: black;font-size: 14pt;">
     This is a demo grid - VII, it has an awesome <code>ceiling</code>
 </div>
 
@@ -144,7 +143,9 @@ layout: default_research
 
 	$("#grid2").stikify({floor: 130, rate: 3, cieling: -240});
 	$("#grid3").stikify({floor: 360, rate: 2, cieling: -240, trans: true});
-	$("#menu1").stikify({floor: 46, rate: 1.2, cieling: -50});
+
+	$("#menu1").stikify({floor: 100});
+	$("#menu2").stikify({floor: 146, rate: 1.2, cieling: -50});
 
 	$("#share").stikify({rate: 100, cieling: 100});
 	$("#grid7").stikify({rate: 5, cieling: 100});
