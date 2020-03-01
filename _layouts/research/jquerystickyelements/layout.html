@@ -4,7 +4,7 @@ layout: default_research
 <style type='text/css'>
 .body {
 	display: block;
-	height: 300px;
+	height: 3000px;
 }
 div.grid {
 	border: 1px solid silver;
@@ -125,16 +125,16 @@ a:hover {
 		<div class="clearfix"></div>
 	</div>
 
-	<div class="grid" id="grid2" style="position: absolute; top:130px; left:10px; height: 200px; background: rgb(235, 240, 235); color: black; font-size: 18pt;">
+	<div class="grid" id="grid2" style="position: absolute; top:230px; left:50px; height: 200px; background: rgb(235, 240, 235); color: black; font-size: 18pt;">
 		This is a demo grid - II at (top, left) = (30, 500), position fixed!
 		<div class="clearfix"></div>
 		<div class="clearfix"></div>
 		<code>{floor: 30, rate: 3, cieling: -240}</code>
 	</div>
-	<div class="grid" id="grid3" style="position: absolute; top:360px; left:10px; background: rgb(235, 240, 235); color: black;font-size: 14pt;">
+	<div class="grid" id="grid3" style="position: absolute; top:560px; left:50px; background: rgb(235, 240, 235); color: black;font-size: 14pt;">
 		This is a demo grid - III, it goes transparent with <code>scroll</code>, position is fixed
 	</div>
-	<div class="grid" id="grid7" style="position: absolute; top:470px; left:10px; background: rgb(235, 240, 235); color: black;font-size: 14pt;">
+	<div class="grid" id="grid7" style="position: absolute; top:670px; left:50px; background: rgb(235, 240, 235); color: black;font-size: 14pt;">
 		This is a demo grid - VII, it has an awesome <code>ceiling</code>
 	</div>
 </div>
@@ -147,12 +147,12 @@ a:hover {
 	$("#grid4").stikify({rate: 1.6, cieling: -100, trans: true});
 	$("#grid6").stikify({rate: 6, cieling: 100})
 
-	$("#grid2").stikify({floor: 130, rate: 3, cieling: -240});
-	$("#grid3").stikify({floor: 360, rate: 2, cieling: -240, trans: true});
+	$("#grid2").stikify({floor: 200, rate: 3, cieling: -240});
+	$("#grid3").stikify({floor: 560, rate: 2, cieling: -240, trans: true});
+	$("#grid7").stikify({rate: 5, cieling: 100});
 
 	$("#menu1").stikify({floor: 100});
 	$("#menu2").stikify({floor: 146, rate: 1.2, cieling: -50});
 
 	$("#share").stikify({rate: 100, cieling: 100});
-	$("#grid7").stikify({rate: 5, cieling: 100});
 </script>
