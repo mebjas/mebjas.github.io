@@ -1,0 +1,72 @@
+---
+layout: default_research
+---
+<link rel="stylesheet" href="/assets/research/rockpaperscissor/main.css" />
+<!-- TODO(mebjas): Move this to a style sheet -->
+<style>
+</style>
+<div class="rps-container">
+    <h1>Rock Paper Scissor Challenge</h1>
+    <!-- TODO(mebjas): Connect this flow with JS-->
+    <div id="initial_banner" style="display: none;">
+        <div class="header">Please enter your name to begin</div>
+        <div style="margin-bottom: 5px;">
+            <input type="text" maxlength="20" id="input_name" placeholder="Optional">
+        </div>
+        <div class="buttons_section">
+            <button class="blue" id="input_skip">Skip</button>
+            <button class="blue" id="input_start">Start</button>
+        </div>
+    </div>
+</div>
+<div class="rps-game">
+    <div class="placeholder">
+    <!-- TODO(mebjas): Connect this flow with JS-->
+    </div>
+    <div class="game">
+        <div class="header">
+            <div>Welcome <span class="label_player_name">Fanny</span></div>
+            <div class="subtitle">
+                <span>Hint: </span>
+                <!-- TODO(mebjas) Your turn, make a selection. -->
+                <span class="hint">Make a selection to start</span>
+            </div>
+        </div>
+        <div class="selection">
+            <div class="rock"><img src="/assets/research/rockpaperscissor/rock.png"></div>
+            <div class="paper"><img src="/assets/research/rockpaperscissor/paper.png"></div>
+            <div class="scissor"><img src="/assets/research/rockpaperscissor/scissors.png"></div>
+        </div>
+
+        <div class="last_result disabled">
+            <div class="section selected user">
+                <img src="/assets/research/rockpaperscissor/rock.png">
+            </div>
+            <div class="section indicator">
+                <div class="arrow user">
+                    <img src="/assets/research/rockpaperscissor/user_arrow.png"> Your's
+                </div>
+                <div class="arrow agent">
+                    Agent's <img src="/assets/research/rockpaperscissor/agent_arrow.png">
+                </div>
+            </div>
+            <div class="section selected agent">
+                <img src="/assets/research/rockpaperscissor/rock.png">
+            </div>
+        </div>
+        <div class="scoreboard">
+            <div class="section win">
+                <div class="score">0</div>
+                <div class="score_name">WIN</div>
+            </div>
+            <div class="section draw">
+                <div class="score">0</div>
+                <div class="score_name">DRAW</div>
+            </div>
+            <div class="section loose">
+                <div class="score">0</div>
+                <div class="score_name">LOSS</div>
+            </div>
+        </div>
+    </div>
+</div>

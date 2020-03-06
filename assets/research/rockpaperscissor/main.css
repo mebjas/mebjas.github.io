@@ -1,0 +1,190 @@
+.rps-container {
+    font-family: sans-serif;
+}
+div#initial_banner {
+    background: #0000000f;
+    padding: 10px;
+    border-radius: 0px 0px 5px 5px;
+    font-size: 18pt;
+    display: block;
+    margin-bottom: 5px;
+}
+
+input 				{
+  font-size:18px;
+  padding:10px 10px 10px 5px;
+  display:block;
+  width: 90%;
+  border:none;
+  border-bottom:1px solid #757575;
+}
+input:focus{ outline:none; }
+/* active state */
+input:focus ~ label, input:valid ~ label 		{
+  top:-20px;
+  font-size:14px;
+  color:#5264AE;
+}
+/* active state */
+input:focus ~ .bar:before, input:focus ~ .bar:after {
+  width:50%;
+}
+/* active state */
+input:focus ~ .highlight {
+  -webkit-animation:inputHighlighter 0.3s ease;
+  -moz-animation:inputHighlighter 0.3s ease;
+  animation:inputHighlighter 0.3s ease;
+}
+/* ANIMATIONS ================ */
+@-webkit-keyframes inputHighlighter {
+	from { background:#5264AE; }
+  to 	{ width:0; background:transparent; }
+}
+@-moz-keyframes inputHighlighter {
+	from { background:#5264AE; }
+  to 	{ width:0; background:transparent; }
+}
+@keyframes inputHighlighter {
+	from { background:#5264AE; }
+  to 	{ width:0; background:transparent; }
+}
+/* Normal white Button as seen on Google.com*/
+button {
+    color: #444444;
+    background: #F3F3F3;
+    border: 1px #DADADA solid;
+    border-radius: 2px;
+    font-weight: bold;
+    outline: none;
+    padding: 5px 12px;
+    font-size: 16pt;
+}
+
+button:hover {
+    border: 1px #C6C6C6 solid;
+    box-shadow: 1px 1px 1px #EAEAEA;
+    color: #333333;
+    background: #F7F7F7;
+}
+
+button:active {
+    box-shadow: inset 1px 1px 1px #DFDFDF;   
+}
+
+/* Blue button as seen on translate.google.com*/
+button.blue {
+    color: white;
+    background: #4C8FFB;
+    border: 1px #3079ED solid;
+    box-shadow: inset 0 1px 0 #80B0FB;
+}
+
+button.blue:hover {
+    border: 1px #2F5BB7 solid;
+    box-shadow: 0 1px 1px #EAEAEA, inset 0 1px 0 #5A94F1;
+    background: #3F83F1;
+}
+
+button.blue:active {
+    box-shadow: inset 0 2px 5px #2370FE;   
+}
+
+.buttons_section {
+    margin: 0px 20px 0px 0px;
+    text-align: right;
+}
+
+.game .header {
+    background: #f7f7f7;
+    border: 1px solid #00000026;
+    padding: 10px 20px;
+    font-size: 16pt;
+}
+.game .header .label_player_name {
+    font-weight: 500;
+}
+.subtitle {
+    font-size: 12pt;
+}
+.subtitle .hint {
+    font-style: italic;
+}
+.selection {
+    display: flex;
+    margin: 30px 20px;
+}
+.selection div {
+    width: 33vw;
+    border: 1px solid white;
+    text-align: center;
+}
+.selection div img {
+    width: 110px;
+}
+.selection div:hover {
+    background: #d9d9d966;
+    border-radius: 15px;
+    border: 1px solid #d2d2d2;
+}
+
+.scoreboard {
+    display: flex;
+    margin: 30px 20px;;
+}
+.scoreboard .section {
+    width: 33vw;
+    text-align: center;
+    margin: 10px;
+}
+.scoreboard .section div {
+    border: none;
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+}
+.scoreboard .section .score {
+    border: 1px solid #d2d2d2;
+    font-size: 24pt;
+    padding: 10px 0px;
+    margin-bottom: 10px;
+    color: #303030;
+}
+.scoreboard .section .score_name {
+    font-size: 16pt;
+}
+
+.last_result .selected img {
+    width: 80px;
+}
+.last_result {
+    display: flex;
+    margin: 10px 10px;
+    background: #f7f7f7;
+    border: 1px solid #00000026;
+}
+.last_result.disabled {
+    background: #f7f7f7;
+}
+.last_result.disabled .section {
+    opacity: 0;
+}
+.last_result .section.selected {
+    width: 20vw;
+    margin: 10px 10px;
+    text-align: center;
+}
+.last_result .section.selected.user {
+    padding-bottom: 30px;
+}
+.last_result .section.selected.agent {
+    padding-top: 30px;
+}
+.last_result .section.indicator {
+    width: 60vw;
+}
+.section.indicator {
+    padding: 33px 0px;
+}
+.section.indicator .arrow.agent {
+    text-align: right;
+}
