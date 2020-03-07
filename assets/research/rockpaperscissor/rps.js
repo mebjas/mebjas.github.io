@@ -38,6 +38,7 @@ var ROCK_AGENT = createImage("/assets/research/rockpaperscissor/rock.png");
 var PAPER_AGENT = createImage("/assets/research/rockpaperscissor/paper.png");
 var SCISSOR_AGENT = createImage("/assets/research/rockpaperscissor/scissors.png");
 
+
 // Selection Model Observable
 function SelectionModelObservable() {
     var _data = {
@@ -201,6 +202,7 @@ function ResultModelObservable() {
         var result = {
             userSelection: userSelection,
             agentSelection: agentSelection,
+            userOutcome: userOutcome,
             userOutcomeColor: OutcomeColorMapping[userOutcome],
             agentOutcomeColor: OutcomeColorMapping[getAgentOutcome(userOutcome)]
         };
@@ -280,11 +282,32 @@ function ResultBoxView(resultModelObservable, resultBoxModelObservable) {
     updateViewVisibility();
 }
 
-function ScoreBoxView(scoreModelObservable) {
+function ScoreBoxView(scoreModelObservable, resultModelObservable) {
     scoreModelObservable.addObserver(function(userScore) {
         $(".scoreboard .win .score").html(userScore.WIN);
         $(".scoreboard .draw .score").html(userScore.DRAW);
         $(".scoreboard .loss .score").html(userScore.LOSS);
+    });
+
+    function clearPulse() {
+        $(".pulse").removeClass("pulse");
+    }
+
+    var _timeout;
+    resultModelObservable.addObserver(function(result) {
+        // Clear former timeouts and remove the pulses.
+        clearTimeout(_timeout);
+        clearPulse();
+
+        if (result.userOutcome == Outcomes.WIN) {
+            $(".scoreboard .win").addClass("pulse");
+        } else if (result.userOutcome == Outcomes.DRAW) {
+            $(".scoreboard .draw").addClass("pulse");
+        } else if (result.userOutcome == Outcomes.LOSS) {
+            $(".scoreboard .loss").addClass("pulse");
+        }
+
+        _timeout = setTimeout(clearPulse, 500);
     });
 }
 
@@ -303,7 +326,7 @@ $(document).ready(function() {
 
     // Score model & view.
     var scoreModel = new ScoreModelObservable();
-    var scoreBoxView = new ScoreBoxView(scoreModel);
+    var scoreBoxView = new ScoreBoxView(scoreModel, resultModel);
 
     // The glorified agent.
     var agent = new Agent(selectionModel, selectionBoxModel, resultModel, resultBoxModel, scoreModel);
