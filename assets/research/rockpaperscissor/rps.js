@@ -313,7 +313,7 @@ function DataGateway(hintModelObservable, userModelObservable) {
             username: userModelObservable.Name
         };
 
-        const client = io("ws://127.0.0.1:3000", {
+        const client = io(SIO_SERVER, {
             query: connectionParam
         });
         
