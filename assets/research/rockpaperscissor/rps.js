@@ -305,7 +305,7 @@ function Agent(
 function DataGateway(hintModelObservable, userModelObservable) {
     var _hintModel = hintModelObservable;
     var _verbose = true;
-    var _connected = false;
+    var _client = undefined;
 
     this.startConnection = function() {
         const connectionParam = {
@@ -313,12 +313,12 @@ function DataGateway(hintModelObservable, userModelObservable) {
             username: userModelObservable.Name
         };
 
-        const client = io(SIO_SERVER, {
+        _client = io(SIO_SERVER, {
             query: connectionParam
         });
         
         _hintModel.setMessage("Connecting to server ...", 2000);
-        client.on('connect', function() {
+        _client.on('connect', function() {
             if (_verbose) {
                 console.log("Connected to server");
             }
@@ -327,21 +327,20 @@ function DataGateway(hintModelObservable, userModelObservable) {
             _hintModel.setMessage("Connected to server", 2000);
         });
     
-        client.on('disconnect', function() {
+        _client.on('disconnect', function() {
             if (_verbose) {
                 console.log("Disconnected from server");
             }
     
             _hintModel.setMessage("Disconnected from server", 2000);
         });
-        _connected = true;
     };
 
     this.onNewSelection = function(selection) {
-        if (!_connected) {
+        if (_client == undefined) {
             return;
         }
-        client.emit("rps_selection", {selection: selection});
+        _client.emit("rps_selection", {selection: selection});
     };
 }
 
