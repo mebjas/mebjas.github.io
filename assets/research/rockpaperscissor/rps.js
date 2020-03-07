@@ -25,6 +25,16 @@ var OutcomeColorMapping = {
     "LOSS": "red"
 };
 
+function generateUid(length) {
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
+
 function createImage(src) {
     var img = new Image(80, 80);
     img.src = src;
@@ -38,6 +48,53 @@ var ROCK_AGENT = createImage("/assets/research/rockpaperscissor/rock.png");
 var PAPER_AGENT = createImage("/assets/research/rockpaperscissor/paper.png");
 var SCISSOR_AGENT = createImage("/assets/research/rockpaperscissor/scissors.png");
 
+// User model observable.
+function UserModelObservable() {
+    var _name = "Fanny";
+
+    Object.defineProperties(this, {
+        "Name": {
+            get: function() {
+                return _name;
+            }
+        }
+    });
+
+    this.setName = function(name) {
+        _name = name;
+    };
+}
+
+// Hint message model observable.
+function HintModelObservable() {
+    var _defaultMessage = "Make a selection to start";
+    var _lastMessage = _defaultMessage;
+    var _timeout;
+    var _observers = [];
+
+    function updateObservers(message) {
+        _observers.forEach(function(observerCallback) {
+            observerCallback(message);
+        });
+    }
+
+    this.setMessage = function(message, timeout) {
+        if (timeout == undefined) {
+            _lastMessage = message;
+        }
+        clearTimeout(_timeout);
+        updateObservers(message);
+
+        // reset timeout
+        _timeout = setTimeout(function() {
+            updateObservers(_lastMessage);
+        }, timeout);
+    };
+
+    this.addObserver = function(observerCallback) {
+        _observers.push(observerCallback);
+    };
+}
 
 // Selection Model Observable
 function SelectionModelObservable() {
@@ -138,7 +195,8 @@ function Agent(
     selectionBoxModelObservable,
     resultModelObservable,
     resultBoxModelObservable,
-    scoreModelObservable) {
+    scoreModelObservable,
+    dataGateway) {
     
     var _verbose = true;
     var _victoryBoard = [
@@ -151,6 +209,7 @@ function Agent(
     var _resultModel = resultModelObservable;
     var _resultBoxModel = resultBoxModelObservable;
     var _scoreModel = scoreModelObservable;
+    var _dataGateway = dataGateway;
 
     function getSelfSelection() {
         var randVal = Math.floor(Math.random() * 3);
@@ -176,8 +235,10 @@ function Agent(
                 SelectionNames[userSelection.selection],
                 userSelection.count);
         }
+
+        // Stream selection to network
+        _dataGateway.onNewSelection(userSelection);
         
-        // TODO(mebjas): Stream selection to network
         var selfSelection = getSelfSelection();
         var userOutcome = getUserOutcome(userSelection.selection, selfSelection);
         _resultModel.onNewResult(userSelection.selection, selfSelection, userOutcome);
@@ -185,6 +246,43 @@ function Agent(
         _scoreModel.onNewOutcome(userOutcome);
         _selectionBoxModel.setEnabled(true);
     });
+}
+
+// Gateway to transfer the user selection.
+function DataGateway(hintModelObservable, userModelObservable) {
+    var _hintModel = hintModelObservable;
+    var _verbose = true;
+
+    const connectionParam = {
+        sessionId: generateUid(20),
+        username: userModelObservable.Name
+    };
+    // TODO(mebjas): Move this to a global var.
+    const client = io("ws://13.76.143.68:3000", {
+        query: connectionParam
+    });
+    _hintModel.setMessage("Connecting to server ...", 2000);
+
+    client.on('connect', function() {
+        if (_verbose) {
+            console.log("Connected to server");
+        }
+
+        console.log("sending to hint message");
+        _hintModel.setMessage("Connected to server", 2000);
+    });
+
+    client.on('disconnect', function() {
+        if (_verbose) {
+            console.log("Disconnected from server");
+        }
+
+        _hintModel.setMessage("Disconnected from server", 2000);
+    });
+
+    this.onNewSelection = function(selection) {
+        client.emit("rps_selection", {selection: selection});
+    };
 }
 
 // Observable result model
@@ -240,6 +338,13 @@ function ScoreModelObservable() {
     this.addObserver = function(observerCallback) {
         _observers.push(observerCallback);
     };
+}
+
+// Hint box view
+function HintBoxView(hintBoxObservable) {
+    hintBoxObservable.addObserver(function(hintMessage) {
+        $(".hint").html(hintMessage);
+    });
 }
 
 // View handler for result box.
@@ -312,6 +417,13 @@ function ScoreBoxView(scoreModelObservable, resultModelObservable) {
 }
 
 $(document).ready(function() {
+    // User model
+    var userModel = new UserModelObservable();
+
+    // hint model & view
+    var hintModel = new HintModelObservable();
+    var hintBoxView = new HintBoxView(hintModel);
+
     // Selection model, view & controller.
     var selectionModel = new SelectionModelObservable();
     var selectionBoxModel = new EnabledObservable(/* defaultValue= */ true);
@@ -328,6 +440,15 @@ $(document).ready(function() {
     var scoreModel = new ScoreModelObservable();
     var scoreBoxView = new ScoreBoxView(scoreModel, resultModel);
 
+    // Data gateway
+    var dataGateway = new DataGateway(hintModel, userModel);
+
     // The glorified agent.
-    var agent = new Agent(selectionModel, selectionBoxModel, resultModel, resultBoxModel, scoreModel);
+    var agent = new Agent(
+        selectionModel,
+        selectionBoxModel,
+        resultModel,
+        resultBoxModel,
+        scoreModel,
+        dataGateway);
 });
