@@ -52,6 +52,7 @@ var SCISSOR_AGENT = createImage("/assets/research/rockpaperscissor/scissors.png"
 
 // User model observable.
 function UserModelObservable() {
+    var _observers = [];
     var _name = "Fanny";
 
     Object.defineProperties(this, {
@@ -63,8 +64,58 @@ function UserModelObservable() {
     });
 
     this.setName = function(name) {
-        _name = name;
+        if (name != undefined && name.trim() != "") {
+            _name = name;
+        }
+
+        _observers.forEach(function(observerCallback) {
+            observerCallback(_name);
+        });
     };
+
+    this.addObserver = function(observerCallback) {
+        _observers.push(observerCallback);
+    };
+}
+
+// User name View
+function UserNameView(userModelObservable) {
+    userModelObservable.addObserver(function(name) {
+        $(".label_player_name").html(name);
+    });
+}
+
+// InitialName controller
+function InitialNameController(
+    userModelObservable,
+    initalNameModelObservable,
+    dataGateway) {
+    this.setName = function(name) {
+        userModelObservable.setName(name);
+        initalNameModelObservable.setEnabled(false);
+        dataGateway.startConnection();
+    }
+}
+
+// InitialName View
+function InitialNameView(initalNameModelObservable, initialNameController) {
+
+    initalNameModelObservable.addObserver(function(isEnabled) {
+        if (!isEnabled) {
+            $(".placeholder").hide();
+            $("#initial_banner").hide();
+            $(".game").show();
+        }
+    });
+
+    $("#input_skip").on('click', function() {
+        initialNameController.setName(undefined);
+    });
+
+    $("#input_start").on('click', function() {
+        var possibleVal = $("#input_name").val();
+        initialNameController.setName(possibleVal);
+    });
 }
 
 // Hint message model observable.
@@ -254,35 +305,42 @@ function Agent(
 function DataGateway(hintModelObservable, userModelObservable) {
     var _hintModel = hintModelObservable;
     var _verbose = true;
+    var _connected = false;
 
-    const connectionParam = {
-        sessionId: generateUid(20),
-        username: userModelObservable.Name
-    };
+    this.startConnection = function() {
+        const connectionParam = {
+            sessionId: generateUid(20),
+            username: userModelObservable.Name
+        };
+
+        const client = io("ws://127.0.0.1:3000", {
+            query: connectionParam
+        });
+        
+        _hintModel.setMessage("Connecting to server ...", 2000);
+        client.on('connect', function() {
+            if (_verbose) {
+                console.log("Connected to server");
+            }
     
-    const client = io(SIO_SERVER, {
-        query: connectionParam
-    });
-    _hintModel.setMessage("Connecting to server ...", 2000);
-
-    client.on('connect', function() {
-        if (_verbose) {
-            console.log("Connected to server");
-        }
-
-        console.log("sending to hint message");
-        _hintModel.setMessage("Connected to server", 2000);
-    });
-
-    client.on('disconnect', function() {
-        if (_verbose) {
-            console.log("Disconnected from server");
-        }
-
-        _hintModel.setMessage("Disconnected from server", 2000);
-    });
+            console.log("sending to hint message");
+            _hintModel.setMessage("Connected to server", 2000);
+        });
+    
+        client.on('disconnect', function() {
+            if (_verbose) {
+                console.log("Disconnected from server");
+            }
+    
+            _hintModel.setMessage("Disconnected from server", 2000);
+        });
+        _connected = true;
+    };
 
     this.onNewSelection = function(selection) {
+        if (!_connected) {
+            return;
+        }
         client.emit("rps_selection", {selection: selection});
     };
 }
@@ -421,10 +479,20 @@ function ScoreBoxView(scoreModelObservable, resultModelObservable) {
 $(document).ready(function() {
     // User model
     var userModel = new UserModelObservable();
+    var userNameView = new UserNameView(userModel);
 
     // hint model & view
     var hintModel = new HintModelObservable();
     var hintBoxView = new HintBoxView(hintModel);
+
+    // Data gateway
+    var dataGateway = new DataGateway(hintModel, userModel);
+
+    // InitialName model, view and controller.
+    var initialNameModel = new EnabledObservable(/* defaultValue= */ true);
+    var initalNameController = new InitialNameController(
+        userModel, initialNameModel, dataGateway);
+    var initialNameView = new InitialNameView(initialNameModel, initalNameController);
 
     // Selection model, view & controller.
     var selectionModel = new SelectionModelObservable();
@@ -441,9 +509,6 @@ $(document).ready(function() {
     // Score model & view.
     var scoreModel = new ScoreModelObservable();
     var scoreBoxView = new ScoreBoxView(scoreModel, resultModel);
-
-    // Data gateway
-    var dataGateway = new DataGateway(hintModel, userModel);
 
     // The glorified agent.
     var agent = new Agent(

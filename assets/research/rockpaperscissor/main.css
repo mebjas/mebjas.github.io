@@ -9,8 +9,11 @@ div#initial_banner {
     display: block;
     margin-bottom: 5px;
 }
+.placeholder {
+    margin: 40px 20px;
+}
 
-input 				{
+input {
   font-size:18px;
   padding:10px 10px 10px 5px;
   display:block;
@@ -20,7 +23,7 @@ input 				{
 }
 input:focus{ outline:none; }
 /* active state */
-input:focus ~ label, input:valid ~ label 		{
+input:focus ~ label, input:valid ~ label {
   top:-20px;
   font-size:14px;
   color:#5264AE;
@@ -38,16 +41,17 @@ input:focus ~ .highlight {
 /* ANIMATIONS ================ */
 @-webkit-keyframes inputHighlighter {
 	from { background:#5264AE; }
-  to 	{ width:0; background:transparent; }
+    to { width:0; background:transparent; }
 }
 @-moz-keyframes inputHighlighter {
 	from { background:#5264AE; }
-  to 	{ width:0; background:transparent; }
+    to { width:0; background:transparent; }
 }
 @keyframes inputHighlighter {
 	from { background:#5264AE; }
-  to 	{ width:0; background:transparent; }
+    to { width:0; background:transparent; }
 }
+
 /* Normal white Button as seen on Google.com*/
 button {
     color: #444444;
@@ -204,27 +208,27 @@ button.blue:active {
 }
   
 @-webkit-keyframes pulse {
-0% {
-    -webkit-box-shadow: 0 0 0 0 rgba(49, 49, 49, 0.27);
-}
-70% {
-    -webkit-box-shadow: 0 0 0 10px rgba(204,169,44, 0);
-}
-100% {
-    -webkit-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
-}
+    0% {
+        -webkit-box-shadow: 0 0 0 0 rgba(49, 49, 49, 0.27);
+    }
+    70% {
+        -webkit-box-shadow: 0 0 0 10px rgba(204,169,44, 0);
+    }
+    100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+    }
 }
 @keyframes pulse {
-0% {
-    -moz-box-shadow: 0 0 0 0 rgba(49, 49, 49, 0.27);
-    box-shadow: 0 0 0 0 rgba(49, 49, 49, 0.27)
-}
-70% {
-    -moz-box-shadow: 0 0 0 10px rgba(204,169,44, 0);
-    box-shadow: 0 0 0 10px rgba(204,169,44, 0);
-}
-100% {
-    -moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
-    box-shadow: 0 0 0 0 rgba(204,169,44, 0);
-}
+    0% {
+        -moz-box-shadow: 0 0 0 0 rgba(49, 49, 49, 0.27);
+        box-shadow: 0 0 0 0 rgba(49, 49, 49, 0.27)
+    }
+    70% {
+        -moz-box-shadow: 0 0 0 10px rgba(204,169,44, 0);
+        box-shadow: 0 0 0 10px rgba(204,169,44, 0);
+    }
+    100% {
+        -moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+        box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+    }
 }
