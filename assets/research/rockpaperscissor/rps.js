@@ -25,6 +25,8 @@ var OutcomeColorMapping = {
     "LOSS": "red"
 };
 
+const SIO_SERVER = "https://rs1.minhazav.dev";
+
 function generateUid(length) {
     var result = '';
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -257,8 +259,8 @@ function DataGateway(hintModelObservable, userModelObservable) {
         sessionId: generateUid(20),
         username: userModelObservable.Name
     };
-    // TODO(mebjas): Move this to a global var.
-    const client = io("ws://13.76.143.68:3000", {
+    
+    const client = io(SIO_SERVER, {
         query: connectionParam
     });
     _hintModel.setMessage("Connecting to server ...", 2000);
