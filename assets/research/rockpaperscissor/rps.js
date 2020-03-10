@@ -120,7 +120,7 @@ function InitialNameView(initalNameModelObservable, initialNameController) {
 
 // Hint message model observable.
 function HintModelObservable() {
-    var _defaultMessage = "Make a selection to start";
+    var _defaultMessage = "The shortcut 'R', 'P' and 'S' works";
     var _lastMessage = _defaultMessage;
     var _timeout;
     var _observers = [];
@@ -225,14 +225,41 @@ function SelectionBoxView(selectionBoxModelObservable, selectionBoxController) {
     var _selectionBoxModel = selectionBoxModelObservable;
     var _selectionBoxController = selectionBoxController;
     var _enabled = _selectionBoxModel.isEnabled;
+    var _timeout;
+
+    function clearActiveItem() {
+        $(".selection .active").removeClass("active");
+    }
 
     $(".selection div").on("click", function() {
+        if (_timeout) {
+            clearTimeout(_timeout);
+            _timeout = undefined;
+        }
+        clearActiveItem();
         if (!_enabled) {
             console.log("SelectionBoxView: Ignoring click, as not enabled.");
             return;
         }
 
         var selectionString = $(this).prop("class");
+        _selectionBoxController.onSelection(SelectionMapping[selectionString]);
+    });
+
+    $(document).keypress(event => {        
+        var selectionString = "";
+        if (event.which == 114) selectionString = "rock";
+        else if (event.which == 112) selectionString = "paper";
+        else if (event.which == 115) selectionString = "scissor";
+        else return;
+
+        if (_timeout) {
+            clearTimeout(_timeout);
+            _timeout = undefined;
+        }
+        clearActiveItem();
+        $(".selection ." +selectionString).addClass("active");
+        _timeout = setTimeout(clearActiveItem, 2000);
         _selectionBoxController.onSelection(SelectionMapping[selectionString]);
     });
 

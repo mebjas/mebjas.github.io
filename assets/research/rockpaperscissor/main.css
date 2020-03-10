@@ -12,7 +12,6 @@ div#initial_banner {
 .placeholder {
     margin: 40px 20px;
 }
-
 input {
   font-size:18px;
   padding:10px 10px 10px 5px;
@@ -74,7 +73,6 @@ button:hover {
 button:active {
     box-shadow: inset 1px 1px 1px #DFDFDF;   
 }
-
 /* Blue button as seen on translate.google.com*/
 button.blue {
     color: white;
@@ -126,12 +124,11 @@ button.blue:active {
 .selection div img {
     width: 110px;
 }
-.selection div:hover, .selection div:active {
+.selection div:hover, .selection div:active, .selection div.active {
     background: #d9d9d966;
     border-radius: 15px;
     border: 1px solid #d2d2d2;
 }
-
 .scoreboard {
     display: flex;
     margin: 30px 20px;;
