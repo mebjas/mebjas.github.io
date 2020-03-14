@@ -20,7 +20,7 @@ This article is part 1 in a series of articles I intend to write while tracking 
 If you are interested in getting hands dirty please check the section on - [How to flash](#how-to-flash-android-11-into-your-pixel-device). 
 
 ## User Privacy
-I am going to write about this one, since it's the one I like the most: Android has been adding more and more privacy features over time and with Android 11 they have brought some major deals for the consumers and some slightly radical changes for the developers.
+I am going to write about this one since it's the one I like the most: Android has been adding more and more privacy features over time and with Android 11 they have brought some major deals for the consumers and some slightly radical changes for the developers.
 
 ### One-time permission
 ![One-time permission](../images/post13_image2.png){:width="300px"}
@@ -50,7 +50,7 @@ Android 11 is introducing data access auditing to provide more transparency into
 Read more about this [here](https://developer.android.com/preview/privacy/permissions#data-access-auditing).
 
 ### Background Location Access
-The user's location is very privileged information and should be dealt with care. Background location access is risky permission as once the user grants it the app can continue to track the user location without the user knowing it fully. I feel very strongly against using users' location information unless required. Android 11 seems to have brought some changes in our (users') favor.
+The user's location is very privileged information and should be dealt with care. Background location access is risky permission as once the user grants it the app can continue to track the user location without the user knowing it fully. I feel very strongly against using users' location information unless required. Android 11 seems to have brought some changes in our (users') favour.
 
 For starter, the ability to grant background location access from in-app prompt has been removed.
 ![](../images/post13_image4.png){:width="300px"}<br>
@@ -70,9 +70,9 @@ And it'd be good if the app can function even if background location access is n
 ### Scoped Storage
 Android has been tightening storage access over different generations of Android versions. In Android Q (Android 10), they introduced scoped storage access which was meant to restrict full external file system access to different applications. This introduced a kind of a sandboxed storage model where an App could read/write in its external directories (like `getExternalFilesDir()`) without permission but the rest of the external storage appeared to be inaccessible via FileSystem APIs. Apps could still access media (images, videos, etc) using the `MediaStore` APIs with `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` permissions but the raw file system access was restricted.
 
-But since the changes were too radical, the Android team gave developers additional time for testing and apps that are targetting Android 10 (API level 29) or lower could still request the `requestLegacyExternalStorage` attribute by putting this in the manifest. This flag temporarily allowed developers to opt-out of this scoped access. Certain APIs like `Environment.getExternalStorageDirectory()` or `Environment.getExternalStoragePublicDirectory()` were marked as deprecated in API level 29 and new APIs were introduced as a fair warning for developers to migrate.
+But since the changes were too radical, the Android team gave developers additional time for testing and apps that are targeting Android 10 (API level 29) or lower could still request the `requestLegacyExternalStorage` attribute by putting this in the manifest. This flag temporarily allowed developers to opt-out of this scoped access. Certain APIs like `Environment.getExternalStorageDirectory()` or `Environment.getExternalStoragePublicDirectory()` were marked as deprecated in API level 29 and new APIs were introduced as a fair warning for developers to migrate.
 
-Now with Android 11, `requestLegacyExternalStorage` becomes obsolete and apps targetting Android 11 can no longer out of scoped storage access. Here's my understanding of what changes for developers:
+Now with Android 11, `requestLegacyExternalStorage` becomes obsolete and apps targeting Android 11 can no longer out of scoped storage access. Here's my understanding of what changes for developers:
 
 #### Access to certain directories and files
 The app can no longer use the `ACTION_OPEN_DOCUMENT_TREE` or `ACTION_OPEN_DOCUMENT` to request access to:
