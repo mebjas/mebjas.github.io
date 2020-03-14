@@ -115,15 +115,20 @@ category_descriptions:
   - { name: "interview", description: "" }
   - { name: "interview-tips", description: "" }
   - { name: "android", description: "" }
+  - { name: "android-11", description: "" }
+  - { name: "android-R", description: "" }
+  - { name: "android", description: "" }
   - { name: "hal", description: "" }
   - { name: "image-processing", description: "" }
   - { name: "hardware", description: "" }
+  - { name: "privacy", description: "" }
   - { name: "isp", description: "" }
   - { name: "dsp", description: "" }
   - { name: "lens", description: "" }
   - { name: "sensor", description: "" }
   - { name: "computational-photograhpy", description: "" }
   - { name: "android-camera", description: "" }
+  - { name: "camera", description: "" }
 
 photography_data_path: "photography/assets/"
 photography_data:
