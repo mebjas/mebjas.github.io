@@ -30,7 +30,10 @@ button[disabled]{
 
     <div class="row">
         <select id="cameraSelection" disabled></select>
+    </div>
+    <div class="row">
         <button id="scanButton" class="btn btn-success btn-sm" disabled>start scaning</button>
+        &nbsp;&nbsp;
         <button id="stopButton" class="btn btn-warning btn-sm" disabled>stop scanning</button>
     </div>
     <br><br>
@@ -55,10 +58,18 @@ button[disabled]{
     <div>
         Apart from the documentation on the <a href="https://github.com/mebjas/html5-qrcode">github project</a>, following blog article may be helpful.
         <br>
-        <a href="https://blog.minhazav.dev/qr-code-scanner-using-html-and-javascript/">
-            <img src="/assets/research/html5qrcode/blog.jpg"><br>
-            https://blog.minhazav.dev/qr-code-scanner-using-html-and-javascript/
-        </a>
+        <div class="post-info" style="border: 1px solid #cfcfcf73;padding: 5px;margin: 10px 0px 0px 0px;">
+            <h3 class="post-header"><a class="post-link" href="/qr-code-scanner-using-html-and-javascript/">QR Code scanner using HTML5 and Javascript</a></h3>
+             <span class="post-description">
+               <img src="/images/post14_image1.png" style="max-width: 50%; float: left; margin: 0px 15px 10px 0px;">
+               LazarSoft had written an excellent set of <a href="https://github.com/LazarSoft/jsqrcode">QR code decoding javascript libraries</a>.
+               However, it still requires some efforts to integrate the work with a web project, as we need to take care of enumerating different camera devices, setting up <code>canvas</code> or the <code>video</code> element and hooking the stream with <code>qrcode library</code>.
+               Also recently, in leu of privacy concers, some javascript APIs related to accessing the camera has changed and it requires some efforts to ensure different platforms like mobile or PC, chrome or safari support it.
+               To reduce these pain points I wrote a jQuery based wrapper on to abstract tasks like camera enumeration and UI setup - it can be found at <a href="https://github.com/mebjas/html5-qrcode">mebjas/html5-qrcode</a>.
+               In this article I have documented some details on how to use it and what is happening under the hook.
+             </span>
+             <span class="read-more"><a href="/qr-code-scanner-using-html-and-javascript/">[&nbsp;Read&nbsp;more&nbsp;]</a></span>
+          </div>
     </div>
 </div>
 <div style="display: block; height: 30px"></div>
