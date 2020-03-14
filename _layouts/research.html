@@ -2,6 +2,9 @@
 layout: default_research
 ---
 <style>
+.wrapper-content {
+    max-width: calc(1200px - (30px * 2));
+}
 .main_container {
     display: flex;
     flex-wrap: wrap;
@@ -14,12 +17,10 @@ layout: default_research
     max-width: 300px;
     border: 1px solid #00000059;
     border-radius: 5px;
-    /* box-shadow: 5px 5px 20px 20px #00000010; */
     cursor: pointer;
     background: white;
 }
 .research:hover {
-    /* box-shadow: 10px 10px 20px 20px #f19f2112; */
     border: 1px solid #f19f21;
     color: #805007;
 }
@@ -37,7 +38,7 @@ layout: default_research
 .research .header .img {
     width: 100%;
     height: 210px;
-    overflow-y: hidden;
+    overflow: hidden;
     border-radius: 5px 5px 0px 0px;
     background: white;
 }
