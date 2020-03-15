@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Exploring android 11 developer preview - Part 1
+title: Exploring Android 11 developer preview - Part 1
 categories: [android, android-11, android-R, privacy, security, camera]
 description: "Android has released a developer preview of Android 11 (aka Android R) for the Pixel series (and emulator) last week. As per the blog article, many changes have been introduced to support upcoming technologies like 5G, foldable displays, machine learning APIs and to strengthen Android's position in privacy and security. On top of that, I could see a couple of additions to support ongoing trends like pinhole or waterfall screens or giving first-class support for bokeh in Camera. In this article, I'd be exploring some of these changes and explaining what it means for users and developers."
 post-no: 14

@@ -129,5 +129,11 @@ category_descriptions:
   - { name: "computational-photograhpy", description: "" }
   - { name: "android-camera", description: "" }
   - { name: "camera", description: "" }
+  - { name: "linux", description: "" }
+  - { name: "memory", description: "" }
+  - { name: "shared-memory", description: "" }
+  - { name: "mmap", description: "" }
+  - { name: "munmap", description: "" }
+  - { name: "malloc", description: "" }
 
 photography_data_path: "photography/assets/"
