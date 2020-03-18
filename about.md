@@ -31,13 +31,12 @@ I worked with **Microsoft Azure** for around 3 years. My day to day involved app
  - Distributed Systems, Systems design, High Availability
 
 ## Open Source Contributions
-#### CSRF Protector PHP | Author, Lead Maintainer
-> [mebjas/CSRF-Protector-PHP](https://github.com/mebjas/CSRF-Protector-PHP)
+#### OWASP CSRF Protector | Author, Lead Maintainer
+> Since May 2014
 
 Author and main maintainer of this OWASP project since 2014. This project started with my participation in Google Summer of Code with OWASP in 2014 under the mentorship of K. W. Walls and Abbas Naderi. Read more about the project in [the OWASP Wiki](https://owasp.org/www-project-csrfprotector/).
 
-> CSRF Protector PHP is a standalone PHP library for CSRF mitigation in web applications. It is developed to be easy to integrate with any new or existing  PHP based web application.
-
+> OWASP CSRF Protector Project is an effort by a group of developers in securing web applications against Cross-Site Request Forgery, providing a PHP library and an Apache Module (to be used differently) for easy mitigation.
 
 <a class="github-button" href="https://github.com/mebjas/CSRF-protector-php" data-icon="octicon-star" data-show-count="true" aria-label="Star mebjas/CSRF-protector-php on GitHub">Star</a> 
 <a class="github-button" href="https://github.com/mebjas/CSRF-protector-php/fork" data-show-count="true" aria-label="Fork mebjas/CSRF-protector-php on GitHub">Fork</a>

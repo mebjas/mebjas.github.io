@@ -1,0 +1,65 @@
+---
+layout: default
+---
+<style>
+.journal {
+    margin: 20px 0px 40px 0px;
+    border: 1px solid #b5b5b54f;
+    border-left: 5px solid #81b7ff8c;
+    padding: 40px 20px 10px 20px;
+    position: relative;
+}
+.jdate {
+    display: inline-block;
+    position: absolute;
+    top: -10px;
+    background: #bcd7fe;
+    padding: 3px 10px;
+    border: 1px solid #2b7ae2;
+    font-size: 12pt;
+}
+.journal .jhighlight {
+    margin: 0px 0px 10px 0px;
+    padding: 5px 5px 5px 10px;
+}
+.journal .jhighlight .jtime {
+    font-weight: 400;
+}
+.journal .jhighlight .jimage {
+    margin-top: 10px;
+}
+.journal .jhighlight .jimage img {
+    max-width: 100%;
+}
+</style>
+<header class="page-header">
+    <h1 class="page-title">{{ page.title | escape }}</h1>
+</header>
+<p style="margin-bottom: 50px">
+    {{ page.description }}
+</p>
+<div class="page-content">
+    {% for entry_hash in site.data.journal.covid19 %}
+    {% assign entry = entry_hash[1] %}
+    <div class="journal">
+        <div class="jdate">
+            {{ entry.date }}
+        </div>
+        {% for highlight in entry.highlight %}
+        <div class="jhighlight">
+            {% if highlight.time %}
+            <span class="jtime">{{ highlight.time }}:</span>
+            {% endif %}
+            {% if highlight.text %}
+            {{ highlight.text }}
+            {% endif %}
+            {% if highlight.image %}
+            <div class="jimage">
+                <img src={{highlight.image}}>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
