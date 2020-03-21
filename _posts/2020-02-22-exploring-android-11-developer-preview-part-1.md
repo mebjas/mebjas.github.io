@@ -199,6 +199,9 @@ Google has made Android 11 developer preview builds available for **Google Pixel
 
 > Reference to Google website - [https://developer.android.com/preview/download](https://developer.android.com/preview/download)
 
+## Updates in this series
+ - [Exploring Android 11 developer preview - Part 2](../exploring-android-11-developer-preview-part-2/)
+
 ## References
  - [Google Android 11 preview blog post - android-developers.googleblog.com](https://android-developers.googleblog.com/2020/02/Android-11-developer-preview.html)
  - [Google preview download and install - developer.android.com](https://developer.android.com/preview/download)
