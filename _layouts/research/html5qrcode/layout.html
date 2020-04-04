@@ -52,7 +52,7 @@ button[disabled]{
 <div class="container">
     <h2>FAQs</h2>
     <strong>Is this supported on smartphones?</strong>
-    <div>Yes! the solution is based on HTML5 and javascript. This should work on any HTML5 supported browser.</div>
+    <div>Yes! the solution is based on vanilla HTML5 and javascript. This should work on any HTML5 supported browser.</div>
     <br>
     <strong>Where can I read more about this, is there a refernce article?</strong>
     <div>
@@ -151,7 +151,8 @@ Html5Qrcode.getCameras().then(cameras => {
             {fps: 10},
             qrCodeSuccessCallback,
             qrCodeErrorCallback,
-            videoErrorCallback);
+            videoErrorCallback)
+            .catch(videoErrorCallback);
     });
 
     $("#stopButton").on('click', function() {

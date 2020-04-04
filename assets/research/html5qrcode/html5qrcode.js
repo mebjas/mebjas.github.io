@@ -4,7 +4,7 @@ class Html5Qrcode {
     static DEFAULT_WIDTH = 300;
     static DEFAULT_WIDTH_OFFSET = 2;
     static SCAN_DEFAULT_FPS = 2;
-    static VERBOSE = false;
+    static VERBOSE = true;
 
     /**
      * Initialize QR Code scanner.
@@ -23,6 +23,7 @@ class Html5Qrcode {
 
     /**
      * Start scanning QR Code for given camera.
+     * 
      * @param {String} cameraId Id of the camera to use.
      * @param {Object} config extra configurations to tune QR code scanner.
      *  Supported Fields:
@@ -34,15 +35,14 @@ class Html5Qrcode {
      * @param {Function} qrCodeErrorCallback callback on QR Code parse error.
      *  Example:
      *      function(errorMessage) {}
-     * @param {Function} videoErrorCallback callback on setup or video error.
-     *  Example:
-     *      function(errorMessage) {}
+     * 
+     * @returns Promise for starting the scan. The Promise can fail if the user
+     * doesn't grant permission or some API is not supported by the browser.
      */
     start(cameraId,
         configuration,
         qrCodeSuccessCallback,
-        qrCodeErrorCallback,
-        videoErrorCallback) {
+        qrCodeErrorCallback) {
         if (!cameraId) {
             throw "cameraId is required";
         }
@@ -53,10 +53,6 @@ class Html5Qrcode {
 
         if (!qrCodeErrorCallback) {
             qrCodeErrorCallback = console.log;
-        }
-
-        if (!videoErrorCallback) {
-            videoErrorCallback = console.log;
         }
 
         const $this = this;
@@ -88,7 +84,6 @@ class Html5Qrcode {
         qrcode.callback = qrCodeSuccessCallback;
 
         // Method that scans forever.
-        var scanCount = 0;
         const foreverScan = () => {
             if (!$this._shouldScan) {
                 // Stop scanning.
@@ -113,28 +108,36 @@ class Html5Qrcode {
             foreverScan();
         }
 
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia(
-                { audio: false, video: { deviceId: { exact: cameraId}}})
-                .then(getUserMediaSuccessCallback)
-                .catch(err => {
-                    videoErrorCallback(`Error getting userMedia, error = ${err}`);
-                });
-        } else if (navigator.getUserMedia) {
-            const getCameraConfig = { video: { optional: [{ sourceId: cameraId }]}};
-            navigator.getUserMedia(
-                getCameraConfig, getUserMediaSuccessCallback, err => {
-                    videoErrorCallback(`Error getting userMedia, error = ${err}`);
-                });
-        } else {
-            videoErrorCallback("Web camera streaming not supported by the browser.");
-        }
+        return new Promise((resolve, reject) => {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia(
+                    { audio: false, video: { deviceId: { exact: cameraId }}})
+                    .then(stream => {
+                        getUserMediaSuccessCallback(stream);
+                        resolve();
+                    })
+                    .catch(err => {
+                        reject(`Error getting userMedia, error = ${err}`);
+                    });
+            } else if (navigator.getUserMedia) {
+                const getCameraConfig = { video: { optional: [{ sourceId: cameraId }]}};
+                navigator.getUserMedia(getCameraConfig,
+                    stream => {
+                        getUserMediaSuccessCallback(stream);
+                        resolve();
+                    }, err => {
+                        reject(`Error getting userMedia, error = ${err}`);
+                    });
+            } else {
+                reject("Web camera streaming not supported by the browser.");
+            }
+        });
     }
 
     /**
      * Stops streaming QR Code video and scanning. 
      * 
-     * Returns a Promise for safely closing the video stream.
+     * @returns Promise for safely closing the video stream.
      */
     stop() {
         this._shouldScan = false;
@@ -191,6 +194,7 @@ class Html5Qrcode {
                                 });
                             }
                         }
+                        this._log(`${results.length} results found`);
                         resolve(results);
                     })
                     .catch(err => {
@@ -212,10 +216,12 @@ class Html5Qrcode {
                             });
                         }
                     }
+                    this._log(`${results.length} results found`);
                     resolve(results);
                 }
                 MediaStreamTrack.getSources(callback);
             } else {
+                this._log("unable to query supported devices.");
                 reject("unable to query supported devices.");
             } 
         });
