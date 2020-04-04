@@ -11,9 +11,12 @@ image: '../images/post14_image1.png'
 
 LazarSoft had written an excellent set of [QR code decoding javascript libraries](https://github.com/LazarSoft/jsqrcode). However, it still requires some efforts to integrate the work with a web project as we need to take care of enumerating different camera devices, setting up `canvas` or the `video` element and hooking the stream with `qrcode library`. Also recently, in leu of privacy concers, some javascript APIs related to accessing the camera has changed and it requires some efforts to ensure different platforms like mobile or PC, chrome or safari support it. To reduce these pain points I wrote a jQuery based wrapper on to abstract tasks like camera enumeration and UI setup - it can be found at [mebjas/html5-qrcode](https://github.com/mebjas/html5-qrcode). In this article I have documented some details on how to use it and what is happening under the hook.
 
+## Deprecation Notice
+**This article is now obsolete as `v1.0.0` introduced multiple refactors. [Checkout this article](/HTML5-QR-Code-scanning-launched-v1.0.1/) on how to use this library now.**
+
 ## Introduction
 <!-- TODO(mebjas) Add more details on QR code. -->
-QR Code is a very common technique of encoding information as images. I ts a very common used in physical stores for identifying products like bar code is used.
+QR Code is a very common technique of encoding information as images. Its a very common used in physical stores for identifying products like bar code is used.
 
 ![sample qr code](../images/post14_image1.png)<br>
 _Figure: A sample QR code_
@@ -83,8 +86,8 @@ $(document).html5_qrcode_getSupportedCameras(
 );
 {% endhighlight %}
 
-### Once you have `cameraId` you can pefrorm start/stop operations
-Starting the camera implicitly starts QR Code scanning. It runs at a certain fps prvided in `ExtraConfiguration`. This is an optional field and by default the scanner runs at `2 fps`.
+### Once you have `cameraId` you can perform start/stop operations
+Starting the camera implicitly starts QR Code scanning. It runs at a certain fps provided in `ExtraConfiguration`. This is an optional field and by default the scanner runs at `2 fps`.
 
 Use `html5_qrcode()` to start scanning. Once you call this with sucess, it'd start streaming the camera input to a `video` and `canvas` element. Also, QR code library would be processing the frames at a certain frequency configurable by users. The method looks like:
 

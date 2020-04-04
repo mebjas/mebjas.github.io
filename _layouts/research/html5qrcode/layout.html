@@ -54,12 +54,25 @@ button[disabled]{
     <strong>Is this supported on smartphones?</strong>
     <div>Yes! the solution is based on vanilla HTML5 and javascript. This should work on any HTML5 supported browser.</div>
     <br>
+
+    <strong>Full example on how to use this?</strong>
+    <div>Check source code of this page or checkout this [gist](https://gist.github.com/mebjas/729c5397506a879ec704075c8a5284e8) where I have copied js code.</div>
+    <br>
+
     <strong>Where can I read more about this, is there a refernce article?</strong>
     <div>
         Apart from the documentation on the <a href="https://github.com/mebjas/html5-qrcode">github project</a>, following blog article may be helpful.
         <br>
         <div class="post-info" style="border: 1px solid #cfcfcf73;padding: 5px;margin: 10px 0px 0px 0px;">
-            <h3 class="post-header"><a class="post-link" href="/qr-code-scanner-using-html-and-javascript/">QR Code scanner using HTML5 and Javascript</a></h3>
+            <h3 class="post-header"><a class="post-link" href="/HTML5-QR-Code-scanning-launched-v1.0.1/">HTML5 QR Code scanning - launched v1.0.1 without jQuery dependency and refactored Promise based APIs</a></h3>
+            <span class="post-description">
+            <img src="/images/post14_image1.png" style="max-width: 50%; float: left; margin: 0px 15px 10px 0px;">
+            In 2015 I had written an HTML5 based QR code scanning library as a jQuery extension. Recently I realised there was some consistent traffic on my Github Project and the demo page. As I dug more into what was going on and I was embarrassed to see the poor design and obsolete support to the latest HTML APIs around Camera. I recently fixed some of the issues and refactored the javascript library that is now independent of jQuery and supports Promise based APIs. In this article I'll explain how to use the new version of the library, some changes and reasons for them and existing issues and plan to fix them.
+            </span>
+            <span class="read-more"><a href="/HTML5-QR-Code-scanning-launched-v1.0.1/">[&nbsp;Read&nbsp;more&nbsp;]</a></span>
+        </div>
+        <div class="post-info" style="border: 1px solid #cfcfcf73;padding: 5px;margin: 10px 0px 0px 0px;">
+            <h3 class="post-header"><a class="post-link" href="/qr-code-scanner-using-html-and-javascript/">[Obsolete] QR Code scanner using HTML5 and Javascript</a></h3>
              <span class="post-description">
                <img src="/images/post14_image1.png" style="max-width: 50%; float: left; margin: 0px 15px 10px 0px;">
                LazarSoft had written an excellent set of <a href="https://github.com/LazarSoft/jsqrcode">QR code decoding javascript libraries</a>.
@@ -78,12 +91,10 @@ button[disabled]{
     <h2>References</h2>
     <ol>
         <li>Project on Github - <a href="https://github.com/mebjas/html5-qrcode">mebjas/html5-qrcode</a></li>
-        <li>How to use - <a href="https://blog.minhazav.dev/qr-code-scanner-using-html-and-javascript/">blog.minhazav.dev</a></li>
+        <li>How to use - <a href="https://blog.minhazav.dev/HTML5-QR-Code-scanning-launched-v1.0.1/">blog.minhazav.dev/HTML5-QR-Code-scanning-launched-v1.0.1</a></li>
     </ol>
 </div>
 
-<!-- Assuming JQUERY is already included -->
-<script src="/assets/research/html5qrcode/jsqrcode-combined.js"></script>
 <script src="/assets/research/html5qrcode/html5qrcode.js"></script>
 <script>
 // TODO(mebjas): Remove jQuery usage from this code.
@@ -109,7 +120,6 @@ const qrCodeSuccessCallback = qrCodeMessage => {
     }
     ++codesFound;
     lastMessageFound = qrCodeMessage;
-    console.log(qrCodeMessage, codesFound);
     $("#scanned-codes").prepend(`<div>[${codesFound}] New code found: <strong>${qrCodeMessage}</strong></div>`);
 }
 
@@ -150,8 +160,7 @@ Html5Qrcode.getCameras().then(cameras => {
             cameraId, 
             {fps: 10},
             qrCodeSuccessCallback,
-            qrCodeErrorCallback,
-            videoErrorCallback)
+            qrCodeErrorCallback)
             .catch(videoErrorCallback);
     });
 
