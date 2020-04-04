@@ -40,10 +40,10 @@ button[disabled]{
     <div class="row">
         <div class="col-md-12">
             <code id="status">Click "Start Scanning" to <b>start scanning QR Code</b></code>
-            <br>
-            <span id="feedback" style="margin: 10px; display: inline-block">
+            <div id="feedback" style="margin: 10px; display: inline-block">
                 querying for available camera options...
-            </span>
+            </div>
+            <div id="scanned-codes"></div>
             <div id="logging"></div>
         </div>
     </div>
@@ -84,73 +84,91 @@ button[disabled]{
 
 <!-- Assuming JQUERY is already included -->
 <script src="/assets/research/html5qrcode/jsqrcode-combined.js"></script>
-<script src="/assets/research/html5qrcode/html5-qrcode.js"></script>
+<script src="/assets/research/html5qrcode/html5qrcode.js"></script>
 <script>
-$(document).ready(function() {
-    var onQRCodeFoundCallback = function (qrCodeMessage) {
-        $("#feedback").html('Code scanned as: <strong>' + qrCodeMessage + '</strong>');
+// TODO(mebjas): Remove jQuery usage from this code.
+function setFeedback(message) {
+    $("#feedback").html(message);
+}
+
+function log(message) {
+    $("#logging").append(`<div>${message}</div>`);
+}
+
+function setStatus(status) {
+    $("#status").html(status);
+}
+
+var codesFound = 0;
+var lastMessageFound = null;
+const qrCodeSuccessCallback = qrCodeMessage => {
+    setStatus("Pattern Found");
+    setFeedback("");
+    if (lastMessageFound == qrCodeMessage) {
+        return;
+    }
+    ++codesFound;
+    lastMessageFound = qrCodeMessage;
+    console.log(qrCodeMessage, codesFound);
+    $("#scanned-codes").prepend(`<div>[${codesFound}] New code found: <strong>${qrCodeMessage}</strong></div>`);
+}
+
+const qrCodeErrorCallback = message => {
+    setStatus("Scanning");
+}
+
+const videoErrorCallback = message => {
+    setFeedback(`Video Error, error = ${message}`);
+}
+
+const html5QrCode = new Html5Qrcode("qr");
+Html5Qrcode.getCameras().then(cameras => {
+    log(`Number of camera(s) found: ${cameras.length}`);
+    if (cameras.length == 0) {
+        setFeedback("Error: Zero cameras found in the device");
+        return;
     }
 
-    var onQRCodeNotFoundCallback = function (error) {
-        $("#feedback").html('Unable to scan the code! Error: ' + error);
+    for (var i = 0; i < cameras.length; i++) {
+        const camera = cameras[i];
+        const value = camera.id;
+        const name = camera.label == null ? value : camera.label;
+        $("#cameraSelection").append(`<option value="${value}">${name}</option>`);
     }
 
-    var onVideoErrorCallback = function (videoError) {
-        $("#feedback").html('Video Error: ' + videoError);
-    }
+    $("#cameraSelection").prop("disabled", false);
+    $("#scanButton").prop("disabled", false);
+    $("#scanButton").on('click', function() {
+        const cameraId = $("#cameraSelection").val();
+        $("#cameraSelection").prop("disabled", true);
+        $("#scanButton").prop("disabled", true);
+        $("#stopButton").prop("disabled", false);
 
-    var onCamerasEnumerated = function (cameras) {
-        // Cameras found.
-        $("#logging").html("Number of camera(s) found: " +cameras.length);
-        if (cameras.length == 0) {
-            $("#feedback").html("Error: Zero cameras found in the device");
-            return;
-        }
+        setStatus("scanning");
+        setFeedback("");
+        html5QrCode.start(
+            cameraId, 
+            {fps: 10},
+            qrCodeSuccessCallback,
+            qrCodeErrorCallback,
+            videoErrorCallback);
+    });
 
-        for (i = 0; i < cameras.length; i++) {
-            var camera = cameras[i];
-            var value = camera.id;
-            var name = camera.label == null ? value : camera.label;
-            $("#cameraSelection").append("<option value='" + value+ "'>" + name + "</option>");
-        }
-        $("#cameraSelection").prop("disabled", false);
-        $("#cameraSelection").on("change", function () {
-            console.log("Option changed");
-            console.log($("#cameraSelection").val());
-        })
-
-        $("#scanButton").prop("disabled", false);
-        $("#scanButton").on('click', function() {
-            var cameraId = $("#cameraSelection").val();
-            $("#cameraSelection").prop("disabled", true);
-            $("#scanButton").prop("disabled", true);
-            $("#stopButton").prop("disabled", false);
-            $("#status").html('scanning');
-            $('#qr').html5_qrcode(
-                cameraId,
-                onQRCodeFoundCallback,
-                onQRCodeNotFoundCallback,
-                onVideoErrorCallback,
-                { fps : 10 }
-            );
-        });
-
-        $("#stopButton").on('click', function() {
-            $("#qr").html5_qrcode_stop();
+    $("#stopButton").on('click', function() {
+        html5QrCode.stop().then(ignore => {
             $("#cameraSelection").prop("disabled", false);
-            $("#status").html('Click "Start Scanning" to <b>start scanning QR Code</b>');
             $("#scanButton").prop("disabled", false);
             $("#stopButton").prop("disabled", true);
-            $("#feedback").html("");
+
+            setFeedback('Stopped');
+            setFeedback("Click 'Start Scanning' to <b>start scanning QR Code</b>");
+            $("#scanned-codes").html("");
+        }).catch(err => {
+            setFeedback('Error');
+            setFeedback("Race condition, unable to close the scan.");
         });
-    }
-
-    var onCameraEnumerationFailed = function (errorMessage) {
-        $("#feedback").html("Error: Unable to query any cameras. Reason: " +errorMessage);
-    }
-
-    $(document).html5_qrcode_getSupportedCameras(
-        onCamerasEnumerated, onCameraEnumerationFailed);
+    });
+}).catch(err => {
+    setFeedback(`Error: Unable to query any cameras. Reason: ${err}`);
 });
-    
 </script>
