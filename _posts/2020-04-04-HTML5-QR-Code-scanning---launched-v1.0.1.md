@@ -1,6 +1,6 @@
 ---
 layout: post
-title: HTML5 QR Code scanning - launched v1.0.1 without jQuery dependency and refactored Promise based APIs
+title: HTML5 QR Code scanning with javascript - launched v1.0.1
 categories: [html, javascript, jquery, qrcode, camera, promise]
 description: "In 2015 I had written an HTML5 based QR code scanning library as a jQuery extension. Recently I realised there was some consistent traffic on my Github Project and the demo page. As I dug more into what was going on and I was embarrassed to see the poor design and obsolete support to the latest HTML APIs around Camera. I recently fixed some of the issues and refactored the javascript library that is now independent of jQuery and supports Promise based APIs. In this article I'll explain how to use the new version of the library, some changes and reasons for them and existing issues and plan to fix them."
 post-no: 17
@@ -8,7 +8,9 @@ toc: true
 image: '../images/post14_image1.png'
 ---
 
-In 2015 I had written an HTML5 based QR code scanning library as a jQuery extension. Recently I realised there was some consistent traffic on [my Github Project](https://github.com/mebjas/html5-qrcode) and the [demo page](https://blog.minhazav.dev/research/html5-qrcode.html). As I dug more into what was going on and I was embarrassed to see the poor design and obsolete support to the latest HTML APIs around Camera. I recently fixed some of the issues and refactored the javascript library that is now independent of jQuery library and supports `Promise` based APIs. In this article I'll explain how to use the new version of the library, some changes and reasons for them and existing issues and plan to fix them.
+In 2015 I had written an HTML5 based QR code scanning library as a jQuery extension. Recently I realised there was some consistent traffic on [my Github Project](https://github.com/mebjas/html5-qrcode) and the [demo page](https://blog.minhazav.dev/research/html5-qrcode.html). As I dug more into what was going on and I was embarrassed to see the poor design and obsolete support to the latest HTML APIs around Camera. I recently fixed some of the issues and refactored the javascript library that is now independent of jQuery library and supports `Promise` based APIs. In this article I'll explain how to use the new version of the library, some changes and reasons for them and existing issues and plan to fix them. To callout loud, the major changes are:
+ - Removed jQuery dependency
+ - Refactored the APIs to return [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) rather than being purely based on callbacks.
 
 ## Introduction
 QR Code is a very common technique of encoding information as images. Its a very common used in physical stores for identifying products like bar code is used.
@@ -85,7 +87,11 @@ const html5QrCode = new Html5Qrcode("reader");
 
 html5QrCode.start(
   cameraId,     // retreived in the previous step.
-  { fps: 10 },
+  {
+    fps: 10,    // sets the framerate to 10 frame per second
+    qrbox: 250  // sets only 250 X 250 region of viewfinder to
+                // scannable, rest shaded.
+  },
   qrCodeMessage => {
     // do something when code is read. For example:
     console.log(`QR Code detected: ${qrCodeMessage}`);
@@ -100,7 +106,18 @@ html5QrCode.start(
 });
 ```
 
-The only supported configuration at the moment is `fps` which indicates the number of times per seconds the QR code scanning would be attempted. The default value for this is `2`.
+#### Extra optional `configuration` in `start()` method
+The configuration argument in `start()` method can effect both scanning behavior and UI. There are two optional properties right now, if you don't want them you can just pass an empty `Object like {}`.
+
+##### `fps` - Integer, Example = `10`
+Also known as frame per seconds, the default value for this is `2` but it can be increased to get faster scanning. Increasing to a very high value could affect performance. Value `>1000` will simply fail. Ideal value for this could be `10`.
+
+##### `qrbox` - Integer, Example = `250`
+Use this property to limit the region of the viewfinder you want to use for scanning. The rest of the viewfinder would be shaded and ignored by the QR code scanner. For example by passing config `{ qrbox : 250 }`, the screen will look like:
+
+![screenshot](../images/post17_image1.jpg){:width="600px"}<br>
+
+This is an optional property, if nothing is passed, the scanner will scan the entire region of the viewfinder.
 
 #### To stop scanning, use stop() method
 The `stop()` member method in `Html5Qrcode` returns a `Promise` which finishes when the video feed is closed and held resources are released.
