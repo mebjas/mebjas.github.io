@@ -3,5 +3,10 @@ highlight:
  - {
    time: "Morning",
    text: "Setup my workstation, I can see the difference already. <strong>And that lack of proper food -_-</strong>.",
-   image: "../images/2020-03-18_1.jpg"
+   image: "../images/journal/covid19/2020-03-18_1.jpg"
+ }
+ - {
+   time: "Evening",
+   text: "For someone who don't like to cook, I have to start now. Can't keep ordering food. Starting simple - Brocolli Onion Egg Cheese and Maggie!",
+   image: "../images/journal/covid19/2020-03-18_2.jpg"
  }

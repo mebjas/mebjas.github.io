@@ -31,6 +31,9 @@ layout: default
 .journal .jhighlight .jimage img {
     max-width: 100%;
 }
+img {
+    max-height: 400px;
+}
 </style>
 <header class="page-header">
     <h1 class="page-title">{{ page.title | escape }}</h1>
@@ -39,8 +42,11 @@ layout: default
     {{ page.description }}
 </p>
 <div class="page-content">
-    {% for entry_hash in site.data.journal.covid19 %}
-    {% assign entry = entry_hash[1] %}
+    {% assign sorted_entry_hash = site.data.journal.covid19 | sort  %}
+    <!-- {% assign entry_hash_rev = sorted_entry_hash | reverse %} -->
+    <!-- {{ sorted_entry_hash }} -->
+    {% for e in sorted_entry_hash %}
+    {% assign entry = e[1] %}
     <div class="journal">
         <div class="jdate">
             {{ entry.date }}
