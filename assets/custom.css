@@ -221,3 +221,8 @@
         padding: 10px;
     }
 }
+
+/** custom modification **/
+.post-info {
+    overflow-y: hidden;
+}

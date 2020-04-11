@@ -135,7 +135,7 @@ const videoErrorCallback = message => {
 
 const html5QrCode = new Html5Qrcode("qr");
 $(document).ready(function() {
-    $("#requestPermission").on('click', function() {
+    document.getElementById('requestPermission').addEventListener('click', function() {
         Html5Qrcode.getCameras().then(cameras => {
             $("#requestPermission").prop("disabled", true);
             log(`Number of camera(s) found: ${cameras.length}`);
@@ -154,6 +154,7 @@ $(document).ready(function() {
             $("#cameraSelection").prop("disabled", false);
             $("#scanButton").prop("disabled", false);
             $("#scanButton").on('click', function() {
+            // document.getElementById('scanButton').addEventListener('click', function() {
                 const cameraId = $("#cameraSelection").val();
                 $("#cameraSelection").prop("disabled", true);
                 $("#scanButton").prop("disabled", true);
@@ -166,10 +167,10 @@ $(document).ready(function() {
                     { fps: 10, qrbox: 250 },
                     qrCodeSuccessCallback,
                     qrCodeErrorCallback)
-                    .catch(videoErrorCallback);
+                .catch(videoErrorCallback);
             });
 
-            $("#stopButton").on('click', function() {
+            document.getElementById('stopButton').addEventListener('click', function() {
                 html5QrCode.stop().then(ignore => {
                     $("#cameraSelection").prop("disabled", false);
                     $("#scanButton").prop("disabled", false);
