@@ -154,19 +154,21 @@ I am working on adding support for more and more platforms. If you find a platfo
 
 | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" /><br/>Firefox | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" /><br/>Chrome | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" /><br/>Safari | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" /><br/>Opera | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="Edge" width="24px" height="24px" /><br/> Edge
 | --------- | --------- | --------- | --------- | ------- |
-|![](../assets/img/done.png)| ![](../assets/img/done.png)| ![](../assets/img/done.png)| ![](../assets/img/progress.png) | ![](../assets/img/done.png)
+|![](../assets/img/done.png)| ![](../assets/img/done.png)| ![](../assets/img/done.png)| ![](../assets/img/done.png) | ![](../assets/img/done.png)
 
 ### Android
 
-| <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" /><br/>Chrome | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" /><br/>Firefox | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="Edge" width="24px" height="24px" /><br/> Edge | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera-mini/opera-mini_48x48.png" alt="Opera-Mini" width="24px" height="24px" /><br/> Opera Mini
-| --------- | --------- | --------- | --------- |
-|![](../assets/img/done.png)| ![](../assets/img/done.png)| ![](../assets/img/done.png)| ![](../assets/img/progress.png) 
+| <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" /><br/>Chrome | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" /><br/>Firefox | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="Edge" width="24px" height="24px" /><br/> Edge | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" /><br/>Opera | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera-mini/opera-mini_48x48.png" alt="Opera-Mini" width="24px" height="24px" /><br/> Opera Mini | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/uc/uc_24x24.png" alt="UC" width="24px" height="24px" /> <br/> UC
+| --------- | --------- | --------- | --------- |  --------- | --------- |
+|![](../assets/img/done.png)| ![](../assets/img/done.png)| ![](../assets/img/done.png)| ![](../assets/img/done.png)| ![](../assets/img/progress.png) | ![](../assets/img/progress.png) 
 
 ### IOS
-| <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari-ios/safari-ios_24x24.png" alt="Safari" width="24px" height="24px" /><br/>Safari | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" /><br/>Chrome | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" /><br/>Firefox | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="Edge" width="24px" height="24px" /><br/> Edge 
-| --------- | --------- | --------- | --------- |
-|![](../assets/img/done.png)| ![](../assets/img/progress.png) | ![](../assets/img/progress.png) | ![](../assets/img/progress.png) 
 
+|<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari-ios/safari-ios_24x24.png" alt="Safari" width="24px" height="24px" /><br/>Safari | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" /><br/>Chrome | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" /><br/>Firefox | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="Edge" width="24px" height="24px" /><br/> Edge
+| --------- | --------- | --------- | --------- |
+| ![](../assets/img/done.png) | ![](../assets/img/progress.png) | ![](../assets/img/progress.png) | ![](../assets/img/progress.png) |
+
+<br>
 > Apparently, Webkit for IOS is used by Chrome, Firefox, and other browsers in IOS and they do not have webcam permissions yet. There is an ongoing issue on fixing the support for iOS - [issue/14](https://github.com/mebjas/html5-qrcode/issues/14)
 
 ## Existing issues and plan to fix them
@@ -176,7 +178,7 @@ Some open issues are:
  - [issue/14](https://github.com/mebjas/html5-qrcode/issues/14) - Fix camera query issue in IOS browsers - Chrome, Mozilla, Edge, Opera.
  - [FIXED] ~~[issue/14](https://github.com/mebjas/html5-qrcode/issues/14) - Fix stuck camera issues in IOS Safari~~
  - [issue/13](https://github.com/mebjas/html5-qrcode/issues/13) - Fix camera query issue in Android Opera Mini
- - [issue/16](https://github.com/mebjas/html5-qrcode/issues/16) - Fix Camera Query issue in Mac OS Opera browser
+ - [FIXED] ~~[issue/16](https://github.com/mebjas/html5-qrcode/issues/16) - Fix Camera Query issue in Mac OS Opera browser~~
 
 ## How to contribute
 If you are excited or interested you can contribute to this project by:
