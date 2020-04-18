@@ -192,3 +192,6 @@ If you are excited or interested you can contribute to this project by:
 
  - The library is released under [Apache License, Version 2.0](https://github.com/mebjas/html5-qrcode/blob/master/licence.md).
  - The decoder used for the QRcode reading is from `LazarSoft` - [LazarSoft/jsqrcode](https://github.com/LazarSoft/jsqrcode).
+
+## Updates to this article
+ - `18th April 2020` - [Added support for local file scanning and using default camera on smartphones](https://blog.minhazav.dev/HTML5-QR-Code-scanning-support-for-local-file-and-default-camera/)
