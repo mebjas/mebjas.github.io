@@ -20,12 +20,22 @@ layout: default_research
     cursor: pointer;
     background: white;
 }
+.research.wip {
+    display: none;
+}
 .research:hover {
     border: 1px solid #f19f21;
     color: #805007;
 }
 .research:hover>.body a {
     color: #100a01;
+}
+.research .wip {
+    background: #fff670;
+    padding: 5px;
+    text-align: center;
+    color: #111111;
+    font-weight: bold;
 }
 .research:hover>.header .title {
     background: #f19f2147;
@@ -57,7 +67,12 @@ layout: default_research
 </style>
 <div class="main_container">
     {% for research in site.data.research %}
+        {% if research.wip %}
+        <div class="research wip" data="{{ research.link }}">
+            <div class="wip">Work in progress</div>
+        {% else %}
         <div class="research" data="{{ research.link }}">
+        {% endif %}
             <div class="header">
                 <div class="img">
                     {% if research.image %}
@@ -75,5 +90,9 @@ $(document).ready(() => {
     $(".research").on("click", (e) => {
         location.href = "/research/" +$(e.currentTarget).attr('data');
     });
+
+    if (location.hash.indexOf("wip") != -1) {
+        $(".research.wip").show();
+    }
 });
 </script>
