@@ -215,7 +215,7 @@ docReady(function() {
 
     const removeClass = (element, className) => {
         if (!element || !className) throw "Both element and className mandatory";
-        if (classExists(element, className)) return;
+        if (!classExists(element, className)) return;
         element.classList.remove(className);
     }
 
