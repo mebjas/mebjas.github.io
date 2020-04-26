@@ -1,0 +1,57 @@
+---
+layout: default_research
+---
+<style>
+.wrapper-content {
+    max-width: 100%;
+}
+div#guideContainer {
+    margin-top: 20px;
+}
+div#logContainer {
+    background: black;
+    color: #37d437;
+    padding: 10px;
+    margin-top: 20px;
+}
+button[disabled]{
+  opacity: 0.5;
+}
+#connectedTo {
+    margin-left: 5px;
+}
+</style>
+<h2>Android GC Analysis: With WebUsb - Work in progress</h2>
+<div>
+    <blockquote>
+        This tool uses experimental <a href="https://developer.mozilla.org/en-US/docs/Web/API/USB">WebUSB</a> technology. Please use it at your own risk, this tool is written to be fully local and doesn't
+        share <b>user data</b> with cloud. This is based on port of <a href="https://github.com/webadb/webadb.js">webadb/webadb.js</a> and I have verified the code to not do anything notorious.
+        <br>
+        <br>
+        To understand the general risk of using WebUSB on untrusted websites - <a href="https://labs.f-secure.com/archive/webusb/">read this article</a>. 
+        I am working on a tool that can do GC analysis as a standalone tool without WebUsb.
+    </blockquote>
+</div>
+<div class="row">
+    <div>
+        <button id="selectDevice">Select Device</button>
+        <button id="disconnectDevice" disabled>Disconnect</button>
+        <span id="connectedTo"></span>
+    </div>
+    <div id="guideContainer"></div>
+    <div id="gcvizContainer"></div>
+    <div id="logContainer"><div>$ LOGS </div></div>
+</div>
+<h2>Comments</h2>
+<script src="https://utteranc.es/client.js"
+    repo="mebjas/mebjas.github.io"
+    issue-term="title"
+    label="test"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="/assets/research/gcviz-webusb/webadb.js"></script>
+<script src="/assets/research/gcviz-webusb/gcviz.js"></script>
+<script src="/assets/research/gcviz-webusb/main.js"></script>
