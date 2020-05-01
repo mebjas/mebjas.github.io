@@ -115,7 +115,7 @@ Also known as frame per seconds, the default value for this is `2` but it can be
 ##### `qrbox` - Integer, Example = `250`
 Use this property to limit the region of the viewfinder you want to use for scanning. The rest of the viewfinder would be shaded and ignored by the QR code scanner. For example by passing config `{ qrbox : 250 }`, the screen will look like:
 
-![screenshot](../images/post17_image1.jpg){:width="600px"}<br>
+![screenshot](../images/htmlqrcode.gif)<br>
 
 This is an optional property, if nothing is passed, the scanner will scan the entire region of the viewfinder.
 
@@ -175,7 +175,8 @@ I am working on adding support for more and more platforms. If you find a platfo
 In [milestore/v1.0.1](https://github.com/mebjas/html5-qrcode/milestone/1) I plan to fix compatibility issues with `Opera` browser and `IOS` based browsers.
 
 Some open issues are:
- - [issue/14](https://github.com/mebjas/html5-qrcode/issues/14) - Fix camera query issue in IOS browsers - Chrome, Mozilla, Edge, Opera.
+ - [Blocked] [issue/14](https://github.com/mebjas/html5-qrcode/issues/14) Fix camera query issue in IOS browsers - Chrome, Mozilla, Edge, Opera.
+ > Blocked by pending support for camera in Webkit for IOS.
  - [FIXED] ~~[issue/14](https://github.com/mebjas/html5-qrcode/issues/14) - Fix stuck camera issues in IOS Safari~~
  - [issue/13](https://github.com/mebjas/html5-qrcode/issues/13) - Fix camera query issue in Android Opera Mini
  - [FIXED] ~~[issue/16](https://github.com/mebjas/html5-qrcode/issues/16) - Fix Camera Query issue in Mac OS Opera browser~~

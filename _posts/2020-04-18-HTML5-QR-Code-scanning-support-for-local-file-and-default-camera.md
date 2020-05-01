@@ -32,18 +32,17 @@ If you look at the [issue 14](https://github.com/mebjas/html5-qrcode/issues/14) 
 The root cause for this was an issue in Webkit for IOS which is used by almost all these browsers in IOS. The issue was - it doesn't permit browsers other than Safari to access Camera on the device. Check this [StackOverflow question](https://stackoverflow.com/questions/51501642/chrome-and-firefox-are-not-able-to-access-iphone-camera) for more info. This is very sly and has been there for many years with no progress. To make sure this library can be used cross-platform I have added a fallback type approach which allows users to either capture the QR Code using default camera or load a media from disk. This solution is not perfect but can be used to have good support for QR Scanning in the app.
 
 You can use it something like this:<br>
-![](../images/post18_image3.png){:width="750px"}<br>
-_Figure: QR Code scanning with both inline viewfinder and file scanning option_.
+![](../images/htmlqrcode.gif)<br>
+_Figure: QR Code scanning with both the inline viewfinder and file scanning option_.
 
 ## How this works
-HTML5 supports `input` type `file` which allow accessing files locally using javascript with user consent. Adding `capture` tag can be used to restrict the option to capture using camera alone for Android and IOS while it is ingored in PC browsers. When a user clicks on the file input following types of dialogs are shows in different OS:
+HTML5 supports `input` type `file` which allow accessing files locally using javascript with user consent. Adding `capture` tag can be used to restrict the option to capture using a camera alone for Android and IOS while it is ignored in PC browsers. When a user clicks on the file input following types of dialogs are shows in different OS:
 
-![](../images/post18_image1.png){:width="500px"}<br>
-_Figure: Taken on Pixel3, Google Chrome, Android 10_.
--
+| Selector in Android | Selector in IOS|
+|------|-------|
+![](../images/post18_image1.png){:width="300px"} |  ![](../images/post18_image2.jpg){:width="300px"} |
+|Taken on Pixel 3, Google Chrome | Taken on iPhone 7, Google Chrome |
 
-![](../images/post18_image2.jpg){:width="500px"}<br>
-_Figure: Taken on iPhone7, Google Chrome, IOS_.
 
 ## How to use
 Apart from the standard steps described [here](../HTML5-QR-Code-scanning-launched-v1.0.1/#how-to-use) like:
