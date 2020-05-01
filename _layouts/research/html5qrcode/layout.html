@@ -188,11 +188,11 @@ docReady(function() {
     const qrCodeSuccessCallback = qrCodeMessage => {
         setStatus("Pattern Found");
         setFeedback("");
-        if (lastMessageFound == qrCodeMessage) {
+        if (lastMessageFound === qrCodeMessage.toLocaleLowerCase()) {
             return;
         }
         ++codesFound;
-        lastMessageFound = qrCodeMessage;
+        lastMessageFound = qrCodeMessage.toLocaleLowerCase();
         const result = document.createElement('div');
         result.innerHTML = `[${codesFound}] New code found: <strong>${qrCodeMessage}</strong>`;
         scannedCodeContainer.appendChild(result);
@@ -272,8 +272,8 @@ docReady(function() {
 
     requestPermissionButton.addEventListener('click', function() {
         if (currentScanTypeSelection != SCAN_TYPE_CAMERA) return;
+        requestPermissionButton.disabled = true;
         Html5Qrcode.getCameras().then(cameras => {
-            requestPermissionButton.disabled = true;
             selectCameraContainer.innerHTML = `Select Camera (${cameras.length})`;
             if (cameras.length == 0) {
                 return setFeedback("Error: Zero cameras found in the device");
@@ -296,29 +296,39 @@ docReady(function() {
                 const cameraId = cameraSelection.value;
                 cameraSelection.disabled = true;
                 scanButton.disabled = true;
-                stopButton.disabled = false;
-                setStatus("scanning");
-                setFeedback("");
 
                 // Start scanning.
                 html5QrCode.start(
                     cameraId, 
-                    { fps: 10, qrbox: 250 },
+                    {
+                        fps: 10,
+                        qrbox: 250
+                    },
                     qrCodeSuccessCallback,
                     qrCodeErrorCallback)
-                .catch(videoErrorCallback);
+                    .then(_ => {
+                        stopButton.disabled = false;
+                        setStatus("scanning");
+                        setFeedback("");
+                    })
+                    .catch(error => {
+                        cameraSelection.disabled = false;
+                        scanButton.disabled = false;
+                        videoErrorCallback(error);
+                    });
             });
 
             stopButton.addEventListener('click', function() {
+                stopButton.disabled = true;
                 html5QrCode.stop().then(ignore => {
                     cameraSelection.disabled = false;
                     scanButton.disabled = false;
-                    stopButton.disabled = true;
                     setFeedback('Stopped');
                     setFeedback("Click 'Start Scanning' to <b>start scanning QR Code</b>");
                     scannedCodeContainer.innerHTML = "";
                     setPlaceholder();
                 }).catch(err => {
+                    stopButton.disabled = false;
                     setFeedback('Error');
                     setFeedback("Race condition, unable to close the scan.");
                 });
