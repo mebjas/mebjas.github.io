@@ -170,17 +170,24 @@ var Html5Qrcode = /*#__PURE__*/function () {
         }
 
         if ($this._localMediaStream) {
-          // Only decode the relevant area, ignore the shaded area, More reference:
+          // difference in held video dimensions and rendered video dimensions
+          // require scaling
+          var videoElement = $this._videoElement;
+          var widthRatio = videoElement.videoWidth / videoElement.clientWidth;
+          var heightRatio = videoElement.videoHeight / videoElement.clientHeight;
+          var sWidthOffset = $this._qrRegion.width * widthRatio;
+          var sHeightOffset = $this._qrRegion.height * heightRatio; // Only decode the relevant area, ignore the shaded area, More reference:
           // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
+
           $this._context.drawImage($this._videoElement,
           /* sx= */
           $this._qrRegion.x,
           /* sy= */
           $this._qrRegion.y,
           /* sWidth= */
-          $this._qrRegion.width,
+          sWidthOffset,
           /* sHeight= */
-          $this._qrRegion.height,
+          sHeightOffset,
           /* dx= */
           0,
           /* dy= */
@@ -201,27 +208,44 @@ var Html5Qrcode = /*#__PURE__*/function () {
       }; // success callback when user media (Camera) is attached.
 
 
-      var getUserMediaSuccessCallback = function getUserMediaSuccessCallback(stream) {
+      var getUserMediaSuccessCallback = function getUserMediaSuccessCallback(mediaStream) {
         return new Promise(function (resolve, reject) {
-          $this._localMediaStream = stream;
-          $this._videoElement = _this._createVideoElement(width);
-          element.append($this._videoElement); // Attach listeners to video.
+          var setupVideo = function setupVideo() {
+            $this._videoElement = _this._createVideoElement(width);
+            element.append($this._videoElement); // Attach listeners to video.
 
-          $this._videoElement.onabort = reject;
-          $this._videoElement.onerror = reject;
+            $this._videoElement.onabort = reject;
+            $this._videoElement.onerror = reject;
 
-          $this._videoElement.onplaying = function () {
-            var videoWidth = $this._videoElement.clientWidth;
-            var videoHeight = $this._videoElement.clientHeight;
-            setupUi(videoWidth, videoHeight); // start scanning after video feed has started
+            $this._videoElement.onplaying = function () {
+              var videoWidth = $this._videoElement.clientWidth;
+              var videoHeight = $this._videoElement.clientHeight;
+              setupUi(videoWidth, videoHeight); // start scanning after video feed has started
 
-            foreverScan();
-            resolve();
+              foreverScan();
+              resolve();
+            };
+
+            $this._videoElement.srcObject = mediaStream;
+
+            $this._videoElement.play();
           };
 
-          $this._videoElement.srcObject = stream;
-
-          $this._videoElement.play();
+          $this._localMediaStream = mediaStream;
+          setupVideo(); // TODO(mebjas): see if constaints can be applied on camera
+          // for better results or performance.
+          // const constraints = {
+          //   width: { min: width , ideal: width, max: width },
+          //   frameRate: { ideal: 30, max: 30 }
+          // }
+          // const track = mediaStream.getVideoTracks()[0];
+          // track.applyConstraints(constraints)
+          // .then(() => setupVideo())
+          // .catch(error => {
+          //   console.log("[Warning] [Html5Qrcode] Constriants could not be "
+          //     + "satisfied, ignoring constraints", error);
+          //   setupVideo();
+          // });
         });
       }; //#endregion
 
