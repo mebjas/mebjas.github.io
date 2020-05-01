@@ -3,15 +3,13 @@ layout: default_research
 ---
 <style>
 #qr {
-    width: 600px;
-    height: 450px;
+    width: 640px;
     border: 1px solid silver
 }
 
 @media(max-width: 600px) {
     #qr {
         width: 300px;
-        height: 450px;
         border: 1px solid silver
     }
 }
@@ -35,12 +33,17 @@ button[disabled]{
     width: 100%;
     height: 20px;
 }
+#qr .placeholder {
+    padding: 50px;
+}
 </style>
 <h1> HTML5 QR Code scanner </h1>
 <div class="container">
     <div class="row">
         <div class="col-md-12" style="text-align: center;">
-            <div id="qr" style="display: inline-block;"></div>
+            <div id="qr" style="display: inline-block;">
+                <div class="placeholder"> QR Code viewfinder comes here </div>
+            </div>
             <div id="scannedCodeContainer"></div>
             <div id="feedback"></div>
         </div>
@@ -61,9 +64,6 @@ button[disabled]{
                     <button id="stopButton" class="btn btn-warning btn-sm" disabled>stop scanning</button>
                 </div>
             </div>
-            <!-- <div class="references">
-                <a href="https://gist.github.com/mebjas/729c5397506a879ec704075c8a5284e8">Reference Code</a>
-            </div> -->
         </div>
         <div class="col-md-12 scan-type-region disabled file" id="scanTypeFile">
             <div>
@@ -134,6 +134,7 @@ button[disabled]{
     crossorigin="anonymous"
     async>
 </script>
+<script src="/assets/research/html5qrcode/qrcode.js"></script>
 <script src="/assets/research/html5qrcode/html5qrcode.js"></script>
 <script>
 function docReady(fn) {
@@ -161,12 +162,20 @@ docReady(function() {
     const statusContainer = document.getElementById('status');
     const SCAN_TYPE_CAMERA = "camera";
     const SCAN_TYPE_FILE = "file";
+
     // declaration of html5 qrcode
     const html5QrCode = new Html5Qrcode("qr");
 
     var currentScanTypeSelection = SCAN_TYPE_CAMERA;
     var codesFound = 0;
     var lastMessageFound = null;
+
+    const setPlaceholder = () => {
+        const placeholder = document.createElement("div");
+        placeholder.innerHTML = "QR viewfinder comes here";
+        placeholder.className = "placeholder";
+        document.getElementById('qr').appendChild(placeholder);
+    }
 
     const setFeedback = message => {
         feedbackContainer.innerHTML = message;
@@ -222,6 +231,9 @@ docReady(function() {
     const onScanTypeSelectionChange = event => {
         const setupFileOption = () => {
             currentScanTypeSelection = SCAN_TYPE_FILE;
+            html5QrCode.clear();
+            setPlaceholder();
+
             if (stopButton.disabled != true) {
                 stopButton.click();
             }
@@ -235,6 +247,8 @@ docReady(function() {
         const setupCameraOption = () => {
             currentScanTypeSelection = SCAN_TYPE_CAMERA;
             html5QrCode.clear();
+            setPlaceholder();
+
             qrFileInput.value = "";
             qrFileInput.disabled = true;
             removeClass(scanRegionCamera, "disabled");
@@ -256,7 +270,7 @@ docReady(function() {
         input.addEventListener('change', onScanTypeSelectionChange);
     });
 
-    document.getElementById('requestPermission').addEventListener('click', function() {
+    requestPermissionButton.addEventListener('click', function() {
         if (currentScanTypeSelection != SCAN_TYPE_CAMERA) return;
         Html5Qrcode.getCameras().then(cameras => {
             requestPermissionButton.disabled = true;
@@ -303,6 +317,7 @@ docReady(function() {
                     setFeedback('Stopped');
                     setFeedback("Click 'Start Scanning' to <b>start scanning QR Code</b>");
                     scannedCodeContainer.innerHTML = "";
+                    setPlaceholder();
                 }).catch(err => {
                     setFeedback('Error');
                     setFeedback("Race condition, unable to close the scan.");
