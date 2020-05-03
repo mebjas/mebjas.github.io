@@ -18,6 +18,7 @@ If you are interested in getting hands dirty please check the section on - [How 
 
 ## Exploring Android 11 developer preview
 This is part 2 in this article series, other articles in this series are:
+ - `New` [Exploring Android 11 developer preview - Part 3](../exploring-android-11-developer-preview-part-3)
  - [Exploring Android 11 developer preview - Part 1](../exploring-android-11-developer-preview-part-1/)
 
 ## What's new in this preview
