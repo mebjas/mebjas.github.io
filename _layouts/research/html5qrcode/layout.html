@@ -164,7 +164,7 @@ docReady(function() {
     const SCAN_TYPE_FILE = "file";
 
     // declaration of html5 qrcode
-    const html5QrCode = new Html5Qrcode("qr");
+    const html5QrCode = new Html5Qrcode("qr", /* verbose= */ true);
 
     var currentScanTypeSelection = SCAN_TYPE_CAMERA;
     var codesFound = 0;
