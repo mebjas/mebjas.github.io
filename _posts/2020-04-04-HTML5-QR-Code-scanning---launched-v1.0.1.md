@@ -58,7 +58,7 @@ The `Html5Qrcode` exposes a `static` method to enumerate all supported cameras i
 
 ```js
 // This method will trigger user permissions
-Html5Qrcode.getCameras().then(cameras => {
+Html5Qrcode.getCameras().then(devices => {
   /**
    * devices would be an array of objects of type:
    * { id: "id", label: "label" }
