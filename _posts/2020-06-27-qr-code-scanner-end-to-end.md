@@ -53,6 +53,10 @@ html5QrcodeScanner.render(onScanSuccess);
 If you wonder what has changed, check out [this article](https://blog.minhazav.dev/HTML5-QR-Code-scanning-launched-v1.0.1/) on how to use `Html5Qrcode`
 
 ## Integration with other frameworks
+In general I assume this library can be plugged into the format different libraries expect. I started with VueJs for example based on feature request - [#49](https://github.com/mebjas/html5-qrcode/issues/49)
+
+### Using with VueJs
+![](https://vuejs.org/images/logo.png){:width="100px"}<br>
 I am not a VueJs expert but I tried implementing the library as a Vue component. Check [mebjas/html5-qrcode/examples/vuejs](https://github.com/mebjas/html5-qrcode/tree/master/examples/vuejs) for full reference.
 
 Essentially the idea is to wrap the library's behavior in a component and use it in the app.
@@ -90,11 +94,11 @@ This component can then be added to HTML as
 ```
 
 ## Future plans
- - Add example for React integration
- - Add exmaple for Angular integration
- - Add example for using with webpack - [issues/54](https://github.com/mebjas/html5-qrcode/issues/54)
- - Add details on how to use with Android Webview - [issues/58](https://github.com/mebjas/html5-qrcode/issues/58), [issues/57](https://github.com/mebjas/html5-qrcode/issues/57)
- - Fix most of open issues at - mebjas/html5-qrcode/issues](https://github.com/mebjas/html5-qrcode/issues)
+ - Add examples for React integration
+ - Add exmaples for Angular integration
+ - Add examples for using with webpack - [#54](https://github.com/mebjas/html5-qrcode/issues/54)
+ - Add details on how to use with Android Webview - [#58](https://github.com/mebjas/html5-qrcode/issues/58), [#57](https://github.com/mebjas/html5-qrcode/issues/57)
+ - Fix most of open issues at - [mebjas/html5-qrcode/issues](https://github.com/mebjas/html5-qrcode/issues)
 
 ## How to contribute
 If you are excited or interested you can contribute to this project by:
