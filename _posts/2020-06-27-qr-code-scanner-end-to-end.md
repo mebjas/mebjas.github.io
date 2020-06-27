@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Html5QrcodeScanner - End to end QR Code scanner for web, not just a library
-categories: [android, android-11, android-R, privacy, security, camera]
+categories: [html, javascript, jquery, qrcode, camera, e2e]
 description: "When I started the project <a href='https://github.com/mebjas/html5-qrcode'>html5-qrcode</a>, my goal was to make it easier to implement QR code scanning in web applications. I wanted to abstract the inner details of how the camera is accessed in HTML5 and how it's connected with a scanning library. Some developers started to adopt the library and use it, in general the trend seemed to be trying to replicate the demo code. The library was stateful in nature and required a series of steps to connect it with UI. In the latest version I have implemented another wrapper called Html5QrcodeScanner which will enable developers to integrate QR Code scanning with less than 10 lines of code. No more statefulness!"
 post-no: 20
 toc: true
