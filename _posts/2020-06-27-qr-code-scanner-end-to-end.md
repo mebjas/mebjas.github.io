@@ -2,21 +2,24 @@
 layout: post
 title: Html5QrcodeScanner - End to end QR Code scanner for web, not just a library
 categories: [html, javascript, jquery, qrcode, camera, e2e]
-description: "When I started the project <a href='https://github.com/mebjas/html5-qrcode'>html5-qrcode</a>, my goal was to make it easier to implement QR code scanning in web applications. I wanted to abstract the inner details of how the camera is accessed in HTML5 and how it's connected with a scanning library. Some developers started to adopt the library and use it, in general the trend seemed to be trying to replicate the demo code. The library was stateful in nature and required a series of steps to connect it with UI. In the latest version I have implemented another wrapper called Html5QrcodeScanner which will enable developers to integrate QR Code scanning with less than 10 lines of code. No more statefulness!"
+description: "When I started the project <a href='https://github.com/mebjas/html5-qrcode'>html5-qrcode</a>, my goal was to make it easier to implement QR code scanning in web applications. I wanted to abstract the inner details of how the camera is accessed in HTML5 and how it's connected with a scanning library. Some developers started to adopt the library and use it in their products. In general, the adoption trend seemed to be users trying to replicate the demo code. The library was stateful and required a series of steps to connect it with UI. In the latest version, I have implemented another wrapper called Html5QrcodeScanner which enable developers to <b>integrate QR Code scanning with ~5 lines of code</b>. No more statefulness!"
 post-no: 20
 toc: true
 image: 'https://github.com/mebjas/html5-qrcode/raw/master/assets/screen.gif'
 ---
 
-When I started the project <a href='https://github.com/mebjas/html5-qrcode'>html5-qrcode</a>, my goal was to make it easier to implement QR code scanning in web applications. I wanted to abstract the inner details of how the camera is accessed in HTML5 and how it's connected with a scanning library. Some developers started to adopt the library and use it, in general the trend seemed to be trying to replicate the demo code. The library was stateful in nature and required a series of steps to connect it with UI. In the latest version I have implemented another wrapper called Html5QrcodeScanner which will enable developers to integrate QR Code scanning with less than 10 lines of code. No more statefulness!
+When I started the project <a href='https://github.com/mebjas/html5-qrcode'>html5-qrcode</a>, my goal was to make it easier to implement QR code scanning in web applications. I wanted to abstract the inner details of how the camera is accessed in HTML5 and how it's connected with a scanning library. Some developers started to adopt the library and use it in their products. In general, the adoption trend seemed to be users trying to replicate the demo code. The library was stateful and required a series of steps to connect it with UI. In the latest version, I have implemented another wrapper called `Html5QrcodeScanner` which enable developers to <b>integrate QR Code scanning with ~5 lines of code</b>. No more statefulness!
 
-Another key reason I implemented this end to end wrapper was, I started getting requests on how the library could be used with popular frameworks like `VueJs` or `Webpack`. Having an end to end layer makes it much easier to modularize this as a stand-alone component and plug it in with the application. In the future I plan to extend examples for other frameworks like `React` and `Angular`.
+Another key reason I implemented this end to end wrapper was: I started getting requests on how the library could be used with popular frameworks like `VueJs` or `Webpack`. Having an end to end layer makes it much easier to modularize this as a stand-alone component and plug it in inside the existing application. In the future, I plan to extend examples for other frameworks like `React` and `Angular`.
 
 ## What's new?
-`Html5QrcodeScanner` class for an end to end scanning with UI. It comes along with the existing `Html5Qrcode` class, which anyone can continue to use with their own user interface. `Html5QrcodeScanner` supports all features of `Html5Qrcode` like
+Introduced `Html5QrcodeScanner` class for adding end to end QR code scanning in your existing web application. It is written on top of the existing `Html5Qrcode` class, which anyone can continue to use with their application's user interface. `Html5QrcodeScanner` supports all features of `Html5Qrcode` like
  - Inline scanning using a video feed from Camera or webcam
  - Local Image scanning
  - Scanning media captured from the camera on mobile devices
+
+**To show the ease of use, I have embedded the QR scanner in next section**. 
+> Please note this article is based on Jekyll, written in markdown.
 
 <div id="qr-reader" style="width:450px;"></div>
 <i>Demo: embedded qr code scanner.</i>
@@ -27,8 +30,6 @@ var html5QrcodeScanner = new Html5QrcodeScanner(
 	"qr-reader", { fps: 10, qrbox: 250 });
 html5QrcodeScanner.render(onScanSuccess);
 </script>
-
-I'll start with how to use `Html5QrcodeScanner`.
 
 ## How to use `Html5QrcodeScanner`
 Checkout the full example at - [mebjas/html5-qrcode/examples/html5](https://github.com/mebjas/html5-qrcode/tree/master/examples/html5)
@@ -53,7 +54,7 @@ html5QrcodeScanner.render(onScanSuccess);
 If you wonder what has changed, check out [this article](https://blog.minhazav.dev/HTML5-QR-Code-scanning-launched-v1.0.1/) on how to use `Html5Qrcode`
 
 ## Integration with other frameworks
-In general I assume this library can be plugged into the format different libraries expect. I started with VueJs for example based on feature request - [#49](https://github.com/mebjas/html5-qrcode/issues/49)
+In general, I believe this library can be plugged into the format different frameworks expect. I started with VueJs based on the feature request [#49](https://github.com/mebjas/html5-qrcode/issues/49).
 
 ### Using with VueJs
 ![](https://vuejs.org/images/logo.png){:width="100px"}<br>
@@ -92,6 +93,8 @@ This component can then be added to HTML as
     style="width: 500px;">
 </qrcode-scanner>
 ```
+
+I don't know if this is the right way to do things in Vue, but this works FWIW.
 
 ## Future plans
  - Add examples for React integration
