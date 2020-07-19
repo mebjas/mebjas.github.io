@@ -36,12 +36,13 @@ class Html5Qrcode {
      *                  would be printed to console. 
      */
     constructor(elementId, verbose) {
-		if (!getLazarSoftScanner) {
-			throw 'Use html5qrcode.min.js without edit, getLazarSoftScanner'
-			+ 'not found.';
-		}
+        if (!getLazarSoftScanner) {
+            throw 'Use html5qrcode.min.js without edit, getLazarSoftScanner'
+            + 'not found.';
+        }
 
-		this.qrcode = getLazarSoftScanner();
+        this.qrcode = getLazarSoftScanner();
+        this.qrcode.debug = true;
         if (!this.qrcode) {
             throw 'qrcode is not defined, use the minified/html5-qrcode.min.js'
             + ' for proper support';
@@ -227,6 +228,47 @@ class Html5Qrcode {
             }
             $this._foreverScanTimeout = setTimeout(
                 foreverScan, Html5Qrcode._getTimeoutFps(config.fps));
+        }
+
+        $this.qrcode.debugCallback = function(qrCodeMatrix) {
+            const context = $this._context;
+            // console.log(qrCodeMatrix);
+            let bb_x = 0, bb_y = 0, bb_w = 0, bb_h = 0;
+            let top_left = null,
+                top_right = null,
+                bottom_left = null;
+            const points = [];
+            for (var i = 0; i < qrCodeMatrix.points.length; i++) {
+                var point = qrCodeMatrix.points[i];
+                points.push({x: point.x, y: point.y});
+            }
+
+            points.sort((point_a, point_b) => {
+                return point_a.y > point_b.y ? 1 : -1;
+            });
+            if (points[0].x < points[1].x) {
+                top_left = points[0];
+                top_right = points[1];
+            } else {
+                top_left = points[1];
+                top_right = points[0];
+            }
+
+            if (points[2].x < points[3].x) {
+                bottom_left = points[2];
+            } else {
+                bottom_left = points[3];
+            }
+
+            bb_x = top_left.x - 25;
+            bb_y = top_left.y - 25;
+            bb_w = top_right.x - top_left.x + 45;
+            bb_h = bottom_left.y - top_left.y + 45;
+            context.beginPath();
+            context.lineWidth = "4";
+            context.strokeStyle = "red";
+            context.rect(bb_x, bb_y, bb_w, bb_h);
+            context.stroke();
         }
 
         // success callback when user media (Camera) is attached.
@@ -499,6 +541,57 @@ class Html5Qrcode {
                     /* dy= */  0,
                     /* dWidth= */ config.width,
                     /* dHeight= */ config.height);
+
+                $this.qrcode.debugCallback = function(qrCodeMatrix) {
+                    console.log(qrCodeMatrix);
+                    let bb_x = 0, bb_y = 0, bb_w = 0, bb_h = 0;
+                    let top_left = null,
+                        top_right = null,
+                        bottom_left = null;
+                    const points = [];
+                    for (var i = 0; i < qrCodeMatrix.points.length; i++) {
+                        var point = qrCodeMatrix.points[i];
+                        points.push({x: point.x, y: point.y});
+                        var x = point.x;
+                        var y = point.y;
+                        context.beginPath();
+                        context.lineWidth = "2";
+                        context.strokeStyle = "green";
+                        context.rect(x - 12.5, y - 12.5, 25, 25);
+                        context.stroke();
+                    }
+
+                    // find top_left
+                    top_left = points[0];
+                    for (var i = 1; i <= 3; i++) {
+                        const point = points[i];
+                        if (point.x <= top_left.x && point.y <= top_left.y) top_left = point;
+                    }
+
+                    // find top_right
+                    top_right = points[0];
+                    for (var i = 1; i <= 3; i++) {
+                        const point = points[i];
+                        if (point.x >= top_right.x && point.y <= top_right.y) top_right = point;
+                    }
+
+                    // find bottom_left
+                    bottom_left = points[0];
+                    for (var i = 1; i <= 3; i++) {
+                        const point = points[i];
+                        if (point.x <= bottom_left.x && point.y >= bottom_left.y) bottom_left = point;
+                    }
+
+                    bb_x = top_left.x - 22;
+                    bb_y = top_left.y - 22;
+                    bb_w = top_right.x - top_left.x + 45;
+                    bb_h = bottom_left.y - top_left.y + 45;
+                    context.beginPath();
+                    context.lineWidth = "4";
+                    context.strokeStyle = "red";
+                    context.rect(bb_x, bb_y, bb_w, bb_h);
+                    context.stroke();
+                }
                 try {
                     resolve($this.qrcode.decode());
                 } catch (exception) {
@@ -617,7 +710,8 @@ class Html5Qrcode {
         const canvasElement = document.createElement('canvas');
         canvasElement.style.width = `${canvasWidth}px`;
         canvasElement.style.height = `${canvasHeight}px`;
-        canvasElement.style.display = "none";
+        // TODO(mebjas): set display = none
+        // canvasElement.style.display = "none";
         // This id is set by lazarsoft/jsqrcode
         canvasElement.id = customId == undefined ? 'qr-canvas' : customId;
         return canvasElement;
@@ -935,6 +1029,9 @@ class Html5QrcodeScanner {
 
     /**
      * Removes the QR Code scanner.
+     * 
+     * @returns Promise which succeeds if the cleanup is complete successfully,
+     *  fails otherwise.
      */
     clear() {
         const $this = this;
@@ -946,21 +1043,24 @@ class Html5QrcodeScanner {
         }
 
         if (this.html5Qrcode) {
-            if (this.html5Qrcode._isScanning()) {
-                this.html5Qrcode.stop().then(_ => {
-                    $this.html5Qrcode.clear();
-                    emptyHtmlContainer();
-                }).catch(error => {
-                    if ($this.verbose) {
-                        console.error("Unable to stop qrcode scanner", error);
-                    }
-                    $this.html5Qrcode.clear();
-                    emptyHtmlContainer();
-                })
-            }
+            return new Promise((resolve, reject) => {
+                if (this.html5Qrcode._isScanning()) {
+                    this.html5Qrcode.stop().then(_ => {
+                        $this.html5Qrcode.clear();
+                        emptyHtmlContainer();
+                        resolve();
+                    }).catch(error => {
+                        if ($this.verbose) {
+                            console.error("Unable to stop qrcode scanner", error);
+                        }
+                        reject(error);
+                    })
+                }
+            });
         }
     }
 
+    //#region private control methods
     __createBasicLayout(parent) {
         parent.style.position = "relative";
         parent.style.padding = "0px";
@@ -1104,7 +1204,10 @@ class Html5QrcodeScanner {
             }
             const file = e.target.files[0];
             $this.html5Qrcode.scanFile(file, true)
-                .then($this.qrCodeSuccessCallback)
+                .then(qrCode => {
+                    $this.__resetHeaderMessage();
+                    $this.qrCodeSuccessCallback(qrCode);
+                })
                 .catch(error => {
                     $this.__setStatus("ERROR", Html5QrcodeScanner.STATUS_WARNING);
                     $this.__setHeaderMessage(error, Html5QrcodeScanner.STATUS_WARNING);
@@ -1224,6 +1327,11 @@ class Html5QrcodeScanner {
                 }
                 return;
             }
+
+            // Cleanup states
+            $this.__setStatus("IDLE");
+            $this.__resetHeaderMessage();
+            $this.__getFileScanInput().value = "";
 
             $this.sectionSwapAllowed = false;
             if ($this.currentScanType == Html5QrcodeScanner.SCAN_TYPE_CAMERA) {
@@ -1365,6 +1473,7 @@ class Html5QrcodeScanner {
             this.__getScanRegionId());
         qrCodeScanRegion.innerHTML = "";
     }
+    //#endregion
 
     //#region state getters
     __getDashboardSectionId() {
