@@ -33,9 +33,9 @@ layout: default_research
 <div class="container">
 	<h2>How to use?</h2>
 	<div>
-		You can either use <code>Html5QrcodePro</code> which takes of end to end
+		You can either use <code>Html5QrcodeScanner</code> which takes of end to end
 		user interface and functionaility or you can use <code>Html5Qrcode</code>
-		with your own user interface. This demo is build using <code>Html5QrcodePro</code>.
+		with your own user interface. This demo is build using <code>Html5QrcodeScanner</code>.
 	</div>
 	<div class="empty"></div>
 	<div>
@@ -60,7 +60,77 @@ var html5QrcodeScanner = new Html5QrcodeScanner(
 	"reader", { fps: 10, qrbox: 250 });
 html5QrcodeScanner.render(onScanSuccess);
 </code></pre>
-	</div>
+
+        <h4>[4] Optional - Stop scanning after the code is scanned?</h4>
+        You can use <code>Html5QrcodeScanner#clear()</code> method to stop scanning after the code is scanned. Here's an example:
+        <pre style="background: none;"><code class="javascript">var html5QrcodeScanner = new Html5QrcodeScanner(
+    "reader", { fps: 10, qrbox: 250 });
+        
+function onScanSuccess(qrCodeMessage) {
+    // handle on success condition with the decoded message
+    html5QrcodeScanner.clear();
+    // ^ this will stop the scanner (video feed) and clear the scan area.
+}
+
+html5QrcodeScanner.render(onScanSuccess);</code></pre>
+
+        <h4>[5] Optional - Handle scan failure?</h4>
+        You can handle scan failure or video failure using failure callback. Here's an example:
+        <pre style="background: none;"><code class="javascript">function onScanSuccess(qrCodeMessage) {
+    // handle on success condition with the decoded message
+}
+
+function onScanError(errorMessage) {
+    // handle on error condition, with error message
+}
+
+var html5QrcodeScanner = new Html5QrcodeScanner(
+    "reader", { fps: 10, qrbox: 250 });
+html5QrcodeScanner.render(onScanSuccess, onScanError);</code></pre>
+    </div>
+    
+        <h4>[6] More configurations</h4>
+        The library supports certain configurations that allows you to change the behavior.
+        You can read more about it <a href="https://github.com/mebjas/html5-qrcode#extra-optional-configuration-in-start-method">here</a>.
+
+        <table style="text-align: left;">
+            <tr>
+                <th style="width: 150px;">Configuration</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">fps</td>
+                <td>
+                    <strong>Integer, Example = 10</strong><br>
+                    A.K.A frame per second, the default value for this is 2 but it can be increased to get faster scanning. Increasing too high value could affect performance. <code>Value >1000</code> will simply fail.
+                </td>
+            </tr> 
+            <tr>
+                <td style="font-weight: bold;">qrbox</td>
+                <td>
+                    <strong>Integer, Example = 250</strong><br>
+                    Use this property to limit the region of the viewfinder you want to use for scanning. The rest of the viewfinder would be shaded. For example by passing config <code>{ qrbox : 250 }</code>.
+                </td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">aspectRatio</td>
+                <td>
+                    <strong>Float, Example 1.777778 for 16:9 aspect ratio</strong><br>
+                    Use this property to render the video feed in a certain aspect ratio. Passing a nonstandard aspect ratio like 100000:1 could lead to the video feed not even showing up. <br><br>
+
+                    If you do not pass any value, the whole viewfinder would be used for scanning. Note: this value has to be smaller than the width and height of the QR code HTML element.
+                </td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">disableFlip</td>
+                <td>
+                    <strong>Boolean (Optional), default = false</strong><br>
+                    By default, the scanner can scan for horizontally flipped QR Codes. This also enables scanning QR code using the front camera on mobile devices which are sometimes mirrored. This is false by default and I recommend changing this only if:
+                    <li>You are sure that the camera feed cannot be mirrored (Horizontally flipped).</li>
+                    <li>You are facing performance issues with this enabled.</li>
+                </td>
+            </tr>
+        </table>
 </div>
 <div class="empty"></div>
 <div class="container">
