@@ -36,12 +36,12 @@ class Html5Qrcode {
      *                  would be printed to console. 
      */
     constructor(elementId, verbose) {
-		if (!getLazarSoftScanner) {
-			throw 'Use html5qrcode.min.js without edit, getLazarSoftScanner'
-			+ 'not found.';
-		}
+        if (!getLazarSoftScanner) {
+            throw 'Use html5qrcode.min.js without edit, getLazarSoftScanner'
+            + 'not found.';
+        }
 
-		this.qrcode = getLazarSoftScanner();
+        this.qrcode = getLazarSoftScanner();
         if (!this.qrcode) {
             throw 'qrcode is not defined, use the minified/html5-qrcode.min.js'
             + ' for proper support';
@@ -81,6 +81,9 @@ class Html5Qrcode {
      *          |********************|
      *          |********************|
      *          ----------------------
+     *      - aspectRatio: Optional, desired aspect ratio for the video feed.
+     *          Ideal aspect ratios are 4:3 or 16:9. Passing very wrong aspect
+     *          ratio could lead to video feed not showing up. 
      * @param {Function} qrCodeSuccessCallback callback on QR Code found.
      *  Example:
      *      function(qrCodeMessage) {}
@@ -256,23 +259,20 @@ class Html5Qrcode {
                 }
 
                 $this._localMediaStream = mediaStream;
-                setupVideo();
-
-                // TODO(mebjas): see if constaints can be applied on camera
-                // for better results or performance.
-
-                // const constraints = {
-                //   width: { min: width , ideal: width, max: width },
-                //   frameRate: { ideal: 30, max: 30 }
-                // }
-                // const track = mediaStream.getVideoTracks()[0];
-                // track.applyConstraints(constraints)
-                // .then(() => setupVideo())
-                // .catch(error => {
-                //   console.log("[Warning] [Html5Qrcode] Constriants could not be "
-                //     + "satisfied, ignoring constraints", error);
-                //   setupVideo();
-                // });
+                if (!config.aspectRatio) {
+                    setupVideo();
+                } else {
+                    const constraints = {
+                        aspectRatio : config.aspectRatio
+                    }
+                    const track = mediaStream.getVideoTracks()[0];
+                    track.applyConstraints(constraints)
+                        .then(_ => setupVideo())
+                        .catch(error => {
+                            console.log("[Warning] [Html5Qrcode] Constriants could not be satisfied, ignoring constraints", error);
+                            setupVideo();
+                        });
+                }
             });
         }
         //#endregion
@@ -866,6 +866,9 @@ class Html5QrcodeScanner {
      *          |********************|
      *          |********************|
      *          ----------------------
+     *      - aspectRatio: Optional, desired aspect ratio for the video feed.
+     *          Ideal aspect ratios are 4:3 or 16:9. Passing very wrong aspect
+     *          ratio could lead to video feed not showing up. 
      * @param {Boolean} verbose - Optional argument, if true, all logs
      *                  would be printed to console. 
      */
@@ -935,6 +938,9 @@ class Html5QrcodeScanner {
 
     /**
      * Removes the QR Code scanner.
+     * 
+     * @returns Promise which succeeds if the cleanup is complete successfully,
+     *  fails otherwise.
      */
     clear() {
         const $this = this;
@@ -942,25 +948,29 @@ class Html5QrcodeScanner {
             const mainContainer = document.getElementById(this.elementId);
             if (mainContainer) {
                 mainContainer.innerHTML = "";
+                this.__resetBasicLayout(mainContainer);
             }
         }
 
         if (this.html5Qrcode) {
-            if (this.html5Qrcode._isScanning()) {
-                this.html5Qrcode.stop().then(_ => {
-                    $this.html5Qrcode.clear();
-                    emptyHtmlContainer();
-                }).catch(error => {
-                    if ($this.verbose) {
-                        console.error("Unable to stop qrcode scanner", error);
-                    }
-                    $this.html5Qrcode.clear();
-                    emptyHtmlContainer();
-                })
-            }
+            return new Promise((resolve, reject) => {
+                if ($this.html5Qrcode._isScanning) {
+                    $this.html5Qrcode.stop().then(_ => {
+                        $this.html5Qrcode.clear();
+                        emptyHtmlContainer();
+                        resolve();
+                    }).catch(error => {
+                        if ($this.verbose) {
+                            console.error("Unable to stop qrcode scanner", error);
+                        }
+                        reject(error);
+                    })
+                }
+            });
         }
     }
 
+    //#region private control methods
     __createBasicLayout(parent) {
         parent.style.position = "relative";
         parent.style.padding = "0px";
@@ -983,7 +993,11 @@ class Html5QrcodeScanner {
         parent.appendChild(qrCodeDashboard);
 
         this.__setupInitialDashboard(qrCodeDashboard);
-    }
+	}
+	
+	__resetBasicLayout(parent) {
+        parent.style.border = "none";
+	}
 
     __setupInitialDashboard(dashboard) {
         this.__createSection(dashboard);
@@ -1104,7 +1118,10 @@ class Html5QrcodeScanner {
             }
             const file = e.target.files[0];
             $this.html5Qrcode.scanFile(file, true)
-                .then($this.qrCodeSuccessCallback)
+                .then(qrCode => {
+                    $this.__resetHeaderMessage();
+                    $this.qrCodeSuccessCallback(qrCode);
+                })
                 .catch(error => {
                     $this.__setStatus("ERROR", Html5QrcodeScanner.STATUS_WARNING);
                     $this.__setHeaderMessage(error, Html5QrcodeScanner.STATUS_WARNING);
@@ -1224,6 +1241,11 @@ class Html5QrcodeScanner {
                 }
                 return;
             }
+
+            // Cleanup states
+            $this.__setStatus("IDLE");
+            $this.__resetHeaderMessage();
+            $this.__getFileScanInput().value = "";
 
             $this.sectionSwapAllowed = false;
             if ($this.currentScanType == Html5QrcodeScanner.SCAN_TYPE_CAMERA) {
@@ -1365,6 +1387,7 @@ class Html5QrcodeScanner {
             this.__getScanRegionId());
         qrCodeScanRegion.innerHTML = "";
     }
+    //#endregion
 
     //#region state getters
     __getDashboardSectionId() {
