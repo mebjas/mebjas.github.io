@@ -1,8 +1,16 @@
 - {
-    title: "Rock Paper Scissor Challenge",
-    description: "In this experiment I have tried to create an agent that attempts at beating human in the game of Rock Paper Scissor. Interestingly I found it's just as hard to beat an agent that uses random policy. The agent alternates between different strategies.",
-    image: "/assets/research/rockpaperscissor/rps.png",
-    link: "rock-paper-scissor"
+    title: "Realtime Sudoku solver",
+    description: "An attempt at sudoku solver which takes feed from webcam and indetify sudoku and solves it and shows the result.",
+    image: "/assets/research/sudoku-solver/data.jpg",
+    link: "sudoku-solver",
+    wip: true
+}
+- {
+    title: "Javascript face experiments",
+    description: "An attempt at learning various things we could do with webcam and javascript.",
+    image: "/assets/research/face-js/face-js.gif",
+    link: "face-js",
+    wip: true
 }
 - {
     title: "HTML 5 QR Code Demo",
@@ -15,4 +23,10 @@
     description: "Demo of a jQuery library I wrote way back which allows you to stick HTML element on the webpage with a certain <code>floor</code>, <code>ceiling</code> and <code>flow</code> rate.<br> While in college I thought it's pretty cool, now I am embarressed about it. Please ignore.",
     link: "jquery-sticky-elements",
     image: "/assets/research/jquerystickyelements/sticky.png"
+}
+- {
+    title: "Rock Paper Scissor Challenge",
+    description: "In this experiment I have tried to create an agent that attempts at beating human in the game of Rock Paper Scissor. Interestingly I found it's just as hard to beat an agent that uses random policy. The agent alternates between different strategies.",
+    image: "/assets/research/rockpaperscissor/rps.png",
+    link: "rock-paper-scissor"
 }

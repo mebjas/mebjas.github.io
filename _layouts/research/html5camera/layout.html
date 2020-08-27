@@ -1,0 +1,90 @@
+---
+layout: default_research
+---
+<style>
+.empty {
+    display: block;
+    width: 100%;
+    height: 20px;
+}
+
+#camera {
+    width: 400px;
+    height: 700px;
+    border: 1px solid black;
+    background-color: black;
+    margin: auto;
+    position: relative; 
+}
+
+#cameraIntro button {
+    font-size: 20pt;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-bottom: 10px;
+}
+
+.highlight {
+    border: 1px #df9522 solid;
+    padding: 2px;
+    border-radius: 5px;
+    background: #df95231f;
+}
+</style>
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+<div class="container">
+	<div class="row">
+		<div class="col-md-12" style="text-align: center;margin-bottom: 20px;">
+            <div id="cameraIntro">
+                <button id="cameraIntroPermissionButton">Grant Permissions</button>
+                <div>To start <span class="highlight">Html5 Camera</span></div>
+                <div class="empty"></div>
+                <div id="cameraIntroError"></div>
+                <!-- <div>
+                    <img src="/assets/research/html5camera/permission.png">
+                </div> -->
+            </div>
+            <div id="cameraContainer"></div>
+		</div>
+	</div>
+</div>
+<div class="empty"></div>
+<!-- <h2>Comments</h2>
+<script src="https://utteranc.es/client.js"
+    repo="mebjas/mebjas.github.io"
+    issue-term="title"
+    label="test"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script> -->
+<script src="/assets/research/html5camera/app.js"></script>
+<script>
+function docReady(fn) {
+    // see if DOM is already available
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+        // call on next available tick
+        setTimeout(fn, 1);
+    } else {
+        document.addEventListener("DOMContentLoaded", fn);
+    }
+}
+
+docReady(function() {
+    var cameraContainer = document.getElementById("cameraContainer");
+    document.getElementById("cameraIntroPermissionButton")
+        .addEventListener('click', function() {
+        Html5Camera.create(
+            cameraContainer,
+            () => {
+                document.getElementById("cameraIntro").innerHTML = "";
+            },
+            error => {
+                error = JSON.stringify(error);
+                document.getElementById("camcameraIntroErroreraIntro").innerHTML
+                    = `Unable to start, reason = ${error}`;
+            });
+    });
+});
+</script>
