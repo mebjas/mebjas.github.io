@@ -1,0 +1,247 @@
+---
+layout: default_research
+---
+<style>
+#reader {
+    width: 640px;
+}
+
+@media(max-width: 600px) {
+	#reader {
+		width: 300px;
+	}
+}
+.empty {
+    display: block;
+    width: 100%;
+    height: 20px;
+}
+</style>
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+<h1> HTML5 QR Code </h1>
+<div>
+    This is work in progress demo using <code>Html5Qrcode</code>.
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12" style="text-align: center;margin-bottom: 20px;">
+			<div id="reader" style="display: inline-block;"></div>
+			<div class="empty"></div>
+            <div id="scanned-result"></div>
+            <div>
+                <select id="facingMode">
+                    <option value="user">user</option>
+                    <option value="environment">environment</option>
+                </select>
+                <button id="start">Start Scanning</button>
+            </div>
+		</div>
+	</div>
+</div>
+
+<!--
+<div class="container">
+	<h2>How to use?</h2>
+	<div>
+		You can either use <code>Html5QrcodeScanner</code> which takes of end to end
+		user interface and functionaility or you can use <code>Html5Qrcode</code>
+		with your own user interface. This demo is build using <code>Html5QrcodeScanner</code>.
+	</div>
+	<div class="empty"></div>
+	<div>
+		<h4>[1] Add javascript to your webpage either using npm</h4>
+		<a href="https://www.npmjs.com/package/html5-qrcode" target="new">
+			<img src="https://nodei.co/npm/html5-qrcode.png">
+		</a><br><br>
+		Or include the script directly using<br>
+		<pre style="background: none;"><code class="html">&#60;script src="html5-qrcode.min.js">&#60;/script></code></pre>
+		You can download the script from 
+		<a href="https://raw.githubusercontent.com/mebjas/html5-qrcode/master/minified/html5-qrcode.min.js">here</a>.
+		<br><br>
+		<h4>[2] Add an empty div where you want to place the qrcode scanner</h4>
+		<pre style="background: none;"><code class="html">&#60;div style="width: 500px" id="reader">&#60;/div></code></pre>
+
+		<h4>[3] TBD</h4>
+		
+    
+        <h4>[6] More configurations</h4>
+        The library supports certain configurations that allows you to change the behavior.
+        You can read more about it <a href="https://github.com/mebjas/html5-qrcode#extra-optional-configuration-in-start-method">here</a>.
+
+        <table style="text-align: left;">
+            <tr>
+                <th style="width: 150px;">Configuration</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">fps</td>
+                <td>
+                    <strong>Integer, Example = 10</strong><br>
+                    A.K.A frame per second, the default value for this is 2 but it can be increased to get faster scanning. Increasing too high value could affect performance. <code>Value >1000</code> will simply fail.
+                </td>
+            </tr> 
+            <tr>
+                <td style="font-weight: bold;">qrbox</td>
+                <td>
+                    <strong>Integer, Example = 250</strong><br>
+                    Use this property to limit the region of the viewfinder you want to use for scanning. The rest of the viewfinder would be shaded. For example by passing config <code>{ qrbox : 250 }</code>.
+                </td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">aspectRatio</td>
+                <td>
+                    <strong>Float, Example 1.777778 for 16:9 aspect ratio</strong><br>
+                    Use this property to render the video feed in a certain aspect ratio. Passing a nonstandard aspect ratio like 100000:1 could lead to the video feed not even showing up. <br><br>
+
+                    If you do not pass any value, the whole viewfinder would be used for scanning. Note: this value has to be smaller than the width and height of the QR code HTML element.
+                </td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">disableFlip</td>
+                <td>
+                    <strong>Boolean (Optional), default = false</strong><br>
+                    By default, the scanner can scan for horizontally flipped QR Codes. This also enables scanning QR code using the front camera on mobile devices which are sometimes mirrored. This is false by default and I recommend changing this only if:
+                    <li>You are sure that the camera feed cannot be mirrored (Horizontally flipped).</li>
+                    <li>You are facing performance issues with this enabled.</li>
+                </td>
+            </tr>
+        </table>
+</div>
+<div class="empty"></div>
+<div class="container">
+    <h2>FAQs</h2>
+    <strong>Is this supported on smartphones?</strong>
+    <div>Yes! the solution is based on vanilla HTML5 and javascript. This should work on any HTML5 supported browser.</div>
+    <div class="empty"></div>
+    <strong>Full example on how to use this?</strong>
+    <div>Check source code of this page or checkout this <a href="https://gist.github.com/mebjas/729c5397506a879ec704075c8a5284e8">gist</a> where I have copied js code.</div>
+    <div class="empty"></div>
+    <strong>I copied the demo code it's not working for me?</strong>
+    <div>
+        Few identified reasons so far:
+        <ol>
+            <li>Camera access only work for <code>https</code> and not <code>http</code> except for <code>localhost or local server</code>.</li>
+            <li>You cannot test this by opening the html file, it should be backed by a server - <a href="https://stackoverflow.com/questions/16835421/how-to-allow-chrome-to-access-my-camera-on-localhost">More info</a>.</li>
+        </ol>
+    </div>
+    <div class="empty"></div>
+    <strong>Where can I read more about this, is there a refernce article?</strong>
+    <div>
+        Apart from the documentation on the <a href="https://github.com/mebjas/html5-qrcode">github project</a>, following blog article may be helpful.
+        <div class="empty"></div>
+        <div class="post-info" style="border: 1px solid #cfcfcf73;padding: 5px;margin: 10px 0px 0px 0px;">
+            <h3 class="post-header"><a class="post-link" href="/HTML5-QR-Code-scanning-support-for-local-file-and-default-camera/">HTML5 QR Code scanning with javascript - Support for scanning the local file and using default camera added (v1.0.5)</a></h3>
+             <span class="post-description">
+               <img src="/images/post18_image2.jpg" style="max-width: 50%; float: left; margin: 0px 15px 10px 0px;">
+               <a href="https://github.com/mebjas/html5-qrcode">html5-qrcode</a> helps developer to integrate QR code scanning in HTML5 based applications. It abstracts camera access and usage on different browsers and simplify QR Code scanning for developers. The primary goal of the library is cross-platform support across different OS versions and Browsers. One of the key problems with cross-platform support was some browsers in Android and many browsers in iOS (almost all other than Safari which are based on WebKit for iOS) did not support camera access. This prevents users from doing inline QR Code scanning which is the primary feature of the library. To mitigate this I have added support for scanning local media on the device and it implicitly adds support for capturing QR Code using default camera on the device and scanning it. This is an upgrade to the existing library - you can read more about it <a href="/HTML5-QR-Code-scanning-launched-v1.0.1/">here</a>. In this article I have explained now file-based scanning works and how to use it.
+             </span>
+             <span class="read-more"><a href="/HTML5-QR-Code-scanning-support-for-local-file-and-default-camera/">[&nbsp;Read&nbsp;more&nbsp;]</a></span>
+        </div>
+        <div class="post-info" style="border: 1px solid #cfcfcf73;padding: 5px;margin: 10px 0px 0px 0px;">
+            <h3 class="post-header"><a class="post-link" href="/HTML5-QR-Code-scanning-launched-v1.0.1/">HTML5 QR Code scanning - launched v1.0.1 without jQuery dependency and refactored Promise based APIs</a></h3>
+            <span class="post-description">
+            <img src="/images/post14_image1.png" style="max-width: 50%; float: left; margin: 0px 15px 10px 0px;">
+            In 2015 I had written an HTML5 based QR code scanning library as a jQuery extension. Recently I realised there was some consistent traffic on my Github Project and the demo page. As I dug more into what was going on and I was embarrassed to see the poor design and obsolete support to the latest HTML APIs around Camera. I recently fixed some of the issues and refactored the javascript library that is now independent of jQuery and supports Promise based APIs. In this article I'll explain how to use the new version of the library, some changes and reasons for them and existing issues and plan to fix them.
+            </span>
+            <span class="read-more"><a href="/HTML5-QR-Code-scanning-launched-v1.0.1/">[&nbsp;Read&nbsp;more&nbsp;]</a></span>
+        </div>
+    </div>
+</div>
+<div style="display: block; height: 30px"></div>
+<div class="container">
+    <h2>References</h2>
+    <ol>
+        <li>Project on Github - <a href="https://github.com/mebjas/html5-qrcode">mebjas/html5-qrcode</a></li>
+        <li>How to use - <a href="https://blog.minhazav.dev/HTML5-QR-Code-scanning-launched-v1.0.1/">blog.minhazav.dev/HTML5-QR-Code-scanning-launched-v1.0.1</a></li>
+        <li>File based scanning - <a href="https://blog.minhazav.dev/HTML5-QR-Code-scanning-support-for-local-file-and-default-camera/">blog.minhazav.dev/HTML5-QR-Code-scanning-support-for-local-file-and-default-camera</a></li>
+    </ol>
+</div>
+<h2>Comments</h2>
+<script src="https://utteranc.es/client.js"
+    repo="mebjas/mebjas.github.io"
+    issue-term="title"
+    label="test"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+-->
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
+<script src="/assets/research/html5qrcode/qrcode.js"></script>
+<script src="/assets/research/html5qrcode/html5qrcode.js"></script>
+<script src="/assets/research/html5qrcode/html5qrcode.scanner.js"></script>
+<!-- <script src="/assets/research/html5qrcode/html5-qrcode.min.js"></script> -->
+<script>
+var scanning = false;
+var scanningRequested = false;
+var html5qrcode = new Html5Qrcode("reader", true);
+
+function docReady(fn) {
+    // see if DOM is already available
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+        // call on next available tick
+        setTimeout(fn, 1);
+    } else {
+        document.addEventListener("DOMContentLoaded", fn);
+    }
+}
+
+function startScanning(facingMode) {
+    console.log(facingMode)
+    var results = document.getElementById('scanned-result');
+	var lastMessage;
+	var codesFound = 0;
+	function onScanSuccess(qrCodeMessage) {
+		if (lastMessage !== qrCodeMessage) {
+			lastMessage = qrCodeMessage;
+			++codesFound;
+			results.innerHTML += `<div>[${codesFound}] - ${qrCodeMessage}</div>`;
+		}
+	}
+    return html5qrcode.start(
+        { facingMode: facingMode },
+        { fps: 10, qrbox: 250 },
+        onScanSuccess);
+}
+
+function stopScanning() {
+    return html5qrcode.stop();
+}
+
+docReady(function() {
+    hljs.initHighlightingOnLoad();
+    var button = document.getElementById('start');
+    var facingModeSelect = document.getElementById('facingMode');
+    button.addEventListener('click', function() {
+        if (!scanning) {
+            button.disabled = true;
+            facingModeSelect.disabled = true;
+            startScanning(facingModeSelect.value)
+            .then(_ => {
+                scanning = true;
+                button.disabled = false;
+                button.innerHTML = "Stop Scanning";
+            })
+            .catch(err => {
+                button.disabled = false;
+                facingModeSelect.disabled = false;
+                alert(err);
+            })
+        } else {
+            button.disabled = true;
+            stopScanning()
+            .then(_ => {
+                scanning = false;
+                button.disabled = false;
+                facingModeSelect.disabled = false;
+                button.innerHTML = "Start Scanning";
+            })
+            .catch(err => {
+                button.disabled = false;
+                alert(err);
+            }) 
+        }
+    });
+});
+</script>

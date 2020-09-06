@@ -48,6 +48,11 @@ class Html5QrcodeScanner {
      *      - disableFlip: Optional, if {@code true} flipped QR Code won't be
      *          scanned. Only use this if you are sure the camera cannot give
      *          mirrored feed if you are facing performance constraints.
+     *      - rememberSettings: Optional, boolean, if true previous selections
+     *          made by the user would be auto selected. Some of the selections
+     *          include:
+     *            - Camera based scan or file based scan.
+     *            - In case of camera based scan the selected camera.
      * @param {Boolean} verbose - Optional argument, if true, all logs
      *                  would be printed to console. 
      */
