@@ -9,7 +9,7 @@ image: '../images/post14_image1.png'
 ---
 <!-- NOTE: this article will have assets not under post 14 -->
 
-LazarSoft had written an excellent set of [QR code decoding javascript libraries](https://github.com/LazarSoft/jsqrcode). However, it still requires some efforts to integrate the work with a web project as we need to take care of enumerating different camera devices, setting up `canvas` or the `video` element and hooking the stream with `qrcode library`. Also recently, in leu of privacy concers, some javascript APIs related to accessing the camera has changed and it requires some efforts to ensure different platforms like mobile or PC, chrome or safari support it. To reduce these pain points I wrote a jQuery based wrapper on to abstract tasks like camera enumeration and UI setup - it can be found at [mebjas/html5-qrcode](https://github.com/mebjas/html5-qrcode). In this article I have documented some details on how to use it and what is happening under the hook.
+LazarSoft had written an excellent set of [QR code decoding javascript libraries](https://github.com/LazarSoft/jsqrcode). However, it still requires some efforts to integrate the work with a web project as we need to take care of enumerating different camera devices, setting up `canvas` or the `video` element and hooking the stream with `qrcode library`. Also recently, in leu of privacy concerns, some javascript APIs related to accessing the camera has changed and it requires some efforts to ensure different platforms like mobile or PC, chrome or safari support it. To reduce these pain points I wrote a jQuery based wrapper on to abstract tasks like camera enumeration and UI setup - it can be found at [mebjas/html5-qrcode](https://github.com/mebjas/html5-qrcode). In this article I have documented some details on how to use it and what is happening under the hook.
 
 ## Deprecation Notice
 **This article is now obsolete as `v1.0.0` introduced multiple refactors. [Checkout this article](/HTML5-QR-Code-scanning-launched-v1.0.1/) on how to use this library now.**
@@ -32,7 +32,7 @@ A demo for this project is hosted at [https://blog.minhazav.dev/research/html5-q
 
 ## How to use
 ### Clone the project and include the libraries
-Clone the project at appropriate location in your project. 
+Clone the project at an appropriate location in your project. 
 ```sh
 git clone https://github.com/mebjas/html5-qrcode.git
 ```
@@ -48,7 +48,7 @@ Include the three main libraries into your HTML page
 ```html
 <div id="reader"></div>
 ```
-Add an empty HTML element at appropriate position in your HTML code, give it an `id`. The library uses this element to insert some hidden HTML elements which shows up as a viewfinder (camera input is shown in this html element) to the user performing QR code scan.
+Add an empty HTML element at an appropriate position in your HTML code, give it an `id`. The library uses this element to insert some hidden HTML elements which shows up as a viewfinder (camera input is shown in this HTML element) to the user performing QR code scan.
 
 ### Enumerate all available cameras
 The library exposes a method just for this called `html5_qrcode_getSupportedCameras(..)`. It takes two callbacks as arguments namely `successCallback` and `errorCallback`.
@@ -135,7 +135,7 @@ Link to source code for the demo project - [research/html5qrcode at blog.minhaza
 
 ## How to contribute
 If you are excited or interested you can contribute to this project by:
- - Raising issues for bugs faced, at [Github issue page for the project](https://github.com/mebjas/html5-qrcode/issues). Feel free to add some related interesting discussions which could be taken up as workitem.
+ - Raising issues for bugs faced, at [Github issue page for the project](https://github.com/mebjas/html5-qrcode/issues). Feel free to add some related interesting discussions which could be taken up as work-item.
  - Sending a Pull Request for bugs fixed by you.
  - Rating the project with stars and shares.
  - Sponsor the project with Github Sponsorship

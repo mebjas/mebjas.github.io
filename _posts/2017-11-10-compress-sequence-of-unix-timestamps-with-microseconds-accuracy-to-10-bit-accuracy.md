@@ -39,6 +39,7 @@ However, in the first approach itself I’d like to take advantage of the fact t
 
 Here’s some analysis before I do the math for the given dataset: the distribution of delta of the integer part:
 
+{:class="styled-table"}
 | DeltaValue | Frequency |
 |------------|-----------|
 | 0          | 423898    |
@@ -101,7 +102,7 @@ SO FAR: **23.127 bits / timestamp :)**
 ### Attempt 02
 Looking at the integer value and decimal value is adding overheads. I’d rather look at the number on the whole. Quickly calculated the delta values between consecutive numbers using simple python script ` = helper.py`. Using Microsoft Excel - here’s the histogram based on no of bits needed to store the delta values:
 
-
+{:class="styled-table"}
 | bits needed | bin        | frequency | Percentage  |
 |-------------|------------|-----------|-------------|
 | 1           | 1          | 235916    | 52.28530459 |

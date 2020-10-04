@@ -8,7 +8,7 @@ toc: true
 image: '../images/post14_image1.png'
 ---
 
-In 2015 I had written an HTML5 based QR code scanning library as a jQuery extension. Recently I realised there was some consistent traffic on [my Github Project](https://github.com/mebjas/html5-qrcode) and the [demo page](https://blog.minhazav.dev/research/html5-qrcode.html). As I dug more into what was going on and I was embarrassed to see the poor design and obsolete support to the latest HTML APIs around Camera. I recently fixed some of the issues and refactored the javascript library that is now independent of jQuery library and supports `Promise` based APIs. In this article I'll explain how to use the new version of the library, some changes and reasons for them and existing issues and plan to fix them. To callout loud, the major changes are:
+In 2015 I had written an HTML5 based QR code scanning library as a jQuery extension. Recently I realized there was some consistent traffic on [my Github Project](https://github.com/mebjas/html5-qrcode) and the [demo page](https://blog.minhazav.dev/research/html5-qrcode.html). As I dug more into what was going on and I was embarrassed to see the poor design and obsolete support to the latest HTML APIs around Camera. I recently fixed some of the issues and refactored the javascript library that is now independent of jQuery library and supports `Promise` based APIs. In this article I'll explain how to use the new version of the library, some changes and reasons for them and existing issues and plan to fix them. To callout loud, the major changes are:
  - Removed jQuery dependency
  - Refactored the APIs to return [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) rather than being purely based on callbacks.
 
