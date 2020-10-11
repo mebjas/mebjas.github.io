@@ -48,11 +48,17 @@ class Html5QrcodeScanner {
      *      - disableFlip: Optional, if {@code true} flipped QR Code won't be
      *          scanned. Only use this if you are sure the camera cannot give
      *          mirrored feed if you are facing performance constraints.
-     *      - rememberSettings: Optional, boolean, if true previous selections
-     *          made by the user would be auto selected. Some of the selections
-     *          include:
-     *            - Camera based scan or file based scan.
-     *            - In case of camera based scan the selected camera.
+     *      - videoConstraints: {MediaTrackConstraints}, Optional
+     *          @beta(this config is not well supported yet).
+     *          
+     *          Important: When passed this will override other configurations
+     *          like 'cameraIdOrConfig' or configurations like 'aspectRatio'.
+     *          
+     *          videoConstraints should be of type {@code MediaTrackConstraints}
+     *          as defined in
+     *          https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints
+     *          and is used to specify a variety of video or camera controls
+     *          like: aspect ratio, facing mode, video frame rate.
      * @param {Boolean} verbose - Optional argument, if true, all logs
      *                  would be printed to console. 
      */
@@ -309,6 +315,7 @@ class Html5QrcodeScanner {
                 .catch(error => {
                     $this.__setStatus("ERROR", Html5QrcodeScanner.STATUS_WARNING);
                     $this.__setHeaderMessage(error, Html5QrcodeScanner.STATUS_WARNING);
+                    $this.qrCodeErrorCallback(error);
                 });
         });
     }

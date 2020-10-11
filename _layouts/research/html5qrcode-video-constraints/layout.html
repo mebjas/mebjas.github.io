@@ -1,0 +1,383 @@
+---
+layout: default_research
+---
+<style>
+#reader {
+    width: 640px;
+}
+
+@media(max-width: 600px) {
+	#reader {
+		width: 300px;
+	}
+}
+.empty {
+    display: block;
+    width: 100%;
+    height: 20px;
+}
+</style>
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+<h1> <a href="https://github.com/mebjas/html5-qrcode">mebjas/html5-qrcode</a> > Demo </h1>
+<div style="margin-bottom: 10px;">
+    <h3>Html5Qrcode using video constraints</h3>
+    <div>
+        Note: This demo and feature is work in progress, while it allows you to
+        pass <u>videoConstraints</u> while setting up the scanner or even in run-time
+        the library doesn't support all kind of videoConstraints yet.<br><br>
+
+        <u>Known limitations:</u>
+        <ol>
+            <li>
+                Changing <code>aspectRatio</code> in run-time is not supported
+                as neither the <code>qrbox</code> UI nor the scanner can adapt
+                to it yet, stay tuned for updates.
+            </li>
+            <li>
+                Changing constraints is supported if the <code>videoTrack</code>
+                extends those capabilities, for example:
+                <ol>
+                    <li>colorTemperature</li>
+                    <li>exposureCompensation</li>
+                    <li>exposureMode</li>
+                    <li>exposureTime</li>
+                    <li>focusDistance</li>
+                    <li>whiteBalanceMode</li>
+                    <li>Visit <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints">MediaTrackConstraints</a> for more information.</li>
+                </ol>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<h3>Demo</h3>
+<div class="container">
+	<div class="row">
+        <div class="col-md-12" style="margin-bottom: 10px;">
+            <div>
+                Facing Mode: 
+                <select id="facing-mode-select">
+                    <option value="user">user</option>
+                    <option value="environment">environment</option>
+                </select>
+
+                Aspect Ratio:
+                <select id="aspect-ratio-select">
+                    <option value="">Default</option>
+                    <option value="1">1:1</option>
+                    <option value="1.3334">4:3</option>
+                    <option value="1.77776">16:9</option>
+                </select>
+
+                <button id="start-scanning-button">Start Scanning</button>
+            </div>
+        </div>
+		<div class="col-md-12" style="text-align: center; margin-bottom: 20px;">
+			<div id="reader" style="display: inline-block;"></div>
+            <div class="empty"></div>
+			<div id="capability-dashboard"></div>
+			<div class="empty"></div>
+            <div id="scanned-result-container"></div>
+        </div>
+        <div class="col-md-12" style="margin-bottom: 10px;" id="logging-container">
+        </div>
+	</div>
+</div>
+
+<h2>Comments</h2>
+<script src="https://utteranc.es/client.js"
+    repo="mebjas/mebjas.github.io"
+    issue-term="title"
+    label="test"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
+<!-- <script src="/assets/research/html5qrcode/qrcode.js"></script>
+<script src="/assets/research/html5qrcode/html5qrcode.js"></script>
+<script src="/assets/research/html5qrcode/html5qrcode.scanner.js"></script> -->
+<script src="/assets/research/html5qrcode/html5-qrcode.min.js"></script>
+<script>
+var scanning = false;
+var scanningRequested = false;
+var html5qrcode = new Html5Qrcode("reader", true);
+
+// UI definitions
+let facingModeSelect = document.getElementById('facing-mode-select');
+let aspectRatioSelect = document.getElementById('aspect-ratio-select');
+let resultContainer = document.getElementById('scanned-result-container');
+let loggingContainer = document.getElementById('logging-container');
+let startScanningButton = document.getElementById('start-scanning-button');
+let capabilityDasboard = document.getElementById('capability-dashboard');
+
+function docReady(fn) {
+    // see if DOM is already available
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+        // call on next available tick
+        setTimeout(fn, 1);
+    } else {
+        document.addEventListener("DOMContentLoaded", fn);
+    }
+}
+
+function startScanning(facingMode, aspectRatio) {
+	var lastMessage;
+	var codesFound = 0;
+	function onScanSuccess(qrCodeMessage) {
+		if (lastMessage !== qrCodeMessage) {
+			lastMessage = qrCodeMessage;
+			++codesFound;
+            resultContainer.innerHTML
+                += `<div>[${codesFound}] - ${qrCodeMessage}</div>`;
+		}
+    }
+    
+    var videoConstraints = { facingMode: facingMode };
+    if (aspectRatio) {
+        videoConstraints.aspectRatio = aspectRatio;
+    }
+
+    return html5qrcode.start(
+        { facingMode: facingMode },
+        { fps: 10, videoConstraints: videoConstraints },
+        onScanSuccess,
+        /* onScanError */ function(error) { /** no op. */ });
+}
+
+function disableAllControls() {
+    startScanningButton.disabled = true;
+    facingModeSelect.disabled = true;
+    aspectRatioSelect.disabled = true;
+}
+
+function enableAllControls() {
+    startScanningButton.disabled = false;
+    facingModeSelect.disabled = false;
+    aspectRatioSelect.disabled = false;
+}
+
+function logCapabilties(capabilities) {
+    loggingContainer.innerHTML = "";
+    if (!capabilities) {
+        return;
+    }
+    loggingContainer.innerHTML = "Capabilities of running track:";
+    Object.keys(capabilities).forEach(function(key) {
+        var capability = document.createElement("div");
+        capability.innerHTML = `${key} => ${JSON.stringify(capabilities[key])}`;
+        loggingContainer.appendChild(capability);
+    });
+}
+
+function stopScanning() {
+    // clear logs
+    logCapabilties();
+    return html5qrcode.stop();
+}
+
+function renderCapabilityDashboard(capabilities) {
+    logCapabilties(capabilities);
+    capabilityDasboard.innerHTML = "";
+    if (!capabilities) { return; }
+
+    var allowedCapabilities = new Set([
+        "frameRate",
+        "colorTemperature",
+        "exposureCompensation",
+        "exposureMode",
+        "exposureTime",
+        "focusDistance",
+        "focusMode",
+        "iso",
+        "whiteBalanceMode",
+    ]);
+
+    var hasAnyConfigurableCapability = false;
+    var keys = Object.keys(capabilities);
+    for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        if (allowedCapabilities.has(key)) {
+            hasAnyConfigurableCapability = true;
+            break;
+        }
+    }
+
+    if (!hasAnyConfigurableCapability) {
+        capabilityDasboard.innerHTML
+            = "No configurable capability found in video track.";
+        return;
+    }
+
+    var controls = [];
+    var latestCapability = {};
+    //#region log for constraints
+    var appliedConstraintsContainer = document.createElement("div");
+    function logAppliedConstraint(appliedConstraint) {
+        appliedConstraintsContainer.innerHTML = "";
+        if (!appliedConstraint) return;
+        appliedConstraintsContainer.innerHTML
+            = `Latest constraints requested: ${JSON.stringify(appliedConstraint)}`;
+    }
+    //#endregion
+
+    //#region create apply button
+    var applyButton = document.createElement("button");
+    applyButton.innerHTML = "Apply";
+    applyButton.disabled = true;
+    applyButton.addEventListener('click', event => {
+        if (!scanning) return;
+        disableCapabilityControls();
+        applyButton.disabled = true;
+        if (Object.keys(latestCapability).length == 0) {
+            logAppliedConstraint("No constraints");
+            return;
+        }
+        logAppliedConstraint(latestCapability);
+        html5qrcode.applyVideoConstraints(latestCapability)
+            .then(_ => {
+                enableCapabilityControls();
+            })
+            .catch(err => {
+                alert(err);
+                enableCapabilityControls();
+                applyButton.disabled = false;
+            });
+    });
+    //#endregion
+
+    function enableCapabilityControls() {
+        for (var i = 0; i < controls.length; i++) {
+            controls[i].disabled = false;
+        }
+    }
+
+    function disableCapabilityControls() {
+        for (var i = 0; i < controls.length; i++) {
+            controls[i].disabled = true;
+        }
+    }
+
+    function insertSpace() {
+        var space = document.createElement("div");
+        space.style.display = "inline-block";
+        space.innerHTML = " ";
+        space.style.width = "5px";
+        capabilityDasboard.appendChild(space);
+    }
+
+    function createAndInsertCapabilityChangeElement(key, value) {
+        if (Array.isArray(value)) {
+            // type = options
+            var container = document.createElement("div");
+            container.style.display = "inline-block";
+            container.innerHTML = `${key} : `;
+            var select = document.createElement('select');
+            select.addEventListener('change', event => {
+                if (select.value == "") {
+                    delete latestCapability[key];
+                } else {
+                    latestCapability[key] = select.value;
+                }
+                applyButton.disabled = false;
+            });
+            container.appendChild(select);
+
+            var defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.innerHTML = "none";
+            select.appendChild(defaultOption);
+            for (var i = 0; i < value.length; i++) {
+                var option = document.createElement("option");
+                option.value = value[i];
+                option.innerHTML = value[i];
+                select.appendChild(option);
+            }
+
+            capabilityDasboard.appendChild(container);
+            insertSpace();
+        } else if (typeof value === "object") {
+            // type = range
+            var container = document.createElement("div");
+            container.style.display = "inline-block";
+            container.innerHTML = `${key} : `;
+            var input = document.createElement('input');
+            input.placeholder = `Range: [${value.min}, ${value.max}]`;
+            container.appendChild(input);
+            controls.push(input);
+            input.addEventListener('keyup', _ => {
+                var inputValue = input.value;
+                if (inputValue == "") {
+                    delete latestCapability[key];
+                    applyButton.disabled = false;
+                    return;
+                }
+                var floatValue = parseFloat(inputValue);
+                // TODO(mebjas): Check for NaN
+                if (floatValue >= value.min && floatValue <= value.max) {
+                    latestCapability[key] = floatValue;
+                    applyButton.disabled = false;
+                } else {
+                    // TODO(mebjas): error reporting?
+                    input.value = "";
+                }
+            });
+            capabilityDasboard.appendChild(container);
+            insertSpace();
+        }
+    }
+
+    for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        if (allowedCapabilities.has(key)) {
+            createAndInsertCapabilityChangeElement(key, capabilities[key]);
+        }
+    } 
+
+    capabilityDasboard.appendChild(applyButton);
+    capabilityDasboard.appendChild(appliedConstraintsContainer);
+}
+
+
+docReady(function() {
+    hljs.initHighlightingOnLoad();
+    startScanningButton.addEventListener('click', function() {
+        if (!scanning) {
+            disableAllControls();
+            var aspectRatio = aspectRatioSelect.value;
+            if (aspectRatio == "") {
+                aspectRatio = undefined;
+            } else {
+                aspectRatio = parseFloat(aspectRatio);
+            }
+            startScanning(facingModeSelect.value, aspectRatio)
+            .then(_ => {
+                scanning = true;
+                startScanningButton.disabled = false;
+                startScanningButton.innerHTML = "Stop Scanning";
+
+                var capabilities = html5qrcode.getRunningTrackCapabilities();
+                renderCapabilityDashboard(capabilities);
+            })
+            .catch(err => {
+                enableAllControls();
+                alert(err);
+            })
+        } else {
+            startScanningButton.disabled = true;
+            stopScanning()
+            .then(_ => {
+                scanning = false;
+                enableAllControls();
+                startScanningButton.innerHTML = "Start Scanning";
+            })
+            .catch(err => {
+                startScanningButton.disabled = false;
+                alert(err);
+            }) 
+        }
+    });
+});
+</script>

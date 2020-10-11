@@ -156,7 +156,7 @@ Also, there are high chances that you might start to see logs that look like:
 
 High frequency of such logs or high value of `paused <some value> ms` are an indicator of increased GC pressure.
 
-So JVM probably is not suited to handle really big images both w.r.t latency and reliability. JVM also sets a limit on max heap memory allocations by an application in Android which can be bypassed to a higher limit but even higher limit comes with restriction. This is just FYI, converting a single image shouldn't lead to such allocations. If you must know a `YUV_420_888` image takes `1.5 bytes per pixel` so an `8MP (3264 x 2488) = 8120832 pixels` image should be `11.61 Mb` in memory while a single ARGB_8888 bitmap would take `4 bytes per pixel` leading to `30.97 Mb` per image of the same size.
+So JVM probably is not suited to handle really big images both w.r.t latency and reliability. JVM also sets a limit on max heap memory allocations by an application in Android which can be bypassed to a higher limit but even higher limit comes with restriction. This is just FYI, converting a single image shouldn't lead to such high allocations. If you must know a `YUV_420_888` image takes `1.5 bytes per pixel` so an `8MP (3264 x 2488) = 8120832 pixels` image should be `11.61 Mb` in memory while a single ARGB_8888 bitmap would take `4 bytes per pixel` leading to `30.97 Mb` per image of the same size.
 
 
 #### Renderscript approach
@@ -164,7 +164,7 @@ So JVM probably is not suited to handle really big images both w.r.t latency and
 
 [Source: developer.android.com](https://developer.android.com/guide/topics/renderscript/compute.html)
 
-Android team has published an intrinsic for converting an Android YUV buffer to RGB. The input allocation is supplied as `8bit NV12 YUV byte array` and the output is `4 channel 8 bit ARGB` buffer which can be converted to a `Bitmap`. The name of `intrinsic` is [ScriptIntrinsicYuvToRGB](https://developer.android.com/reference/android/renderscript/ScriptIntrinsicYuvToRGB). 
+Android team has published an `intrinsic` for converting an Android YUV buffer to RGB. The input allocation is supplied as `8bit NV12 YUV byte array` and the output is `4 channel 8 bit ARGB` buffer which can be converted to a `Bitmap`. The name of `intrinsic` is [ScriptIntrinsicYuvToRGB](https://developer.android.com/reference/android/renderscript/ScriptIntrinsicYuvToRGB). 
 
 Here's a `java` code sample on how to use it:
 ```java
