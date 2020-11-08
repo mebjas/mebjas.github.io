@@ -73,13 +73,8 @@ class Workspace {
             console.warn("No vimage");
         }
 
-        // this.lastVImage.forEach(fn);
         let clone = this.lastImage.clone();
-        if (operatorType == OperatorType.Global) {
-            clone.runGlobalFn(fn);
-        } else if (operatorType == OperatorType.Point) {
-            clone.forEach(fn);
-        }
+        clone.runFn(fn, operatorType);
         clone.renderToContext(this.ctx);
         this.metadata.onCanvasUpdated(clone);
     }
@@ -143,6 +138,8 @@ class Toolbar {
     private element: HTMLElement;
     private workspace: Workspace;
     private locked: boolean;
+    
+    private readonly uiMaxHeight: number = 450;
 
     constructor(element: HTMLElement, workspace: Workspace) {
         this.element = element;
@@ -169,12 +166,18 @@ class Toolbar {
     private render() {
         this.element.style.opacity = "0.5";
 
-        let operatorsHeader = document.createElement("div");
+        const operatorsHeader = document.createElement("div");
         operatorsHeader.innerHTML = "Operators";
         operatorsHeader.innerHTML += " (<a href='https://github.com/mebjas/mebjas.github.io/blob/master/assets/research/vision/operators.ts'>source code</a>)"
         this.element.appendChild(operatorsHeader);
 
-        let operators = OperatorManager.getInstance().getOperators();
+        const operatorBody = document.createElement("div");
+        operatorBody.style.maxHeight = `${this.uiMaxHeight}px`;
+        operatorBody.style.overflowY = "auto";
+        operatorBody.style.paddingBottom = "100px";
+        this.element.appendChild(operatorBody);
+
+        const operators = OperatorManager.getInstance().getOperators();
         console.log(operators);
         for (let i = 0; i < operators.length; ++i) {
             let operator = operators[i];
@@ -183,7 +186,7 @@ class Toolbar {
             let div = document.createElement("div");
             div.style.marginTop = "5px";
             div.style.border = "1px solid silver";
-            this.element.appendChild(div);
+            operatorBody.appendChild(div);
 
             // Insert header
             let header = document.createElement("div");

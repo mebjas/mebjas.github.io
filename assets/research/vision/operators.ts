@@ -24,7 +24,8 @@ interface OperatorArgument {
 
 enum OperatorType {
     Point,
-    Global
+    Global,
+    Local
 }
 
 interface Operator {
@@ -137,8 +138,18 @@ class GammaArgument extends ArgumentBase {
             new VRange(0, 3, 0.1));
     }
 }
+
+class KernelSize extends ArgumentBase {
+    constructor() {
+        super(
+            "Kernel Size (MxM)",
+            /* defaultValue= */ 1,
+            new VRange(1, 9, 2));
+    }
+}
 //#endregion
 
+//#region Point Operators
 //#region BrightningOperator
 class BrightningOperator implements Operator {
     readonly type = OperatorType.Point;
@@ -206,8 +217,10 @@ class GammaOperator implements Operator {
 
 OperatorManager.getInstance().register(new GammaOperator());
 //#endregion
+//#endregion
 
-//#region GammaOperator
+//#region Global Operators
+//#region HistorgramEqualization
 class HistogramEqOperator implements Operator {
     readonly type = OperatorType.Global;
     readonly name = "Histogram Equalization";
@@ -254,4 +267,79 @@ class HistogramEqOperator implements Operator {
 }
 
 OperatorManager.getInstance().register(new HistogramEqOperator());
+//#endregion
+//#endregion
+
+//#region Local Operators
+
+//#region GaussianBlurring
+class GaussianBlurringOperator implements Operator {
+    readonly type = OperatorType.Local;
+    readonly name = "Gaussian Blurring";
+    readonly description = "Blurs the image";
+    readonly arguments = [];
+
+    constructor() {
+        this.arguments.push(new KernelSize());
+    }
+
+    public fn() {
+        const kernelSize = parseInt(this.arguments[0].getValue());
+
+        return (image: VImage) => {
+            if (kernelSize == 1) {
+                return;
+            }
+            const k1 = Math.floor(kernelSize / 2);
+            const k2 = Math.ceil(kernelSize / 2) - 1;
+
+            for (let c = 0; c < image.channels; ++c) {
+                for (let y = 0; y < image.height; ++y) {
+                    for (let x = 0; x < image.width; ++x) {
+                        let sum = 0;
+                        let count = 0;
+
+                        for (let y1 = y - k1; y1 <= y + k2; ++y1) {
+                            for (let x1 = x - k1; x1 <= x + k2; ++x1) {
+                                if (y1 >= 0 && y1 < image.height && x1 >= 0 && x1 < image.width) {
+                                    sum += image.at(x1, y1, c);
+                                    count++;
+                                }
+                            }
+                        }
+
+                        image.update(x, y, c, Math.floor(sum / count));
+                    }
+                }
+            }
+        }
+    }
+}
+
+OperatorManager.getInstance().register(new GaussianBlurringOperator());
+//#endregion
+
+//#region Sharpening
+class SharpeningOperator implements Operator {
+    readonly type = OperatorType.Local;
+    readonly name = "Sharpening";
+    readonly description = "Sharpens the image";
+    readonly arguments = [];
+
+    constructor() {
+        this.arguments.push(new LinearBlendArgument(0));
+    }
+
+    public fn() {
+        const blend = parseFloat(this.arguments[0].getValue());
+
+        return (image: VImage) => {
+            // TODO(mebjas): implement this.
+        }
+    }
+}
+
+// OperatorManager.getInstance().register(new SharpeningOperator());
+//#endregion
+
 //#endregion

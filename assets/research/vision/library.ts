@@ -58,15 +58,33 @@ class VImage {
     }
 
     /**
+     * Runs an operator of type {@param operatorType} on the image
+     * 
+     * @param fn operator to run on 
+     * @param operatorType type of the operator
+     */
+    runFn(fn: Function, operatorType: OperatorType): void {
+        if (operatorType == OperatorType.Global) {
+            this.runGlobalFn(fn);
+        } else if (operatorType == OperatorType.Point) {
+            this.forEach(fn);
+        } else if (operatorType == OperatorType.Local) {
+            this.runLocalFn(fn);
+        } else {
+            throw `Unsupported operatorType = ${operatorType}`;
+        }
+    }
+
+    /**
      * Runs the given operator for each pixel
      *
-     * @param {Function} operator 
+     * @param {Function} fn operator
      */
-    forEach(operator: Function) : void {
+    private forEach(fn: Function) : void {
         for (let y = 0; y < this.height; ++y) {
             for (let x = 0; x < this.width; ++x) {
                 for (let c = 0; c < this.channels; ++c) {
-                    let updatedValue = operator(x, y, c, this.at(x, y, c));
+                    let updatedValue = fn(x, y, c, this.at(x, y, c));
                     this.update(x, y, c, updatedValue);
                 }
             }
@@ -76,10 +94,21 @@ class VImage {
     /**
      * Runs a global function on the image, that can modify it's content
      *
-     * @param operator operator
+     * @param fn operator
      */
-    runGlobalFn(operator: Function): void {
-        operator(this);
+    private runGlobalFn(fn: Function): void {
+        fn(this);
+    }
+
+    /**
+     * Runs a local or neighbourhood operator on the image, that can modify
+     * it's content
+     *
+     * @param fn operator 
+     */
+    private runLocalFn(fn: Function): void {
+        // TODO(mebjas): abstract better
+        fn(this);
     }
 }
 

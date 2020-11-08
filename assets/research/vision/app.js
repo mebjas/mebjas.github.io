@@ -48,14 +48,8 @@ var Workspace = /** @class */ (function () {
         if (!this.lastImage) {
             console.warn("No vimage");
         }
-        // this.lastVImage.forEach(fn);
         var clone = this.lastImage.clone();
-        if (operatorType == OperatorType.Global) {
-            clone.runGlobalFn(fn);
-        }
-        else if (operatorType == OperatorType.Point) {
-            clone.forEach(fn);
-        }
+        clone.runFn(fn, operatorType);
         clone.renderToContext(this.ctx);
         this.metadata.onCanvasUpdated(clone);
     };
@@ -100,6 +94,7 @@ var Workspace = /** @class */ (function () {
 }());
 var Toolbar = /** @class */ (function () {
     function Toolbar(element, workspace) {
+        this.uiMaxHeight = 450;
         this.element = element;
         this.workspace = workspace;
         this.locked = true;
@@ -123,6 +118,11 @@ var Toolbar = /** @class */ (function () {
         operatorsHeader.innerHTML = "Operators";
         operatorsHeader.innerHTML += " (<a href='https://github.com/mebjas/mebjas.github.io/blob/master/assets/research/vision/operators.ts'>source code</a>)";
         this.element.appendChild(operatorsHeader);
+        var operatorBody = document.createElement("div");
+        operatorBody.style.maxHeight = this.uiMaxHeight + "px";
+        operatorBody.style.overflowY = "auto";
+        operatorBody.style.paddingBottom = "100px";
+        this.element.appendChild(operatorBody);
         var operators = OperatorManager.getInstance().getOperators();
         console.log(operators);
         var _loop_1 = function (i) {
@@ -131,7 +131,7 @@ var Toolbar = /** @class */ (function () {
             var div = document.createElement("div");
             div.style.marginTop = "5px";
             div.style.border = "1px solid silver";
-            this_1.element.appendChild(div);
+            operatorBody.appendChild(div);
             // Insert header
             var header = document.createElement("div");
             header.style.padding = "5px 2px";
@@ -180,7 +180,6 @@ var Toolbar = /** @class */ (function () {
                 _loop_2(j);
             }
         };
-        var this_1 = this;
         for (var i = 0; i < operators.length; ++i) {
             _loop_1(i);
         }

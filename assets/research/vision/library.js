@@ -44,15 +44,35 @@ var VImage = /** @class */ (function () {
         context.putImageData(this.imageData, 0, 0);
     };
     /**
+     * Runs an operator of type {@param operatorType} on the image
+     *
+     * @param fn operator to run on
+     * @param operatorType type of the operator
+     */
+    VImage.prototype.runFn = function (fn, operatorType) {
+        if (operatorType == OperatorType.Global) {
+            this.runGlobalFn(fn);
+        }
+        else if (operatorType == OperatorType.Point) {
+            this.forEach(fn);
+        }
+        else if (operatorType == OperatorType.Local) {
+            this.runLocalFn(fn);
+        }
+        else {
+            throw "Unsupported operatorType = " + operatorType;
+        }
+    };
+    /**
      * Runs the given operator for each pixel
      *
-     * @param {Function} operator
+     * @param {Function} fn operator
      */
-    VImage.prototype.forEach = function (operator) {
+    VImage.prototype.forEach = function (fn) {
         for (var y = 0; y < this.height; ++y) {
             for (var x = 0; x < this.width; ++x) {
                 for (var c = 0; c < this.channels; ++c) {
-                    var updatedValue = operator(x, y, c, this.at(x, y, c));
+                    var updatedValue = fn(x, y, c, this.at(x, y, c));
                     this.update(x, y, c, updatedValue);
                 }
             }
@@ -61,10 +81,20 @@ var VImage = /** @class */ (function () {
     /**
      * Runs a global function on the image, that can modify it's content
      *
-     * @param operator operator
+     * @param fn operator
      */
-    VImage.prototype.runGlobalFn = function (operator) {
-        operator(this);
+    VImage.prototype.runGlobalFn = function (fn) {
+        fn(this);
+    };
+    /**
+     * Runs a local or neighbourhood operator on the image, that can modify
+     * it's content
+     *
+     * @param fn operator
+     */
+    VImage.prototype.runLocalFn = function (fn) {
+        // TODO(mebjas): abstract better
+        fn(this);
     };
     return VImage;
 }());

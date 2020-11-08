@@ -26,6 +26,7 @@ var OperatorType;
 (function (OperatorType) {
     OperatorType[OperatorType["Point"] = 0] = "Point";
     OperatorType[OperatorType["Global"] = 1] = "Global";
+    OperatorType[OperatorType["Local"] = 2] = "Local";
 })(OperatorType || (OperatorType = {}));
 var OperatorManager = /** @class */ (function () {
     function OperatorManager() {
@@ -108,7 +109,16 @@ var GammaArgument = /** @class */ (function (_super) {
     }
     return GammaArgument;
 }(ArgumentBase));
+var KernelSize = /** @class */ (function (_super) {
+    __extends(KernelSize, _super);
+    function KernelSize() {
+        return _super.call(this, "Kernel Size (MxM)", 
+        /* defaultValue= */ 1, new VRange(1, 9, 2)) || this;
+    }
+    return KernelSize;
+}(ArgumentBase));
 //#endregion
+//#region Point Operators
 //#region BrightningOperator
 var BrightningOperator = /** @class */ (function () {
     function BrightningOperator() {
@@ -169,7 +179,9 @@ var GammaOperator = /** @class */ (function () {
 }());
 OperatorManager.getInstance().register(new GammaOperator());
 //#endregion
-//#region GammaOperator
+//#endregion
+//#region Global Operators
+//#region HistorgramEqualization
 var HistogramEqOperator = /** @class */ (function () {
     function HistogramEqOperator() {
         this.type = OperatorType.Global;
@@ -211,5 +223,67 @@ var HistogramEqOperator = /** @class */ (function () {
     return HistogramEqOperator;
 }());
 OperatorManager.getInstance().register(new HistogramEqOperator());
+//#endregion
+//#endregion
+//#region Local Operators
+//#region GaussianBlurring
+var GaussianBlurringOperator = /** @class */ (function () {
+    function GaussianBlurringOperator() {
+        this.type = OperatorType.Local;
+        this.name = "Gaussian Blurring";
+        this.description = "Blurs the image";
+        this.arguments = [];
+        this.arguments.push(new KernelSize());
+    }
+    GaussianBlurringOperator.prototype.fn = function () {
+        var kernelSize = parseInt(this.arguments[0].getValue());
+        return function (image) {
+            if (kernelSize == 1) {
+                return;
+            }
+            var k1 = Math.floor(kernelSize / 2);
+            var k2 = Math.ceil(kernelSize / 2) - 1;
+            for (var c = 0; c < image.channels; ++c) {
+                for (var y = 0; y < image.height; ++y) {
+                    for (var x = 0; x < image.width; ++x) {
+                        var sum = 0;
+                        var count = 0;
+                        for (var y1 = y - k1; y1 <= y + k2; ++y1) {
+                            for (var x1 = x - k1; x1 <= x + k2; ++x1) {
+                                if (y1 >= 0 && y1 < image.height && x1 >= 0 && x1 < image.width) {
+                                    sum += image.at(x1, y1, c);
+                                    count++;
+                                }
+                            }
+                        }
+                        image.update(x, y, c, Math.floor(sum / count));
+                    }
+                }
+            }
+        };
+    };
+    return GaussianBlurringOperator;
+}());
+OperatorManager.getInstance().register(new GaussianBlurringOperator());
+//#endregion
+//#region Sharpening
+var SharpeningOperator = /** @class */ (function () {
+    function SharpeningOperator() {
+        this.type = OperatorType.Local;
+        this.name = "Sharpening";
+        this.description = "Sharpens the image";
+        this.arguments = [];
+        this.arguments.push(new LinearBlendArgument(0));
+    }
+    SharpeningOperator.prototype.fn = function () {
+        var blend = parseFloat(this.arguments[0].getValue());
+        return function (image) {
+            // TODO(mebjas): implement this.
+        };
+    };
+    return SharpeningOperator;
+}());
+// OperatorManager.getInstance().register(new SharpeningOperator());
+//#endregion
 //#endregion
 //# sourceMappingURL=operators.js.map
