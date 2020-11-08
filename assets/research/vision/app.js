@@ -121,7 +121,7 @@ var Toolbar = /** @class */ (function () {
         this.element.style.opacity = "0.5";
         var operatorsHeader = document.createElement("div");
         operatorsHeader.innerHTML = "Operators";
-        operatorsHeader.innerHTML += " (<a href='https://github.com/mebjas/mebjas.github.io/blob/master/assets/research/vision/operators.js'>source code</a>)";
+        operatorsHeader.innerHTML += " (<a href='https://github.com/mebjas/mebjas.github.io/blob/master/assets/research/vision/operators.ts'>source code</a>)";
         this.element.appendChild(operatorsHeader);
         var operators = OperatorManager.getInstance().getOperators();
         console.log(operators);

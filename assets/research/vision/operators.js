@@ -148,14 +148,16 @@ var GammaOperator = /** @class */ (function () {
     }
     GammaOperator.prototype.fn = function () {
         var gamma = parseFloat(this.arguments[0].getValue());
+        var alpha = parseFloat(this.arguments[1].getValue());
+        var maxWhiteLevel = 255;
+        var inverseGamma = 1 / gamma;
         // Create look up table for optimised tone mapping.
         var gammaLut = [];
         for (var i = 0; i < 256; ++i) {
-            gammaLut[i] = Math.floor(Math.pow(i / 256, 1 / gamma) * 256);
-            if (gammaLut[i] > 255)
-                gammaLut[i] = 255;
+            gammaLut[i] = Math.floor(Math.pow(i / maxWhiteLevel, inverseGamma) * maxWhiteLevel);
+            if (gammaLut[i] > maxWhiteLevel)
+                gammaLut[i] = maxWhiteLevel;
         }
-        var alpha = parseFloat(this.arguments[1].getValue());
         return function (_, __, ___, intensity) {
             return blendValue(
             /* modified= */ gammaLut[intensity], 

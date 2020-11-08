@@ -153,9 +153,9 @@ class BrightningOperator implements Operator {
     }
 
     public fn() {
-        let brightness = parseInt(this.arguments[0].getValue());
-        let contrast = parseFloat(this.arguments[1].getValue());
-        let alpha = parseFloat(this.arguments[2].getValue());
+        const brightness = parseInt(this.arguments[0].getValue());
+        const contrast = parseFloat(this.arguments[1].getValue());
+        const alpha = parseFloat(this.arguments[2].getValue());
         return (_, __, ___, intensity: number) => {
             let val = blendValue(
                 /* modified= */ intensity * contrast + brightness,
@@ -182,14 +182,18 @@ class GammaOperator implements Operator {
     }
 
     public fn() {
-        let gamma = parseFloat(this.arguments[0].getValue());
+        const gamma = parseFloat(this.arguments[0].getValue());
+        const alpha = parseFloat(this.arguments[1].getValue());
+        const maxWhiteLevel = 255;
+        const inverseGamma = 1 / gamma;
+
         // Create look up table for optimised tone mapping.
         let gammaLut = [];
         for (let i = 0; i < 256; ++i) {
-            gammaLut[i] = Math.floor(Math.pow(i/256, 1/gamma) * 256);
-            if (gammaLut[i] > 255) gammaLut[i] = 255;
+            gammaLut[i] = Math.floor(
+                Math.pow(i / maxWhiteLevel, inverseGamma) * maxWhiteLevel);
+            if (gammaLut[i] > maxWhiteLevel) gammaLut[i] = maxWhiteLevel;
         }
-        let alpha = parseFloat(this.arguments[1].getValue());
 
         return (_, __, ___, intensity: number) => {
             return blendValue(
@@ -215,13 +219,13 @@ class HistogramEqOperator implements Operator {
     }
 
     public fn() {
-        let blend = parseFloat(this.arguments[0].getValue());
+        const blend = parseFloat(this.arguments[0].getValue());
 
         return (image: VImage) => {
-            let histograms: Histograms =  new Histograms(image, 256);
-            let cdfs: CDFs =  new CDFs(histograms);
+            const histograms: Histograms =  new Histograms(image, 256);
+            const cdfs: CDFs =  new CDFs(histograms);
             // let lumaCdf: CDF = cdfs.getLumaCdf();
-            let normalizedCdfs: Array<CDF> = [];
+            const normalizedCdfs: Array<CDF> = [];
             for (let c = 0; c < image.channels; ++c) {
                 normalizedCdfs[c] = createEmptyCdfLike(cdfs.getColorCdfs(c));
             }
@@ -229,7 +233,7 @@ class HistogramEqOperator implements Operator {
             const binSize = histograms.binSize;
             const maxWhiteLevel = 255;
             for (let c = 0; c < image.channels; ++c) {
-                let cdf: CDF = cdfs.getColorCdfs(c);
+                const cdf: CDF = cdfs.getColorCdfs(c);
                 const N = cdf[binSize - 1] - cdf[0];
                 for (let i = 0; i < binSize; ++i) {
                     let nj = (cdf[i] - cdf[0]) * maxWhiteLevel;
