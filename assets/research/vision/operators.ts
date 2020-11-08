@@ -15,9 +15,9 @@ class VRange {
 }
 
 interface OperatorArgument {
-    name: String;
+    name: string;
     range: VRange;
-    default: number;
+    defaultValue: number;
     update: Function;
     getValue: Function;
 }
@@ -30,7 +30,7 @@ enum OperatorType {
 interface Operator {
     type: OperatorType;
     name: string;
-    description: String;
+    description: string;
     fn: Function;
     arguments: Array<OperatorArgument>;
 }
@@ -62,92 +62,106 @@ class OperatorManager {
     }
 }
 
+//#region Global functions
+const clamp = (val: number, min: number, max: number) => {
+    if (val < min) return min;
+    if (val > max) return max;
+    return val;
+}
+
+const blendValue = (modified: number, original: number, alpha: number) => {
+    return modified * alpha + original * (1 - alpha);
+}
+//#endregion
+
 //#region GlobalArguments
-class LinearBlendArgument implements OperatorArgument {
-    name = "Value to linearly blend the operator by";
-    range = new VRange(0, 1, 0.05);
-    default: number = 1;
-    update = (val: number) => {
+abstract class ArgumentBase implements OperatorArgument {
+    readonly name: string;
+    readonly defaultValue: number;
+    readonly range: VRange;
+
+    private value: number;
+
+    constructor(name: string, defaultValue: number, range: VRange) {
+        this.name = name;
+        this.defaultValue = defaultValue;
+        this.range = range;
+
+        this.value = defaultValue;
+    }
+
+    public update(val: number) {
         if (!this.range.inRange(val)) {
             throw "Invalid value of argument";
         }
         this.value = val;
     };
 
-    getValue = () => {
+    public getValue(): number {
         return this.value;
-    }
-
-    private value: number;
-    constructor() {
-        this.value = this.default;
     }
 }
 
-class AlphaArgument implements OperatorArgument {
-    name = "Value to increase the contrast by";
-    range = new VRange(0, 5, 0.1);
-    default: number = 0;
-    update = (val: number) => {
-        if (!this.range.inRange(val)) {
-            throw "Invalid value of argument";
-        }
-        this.value = val;
-    };
-
-    getValue = () => {
-        return this.value;
-    }
-
-    private value: number;
+class BrightnessArgument extends ArgumentBase {
     constructor() {
-        this.value = this.default;
+        super(
+            "Brightness (b)",
+            /* defaultValue= */ 0,
+            new VRange(-100, 100, 1));
+    }
+}
+
+class LinearBlendArgument extends ArgumentBase {
+    constructor(defaultValue?: number) {
+        super(
+            "Blend (Α)",
+            defaultValue === undefined ? 1 : defaultValue,
+            new VRange(0, 1, 0.05));
+    }
+}
+
+class ContrastArgument extends ArgumentBase {
+    constructor() {
+        super(
+            "Contrast (a)",
+            /* defaultValue= */ 1,
+            new VRange(0, 5, 0.1));
+    }
+}
+
+class GammaArgument extends ArgumentBase {
+    constructor() {
+        super(
+            "Tonemap Gamma (Γ)",
+            /* defaultValue= */ 1,
+            new VRange(0, 3, 0.1));
     }
 }
 //#endregion
 
 //#region BrightningOperator
 class BrightningOperator implements Operator {
-    readonly type = OperatorType.Global;
+    readonly type = OperatorType.Point;
     readonly name = "Brightness";
     readonly description = "Change the brightness of the image";
     readonly arguments = [];
 
     constructor() {
-        class BetaArgument implements OperatorArgument {
-            name = "Value to increase the brightness by";
-            range = new VRange(-100, 100, 1);
-            default: number = 0;
-            update = (val: number) => {
-                if (!this.range.inRange(val)) {
-                    throw "Invalid value of argument";
-                }
-                this.value = val;
-            };
-
-            getValue = () => {
-                return this.value;
-            }
-
-            private value: number;
-            constructor() {
-                this.value = this.default;
-            }
-        }
-        this.arguments.push(new BetaArgument());
-        this.arguments.push(new AlphaArgument());
+        this.arguments.push(new BrightnessArgument());
+        this.arguments.push(new ContrastArgument());
         this.arguments.push(new LinearBlendArgument());
     }
 
     public fn() {
-        let beta = parseInt(this.arguments[0].getValue());
-        let alpha = parseFloat(this.arguments[1].getValue());
-        let blend = parseFloat(this.arguments[2].getValue());
-        return (x_, y_, c_, i_) => {
-            let val = (i_ * alpha + beta) * blend + (1 - blend) * i_;
-            if (val < 0) val = 0;
-            if (val > 255) val = 255;
-            return val;
+        let brightness = parseInt(this.arguments[0].getValue());
+        let contrast = parseFloat(this.arguments[1].getValue());
+        let alpha = parseFloat(this.arguments[2].getValue());
+        return (_, __, ___, intensity: number) => {
+            let val = blendValue(
+                /* modified= */ intensity * contrast + brightness,
+                /* original= */ intensity,
+                /* alpha= */ alpha);
+            return clamp(val, 0, 255);
         }
     }
 }
@@ -155,79 +169,85 @@ class BrightningOperator implements Operator {
 OperatorManager.getInstance().register(new BrightningOperator());
 //#endregion
 
-//#region ContrastOperator
-class ContrastOperator implements Operator {
-    readonly type = OperatorType.Global;
-    readonly name = "Contrast";
-    readonly description = "Change the constrast of the image";
-    readonly arguments = [];
-
-    constructor() {
-        this.arguments.push(new AlphaArgument());
-        this.arguments.push(new LinearBlendArgument());
-    }
-
-    public fn() {
-        let alpha = parseFloat(this.arguments[0].getValue());
-        let blend = parseFloat(this.arguments[1].getValue());
-        return (x_, y_, c_, i_) => {
-            let val = alpha * i_ * blend + (1 - blend) * i_;
-            if (val < 0) val = 0;
-            if (val > 255) val = 255;
-            return val;
-        }
-    }
-}
-
-OperatorManager.getInstance().register(new ContrastOperator());
-//#endregion
-
 //#region GammaOperator
 class GammaOperator implements Operator {
-    readonly type = OperatorType.Global;
+    readonly type = OperatorType.Point;
     readonly name = "Gamma Correction";
     readonly description = "Change the linearity of the image";
     readonly arguments = [];
 
     constructor() {
-        class GammaArgument implements OperatorArgument {
-            name = "Change tonemapping of the image";
-            range = new VRange(0, 3, 0.1);
-            default: number = 1;
-            update = (val: number) => {
-                if (!this.range.inRange(val)) {
-                    throw "Invalid value of argument";
-                }
-                this.value = val;
-            };
-
-            getValue = () => {
-                return this.value;
-            }
-
-            private value: number;
-            constructor() {
-                this.value = this.default;
-            }
-        }
         this.arguments.push(new GammaArgument());
         this.arguments.push(new LinearBlendArgument());
     }
 
     public fn() {
         let gamma = parseFloat(this.arguments[0].getValue());
-        let gamma_lut = [];
+        // Create look up table for optimised tone mapping.
+        let gammaLut = [];
         for (let i = 0; i < 256; ++i) {
-            gamma_lut[i] = Math.floor(Math.pow(i/256, 1/gamma) * 256);
-            if (gamma_lut[i] > 255) gamma_lut[i] = 255;
+            gammaLut[i] = Math.floor(Math.pow(i/256, 1/gamma) * 256);
+            if (gammaLut[i] > 255) gammaLut[i] = 255;
         }
-        let blend = parseFloat(this.arguments[1].getValue());
+        let alpha = parseFloat(this.arguments[1].getValue());
 
-        return (x_, y_, c_, i_) => {
-            return gamma_lut[i_] * blend + (1 - blend) * i_;
+        return (_, __, ___, intensity: number) => {
+            return blendValue(
+                /* modified= */ gammaLut[intensity],
+                /* original= */ intensity,
+                /* alpha= */ alpha);
         }
     }
 }
 
 OperatorManager.getInstance().register(new GammaOperator());
+//#endregion
+
+//#region GammaOperator
+class HistogramEqOperator implements Operator {
+    readonly type = OperatorType.Global;
+    readonly name = "Histogram Equalization";
+    readonly description = "Balance the histogram of the image";
+    readonly arguments = [];
+
+    constructor() {
+        this.arguments.push(new LinearBlendArgument(0));
+    }
+
+    public fn() {
+        let blend = parseFloat(this.arguments[0].getValue());
+
+        return (image: VImage) => {
+            let histograms: Histograms =  new Histograms(image, 256);
+            let cdfs: CDFs =  new CDFs(histograms);
+            // let lumaCdf: CDF = cdfs.getLumaCdf();
+            let normalizedCdfs: Array<CDF> = [];
+            for (let c = 0; c < image.channels; ++c) {
+                normalizedCdfs[c] = createEmptyCdfLike(cdfs.getColorCdfs(c));
+            }
+  
+            const binSize = histograms.binSize;
+            const maxWhiteLevel = 255;
+            for (let c = 0; c < image.channels; ++c) {
+                let cdf: CDF = cdfs.getColorCdfs(c);
+                const N = cdf[binSize - 1] - cdf[0];
+                for (let i = 0; i < binSize; ++i) {
+                    let nj = (cdf[i] - cdf[0]) * maxWhiteLevel;
+                    normalizedCdfs[c][i] = Math.floor(nj / N);
+                }
+
+                console.log(normalizedCdfs[c]);
+                for (let y = 0; y < image.height; ++y) {
+                    for (let x = 0; x < image.width; ++x) {
+                        let intensity = image.at(x, y, c);
+                        intensity = blend * normalizedCdfs[c][intensity] + (1 - blend) * intensity;
+                        image.update(x, y, c, intensity);
+                    }
+                }
+            }
+        }
+    }
+}
+
+OperatorManager.getInstance().register(new HistogramEqOperator());
 //#endregion

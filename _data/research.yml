@@ -30,3 +30,16 @@
     image: "/assets/research/rockpaperscissor/rps.png",
     link: "rock-paper-scissor"
 }
+- {
+    title: "My vision experiments",
+    description: "Learning computer vision: Trying out some CV techiques from scratch to get a better understanding of different techniques. Starting with point operators.",
+    image: "/images/vision.jpg",
+    link: "vision",
+}
+- {
+    title: "My WebGl experiments",
+    description: "Processing camera input using html and javascript WebGl apis.",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/WebGL_Logo.svg/1200px-WebGL_Logo.svg.png",
+    link: "webgl",
+    wip: true
+}

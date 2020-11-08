@@ -3,6 +3,7 @@
  */
 var VImage = /** @class */ (function () {
     function VImage(imageData) {
+        this.channels = 3;
         this.width = imageData.width;
         this.height = imageData.height;
         this.imageData = imageData;
@@ -50,12 +51,20 @@ var VImage = /** @class */ (function () {
     VImage.prototype.forEach = function (operator) {
         for (var y = 0; y < this.height; ++y) {
             for (var x = 0; x < this.width; ++x) {
-                for (var c = 0; c < 3; ++c) {
+                for (var c = 0; c < this.channels; ++c) {
                     var updatedValue = operator(x, y, c, this.at(x, y, c));
                     this.update(x, y, c, updatedValue);
                 }
             }
         }
+    };
+    /**
+     * Runs a global function on the image, that can modify it's content
+     *
+     * @param operator operator
+     */
+    VImage.prototype.runGlobalFn = function (operator) {
+        operator(this);
     };
     return VImage;
 }());
@@ -163,11 +172,36 @@ var Histograms = /** @class */ (function () {
     };
     return Histograms;
 }());
+var createEmptyCdf = function (binSize) {
+    var cdf = [];
+    for (var i = 0; i < binSize; i++) {
+        cdf.push(0);
+    }
+    return cdf;
+};
+var createEmptyCdfLike = function (cdf) {
+    var newCdf = [];
+    for (var i = 0; i < cdf.length; i++) {
+        newCdf.push(0);
+    }
+    return newCdf;
+};
 var CDFs = /** @class */ (function () {
     function CDFs(histograms) {
         this.histograms = histograms;
         this.compute();
     }
+    CDFs.prototype.getColorCdfs = function (channel) {
+        switch (channel) {
+            case 0: return this.rCdf;
+            case 1: return this.gCdf;
+            case 2: return this.bCdf;
+        }
+        throw "Invalid channel, max value = 2";
+    };
+    CDFs.prototype.getLumaCdf = function () {
+        return this.lumaCdf;
+    };
     CDFs.prototype.renderToContext = function (context, contextWidth, contextHeight) {
         context.clearRect(0, 0, contextWidth, contextHeight);
         var maxVal = 1.0;
@@ -196,10 +230,10 @@ var CDFs = /** @class */ (function () {
         var gHist = this.histograms.getColorHistogram(1);
         var bHist = this.histograms.getColorHistogram(2);
         var lumaHist = this.histograms.getLumaHistogram();
-        this.rCdf = this.createEmptyCdf();
-        this.gCdf = this.createEmptyCdf();
-        this.bCdf = this.createEmptyCdf();
-        this.lumaCdf = this.createEmptyCdf();
+        this.rCdf = createEmptyCdf(this.histograms.binSize);
+        this.gCdf = createEmptyCdf(this.histograms.binSize);
+        this.bCdf = createEmptyCdf(this.histograms.binSize);
+        this.lumaCdf = createEmptyCdf(this.histograms.binSize);
         this.rCdf[0] = rHist[0];
         this.gCdf[0] = gHist[0];
         this.bCdf[0] = bHist[0];
@@ -211,13 +245,6 @@ var CDFs = /** @class */ (function () {
             this.bCdf[i] = this.bCdf[i - 1] + bHist[i];
             this.lumaCdf[i] = this.lumaCdf[i - 1] + lumaHist[i];
         }
-    };
-    CDFs.prototype.createEmptyCdf = function () {
-        var hist = [];
-        for (var i = 0; i < this.histograms.binSize; i++) {
-            hist.push(0);
-        }
-        return hist;
     };
     return CDFs;
 }());

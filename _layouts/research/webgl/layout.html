@@ -1,0 +1,177 @@
+---
+layout: default_research
+---
+<style>
+.wrapper-header, .wrapper-content, .wrapper-footer {
+    /* max-width: -webkit-calc(880px - (30px * 2)); */
+    max-width: calc(1280px - (30px * 2));
+    padding-right: 30px;
+    padding-left: 30px;
+    margin: 0 auto;
+}
+.flex-grid {
+  display: flex;
+}
+.col {
+  flex: 1;
+  margin: 5px;
+}
+</style>
+<h1> Demo using Web Gl on camera input in html </h1>
+<div class="container">
+    <div class="row">
+        <div class="col col-md-12">
+            <div id="errors"></div>
+			<div class="dashboard">
+                <button id="request_permissions">Request camera permissions</button>
+                <select id="camera_id_list" style="display: none"></select>
+                <select id="experiment_list" style="display: none;" disabled>
+                    <option value="none">None</option>
+                </select>
+            </div>
+        </div>
+    </div>
+	<div class="flex-grid">
+        <div class="col">
+            <h2>Input Feed</h2>
+			<div>
+                <video id="input_feed" style="display: none;"></video>
+            </div>
+        </div>
+        <div class="col">
+			<h2>Output Feed</h2>
+			<div>
+                <canvas id="output_feed" style="display: none;"></canvas>
+            </div>
+		</div>
+	</div>
+</div>
+
+<!-- <h2>Comments</h2>
+<script src="https://utteranc.es/client.js"
+    repo="mebjas/mebjas.github.io"
+    issue-term="title"
+    label="test"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script> -->
+<script src="/assets/research/webgl/app.js"></script>
+<script>
+function docReady(fn) {
+    // see if DOM is already available
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+        // call on next available tick
+        setTimeout(fn, 1);
+    } else {
+        document.addEventListener("DOMContentLoaded", fn);
+    }
+}
+
+let requestPermissionButton = document.getElementById('request_permissions');
+let cameraIdList = document.getElementById('camera_id_list');
+let experimentList = document.getElementById('experiment_list');
+let errorContainer = document.getElementById('errors');
+let inputFeedElement = document.getElementById('input_feed');
+let outputFeedElement = document.getElementById('output_feed');
+
+function logError(errObj) {
+    if (typeof errObj == 'object') {
+        errorContainer.innerHTML = 'Error: ' + JSON.stringify(errObj);
+    } else {
+        errorContainer.innerHTML = 'Error: ' + errObj;
+    }
+}
+
+let runningInputFeed = undefined;
+let runningOutputFeed = undefined;
+
+docReady(function() {
+    requestPermissionButton.addEventListener('click', () => {
+        requestPermissionButton.disabled = true;
+        getCameras()
+        .then(cameraIds => {
+            if (cameraIds.length > 0) {
+                for (var i = 0; i < cameraIds.length; i++) {
+                    let cameraId = cameraIds[i];
+                    let option = document.createElement('option');
+                    option.value = cameraId.id;
+                    option.innerHTML = cameraId.label;
+                    cameraIdList.appendChild(option);
+                }
+            } else {
+                logError("No cameras found");
+                return;
+            }
+
+            function enableExperiments() {
+                requestPermissionButton.style.display = "none";
+                cameraIdList.style.display = "inline-block";
+                experimentList.style.display = "inline-block";
+                experimentList.disabled = false;
+            }
+
+            inputFeedElement.style.display = "block";
+            outputFeedElement.style.display = "block";
+            runningInputFeed = new InputFeed(inputFeedElement, cameraIds[0].id);
+            runningInputFeed.start()
+            .then(_ => {
+                runningOutputFeed = new OutputFeed(inputFeedElement, outputFeedElement);
+                runningOutputFeed.start();
+                enableExperiments();
+            })
+            .catch(err => {
+                logError(err);
+            })
+        })
+        .catch(error => {
+            requestPermissionButton.disabled = false;
+            logError(error);
+        });
+    });
+
+    cameraIdList.addEventListener('change', event => {
+        cameraIdList.disabled = true;
+        experimentList.disabled = true;
+        let cameraId = event.target.value;
+
+        let setupNewCamera = _ => {
+            runningInputFeed = new InputFeed(inputFeedElement, cameraId);
+            runningInputFeed.start()
+            .then(_ => {
+                runningOutputFeed = new OutputFeed(inputFeedElement, outputFeedElement);
+                runningOutputFeed.start();
+                cameraIdList.disabled = false;
+                experimentList.disabled = false;
+            })
+            .catch(err => {
+                // TODO(mebjas): figure out the source of the error, current hack
+                runningOutputFeed = new OutputFeed(inputFeedElement, outputFeedElement);
+                runningOutputFeed.start();
+                logError(err);
+                cameraIdList.disabled = false;
+                experimentList.disabled = false;
+            })
+        }
+
+        if (runningOutputFeed) {
+            runningOutputFeed.stop();
+            runningOutputFeed = undefined;
+        }
+
+        if (runningInputFeed) {
+            runningInputFeed.stop()
+            .then(_ => {
+                setupNewCamera();
+            })
+            .catch(err => {
+                logError(err);
+                cameraIdList.disabled = false;
+                experimentList.disabled = false;
+            });
+        } else {
+            setupNewCamera();
+        }
+    })
+});
+</script>

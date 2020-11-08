@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "ES5",
+        "module": "commonjs",
+        "sourceMap": true,
+        // "allowJs": true
+    },
+    "files": [
+        "assets/research/vision/library.ts",
+        "assets/research/vision/operators.ts",
+        "assets/research/vision/app.ts",
+    ]
+}

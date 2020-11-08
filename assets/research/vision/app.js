@@ -1,186 +1,93 @@
-class FileSelector {
-    constructor(element, observer) {
+var FileSelector = /** @class */ (function () {
+    function FileSelector(element, observer) {
+        var _this = this;
         this.element = element;
         this.observer = observer;
-
-        this.isLocked = false;
+        this.locked = false;
         this.fileReader = new FileReader();
-        this.fileReader.onload = r => this._loadImage(r);
-
-        let $this = this;
-        this.element.addEventListener('change', evt => {
-            let file = $this.element.files[0];
+        this.fileReader.onload
+            = function (fr, _) { return _this.loadImage(fr, _); };
+        this.element.addEventListener('change', function (_) {
+            var file = _this.element.files[0];
             if (file) {
-                $this.fileReader.readAsDataURL(file);
+                _this.fileReader.readAsDataURL(file);
             }
         });
     }
-
-    lock() {
+    FileSelector.prototype.lock = function () {
         this.element.disabled = true;
-    }
-
-    unlock() {
+        this.locked = true;
+    };
+    FileSelector.prototype.unlock = function () {
         this.element.disabled = false;
-    }
-
-    _loadImage(result) {
-        let $this = this;
-        let image = new Image();
-        image.onload = _ => {
-            if ($this.observer) {
-                $this.observer(image);
+        this.locked = false;
+    };
+    FileSelector.prototype.isLocked = function () {
+        return this.locked;
+    };
+    FileSelector.prototype.loadImage = function (fr, _) {
+        var _this = this;
+        var image = new Image();
+        image.onload = function (_) {
+            if (_this.observer) {
+                _this.observer(image);
             }
-        }
-
+        };
         image.src = this.fileReader.result;
-    }
-}
-
-class Toolbar {
-    constructor(element, workspace) {
-        this.element = element;
-        this.workspace = workspace;
-
-        this.isLocked = true;
-        this.renderInitialUi();
-    }
-
-    lock() {
-        this.isLocked = true;
-        this.element.style.opacity = "0.5";
-    }
-
-    unlock() {
-        this.isLocked = false;
-        this.element.style.opacity = "1";
-    }
-
-    renderInitialUi() {
-        let $this = this;
-        this.element.style.opacity = "0.5";
-
-        let operatorsHeader = document.createElement("div");
-        operatorsHeader.innerHTML = "Operators";
-        this.element.appendChild(operatorsHeader);
-
-        let operators = OperatorManager.getInstance().getOperators();
-        console.log(operators);
-        for (let i = 0; i < operators.length; ++i) {
-            let operator = operators[i];
-
-            // Insert header
-            let div = document.createElement("div");
-            div.style.padding = "5px";
-            div.style.marginTop = "5px";
-            div.style.border = "1px solid silver";
-            let header = document.createElement("div");
-            header.innerHTML = operator.name;
-            div.appendChild(header);
-
-            // Insert the arguments
-            for (let j = 0; j < operator.arguments.length; ++j) {
-                let argument = operator.arguments[j];
-                let argumentDiv = document.createElement("div");
-                let argumentHeader = document.createElement("div");
-                argumentHeader.innerHTML = argument.name;
-                argumentDiv.appendChild(argumentHeader);
-
-                let slider = document.createElement("input");
-                slider.type = "range";
-                slider.min = argument.range.min;
-                slider.max = argument.range.max;
-                slider.step = argument.range.step;
-                slider.value = argument.getValue();
-                argumentDiv.appendChild(slider);
-
-                let meta = document.createElement("span");
-                meta.innerHTML = `Value = ${argument.getValue()}`;
-                slider.addEventListener('change', _ => {
-                    meta.innerHTML = `Value = ${slider.value}`;
-                    argument.update(slider.value);
-                    let fn = operator.fn();
-                    $this.workspace.updateFunction(fn);
-                });
-                argumentDiv.appendChild(meta);
-                div.appendChild(argumentDiv);
-            }
-            // Insert the footer
-            let footer = document.createElement("div");
-            footer.innerHTML = operator.description;
-            div.appendChild(footer);
-            this.element.appendChild(div);
-        }
-    }
-}
-
-class Metadata {
-    constructor(element) {
-        this.element = element;
-        this.imageCtx = undefined;
-
-        this.canvasWidth = 256;
-        this.canvasHeight = 100;
-    }
-
-    renderInitialUi() {
-        let histHeader = document.createElement("div");
-        histHeader.innerHTML = "Histogram";
-        this.element.appendChild(histHeader);
-
-        let histCanvas = document.createElement("canvas");
-        histCanvas.width = this.canvasWidth;
-        histCanvas.height = this.canvasHeight;
-        histCanvas.style.border = "1px solid gray";
-        this.histCtx = histCanvas.getContext("2d");
-        this.histCtx.width = this.canvasWidth;
-        this.histCtx.height = this.canvasHeight;
-        this.element.appendChild(histCanvas);
-
-        let cdfHeader = document.createElement("div");
-        cdfHeader.innerHTML = "Cumulative distribution Fn";
-        this.element.appendChild(cdfHeader);
-
-        let cdfCanvas = document.createElement("canvas");
-        cdfCanvas.width = this.canvasWidth;
-        cdfCanvas.height = this.canvasHeight;
-        cdfCanvas.style.border = "1px solid gray";
-        this.cdfCtx = cdfCanvas.getContext("2d");
-        this.cdfCtx.width = this.canvasWidth;
-        this.cdfCtx.height = this.canvasHeight;
-        this.element.appendChild(cdfCanvas);
-    }
-
-    onCanvasUpdated(image) {
-        if (!this.histCtx || !this.cdfCtx) {
-            return;
-        }
-        let histograms = new Histograms(image);
-        histograms.renderToContext(
-            this.histCtx, this.canvasWidth, this.canvasHeight);
-
-        let cdfs = new CDFs(histograms);
-        cdfs.renderToContext(
-            this.cdfCtx, this.canvasWidth, this.canvasHeight);
-    }
-}
-
-class Workspace {
-    constructor(element, metadata) {
+    };
+    return FileSelector;
+}());
+var Workspace = /** @class */ (function () {
+    function Workspace(element, metadata) {
+        this.maxWidth = 600;
+        this.maxHeight = 400;
         this.element = element;
         this.metadata = metadata;
-
-        this.width = 600;
-        this.height = 400;
-
-        this.lastVImage = undefined;
     }
-
-    renderInitialUi() {
+    Workspace.prototype.updateFunction = function (fn, operatorType) {
+        if (!this.lastImage) {
+            console.warn("No vimage");
+        }
+        // this.lastVImage.forEach(fn);
+        var clone = this.lastImage.clone();
+        if (operatorType == OperatorType.Global) {
+            clone.runGlobalFn(fn);
+        }
+        else if (operatorType == OperatorType.Point) {
+            clone.forEach(fn);
+        }
+        clone.renderToContext(this.ctx);
+        this.metadata.onCanvasUpdated(clone);
+    };
+    Workspace.prototype.renderInitialUi = function () {
         this.element.innerHTML = "Select an image to modify";
-        let canvas = document.createElement('canvas');
-        canvas.width = this.width;
-        canvas.height = this.height;
+    };
+    // TODO(mebjas): image should be of type `Image`.
+    Workspace.prototype.renderImage = function (image) {
+        this.element.innerHTML = "";
+        var canvasWidth = image.width;
+        var canvasHeight = image.height;
+        if (canvasWidth > this.maxWidth) {
+            canvasHeight = this.maxWidth / canvasWidth * canvasHeight;
+            canvasWidth = this.maxWidth;
+        }
+        if (canvasHeight > this.maxHeight) {
+            canvasWidth = this.maxHeight / canvasHeight * canvasWidth;
+            canvasHeight = this.maxHeight;
+        }
+        console.log("From " + image.width + "x" + image.height + " --> " + canvasWidth + "x" + canvasHeight);
+        console.assert(image.width / image.height == canvasWidth / canvasHeight, "Incorrect aspect ratio");
+        this.renderCanvas(canvasWidth, canvasHeight);
+        this.ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+        this.ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvasWidth, canvasHeight);
+        var imageData = this.ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+        this.lastImage = new VImage(imageData);
+        this.metadata.onCanvasUpdated(this.lastImage);
+    };
+    Workspace.prototype.renderCanvas = function (width, height) {
+        var canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
         canvas.style.marginLeft = "auto";
         canvas.style.marginRight = "auto";
         canvas.style.marginTop = "20px";
@@ -188,83 +95,153 @@ class Workspace {
         this.element.appendChild(canvas);
         this.canvas = canvas;
         this.ctx = canvas.getContext("2d");
-        this.ctx.width = this.width;
-        this.ctx.height = this.height;
+    };
+    return Workspace;
+}());
+var Toolbar = /** @class */ (function () {
+    function Toolbar(element, workspace) {
+        this.element = element;
+        this.workspace = workspace;
+        this.locked = true;
+        this.render();
     }
-
-    renderImage(image) {
-        // TODO(mebjas): handle width & height & center positioning
-        let srcWidth = image.width,
-            srcHeight = image.height,
-            srcX = 0,
-            srcY = 0;
-        let destWidth = this.width,
-            destHeight = this.height,
-            destX = 0,
-            destY = 0;
-
-        if (image.width > image.height) {
-            destHeight = this.width / image.width * image.height;
-            destY = (this.height - destHeight) / 2;
-        } else {
-            destWidth = this.height / image.height * image.width;
-            destX = (this.width - destWidth) / 2;
+    Toolbar.prototype.lock = function () {
+        this.locked = true;
+        this.element.style.opacity = "0.5";
+    };
+    Toolbar.prototype.unlock = function () {
+        this.locked = false;
+        this.element.style.opacity = "1";
+    };
+    Toolbar.prototype.isLocked = function () {
+        return this.locked;
+    };
+    Toolbar.prototype.render = function () {
+        var _this = this;
+        this.element.style.opacity = "0.5";
+        var operatorsHeader = document.createElement("div");
+        operatorsHeader.innerHTML = "Operators";
+        operatorsHeader.innerHTML += " (<a href='https://github.com/mebjas/mebjas.github.io/blob/master/assets/research/vision/operators.js'>source code</a>)";
+        this.element.appendChild(operatorsHeader);
+        var operators = OperatorManager.getInstance().getOperators();
+        console.log(operators);
+        var _loop_1 = function (i) {
+            var operator = operators[i];
+            // Create top level element.
+            var div = document.createElement("div");
+            div.style.marginTop = "5px";
+            div.style.border = "1px solid silver";
+            this_1.element.appendChild(div);
+            // Insert header
+            var header = document.createElement("div");
+            header.style.padding = "5px 2px";
+            header.style.background = "#c0c0c059";
+            header.innerHTML = operator.name;
+            div.appendChild(header);
+            // Insert subheader
+            var subHeader = document.createElement("div");
+            subHeader.innerHTML = operator.description;
+            subHeader.style.fontSize = "9pt";
+            // subHeader.style.marginLeft = "5px";
+            header.appendChild(subHeader);
+            var _loop_2 = function (j) {
+                var argument = operator.arguments[j];
+                var argumentDiv = document.createElement("div");
+                argumentDiv.style.padding = "5px";
+                argumentDiv.style.display = "flex";
+                argumentDiv.style.fontSize = "10pt";
+                var argumentHeader = document.createElement("div");
+                argumentHeader.innerHTML = argument.name;
+                argumentHeader.style.flex = "2";
+                argumentDiv.appendChild(argumentHeader);
+                var slider = document.createElement("input");
+                slider.type = "range";
+                slider.min = "" + argument.range.min;
+                slider.max = "" + argument.range.max;
+                slider.step = "" + argument.range.step;
+                slider.value = argument.getValue();
+                slider.style.flex = "3";
+                argumentDiv.appendChild(slider);
+                var meta = document.createElement("span");
+                meta.innerHTML = "" + argument.getValue();
+                meta.style.flex = "1";
+                meta.style.textAlign = "center";
+                slider.addEventListener('change', function (_) {
+                    meta.innerHTML = "" + slider.value;
+                    argument.update(slider.value);
+                    var fn = operator.fn();
+                    _this.workspace.updateFunction(fn, operator.type);
+                });
+                argumentDiv.appendChild(meta);
+                div.appendChild(argumentDiv);
+            };
+            // Insert the arguments
+            for (var j = 0; j < operator.arguments.length; ++j) {
+                _loop_2(j);
+            }
+        };
+        var this_1 = this;
+        for (var i = 0; i < operators.length; ++i) {
+            _loop_1(i);
         }
-        
-        this.ctx.clearRect(0, 0, this.width, this.height);
-        this.ctx.drawImage(
-            image,
-            srcX,
-            srcY,
-            srcWidth,
-            srcHeight,
-            destX,
-            destY,
-            destWidth,
-            destHeight);
-
-        let imageData = this.ctx.getImageData(
-            0, 0, this.width, this.height);
-        this.lastVImage = new VImage(imageData);
-        this.metadata.onCanvasUpdated(this.lastVImage);
+    };
+    return Toolbar;
+}());
+var Metadata = /** @class */ (function () {
+    function Metadata(element) {
+        this.canvasWidth = 256;
+        this.canvasHeight = 100;
+        this.element = element;
     }
-
-    updateFunction(fn) {
-        if (!this.lastVImage) {
-            console.warn("No vimage");
+    Metadata.prototype.renderInitialUi = function () {
+        var histHeader = document.createElement("div");
+        histHeader.innerHTML = "Histogram";
+        this.element.appendChild(histHeader);
+        var histCanvas = document.createElement("canvas");
+        histCanvas.width = this.canvasWidth;
+        histCanvas.height = this.canvasHeight;
+        histCanvas.style.border = "1px solid gray";
+        this.histCtx = histCanvas.getContext("2d");
+        this.element.appendChild(histCanvas);
+        var cdfHeader = document.createElement("div");
+        cdfHeader.innerHTML = "Cumulative distribution Fn";
+        this.element.appendChild(cdfHeader);
+        var cdfCanvas = document.createElement("canvas");
+        cdfCanvas.width = this.canvasWidth;
+        cdfCanvas.height = this.canvasHeight;
+        cdfCanvas.style.border = "1px solid gray";
+        this.cdfCtx = cdfCanvas.getContext("2d");
+        this.element.appendChild(cdfCanvas);
+    };
+    Metadata.prototype.onCanvasUpdated = function (image) {
+        if (!this.histCtx || !this.cdfCtx) {
+            return;
         }
-
-        // this.lastVImage.forEach(fn);
-        let clone = this.lastVImage.clone();
-        clone.forEach(fn);
-        clone.renderToContext(this.ctx);
-        this.metadata.onCanvasUpdated(clone);
-    }
-
-    reset() {}
-}
-
-class App {
-    constructor(fileSelectorElem, workspaceElem, toolbarElem, metadataElem) {
-        let $this = this;
-        this.fileSelector = new FileSelector(
-            fileSelectorElem,
-            image => {
-                $this._onImageLoaded(image);
-                $this.toolbar.unlock();
-            });
+        var histograms = new Histograms(image);
+        histograms.renderToContext(this.histCtx, this.canvasWidth, this.canvasHeight);
+        var cdfs = new CDFs(histograms);
+        cdfs.renderToContext(this.cdfCtx, this.canvasWidth, this.canvasHeight);
+    };
+    return Metadata;
+}());
+var App = /** @class */ (function () {
+    function App(fileSelectorElem, workspaceElem, toolbarElem, metadataElem) {
+        var _this = this;
+        this.fileSelector = new FileSelector(fileSelectorElem, function (image) {
+            _this.onImageLoaded(image);
+            _this.toolbar.unlock();
+        });
         this.metadata = new Metadata(metadataElem);
         this.workspace = new Workspace(workspaceElem, this.metadata);
         this.toolbar = new Toolbar(toolbarElem, this.workspace);
     }
-
-    render() {
+    App.prototype.render = function () {
         this.workspace.renderInitialUi();
         this.metadata.renderInitialUi();
-    }
-
-    _onImageLoaded(image) {
-        this.workspace.reset();
+    };
+    App.prototype.onImageLoaded = function (image) {
         this.workspace.renderImage(image);
-    }
-}
+    };
+    return App;
+}());
+//# sourceMappingURL=app.js.map

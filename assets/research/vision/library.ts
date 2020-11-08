@@ -5,6 +5,7 @@ class VImage {
 
     readonly width : number;
     readonly height : number;
+    readonly channels: number = 3;
     private imageData : ImageData;
 
     constructor(imageData: ImageData) {
@@ -64,12 +65,21 @@ class VImage {
     forEach(operator: Function) : void {
         for (let y = 0; y < this.height; ++y) {
             for (let x = 0; x < this.width; ++x) {
-                for (let c = 0; c < 3; ++c) {
+                for (let c = 0; c < this.channels; ++c) {
                     let updatedValue = operator(x, y, c, this.at(x, y, c));
                     this.update(x, y, c, updatedValue);
                 }
             }
         }
+    }
+
+    /**
+     * Runs a global function on the image, that can modify it's content
+     *
+     * @param operator operator
+     */
+    runGlobalFn(operator: Function): void {
+        operator(this);
     }
 }
 
@@ -216,6 +226,22 @@ class Histograms {
 }
 
 type CDF = Array<number>;
+const createEmptyCdf = (binSize: number): CDF => {
+    let cdf: CDF = [];
+    for (let i = 0; i < binSize; i++) {
+        cdf.push(0);
+    }
+    return cdf;
+}
+
+const createEmptyCdfLike = (cdf: CDF): CDF => {
+    let newCdf: CDF = [];
+    for (let i = 0; i < cdf.length; i++) {
+        newCdf.push(0);
+    }
+    return newCdf;
+}
+
 class CDFs {
     private histograms: Histograms;
     private rCdf: CDF; 
@@ -227,6 +253,19 @@ class CDFs {
         this.histograms = histograms;
 
         this.compute();
+    }
+
+    public getColorCdfs(channel: number): CDF {
+        switch(channel) {
+            case 0: return this.rCdf;
+            case 1: return this.gCdf;
+            case 2: return this.bCdf
+        }
+        throw "Invalid channel, max value = 2";
+    }
+
+    public getLumaCdf(): CDF {
+        return this.lumaCdf;
     }
 
     public renderToContext(
@@ -273,10 +312,10 @@ class CDFs {
         let bHist = this.histograms.getColorHistogram(2);
         let lumaHist = this.histograms.getLumaHistogram();
 
-        this.rCdf = this.createEmptyCdf();
-        this.gCdf = this.createEmptyCdf();
-        this.bCdf = this.createEmptyCdf();
-        this.lumaCdf = this.createEmptyCdf();
+        this.rCdf = createEmptyCdf(this.histograms.binSize);
+        this.gCdf = createEmptyCdf(this.histograms.binSize);
+        this.bCdf = createEmptyCdf(this.histograms.binSize);
+        this.lumaCdf = createEmptyCdf(this.histograms.binSize);
 
         this.rCdf[0] = rHist[0]; 
         this.gCdf[0] = gHist[0]; 
@@ -290,13 +329,5 @@ class CDFs {
             this.bCdf[i] = this.bCdf[i - 1] + bHist[i];
             this.lumaCdf[i] = this.lumaCdf[i - 1] + lumaHist[i];
         }
-    }
-
-    private createEmptyCdf(): CDF {
-        let hist: CDF = [];
-        for (let i = 0; i < this.histograms.binSize; i++) {
-            hist.push(0);
-        }
-        return hist;
     }
 }
