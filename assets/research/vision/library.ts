@@ -6,15 +6,32 @@ class VImage {
     readonly width : number;
     readonly height : number;
     readonly channels: number = 3;
+    readonly readonlyImageData: ImageData;
+
     private imageData : ImageData;
 
     constructor(imageData: ImageData) {
         this.width = imageData.width;
         this.height = imageData.height;
+        this.readonlyImageData = new ImageData(
+            new Uint8ClampedArray(imageData.data),
+            this.width,
+            this.height);
+
         this.imageData = imageData;
     }
+
+    /** Resets the image to it's original state. */
+    public reset(): VImage {
+        this.imageData = new ImageData(
+            new Uint8ClampedArray(this.readonlyImageData.data),
+            this.width,
+            this.height);
+        return this;
+    }
     
-    clone(): VImage {
+    /** Creates a clone of this image. */
+    public clone(): VImage {
         let imageDataCopy = new ImageData(
             new Uint8ClampedArray(this.imageData.data),
             this.width,
@@ -30,7 +47,7 @@ class VImage {
      * @param {Number} y Y Coordinate
      * @param {Number} c Color channel, 0, 1, 2 are R, G, B respectively
      */
-    at(x : number, y : number, c : number) : number {
+    public at(x : number, y : number, c : number) : number {
         let index : number = (y * this.width + x) * 4 + c;
         return this.imageData.data[index];
     }
@@ -43,7 +60,7 @@ class VImage {
      * @param {Number} c Color channel, 0, 1, 2 are R, G, B respectively
      * @param {Number} val Intensity value at given coordinates
      */
-    update(x : number, y : number, c : number, val: number) : void {
+    public update(x : number, y : number, c : number, val: number) : void {
         this.imageData.data[(y * this.width + x) * 4 + c] = val;
     }
 
@@ -52,8 +69,8 @@ class VImage {
      * 
      * @param {CanvasRenderingContext2D} context a Valid canvas context.
      */
-    renderToContext(context: CanvasRenderingContext2D) : void {
-        // TODO(mebjas): rendere with full dimensions of the canvas.
+    public renderToContext(context: CanvasRenderingContext2D) : void {
+        // TODO(mebjas): render with full dimensions of the canvas.
         context.putImageData(this.imageData, 0, 0);
     }
 
@@ -63,7 +80,7 @@ class VImage {
      * @param fn operator to run on 
      * @param operatorType type of the operator
      */
-    runFn(fn: Function, operatorType: OperatorType): void {
+    public runFn(fn: Function, operatorType: OperatorType): void {
         if (operatorType == OperatorType.Global) {
             this.runGlobalFn(fn);
         } else if (operatorType == OperatorType.Point) {
@@ -112,6 +129,50 @@ class VImage {
     }
 }
 
+enum Channel {
+    Red = 0,
+    Blue = 1,
+    Green = 2,
+    Luma = 3
+}
+const AllChannels: Array<Channel> = [
+    Channel.Red,
+    Channel.Blue,
+    Channel.Green,
+    Channel.Luma];
+
+const CreateDefaultSelectionOfChannelsToShow
+    = (): { [channel: number]: boolean } => {
+    let result: { [channel: number]: boolean } = {};
+    AllChannels.forEach(channel => {
+        result[channel] = true;
+    });
+
+    return result;
+}
+
+const getChannelCode = (channel: Channel): string => {
+    switch(channel) {
+        case Channel.Red: return "R";
+        case Channel.Green: return "G";
+        case Channel.Blue: return "B";
+        case Channel.Luma: return "Y";
+        default:
+            throw `Invalid channel id passed ${channel}`;
+    }
+}
+
+const getChannelByCode = (channelCode: string): Channel => {
+    switch(channelCode) {
+        case "R": return Channel.Red;
+        case "G": return Channel.Green;
+        case "B": return Channel.Blue;
+        case "Y": return Channel.Luma;
+        default:
+            throw `Invalid channel code passed ${channelCode}`;
+    }
+}
+
 type Histogram = Array<number>;
 
 class Histograms {
@@ -134,17 +195,45 @@ class Histograms {
     public renderToContext(
         context: CanvasRenderingContext2D,
         contextWidth: number,
-        contextHeight: number) {
+        contextHeight: number,
+        channelsToShow?: { [channel: number]: boolean }) {
         context.clearRect(0, 0, contextWidth, contextHeight);
         let maxVal = this.findMaxVal();
-        this.renderSingleHist(
-            context, contextWidth, contextHeight, this.rHist, "#FF0000", maxVal);
-        this.renderSingleHist(
-            context, contextWidth, contextHeight, this.gHist, "#00FF00", maxVal);
-        this.renderSingleHist(
-            context, contextWidth, contextHeight, this.bHist, "#0000FF", maxVal);
-        this.renderSingleHist(
-            context, contextWidth, contextHeight, this.lumaHist, "#000000", maxVal);
+
+        if (!channelsToShow) {
+            channelsToShow = CreateDefaultSelectionOfChannelsToShow();
+        }
+        if (channelsToShow[Channel.Red]) {
+            this.renderSingleHist(
+                context,
+                contextWidth,
+                contextHeight,
+                this.rHist,
+                "#FF0000",
+                maxVal);    
+        }
+        if (channelsToShow[Channel.Green]) {
+            this.renderSingleHist(
+                context,
+                contextWidth,
+                contextHeight,
+                this.gHist,
+                "#00FF00",
+                maxVal);
+        }
+        if (channelsToShow[Channel.Blue]) {
+            this.renderSingleHist(
+                context,
+                contextWidth,
+                contextHeight,
+                this.bHist,
+                "#0000FF",
+                maxVal);        
+        }
+        if (channelsToShow[Channel.Luma]) {
+            this.renderSingleHist(
+                context, contextWidth, contextHeight, this.lumaHist, "#000000", maxVal);
+        }
     }
 
     public getColorHistogram(channel: number): Histogram {
@@ -300,17 +389,50 @@ class CDFs {
     public renderToContext(
         context: CanvasRenderingContext2D,
         contextWidth: number,
-        contextHeight: number) {
+        contextHeight: number,
+        channelsToShow?: { [channel: number]: boolean }) {
         context.clearRect(0, 0, contextWidth, contextHeight);
         let maxVal = 1.0;
-        this.renderSingleCdf(
-            context, contextWidth, contextHeight, this.rCdf, "#FF0000", maxVal);
-        this.renderSingleCdf(
-            context, contextWidth, contextHeight, this.gCdf, "#00FF00", maxVal);
-        this.renderSingleCdf(
-            context, contextWidth, contextHeight, this.bCdf, "#0000FF", maxVal);
-        this.renderSingleCdf(
-            context, contextWidth, contextHeight, this.lumaCdf, "#000000", maxVal);
+        if (!channelsToShow) {
+            channelsToShow = CreateDefaultSelectionOfChannelsToShow();
+        }
+        // TODO(mebjas): Make these colors constant
+        if (channelsToShow[Channel.Red]) {
+            this.renderSingleCdf(
+                context,
+                contextWidth,
+                contextHeight,
+                this.rCdf,
+                "#FF0000",
+                maxVal);
+        }
+        if (channelsToShow[Channel.Green]) {
+            this.renderSingleCdf(
+                context,
+                contextWidth,
+                contextHeight,
+                this.gCdf,
+                "#00FF00",
+                maxVal);
+        }
+        if (channelsToShow[Channel.Blue]) {
+            this.renderSingleCdf(
+                context,
+                contextWidth,
+                contextHeight,
+                this.bCdf,
+                "#0000FF",
+                maxVal);
+        }
+        if (channelsToShow[Channel.Luma]) {
+            this.renderSingleCdf(
+                context,
+                contextWidth,
+                contextHeight,
+                this.lumaCdf,
+                "#000000",
+                maxVal);
+        }
     }
 
     private renderSingleCdf(

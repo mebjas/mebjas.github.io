@@ -39,8 +39,8 @@ var FileSelector = /** @class */ (function () {
 }());
 var Workspace = /** @class */ (function () {
     function Workspace(element, metadata) {
-        this.maxWidth = 600;
-        this.maxHeight = 400;
+        this.maxWidth = 800;
+        this.maxHeight = 600;
         this.element = element;
         this.metadata = metadata;
     }
@@ -48,10 +48,24 @@ var Workspace = /** @class */ (function () {
         if (!this.lastImage) {
             console.warn("No vimage");
         }
+        var t0 = performance.now();
         var clone = this.lastImage.clone();
         clone.runFn(fn, operatorType);
+        var t1 = performance.now();
         clone.renderToContext(this.ctx);
+        var t2 = performance.now();
         this.metadata.onCanvasUpdated(clone);
+        var t3 = performance.now();
+        var operationTime = (t1 - t0).toPrecision(2);
+        var imageRenderTime = (t2 - t1).toPrecision(2);
+        var histRenderingime = (t3 - t2).toPrecision(2);
+        this.metadata.updatePerfString("Image Operation: " + operationTime + " ms<br>"
+            + ("Image Render: " + imageRenderTime + " ms<br>")
+            + ("Histogram Render: " + histRenderingime + " ms"));
+    };
+    Workspace.prototype.reset = function () {
+        this.lastImage.reset().renderToContext(this.ctx);
+        this.metadata.onCanvasUpdated(this.lastImage);
     };
     Workspace.prototype.renderInitialUi = function () {
         this.element.innerHTML = "Select an image to modify";
@@ -70,7 +84,8 @@ var Workspace = /** @class */ (function () {
             canvasHeight = this.maxHeight;
         }
         console.log("From " + image.width + "x" + image.height + " --> " + canvasWidth + "x" + canvasHeight);
-        console.assert(image.width / image.height == canvasWidth / canvasHeight, "Incorrect aspect ratio");
+        console.assert(Math.abs((image.width / image.height)
+            - (canvasWidth / canvasHeight)) < 0.01, "Incorrect aspect ratio");
         this.renderCanvas(canvasWidth, canvasHeight);
         this.ctx.clearRect(0, 0, canvasWidth, canvasHeight);
         this.ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvasWidth, canvasHeight);
@@ -87,7 +102,6 @@ var Workspace = /** @class */ (function () {
         canvas.style.marginTop = "20px";
         canvas.style.border = "1px solid gray";
         this.element.appendChild(canvas);
-        this.canvas = canvas;
         this.ctx = canvas.getContext("2d");
     };
     return Workspace;
@@ -199,7 +213,6 @@ var Toolbar = /** @class */ (function () {
     };
     Toolbar.prototype.reset = function () {
         var _this = this;
-        console.log(this.operatorSliderMap);
         var keys = Object.keys(this.operatorSliderMap);
         keys.forEach(function (key) {
             var sliderValuePairs = _this.operatorSliderMap[key];
@@ -214,19 +227,44 @@ var Toolbar = /** @class */ (function () {
             });
         });
         // TODO(mebjas): Move to original image and not the inverted value.
+        this.workspace.reset();
     };
     return Toolbar;
 }());
 var Metadata = /** @class */ (function () {
     function Metadata(element) {
+        var _this = this;
+        this.channelsToShow = {};
         this.canvasWidth = 256;
         this.canvasHeight = 100;
         this.element = element;
+        // Initialize channels to show.
+        AllChannels.forEach(function (channel) {
+            _this.channelsToShow[channel] = true;
+        });
     }
     Metadata.prototype.renderInitialUi = function () {
+        var _this = this;
         var histHeader = document.createElement("div");
-        histHeader.innerHTML = "Histogram";
+        histHeader.innerHTML = "Histogram ";
         this.element.appendChild(histHeader);
+        AllChannels.forEach(function (channel) {
+            var channelSpan = document.createElement("span");
+            var checkBox = document.createElement("input");
+            checkBox.type = "checkbox";
+            checkBox.checked = _this.channelsToShow[channel];
+            channelSpan.appendChild(checkBox);
+            var channelTag = document.createElement("span");
+            channelTag.innerHTML = " " + getChannelCode(channel) + " ";
+            channelSpan.appendChild(channelTag);
+            checkBox.addEventListener("change", function (_) {
+                var isChecked = checkBox.checked;
+                _this.channelsToShow[channel] = isChecked;
+                _this.updateLastHistogram();
+            });
+            // after everything.
+            histHeader.appendChild(channelSpan);
+        });
         var histCanvas = document.createElement("canvas");
         histCanvas.width = this.canvasWidth;
         histCanvas.height = this.canvasHeight;
@@ -242,28 +280,48 @@ var Metadata = /** @class */ (function () {
         cdfCanvas.style.border = "1px solid gray";
         this.cdfCtx = cdfCanvas.getContext("2d");
         this.element.appendChild(cdfCanvas);
+        var perfHeader = document.createElement("div");
+        perfHeader.innerHTML = "Performance";
+        this.element.appendChild(perfHeader);
+        this.perfSection = document.createElement("div");
+        this.perfSection.innerHTML = "No operations yet";
+        this.element.appendChild(this.perfSection);
     };
     Metadata.prototype.onCanvasUpdated = function (image) {
         if (!this.histCtx || !this.cdfCtx) {
             return;
         }
+        this.lastImage = image;
         var histograms = new Histograms(image);
-        histograms.renderToContext(this.histCtx, this.canvasWidth, this.canvasHeight);
+        histograms.renderToContext(this.histCtx, this.canvasWidth, this.canvasHeight, this.channelsToShow);
         var cdfs = new CDFs(histograms);
-        cdfs.renderToContext(this.cdfCtx, this.canvasWidth, this.canvasHeight);
+        cdfs.renderToContext(this.cdfCtx, this.canvasWidth, this.canvasHeight, this.channelsToShow);
+    };
+    Metadata.prototype.updatePerfString = function (perfString) {
+        if (!this.perfSection) {
+            console.warn("No perfSection, logged perf = " + perfString);
+        }
+        this.perfSection.innerHTML = perfString;
+    };
+    Metadata.prototype.updateLastHistogram = function () {
+        if (!this.lastImage) {
+            return;
+        }
+        this.onCanvasUpdated(this.lastImage);
     };
     return Metadata;
 }());
 var App = /** @class */ (function () {
     function App(fileSelectorElem, workspaceElem, toolbarElem, metadataElem) {
         var _this = this;
-        this.fileSelector = new FileSelector(fileSelectorElem, function (image) {
-            _this.onImageLoaded(image);
-            _this.toolbar.unlock();
-        });
         this.metadata = new Metadata(metadataElem);
         this.workspace = new Workspace(workspaceElem, this.metadata);
         this.toolbar = new Toolbar(toolbarElem, this.workspace);
+        // Unused argument.
+        var unusedFileSelector = new FileSelector(fileSelectorElem, function (image) {
+            _this.onImageLoaded(image);
+            _this.toolbar.unlock();
+        });
     }
     App.prototype.render = function () {
         this.workspace.renderInitialUi();

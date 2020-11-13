@@ -6,8 +6,15 @@ var VImage = /** @class */ (function () {
         this.channels = 3;
         this.width = imageData.width;
         this.height = imageData.height;
+        this.readonlyImageData = new ImageData(new Uint8ClampedArray(imageData.data), this.width, this.height);
         this.imageData = imageData;
     }
+    /** Resets the image to it's original state. */
+    VImage.prototype.reset = function () {
+        this.imageData = new ImageData(new Uint8ClampedArray(this.readonlyImageData.data), this.width, this.height);
+        return this;
+    };
+    /** Creates a clone of this image. */
     VImage.prototype.clone = function () {
         var imageDataCopy = new ImageData(new Uint8ClampedArray(this.imageData.data), this.width, this.height);
         return new VImage(imageDataCopy);
@@ -40,7 +47,7 @@ var VImage = /** @class */ (function () {
      * @param {CanvasRenderingContext2D} context a Valid canvas context.
      */
     VImage.prototype.renderToContext = function (context) {
-        // TODO(mebjas): rendere with full dimensions of the canvas.
+        // TODO(mebjas): render with full dimensions of the canvas.
         context.putImageData(this.imageData, 0, 0);
     };
     /**
@@ -98,6 +105,46 @@ var VImage = /** @class */ (function () {
     };
     return VImage;
 }());
+var Channel;
+(function (Channel) {
+    Channel[Channel["Red"] = 0] = "Red";
+    Channel[Channel["Blue"] = 1] = "Blue";
+    Channel[Channel["Green"] = 2] = "Green";
+    Channel[Channel["Luma"] = 3] = "Luma";
+})(Channel || (Channel = {}));
+var AllChannels = [
+    Channel.Red,
+    Channel.Blue,
+    Channel.Green,
+    Channel.Luma
+];
+var CreateDefaultSelectionOfChannelsToShow = function () {
+    var result = {};
+    AllChannels.forEach(function (channel) {
+        result[channel] = true;
+    });
+    return result;
+};
+var getChannelCode = function (channel) {
+    switch (channel) {
+        case Channel.Red: return "R";
+        case Channel.Green: return "G";
+        case Channel.Blue: return "B";
+        case Channel.Luma: return "Y";
+        default:
+            throw "Invalid channel id passed " + channel;
+    }
+};
+var getChannelByCode = function (channelCode) {
+    switch (channelCode) {
+        case "R": return Channel.Red;
+        case "G": return Channel.Green;
+        case "B": return Channel.Blue;
+        case "Y": return Channel.Luma;
+        default:
+            throw "Invalid channel code passed " + channelCode;
+    }
+};
 var Histograms = /** @class */ (function () {
     function Histograms(image, binSize) {
         if (binSize === void 0) { binSize = 32; }
@@ -105,13 +152,24 @@ var Histograms = /** @class */ (function () {
         this.binSize = binSize;
         this.compute();
     }
-    Histograms.prototype.renderToContext = function (context, contextWidth, contextHeight) {
+    Histograms.prototype.renderToContext = function (context, contextWidth, contextHeight, channelsToShow) {
         context.clearRect(0, 0, contextWidth, contextHeight);
         var maxVal = this.findMaxVal();
-        this.renderSingleHist(context, contextWidth, contextHeight, this.rHist, "#FF0000", maxVal);
-        this.renderSingleHist(context, contextWidth, contextHeight, this.gHist, "#00FF00", maxVal);
-        this.renderSingleHist(context, contextWidth, contextHeight, this.bHist, "#0000FF", maxVal);
-        this.renderSingleHist(context, contextWidth, contextHeight, this.lumaHist, "#000000", maxVal);
+        if (!channelsToShow) {
+            channelsToShow = CreateDefaultSelectionOfChannelsToShow();
+        }
+        if (channelsToShow[Channel.Red]) {
+            this.renderSingleHist(context, contextWidth, contextHeight, this.rHist, "#FF0000", maxVal);
+        }
+        if (channelsToShow[Channel.Green]) {
+            this.renderSingleHist(context, contextWidth, contextHeight, this.gHist, "#00FF00", maxVal);
+        }
+        if (channelsToShow[Channel.Blue]) {
+            this.renderSingleHist(context, contextWidth, contextHeight, this.bHist, "#0000FF", maxVal);
+        }
+        if (channelsToShow[Channel.Luma]) {
+            this.renderSingleHist(context, contextWidth, contextHeight, this.lumaHist, "#000000", maxVal);
+        }
     };
     Histograms.prototype.getColorHistogram = function (channel) {
         switch (channel) {
@@ -232,13 +290,25 @@ var CDFs = /** @class */ (function () {
     CDFs.prototype.getLumaCdf = function () {
         return this.lumaCdf;
     };
-    CDFs.prototype.renderToContext = function (context, contextWidth, contextHeight) {
+    CDFs.prototype.renderToContext = function (context, contextWidth, contextHeight, channelsToShow) {
         context.clearRect(0, 0, contextWidth, contextHeight);
         var maxVal = 1.0;
-        this.renderSingleCdf(context, contextWidth, contextHeight, this.rCdf, "#FF0000", maxVal);
-        this.renderSingleCdf(context, contextWidth, contextHeight, this.gCdf, "#00FF00", maxVal);
-        this.renderSingleCdf(context, contextWidth, contextHeight, this.bCdf, "#0000FF", maxVal);
-        this.renderSingleCdf(context, contextWidth, contextHeight, this.lumaCdf, "#000000", maxVal);
+        if (!channelsToShow) {
+            channelsToShow = CreateDefaultSelectionOfChannelsToShow();
+        }
+        // TODO(mebjas): Make these colors constant
+        if (channelsToShow[Channel.Red]) {
+            this.renderSingleCdf(context, contextWidth, contextHeight, this.rCdf, "#FF0000", maxVal);
+        }
+        if (channelsToShow[Channel.Green]) {
+            this.renderSingleCdf(context, contextWidth, contextHeight, this.gCdf, "#00FF00", maxVal);
+        }
+        if (channelsToShow[Channel.Blue]) {
+            this.renderSingleCdf(context, contextWidth, contextHeight, this.bCdf, "#0000FF", maxVal);
+        }
+        if (channelsToShow[Channel.Luma]) {
+            this.renderSingleCdf(context, contextWidth, contextHeight, this.lumaCdf, "#000000", maxVal);
+        }
     };
     CDFs.prototype.renderSingleCdf = function (context, contextWidth, contextHeight, hist, strokeStyle, maxVal) {
         var epsilon = 0.01;

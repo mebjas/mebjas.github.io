@@ -57,11 +57,10 @@ class Workspace {
     private element: HTMLElement;
     private metadata: Metadata;
     private lastImage?: VImage;
-    private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
  
-    private readonly maxWidth = 600;
-    private readonly maxHeight = 400;
+    private readonly maxWidth = 800;
+    private readonly maxHeight = 600;
 
     constructor(element: HTMLElement, metadata: Metadata) {
         this.element = element;
@@ -73,10 +72,27 @@ class Workspace {
             console.warn("No vimage");
         }
 
+        const t0 = performance.now();
         let clone = this.lastImage.clone();
         clone.runFn(fn, operatorType);
+        const t1 = performance.now();
         clone.renderToContext(this.ctx);
+        const t2 = performance.now();
         this.metadata.onCanvasUpdated(clone);
+        const t3 = performance.now();
+
+        const operationTime = (t1 - t0).toPrecision(2);
+        const imageRenderTime = (t2 - t1).toPrecision(2);
+        const histRenderingime = (t3 - t2).toPrecision(2);
+        this.metadata.updatePerfString(
+            `Image Operation: ${operationTime} ms<br>`
+            + `Image Render: ${imageRenderTime} ms<br>`
+            + `Histogram Render: ${histRenderingime} ms`);
+    }
+
+    public reset() {
+        this.lastImage.reset().renderToContext(this.ctx);
+        this.metadata.onCanvasUpdated(this.lastImage);
     }
 
     public renderInitialUi() {
@@ -99,7 +115,8 @@ class Workspace {
 
         console.log(`From ${image.width}x${image.height} --> ${canvasWidth}x${canvasHeight}`);
         console.assert(
-            image.width / image.height == canvasWidth / canvasHeight,
+            Math.abs((image.width / image.height)
+                - (canvasWidth / canvasHeight)) < 0.01,
             "Incorrect aspect ratio");
         this.renderCanvas(canvasWidth, canvasHeight);
         this.ctx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -121,7 +138,7 @@ class Workspace {
     }
 
     private renderCanvas(width: number, height: number) {
-        let canvas = document.createElement('canvas');
+        const canvas = document.createElement('canvas');
         canvas.width = width;
         canvas.height = height;
         canvas.style.marginLeft = "auto";
@@ -129,7 +146,6 @@ class Workspace {
         canvas.style.marginTop = "20px";
         canvas.style.border = "1px solid gray";
         this.element.appendChild(canvas);
-        this.canvas = canvas;
         this.ctx = canvas.getContext("2d");
     }
 }
@@ -260,7 +276,6 @@ class Toolbar {
     }
 
     reset() {
-        console.log(this.operatorSliderMap);
         const keys = Object.keys(this.operatorSliderMap);
         keys.forEach(key => {
             const sliderValuePairs = this.operatorSliderMap[key];
@@ -278,26 +293,53 @@ class Toolbar {
         });
 
         // TODO(mebjas): Move to original image and not the inverted value.
+        this.workspace.reset();
     }
 }
 
 class Metadata {
     private element: HTMLElement;
-    private imageCtx: CanvasRenderingContext2D;
     private histCtx: CanvasRenderingContext2D;
     private cdfCtx: CanvasRenderingContext2D;
+    private channelsToShow: { [channel: number]: boolean } = {};
+    private lastImage?: VImage;
+    private perfSection?: HTMLElement;
 
     private readonly canvasWidth = 256;
     private readonly canvasHeight = 100;
 
     constructor(element: HTMLElement) {
         this.element = element;
+
+        // Initialize channels to show.
+        AllChannels.forEach(channel => {
+            this.channelsToShow[channel] = true;
+        });
     }
 
     public renderInitialUi() {
         let histHeader = document.createElement("div");
-        histHeader.innerHTML = "Histogram";
+        histHeader.innerHTML = "Histogram ";
         this.element.appendChild(histHeader);
+
+        AllChannels.forEach(channel => {
+            const channelSpan = document.createElement("span");
+            const checkBox = document.createElement("input");
+            checkBox.type = "checkbox";
+            checkBox.checked = this.channelsToShow[channel];
+            channelSpan.appendChild(checkBox);
+            const channelTag = document.createElement("span");
+            channelTag.innerHTML = ` ${getChannelCode(channel)} `;
+            channelSpan.appendChild(channelTag);
+            checkBox.addEventListener("change", _ => {
+                const isChecked: boolean = checkBox.checked;
+                this.channelsToShow[channel] = isChecked;
+                this.updateLastHistogram(); 
+            });
+
+            // after everything.
+            histHeader.appendChild(channelSpan);
+        });
 
         let histCanvas = document.createElement("canvas");
         histCanvas.width = this.canvasWidth;
@@ -316,24 +358,54 @@ class Metadata {
         cdfCanvas.style.border = "1px solid gray";
         this.cdfCtx = cdfCanvas.getContext("2d");
         this.element.appendChild(cdfCanvas);
+
+        let perfHeader = document.createElement("div");
+        perfHeader.innerHTML = "Performance";
+        this.element.appendChild(perfHeader);
+        this.perfSection = document.createElement("div");
+        this.perfSection.innerHTML = "No operations yet";
+        this.element.appendChild(this.perfSection);
     }
 
     public onCanvasUpdated(image: VImage) {
         if (!this.histCtx || !this.cdfCtx) {
             return;
         }
+        this.lastImage = image;
+
         let histograms = new Histograms(image);
         histograms.renderToContext(
-            this.histCtx, this.canvasWidth, this.canvasHeight);
+            this.histCtx,
+            this.canvasWidth,
+            this.canvasHeight,
+            this.channelsToShow);
 
         let cdfs = new CDFs(histograms);
         cdfs.renderToContext(
-            this.cdfCtx, this.canvasWidth, this.canvasHeight);
+            this.cdfCtx,
+            this.canvasWidth,
+            this.canvasHeight,
+            this.channelsToShow);
+    }
+
+    public updatePerfString(perfString: string) {
+        if (!this.perfSection) {
+            console.warn(`No perfSection, logged perf = ${perfString}`);
+        }
+
+        this.perfSection.innerHTML = perfString;
+    }
+
+    private updateLastHistogram() {
+        if (!this.lastImage) {
+            return;
+        }
+
+        this.onCanvasUpdated(this.lastImage);
     }
 }
 
 class App {
-    private fileSelector: FileSelector;
     private workspace: Workspace;
     private toolbar: Toolbar;
     private metadata: Metadata;
@@ -343,16 +415,18 @@ class App {
         workspaceElem: HTMLElement,
         toolbarElem: HTMLElement,
         metadataElem: HTMLElement) {
-        this.fileSelector = new FileSelector(
+        this.metadata = new Metadata(metadataElem);
+        this.workspace = new Workspace(workspaceElem, this.metadata);
+        this.toolbar = new Toolbar(toolbarElem, this.workspace);
+
+        // Unused argument.
+        const unusedFileSelector = new FileSelector(
             fileSelectorElem,
             image => {
                 this.onImageLoaded(image);
                 this.toolbar.unlock();
             }
         );
-        this.metadata = new Metadata(metadataElem);
-        this.workspace = new Workspace(workspaceElem, this.metadata);
-        this.toolbar = new Toolbar(toolbarElem, this.workspace);
     }
 
     public render() {

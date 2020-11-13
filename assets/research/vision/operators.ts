@@ -147,6 +147,15 @@ class KernelSize extends ArgumentBase {
             new VRange(1, 9, 2));
     }
 }
+
+class BinaryArgument extends ArgumentBase {
+    constructor() {
+        super(
+            "Binary Argument",
+            /* defaultValue= */ 0,
+            new VRange(0, 1, 0));
+    }
+}
 //#endregion
 
 //#region Point Operators
@@ -218,6 +227,7 @@ class GammaOperator implements Operator {
 OperatorManager.getInstance().register(new GammaOperator());
 //#endregion
 //#endregion
+//#endregion
 
 //#region Global Operators
 //#region HistorgramEqualization
@@ -253,7 +263,6 @@ class HistogramEqOperator implements Operator {
                     normalizedCdfs[c][i] = Math.floor(nj / N);
                 }
 
-                console.log(normalizedCdfs[c]);
                 for (let y = 0; y < image.height; ++y) {
                     for (let x = 0; x < image.width; ++x) {
                         let intensity = image.at(x, y, c);
@@ -317,6 +326,62 @@ class GaussianBlurringOperator implements Operator {
 }
 
 OperatorManager.getInstance().register(new GaussianBlurringOperator());
+//#endregion
+
+
+//#region DerivativeOperator
+class DerivativeOperator implements Operator {
+    readonly type = OperatorType.Local;
+    readonly name = "Derivative";
+    readonly description = "Converts to first order derivative of image";
+    readonly arguments = [];
+
+    constructor() {
+        this.arguments.push(new BinaryArgument());
+    }
+
+    public fn() {
+        const isEnabled = parseInt(this.arguments[0].getValue()) === 1;
+        return (image: VImage) => {
+            if (!isEnabled) {
+                return;
+            }
+
+            const computeGray = (x: number, y: number) => {
+                // return Math.floor((image.at(x, y, 0)
+                //     + image.at(x, y, 1)
+                //     + image.at(x, y, 2)) / 3);
+
+                return image.at(x, y, 0);
+            }
+
+            for (let y = 0; y < image.height; ++y) {
+                for (let x = 0; x < image.width; ++x) {
+                    if (x == 0 || y == 0) {
+                        image.update(x, y, 0, 0);
+                        image.update(x, y, 1, 0);
+                        image.update(x, y, 2, 0);
+                    } else {
+                        let derivativeXR = Math.abs(
+                            image.at(x, y, 0) - image.at(x - 1, y, 0));
+                        let derivativeXG = Math.abs(
+                            image.at(x, y, 1) - image.at(x - 1, y, 1));
+                        let derivativeXB = Math.abs(
+                            image.at(x, y, 2) - image.at(x - 1, y, 2));
+                        // let derivativeY = Math.abs(
+                        //     computeGray(x, y) - computeGray(x, y - 1));
+                        
+                        image.update(x, y, 0, clamp(derivativeXR, 0, 255));
+                        image.update(x, y, 1, clamp(derivativeXG, 0, 255));
+                        image.update(x, y, 2, clamp(derivativeXB, 0, 255));
+                    }
+                }  
+            }
+        }
+    }
+}
+
+// OperatorManager.getInstance().register(new DerivativeOperator());
 //#endregion
 
 //#region Sharpening
