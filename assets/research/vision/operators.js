@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+//#region Top level interfaces / classes
 var VRange = /** @class */ (function () {
     function VRange(min, max, step) {
         this.min = min;
@@ -22,6 +23,11 @@ var VRange = /** @class */ (function () {
     };
     return VRange;
 }());
+var OperatorArgumentType;
+(function (OperatorArgumentType) {
+    OperatorArgumentType[OperatorArgumentType["Continous"] = 0] = "Continous";
+    OperatorArgumentType[OperatorArgumentType["Discrete"] = 1] = "Discrete";
+})(OperatorArgumentType || (OperatorArgumentType = {}));
 var OperatorType;
 (function (OperatorType) {
     OperatorType[OperatorType["Point"] = 0] = "Point";
@@ -46,8 +52,11 @@ var OperatorManager = /** @class */ (function () {
     };
     return OperatorManager;
 }());
+//#endregion
 //#region Global functions
 var clamp = function (val, min, max) {
+    if (min === void 0) { min = 0; }
+    if (max === void 0) { max = 255; }
     if (val < min)
         return min;
     if (val > max)
@@ -57,27 +66,83 @@ var clamp = function (val, min, max) {
 var blendValue = function (modified, original, alpha) {
     return modified * alpha + original * (1 - alpha);
 };
+/**
+ * Converts the image inline to gray value.
+ *
+ * @param image image to convert.
+ */
+var convertToGray = function (image) {
+    for (var y = 0; y < image.height; ++y) {
+        for (var x = 0; x < image.width; ++x) {
+            var sum = 0;
+            for (var c = 0; c < image.channels; ++c) {
+                sum = image.at(x, y, c);
+            }
+            var gray = clamp(Math.floor(sum / image.channels));
+            image.updateGray(x, y, gray);
+        }
+    }
+};
 //#endregion
 //#region GlobalArguments
-var ArgumentBase = /** @class */ (function () {
-    function ArgumentBase(name, defaultValue, range) {
+//#region Abstract classes for arguments
+var ContinousArgumentBase = /** @class */ (function () {
+    function ContinousArgumentBase(name, defaultValue, range) {
+        this.type = OperatorArgumentType.Continous;
         this.name = name;
         this.defaultValue = defaultValue;
         this.range = range;
         this.value = defaultValue;
     }
-    ArgumentBase.prototype.update = function (val) {
+    ContinousArgumentBase.prototype.update = function (val) {
         if (!this.range.inRange(val)) {
             throw "Invalid value of argument";
         }
         this.value = val;
     };
     ;
-    ArgumentBase.prototype.getValue = function () {
+    ContinousArgumentBase.prototype.getValue = function () {
         return this.value;
     };
-    return ArgumentBase;
+    return ContinousArgumentBase;
 }());
+var DiscreteArgumentBase = /** @class */ (function () {
+    function DiscreteArgumentBase(name, discreteValues, defaultValue) {
+        this.discreteValues = [];
+        this.type = OperatorArgumentType.Discrete;
+        this.name = name;
+        this.defaultValue = (defaultValue !== undefined)
+            ? defaultValue : NONE_VALUE;
+        this.discreteValues = discreteValues;
+        this.value = this.defaultValue;
+        if ((defaultValue === undefined)
+            && !this.isOneOfDiscreteValues(NONE_VALUE)) {
+            this.discreteValues.unshift(NONE_VALUE);
+        }
+    }
+    DiscreteArgumentBase.prototype.update = function (val) {
+        if (!this.isOneOfDiscreteValues(val)) {
+            throw "Invalid value of argument";
+        }
+        this.value = val;
+    };
+    ;
+    DiscreteArgumentBase.prototype.getValue = function () {
+        return this.value;
+    };
+    DiscreteArgumentBase.prototype.isOneOfDiscreteValues = function (value) {
+        for (var i = 0; i < this.discreteValues.length; ++i) {
+            if (value == this.discreteValues[i]) {
+                return true;
+            }
+        }
+        return false;
+    };
+    return DiscreteArgumentBase;
+}());
+//#endregion
+var NONE_VALUE = "none";
+//#region global arguments
 var BrightnessArgument = /** @class */ (function (_super) {
     __extends(BrightnessArgument, _super);
     function BrightnessArgument() {
@@ -85,22 +150,47 @@ var BrightnessArgument = /** @class */ (function (_super) {
         /* defaultValue= */ 0, new VRange(-100, 100, 1)) || this;
     }
     return BrightnessArgument;
-}(ArgumentBase));
+}(ContinousArgumentBase));
 var LinearBlendArgument = /** @class */ (function (_super) {
     __extends(LinearBlendArgument, _super);
     function LinearBlendArgument(defaultValue) {
         return _super.call(this, "Blend (Α)", defaultValue === undefined ? 1 : defaultValue, new VRange(0, 1, 0.05)) || this;
     }
     return LinearBlendArgument;
-}(ArgumentBase));
+}(ContinousArgumentBase));
 var ContrastArgument = /** @class */ (function (_super) {
     __extends(ContrastArgument, _super);
-    function ContrastArgument() {
+    function ContrastArgument(min, max, step) {
+        if (min === void 0) { min = 0; }
+        if (max === void 0) { max = 5; }
+        if (step === void 0) { step = 0.1; }
         return _super.call(this, "Contrast (a)", 
-        /* defaultValue= */ 1, new VRange(0, 5, 0.1)) || this;
+        /* defaultValue= */ 1, new VRange(min, max, step)) || this;
     }
     return ContrastArgument;
-}(ArgumentBase));
+}(ContinousArgumentBase));
+var ScalingArgument = /** @class */ (function (_super) {
+    __extends(ScalingArgument, _super);
+    function ScalingArgument(min, max, step, defaultValue) {
+        if (min === void 0) { min = 0; }
+        if (max === void 0) { max = 5; }
+        if (step === void 0) { step = 0.2; }
+        if (defaultValue === void 0) { defaultValue = 1; }
+        return _super.call(this, "Scale (s)", defaultValue, new VRange(min, max, step)) || this;
+    }
+    return ScalingArgument;
+}(ContinousArgumentBase));
+var ThresholdArgument = /** @class */ (function (_super) {
+    __extends(ThresholdArgument, _super);
+    function ThresholdArgument(min, max, step, defaultValue) {
+        if (min === void 0) { min = 0; }
+        if (max === void 0) { max = 255; }
+        if (step === void 0) { step = 1; }
+        if (defaultValue === void 0) { defaultValue = 255; }
+        return _super.call(this, "Threshold (t)", defaultValue, new VRange(min, max, step)) || this;
+    }
+    return ThresholdArgument;
+}(ContinousArgumentBase));
 var GammaArgument = /** @class */ (function (_super) {
     __extends(GammaArgument, _super);
     function GammaArgument() {
@@ -108,7 +198,7 @@ var GammaArgument = /** @class */ (function (_super) {
         /* defaultValue= */ 1, new VRange(0, 3, 0.1)) || this;
     }
     return GammaArgument;
-}(ArgumentBase));
+}(ContinousArgumentBase));
 var KernelSize = /** @class */ (function (_super) {
     __extends(KernelSize, _super);
     function KernelSize() {
@@ -116,7 +206,7 @@ var KernelSize = /** @class */ (function (_super) {
         /* defaultValue= */ 1, new VRange(1, 9, 2)) || this;
     }
     return KernelSize;
-}(ArgumentBase));
+}(ContinousArgumentBase));
 var BinaryArgument = /** @class */ (function (_super) {
     __extends(BinaryArgument, _super);
     function BinaryArgument() {
@@ -124,7 +214,47 @@ var BinaryArgument = /** @class */ (function (_super) {
         /* defaultValue= */ 0, new VRange(0, 1, 0)) || this;
     }
     return BinaryArgument;
-}(ArgumentBase));
+}(ContinousArgumentBase));
+var GaussianTypeArgument = /** @class */ (function (_super) {
+    __extends(GaussianTypeArgument, _super);
+    function GaussianTypeArgument() {
+        return _super.call(this, "GaussianType", [
+            GaussianTypeArgument.BLURRING,
+            GaussianTypeArgument.SUBTRACTION
+        ]) || this;
+    }
+    GaussianTypeArgument.BLURRING = "Blurring";
+    GaussianTypeArgument.SUBTRACTION = "Subtraction";
+    return GaussianTypeArgument;
+}(DiscreteArgumentBase));
+var ColorSpaceType = /** @class */ (function (_super) {
+    __extends(ColorSpaceType, _super);
+    function ColorSpaceType() {
+        return _super.call(this, "Color Space Type", [
+            ColorSpaceType.RGB,
+            ColorSpaceType.GRAY
+        ], 
+        /* defaultValue= */ ColorSpaceType.RGB) || this;
+    }
+    ColorSpaceType.RGB = "RGB";
+    ColorSpaceType.GRAY = "GRAY";
+    return ColorSpaceType;
+}(DiscreteArgumentBase));
+var DerivativeArgument = /** @class */ (function (_super) {
+    __extends(DerivativeArgument, _super);
+    function DerivativeArgument() {
+        return _super.call(this, "Derivative Type", ["Central"]) || this;
+    }
+    return DerivativeArgument;
+}(DiscreteArgumentBase));
+var DerivativeThresholdArgument = /** @class */ (function (_super) {
+    __extends(DerivativeThresholdArgument, _super);
+    function DerivativeThresholdArgument() {
+        return _super.call(this, "Derivative Threshold", ["Thresholding"]) || this;
+    }
+    return DerivativeThresholdArgument;
+}(DiscreteArgumentBase));
+//#endregion
 //#endregion
 //#region Point Operators
 //#region BrightningOperator
@@ -239,36 +369,71 @@ var GaussianBlurringOperator = /** @class */ (function () {
     function GaussianBlurringOperator() {
         this.type = OperatorType.Local;
         this.name = "Gaussian Blurring";
-        this.description = "Blurs the image";
+        this.description = "Blurs the image (Not all arguments work"
+            + " with eachother).";
         this.arguments = [];
+        this.arguments.push(new GaussianTypeArgument());
+        this.arguments.push(new ColorSpaceType());
         this.arguments.push(new KernelSize());
+        this.arguments.push(new ContrastArgument(0, 10));
     }
     GaussianBlurringOperator.prototype.fn = function () {
-        var kernelSize = parseInt(this.arguments[0].getValue());
+        var _this = this;
+        var blurringType = this.arguments[0].getValue();
+        var colorSpaceType = this.arguments[1].getValue();
+        var kernelSize = parseInt(this.arguments[2].getValue());
+        var shouldRun = blurringType !== NONE_VALUE;
+        var returnGray = colorSpaceType === ColorSpaceType.GRAY;
+        var alphaValue = parseInt(this.arguments[3].getValue());
         return function (image) {
-            if (kernelSize == 1) {
+            if (kernelSize == 1 || !shouldRun) {
                 return;
             }
-            var k1 = Math.floor(kernelSize / 2);
-            var k2 = Math.ceil(kernelSize / 2) - 1;
-            for (var c = 0; c < image.channels; ++c) {
-                for (var y = 0; y < image.height; ++y) {
-                    for (var x = 0; x < image.width; ++x) {
-                        var sum = 0;
-                        var count = 0;
-                        for (var y1 = y - k1; y1 <= y + k2; ++y1) {
-                            for (var x1 = x - k1; x1 <= x + k2; ++x1) {
-                                if (y1 >= 0 && y1 < image.height && x1 >= 0 && x1 < image.width) {
-                                    sum += image.at(x1, y1, c);
-                                    count++;
-                                }
-                            }
+            if (returnGray) {
+                convertToGray(image);
+            }
+            if (blurringType == GaussianTypeArgument.BLURRING) {
+                _this.runGaussianOnImage(image, kernelSize);
+            }
+            else if (blurringType == GaussianTypeArgument.SUBTRACTION) {
+                var clone = image.clone();
+                _this.runGaussianOnImage(clone, kernelSize);
+                for (var c = 0; c < image.channels; ++c) {
+                    for (var y = 0; y < image.height; ++y) {
+                        for (var x = 0; x < image.width; ++x) {
+                            var delta = image.at(x, y, c) - clone.at(x, y, c);
+                            delta = delta * alphaValue;
+                            image.update(x, y, c, clamp(Math.abs(delta)));
                         }
-                        image.update(x, y, c, Math.floor(sum / count));
                     }
                 }
             }
+            else {
+                throw "Invalid blurring type = " + blurringType;
+            }
         };
+    };
+    GaussianBlurringOperator.prototype.runGaussianOnImage = function (image, kernelSize) {
+        var k1 = Math.floor(kernelSize / 2);
+        var k2 = Math.ceil(kernelSize / 2) - 1;
+        for (var c = 0; c < image.channels; ++c) {
+            for (var y = 0; y < image.height; ++y) {
+                for (var x = 0; x < image.width; ++x) {
+                    var sum = 0;
+                    var count = 0;
+                    for (var y1 = y - k1; y1 <= y + k2; ++y1) {
+                        for (var x1 = x - k1; x1 <= x + k2; ++x1) {
+                            if (y1 >= 0 && y1 < image.height
+                                && x1 >= 0 && x1 < image.width) {
+                                sum += image.at(x1, y1, c);
+                                count++;
+                            }
+                        }
+                    }
+                    image.update(x, y, c, Math.floor(sum / count));
+                }
+            }
+        }
     };
     return GaussianBlurringOperator;
 }());
@@ -281,44 +446,81 @@ var DerivativeOperator = /** @class */ (function () {
         this.name = "Derivative";
         this.description = "Converts to first order derivative of image";
         this.arguments = [];
-        this.arguments.push(new BinaryArgument());
+        this.arguments.push(new DerivativeArgument());
+        this.arguments.push(new ScalingArgument(0.1, 5, 0.05, 0.4));
+        this.arguments.push(new DerivativeThresholdArgument());
+        this.arguments.push(new ThresholdArgument());
     }
     DerivativeOperator.prototype.fn = function () {
-        var isEnabled = parseInt(this.arguments[0].getValue()) === 1;
+        var _this = this;
+        var selectedType = this.arguments[0].getValue();
+        var scalingFactor = parseFloat(this.arguments[1].getValue());
+        var thresholdType = this.arguments[2].getValue();
+        var threshold = parseInt(this.arguments[3].getValue());
+        var isEnabled = selectedType !== NONE_VALUE;
+        var isThresholdingEnabled = thresholdType !== NONE_VALUE;
         return function (image) {
             if (!isEnabled) {
                 return;
             }
-            var computeGray = function (x, y) {
-                // return Math.floor((image.at(x, y, 0)
-                //     + image.at(x, y, 1)
-                //     + image.at(x, y, 2)) / 3);
-                return image.at(x, y, 0);
-            };
+            convertToGray(image);
+            var xConvolution = [
+                [-1, 0, 1],
+                [-1, 0, 1],
+                [-1, 0, 1]
+            ];
+            var yConvolution = [
+                [1, 1, 1],
+                [0, 0, 0],
+                [-1, -1, -1],
+            ];
+            var clone = image.clone();
             for (var y = 0; y < image.height; ++y) {
                 for (var x = 0; x < image.width; ++x) {
-                    if (x == 0 || y == 0) {
-                        image.update(x, y, 0, 0);
-                        image.update(x, y, 1, 0);
-                        image.update(x, y, 2, 0);
+                    var fx = _this.convolve(clone, x, y, xConvolution, scalingFactor);
+                    var fy = _this.convolve(clone, x, y, yConvolution, scalingFactor);
+                    var magnitude = Math.sqrt(fx * fx + fy * fy);
+                    if (!isThresholdingEnabled) {
+                        image.updateGray(x, y, clamp(Math.floor(magnitude)));
                     }
                     else {
-                        var derivativeXR = Math.abs(image.at(x, y, 0) - image.at(x - 1, y, 0));
-                        var derivativeXG = Math.abs(image.at(x, y, 1) - image.at(x - 1, y, 1));
-                        var derivativeXB = Math.abs(image.at(x, y, 2) - image.at(x - 1, y, 2));
-                        // let derivativeY = Math.abs(
-                        //     computeGray(x, y) - computeGray(x, y - 1));
-                        image.update(x, y, 0, clamp(derivativeXR, 0, 255));
-                        image.update(x, y, 1, clamp(derivativeXG, 0, 255));
-                        image.update(x, y, 2, clamp(derivativeXB, 0, 255));
+                        var intensity = clamp(Math.floor(magnitude));
+                        image.updateGray(x, y, intensity >= threshold ? 255 : 0);
                     }
                 }
             }
         };
     };
+    DerivativeOperator.prototype.convolve = function (image, x, y, convolution, scalingFactor) {
+        if (scalingFactor === void 0) { scalingFactor = 1; }
+        console.assert(convolution.length != 0, "Empty convolution not expected");
+        console.assert(convolution.length % 2 != 0, "Odd convolution expected");
+        console.assert(convolution[0].length % 2 != 0, "Odd convolution expecte");
+        var sum = 0;
+        var yMiddle = Math.floor(convolution.length / 2);
+        var xMiddle = Math.floor(convolution[0].length / 2);
+        for (var j = 0; j < convolution.length; ++j) {
+            for (var i = 0; i < convolution[j].length; ++i) {
+                // if (x == 10 && y == 10) {
+                //     debugger;
+                // }
+                var xOffset = x + i - xMiddle;
+                var yOffset = y + j - yMiddle;
+                sum += (convolution[j][i] * this.valueAt(image, xOffset, yOffset));
+            }
+        }
+        return sum * scalingFactor;
+    };
+    DerivativeOperator.prototype.valueAt = function (image, x, y, c) {
+        if (c === void 0) { c = 0; }
+        if (x < 0 || y < 0 || x >= image.width || y >= image.height) {
+            return 0;
+        }
+        return image.at(x, y, c);
+    };
     return DerivativeOperator;
 }());
-// OperatorManager.getInstance().register(new DerivativeOperator());
+OperatorManager.getInstance().register(new DerivativeOperator());
 //#endregion
 //#region Sharpening
 var SharpeningOperator = /** @class */ (function () {

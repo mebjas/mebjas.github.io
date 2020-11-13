@@ -1,3 +1,4 @@
+//#region Top level interfaces / classes
 class VRange {
     readonly min: number;
     readonly max: number;
@@ -14,12 +15,19 @@ class VRange {
     }
 }
 
+enum OperatorArgumentType {
+    Continous = 0,
+    Discrete = 1
+}
+
 interface OperatorArgument {
     name: string;
-    range: VRange;
-    defaultValue: number;
+    range?: VRange;
+    discreteValues?: Array<string>;
+    defaultValue: number | string;
     update: Function;
     getValue: Function;
+    type: OperatorArgumentType;
 }
 
 enum OperatorType {
@@ -63,8 +71,12 @@ class OperatorManager {
     }
 }
 
+// TODO(mebjas): Define a class called convolution.
+type Matrix2D = Array<Array<number>>;
+//#endregion
+
 //#region Global functions
-const clamp = (val: number, min: number, max: number) => {
+const clamp = (val: number, min: number = 0, max: number = 255) => {
     if (val < min) return min;
     if (val > max) return max;
     return val;
@@ -73,13 +85,33 @@ const clamp = (val: number, min: number, max: number) => {
 const blendValue = (modified: number, original: number, alpha: number) => {
     return modified * alpha + original * (1 - alpha);
 }
+
+/**
+ * Converts the image inline to gray value.
+ * 
+ * @param image image to convert. 
+ */
+const convertToGray = (image: VImage): void => {
+    for (let y = 0; y < image.height; ++y) {
+        for (let x = 0; x < image.width; ++x) {
+            let sum = 0;
+            for (let c = 0; c < image.channels; ++c) {
+                sum = image.at(x, y, c);
+            }
+            let gray = clamp(Math.floor(sum / image.channels));
+            image.updateGray(x, y, gray);
+        }
+    }
+}
 //#endregion
 
 //#region GlobalArguments
-abstract class ArgumentBase implements OperatorArgument {
+//#region Abstract classes for arguments
+abstract class ContinousArgumentBase implements OperatorArgument {
     readonly name: string;
     readonly defaultValue: number;
     readonly range: VRange;
+    readonly type: OperatorArgumentType = OperatorArgumentType.Continous;
 
     private value: number;
 
@@ -103,7 +135,54 @@ abstract class ArgumentBase implements OperatorArgument {
     }
 }
 
-class BrightnessArgument extends ArgumentBase {
+abstract class DiscreteArgumentBase implements OperatorArgument {
+    readonly name: string;
+    readonly defaultValue: number | string;
+    readonly discreteValues: Array<string> = [];
+    readonly type: OperatorArgumentType = OperatorArgumentType.Discrete;
+
+    private value: number | string;
+
+    constructor(
+        name: string, discreteValues: Array<string>, defaultValue?: string) {
+        this.name = name;
+        this.defaultValue =  (defaultValue !== undefined)
+            ? defaultValue : NONE_VALUE;
+        this.discreteValues = discreteValues;
+
+        this.value = this.defaultValue;
+        if ((defaultValue === undefined)
+            && !this.isOneOfDiscreteValues(NONE_VALUE)) {
+            this.discreteValues.unshift(NONE_VALUE);
+        }
+    }
+
+    public update(val: string) {
+        if (!this.isOneOfDiscreteValues(val)) {
+            throw "Invalid value of argument";
+        }
+        this.value = val;
+    };
+
+    public getValue(): number | string {
+        return this.value;
+    }
+
+    private isOneOfDiscreteValues(value: string): boolean {
+        for (let i = 0; i < this.discreteValues.length; ++i) {
+            if (value == this.discreteValues[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+//#endregion
+
+const NONE_VALUE: string = "none";
+
+//#region global arguments
+class BrightnessArgument extends ContinousArgumentBase {
     constructor() {
         super(
             "Brightness (b)",
@@ -112,7 +191,7 @@ class BrightnessArgument extends ArgumentBase {
     }
 }
 
-class LinearBlendArgument extends ArgumentBase {
+class LinearBlendArgument extends ContinousArgumentBase {
     constructor(defaultValue?: number) {
         super(
             "Blend (Α)",
@@ -121,16 +200,36 @@ class LinearBlendArgument extends ArgumentBase {
     }
 }
 
-class ContrastArgument extends ArgumentBase {
-    constructor() {
+class ContrastArgument extends ContinousArgumentBase {
+    constructor(min: number = 0, max: number = 5, step: number = 0.1) {
         super(
             "Contrast (a)",
             /* defaultValue= */ 1,
-            new VRange(0, 5, 0.1));
+            new VRange(min, max, step));
     }
 }
 
-class GammaArgument extends ArgumentBase {
+class ScalingArgument extends ContinousArgumentBase {
+    constructor(
+        min: number = 0,
+        max: number = 5,
+        step: number = 0.2,
+        defaultValue = 1) {
+        super("Scale (s)", defaultValue, new VRange(min, max, step));
+    }
+}
+
+class ThresholdArgument extends ContinousArgumentBase {
+    constructor(
+        min: number = 0,
+        max: number = 255,
+        step: number = 1,
+        defaultValue = 255) {
+        super("Threshold (t)", defaultValue, new VRange(min, max, step));
+    }
+}
+
+class GammaArgument extends ContinousArgumentBase {
     constructor() {
         super(
             "Tonemap Gamma (Γ)",
@@ -139,7 +238,7 @@ class GammaArgument extends ArgumentBase {
     }
 }
 
-class KernelSize extends ArgumentBase {
+class KernelSize extends ContinousArgumentBase {
     constructor() {
         super(
             "Kernel Size (MxM)",
@@ -148,7 +247,7 @@ class KernelSize extends ArgumentBase {
     }
 }
 
-class BinaryArgument extends ArgumentBase {
+class BinaryArgument extends ContinousArgumentBase {
     constructor() {
         super(
             "Binary Argument",
@@ -156,6 +255,58 @@ class BinaryArgument extends ArgumentBase {
             new VRange(0, 1, 0));
     }
 }
+
+class GaussianTypeArgument extends DiscreteArgumentBase {
+
+    static BLURRING: string = "Blurring";
+    static SUBTRACTION: string = "Subtraction";
+
+    constructor() {
+        super(
+            "GaussianType",
+            [
+                GaussianTypeArgument.BLURRING,
+                GaussianTypeArgument.SUBTRACTION
+            ]
+        );
+    }
+}
+
+class ColorSpaceType extends DiscreteArgumentBase {
+
+    static RGB: string = "RGB";
+    static GRAY: string = "GRAY";
+
+    constructor() {
+        super(
+            "Color Space Type",
+            [
+                ColorSpaceType.RGB,
+                ColorSpaceType.GRAY
+            ],
+            /* defaultValue= */ ColorSpaceType.RGB
+        );
+    }
+}
+
+class DerivativeArgument extends DiscreteArgumentBase {
+    constructor() {
+        super(
+            "Derivative Type",
+            ["Central"]
+        );
+    }
+}
+
+class DerivativeThresholdArgument extends DiscreteArgumentBase {
+    constructor() {
+        super(
+            "Derivative Threshold",
+            ["Thresholding"]
+        );
+    }
+}
+//#endregion
 //#endregion
 
 //#region Point Operators
@@ -164,7 +315,7 @@ class BrightningOperator implements Operator {
     readonly type = OperatorType.Point;
     readonly name = "Brightness";
     readonly description = "Change the brightness of the image";
-    readonly arguments = [];
+    readonly arguments: Array<OperatorArgument> = [];
 
     constructor() {
         this.arguments.push(new BrightnessArgument());
@@ -194,7 +345,7 @@ class GammaOperator implements Operator {
     readonly type = OperatorType.Point;
     readonly name = "Gamma Correction";
     readonly description = "Change the linearity of the image";
-    readonly arguments = [];
+    readonly arguments: Array<OperatorArgument> = [];
 
     constructor() {
         this.arguments.push(new GammaArgument());
@@ -235,7 +386,7 @@ class HistogramEqOperator implements Operator {
     readonly type = OperatorType.Global;
     readonly name = "Histogram Equalization";
     readonly description = "Balance the histogram of the image";
-    readonly arguments = [];
+    readonly arguments: Array<OperatorArgument> = [];
 
     constructor() {
         this.arguments.push(new LinearBlendArgument(0));
@@ -285,21 +436,56 @@ OperatorManager.getInstance().register(new HistogramEqOperator());
 class GaussianBlurringOperator implements Operator {
     readonly type = OperatorType.Local;
     readonly name = "Gaussian Blurring";
-    readonly description = "Blurs the image";
-    readonly arguments = [];
+    readonly description = "Blurs the image (Not all arguments work"
+        + " with eachother).";
+    readonly arguments: Array<OperatorArgument> = [];
 
     constructor() {
+        this.arguments.push(new GaussianTypeArgument());
+        this.arguments.push(new ColorSpaceType());
         this.arguments.push(new KernelSize());
+        this.arguments.push(new ContrastArgument(0, 10));
     }
 
     public fn() {
-        const kernelSize = parseInt(this.arguments[0].getValue());
+        const blurringType: string = this.arguments[0].getValue();
+        const colorSpaceType: string = this.arguments[1].getValue();
+        const kernelSize = parseInt(this.arguments[2].getValue());
+        const shouldRun: boolean = blurringType !== NONE_VALUE;
+        const returnGray: boolean = colorSpaceType === ColorSpaceType.GRAY;
+        const alphaValue = parseInt(this.arguments[3].getValue());
 
         return (image: VImage) => {
-            if (kernelSize == 1) {
+            if (kernelSize == 1 || !shouldRun) {
                 return;
             }
-            const k1 = Math.floor(kernelSize / 2);
+
+            if (returnGray) {
+                convertToGray(image);
+            }
+            
+            if (blurringType == GaussianTypeArgument.BLURRING) {
+                this.runGaussianOnImage(image, kernelSize);
+            } else if (blurringType == GaussianTypeArgument.SUBTRACTION) {
+                const clone = image.clone();
+                this.runGaussianOnImage(clone, kernelSize);
+                for (let c = 0; c < image.channels; ++c) {
+                    for (let y = 0; y < image.height; ++y) {
+                        for (let x = 0; x < image.width; ++x) {
+                            let delta = image.at(x, y, c) - clone.at(x, y, c);
+                            delta = delta * alphaValue;
+                            image.update(x, y, c, clamp(Math.abs(delta)));
+                        }
+                    }
+                }
+            } else {
+                throw `Invalid blurring type = ${blurringType}`;
+            }
+        }
+    }
+
+    private runGaussianOnImage(image: VImage, kernelSize: number) {
+        const k1 = Math.floor(kernelSize / 2);
             const k2 = Math.ceil(kernelSize / 2) - 1;
 
             for (let c = 0; c < image.channels; ++c) {
@@ -310,7 +496,8 @@ class GaussianBlurringOperator implements Operator {
 
                         for (let y1 = y - k1; y1 <= y + k2; ++y1) {
                             for (let x1 = x - k1; x1 <= x + k2; ++x1) {
-                                if (y1 >= 0 && y1 < image.height && x1 >= 0 && x1 < image.width) {
+                                if (y1 >= 0 && y1 < image.height
+                                        && x1 >= 0 && x1 < image.width) {
                                     sum += image.at(x1, y1, c);
                                     count++;
                                 }
@@ -321,67 +508,110 @@ class GaussianBlurringOperator implements Operator {
                     }
                 }
             }
-        }
     }
 }
 
 OperatorManager.getInstance().register(new GaussianBlurringOperator());
 //#endregion
 
-
 //#region DerivativeOperator
 class DerivativeOperator implements Operator {
     readonly type = OperatorType.Local;
     readonly name = "Derivative";
     readonly description = "Converts to first order derivative of image";
-    readonly arguments = [];
+    readonly arguments: Array<OperatorArgument> = [];
 
     constructor() {
-        this.arguments.push(new BinaryArgument());
+        this.arguments.push(new DerivativeArgument());
+        this.arguments.push(new ScalingArgument(0.1, 5, 0.05, 1));
+        this.arguments.push(new DerivativeThresholdArgument());
+        this.arguments.push(new ThresholdArgument());
     }
 
     public fn() {
-        const isEnabled = parseInt(this.arguments[0].getValue()) === 1;
+        const selectedType = this.arguments[0].getValue();
+        const scalingFactor = parseFloat(this.arguments[1].getValue());
+        const thresholdType = this.arguments[2].getValue();
+        const threshold = parseInt(this.arguments[3].getValue());
+
+        const isEnabled: boolean = selectedType !== NONE_VALUE;
+        const isThresholdingEnabled: boolean = thresholdType !== NONE_VALUE;
         return (image: VImage) => {
             if (!isEnabled) {
                 return;
             }
 
-            const computeGray = (x: number, y: number) => {
-                // return Math.floor((image.at(x, y, 0)
-                //     + image.at(x, y, 1)
-                //     + image.at(x, y, 2)) / 3);
-
-                return image.at(x, y, 0);
-            }
-
+            convertToGray(image);
+            const xConvolution: Matrix2D = [
+                [-1, 0, 1],
+                [-1, 0, 1],
+                [-1, 0, 1]
+            ];
+            const yConvolution: Matrix2D = [
+                [1, 1, 1],
+                [0, 0, 0],
+                [-1, -1, -1],
+            ];
+            const clone = image.clone();
             for (let y = 0; y < image.height; ++y) {
                 for (let x = 0; x < image.width; ++x) {
-                    if (x == 0 || y == 0) {
-                        image.update(x, y, 0, 0);
-                        image.update(x, y, 1, 0);
-                        image.update(x, y, 2, 0);
+                    const fx = this.convolve(
+                        clone, x, y, xConvolution, scalingFactor);
+                    const fy = this.convolve(
+                        clone, x, y, yConvolution, scalingFactor);
+                    const magnitude = Math.sqrt(fx*fx + fy*fy);
+                    if (!isThresholdingEnabled) {
+                        image.updateGray(x, y, clamp(Math.floor(magnitude)));
                     } else {
-                        let derivativeXR = Math.abs(
-                            image.at(x, y, 0) - image.at(x - 1, y, 0));
-                        let derivativeXG = Math.abs(
-                            image.at(x, y, 1) - image.at(x - 1, y, 1));
-                        let derivativeXB = Math.abs(
-                            image.at(x, y, 2) - image.at(x - 1, y, 2));
-                        // let derivativeY = Math.abs(
-                        //     computeGray(x, y) - computeGray(x, y - 1));
-                        
-                        image.update(x, y, 0, clamp(derivativeXR, 0, 255));
-                        image.update(x, y, 1, clamp(derivativeXG, 0, 255));
-                        image.update(x, y, 2, clamp(derivativeXB, 0, 255));
+                        const intensity = clamp(Math.floor(magnitude));
+                        image.updateGray(
+                            x, y, intensity >= threshold ? 255 : 0);
                     }
-                }  
+                } 
             }
         }
     }
+
+    private convolve(
+        image: VImage,
+        x: number,
+        y: number,
+        convolution: Matrix2D,
+        scalingFactor: number = 1): number {
+        console.assert(
+            convolution.length != 0, "Empty convolution not expected");
+        console.assert(
+            convolution.length % 2 != 0, "Odd convolution expected");
+        console.assert(
+            convolution[0].length % 2 != 0, "Odd convolution expecte");
+
+        let sum = 0;
+        const yMiddle = Math.floor(convolution.length / 2);
+        const xMiddle = Math.floor(convolution[0].length / 2);
+        for (let j = 0; j < convolution.length; ++j) {
+            for (let i = 0; i < convolution[j].length; ++i) {
+                // if (x == 10 && y == 10) {
+                //     debugger;
+                // }
+                const xOffset = x + i - xMiddle;
+                const yOffset = y + j - yMiddle;
+                sum += (convolution[j][i] * this.valueAt(
+                    image, xOffset, yOffset));
+            }
+        }
+        return sum * scalingFactor;
+    }
+
+    private valueAt(image: VImage, x: number, y: number, c: number = 0) {
+        if (x < 0 || y < 0 || x >= image.width || y >= image.height) {
+            return 0;
+        }
+
+        return image.at(x, y, c);
+    }
 }
 
-// OperatorManager.getInstance().register(new DerivativeOperator());
+OperatorManager.getInstance().register(new DerivativeOperator());
 //#endregion
 
 //#region Sharpening
@@ -389,7 +619,7 @@ class SharpeningOperator implements Operator {
     readonly type = OperatorType.Local;
     readonly name = "Sharpening";
     readonly description = "Sharpens the image";
-    readonly arguments = [];
+    readonly arguments: Array<OperatorArgument> = [];
 
     constructor() {
         this.arguments.push(new LinearBlendArgument(0));

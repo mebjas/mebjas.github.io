@@ -65,6 +65,19 @@ class VImage {
     }
 
     /**
+     * Updates the image at given coordinates with gray value.
+     *
+     * @param {Number} x X Coordinate
+     * @param {Number} y Y Coordinate
+     * @param {Number} val Intensity value at given coordinates
+     */
+    public updateGray(x : number, y : number, val: number) : void {
+        for (let c = 0; c < this.channels; ++c) {
+            this.update(x, y, c, val);
+        }
+    }
+
+    /**
      * Renders the image instance to the given {@param context}.
      * 
      * @param {CanvasRenderingContext2D} context a Valid canvas context.

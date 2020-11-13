@@ -56,9 +56,9 @@ var Workspace = /** @class */ (function () {
         var t2 = performance.now();
         this.metadata.onCanvasUpdated(clone);
         var t3 = performance.now();
-        var operationTime = (t1 - t0).toPrecision(2);
-        var imageRenderTime = (t2 - t1).toPrecision(2);
-        var histRenderingime = (t3 - t2).toPrecision(2);
+        var operationTime = (t1 - t0).toPrecision(4);
+        var imageRenderTime = (t2 - t1).toPrecision(4);
+        var histRenderingime = (t3 - t2).toPrecision(4);
         this.metadata.updatePerfString("Image Operation: " + operationTime + " ms<br>"
             + ("Image Render: " + imageRenderTime + " ms<br>")
             + ("Histogram Render: " + histRenderingime + " ms"));
@@ -109,7 +109,7 @@ var Workspace = /** @class */ (function () {
 ;
 var Toolbar = /** @class */ (function () {
     function Toolbar(element, workspace) {
-        this.operatorSliderMap = {};
+        this.operatorElementMap = {};
         this.uiMaxHeight = 450;
         this.element = element;
         this.workspace = workspace;
@@ -148,7 +148,7 @@ var Toolbar = /** @class */ (function () {
         var operators = OperatorManager.getInstance().getOperators();
         var _loop_1 = function (i) {
             var operator = operators[i];
-            this_1.operatorSliderMap[operator.name] = [];
+            this_1.operatorElementMap[operator.name] = [];
             // Create top level element.
             var div = document.createElement("div");
             div.style.marginTop = "5px";
@@ -176,25 +176,53 @@ var Toolbar = /** @class */ (function () {
                 argumentHeader.innerHTML = argument.name;
                 argumentHeader.style.flex = "2";
                 argumentDiv.appendChild(argumentHeader);
-                var slider = document.createElement("input");
-                slider.type = "range";
-                slider.min = "" + argument.range.min;
-                slider.max = "" + argument.range.max;
-                slider.step = "" + argument.range.step;
-                slider.value = argument.getValue();
-                slider.style.flex = "3";
-                argumentDiv.appendChild(slider);
-                this_1.operatorSliderMap[operator.name].push({
-                    element: slider,
+                var argumentElement;
+                if (argument.type == OperatorArgumentType.Continous) {
+                    if (!argument.range) {
+                        throw "Argument #" + argument.name + " "
+                            + "is continous w/o vrange";
+                    }
+                    var slider = document.createElement("input");
+                    slider.type = "range";
+                    slider.min = "" + argument.range.min;
+                    slider.max = "" + argument.range.max;
+                    slider.step = "" + argument.range.step;
+                    slider.value = argument.getValue();
+                    slider.style.flex = "3";
+                    argumentDiv.appendChild(slider);
+                    argumentElement = slider;
+                }
+                else if (argument.type == OperatorArgumentType.Discrete) {
+                    if (!argument.discreteValues) {
+                        throw "Argument #" + argument.name + " "
+                            + "is continous w/o discreteValues";
+                    }
+                    var select = document.createElement("select");
+                    for (var k = 0; k < argument.discreteValues.length; ++k) {
+                        var possibleValue = argument.discreteValues[k];
+                        var option = document.createElement("option");
+                        option.value = possibleValue;
+                        option.innerHTML = possibleValue;
+                        select.appendChild(option);
+                    }
+                    select.value = "" + argument.defaultValue;
+                    argumentDiv.appendChild(select);
+                    argumentElement = select;
+                }
+                else {
+                    throw "Unknown argument of type " + argument.type;
+                }
+                this_1.operatorElementMap[operator.name].push({
+                    element: argumentElement,
                     defaultValue: argument.defaultValue
                 });
                 var meta = document.createElement("span");
                 meta.innerHTML = "" + argument.getValue();
                 meta.style.flex = "1";
                 meta.style.textAlign = "center";
-                slider.addEventListener('change', function (_) {
-                    meta.innerHTML = "" + slider.value;
-                    argument.update(slider.value);
+                argumentElement.addEventListener('change', function (_) {
+                    meta.innerHTML = "" + argumentElement.value;
+                    argument.update(argumentElement.value);
                     var fn = operator.fn();
                     _this.workspace.updateFunction(fn, operator.type);
                 });
@@ -213,10 +241,10 @@ var Toolbar = /** @class */ (function () {
     };
     Toolbar.prototype.reset = function () {
         var _this = this;
-        var keys = Object.keys(this.operatorSliderMap);
+        var keys = Object.keys(this.operatorElementMap);
         keys.forEach(function (key) {
-            var sliderValuePairs = _this.operatorSliderMap[key];
-            sliderValuePairs.forEach(function (pair) {
+            var argumentElementValuePairs = _this.operatorElementMap[key];
+            argumentElementValuePairs.forEach(function (pair) {
                 var isChanged = (pair.element.value !== "" + pair.defaultValue);
                 if (!isChanged) {
                     return;

@@ -42,6 +42,18 @@ var VImage = /** @class */ (function () {
         this.imageData.data[(y * this.width + x) * 4 + c] = val;
     };
     /**
+     * Updates the image at given coordinates with gray value.
+     *
+     * @param {Number} x X Coordinate
+     * @param {Number} y Y Coordinate
+     * @param {Number} val Intensity value at given coordinates
+     */
+    VImage.prototype.updateGray = function (x, y, val) {
+        for (var c = 0; c < this.channels; ++c) {
+            this.update(x, y, c, val);
+        }
+    };
+    /**
      * Renders the image instance to the given {@param context}.
      *
      * @param {CanvasRenderingContext2D} context a Valid canvas context.
