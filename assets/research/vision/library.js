@@ -1,6 +1,59 @@
 /**
- * Represents the image class.
+ * This file contains some basic hand written image processing library classes,
+ * interfaces, enums and global functions.
+ *
+ * @author Minhaz <minhazav@gmail.com>
  */
+//#region Global enums, methods
+var assert = function (conditionResult, failureMessage) {
+    console.assert(conditionResult, failureMessage);
+    if (!conditionResult) {
+        throw "Assertion failed: " + failureMessage;
+    }
+};
+var Channel;
+(function (Channel) {
+    Channel[Channel["Red"] = 0] = "Red";
+    Channel[Channel["Blue"] = 1] = "Blue";
+    Channel[Channel["Green"] = 2] = "Green";
+    Channel[Channel["Luma"] = 3] = "Luma";
+})(Channel || (Channel = {}));
+var AllChannels = [
+    Channel.Red,
+    Channel.Blue,
+    Channel.Green,
+    Channel.Luma
+];
+var CreateDefaultSelectionOfChannelsToShow = function () {
+    var result = {};
+    AllChannels.forEach(function (channel) {
+        result[channel] = true;
+    });
+    return result;
+};
+var getChannelCode = function (channel) {
+    switch (channel) {
+        case Channel.Red: return "R";
+        case Channel.Green: return "G";
+        case Channel.Blue: return "B";
+        case Channel.Luma: return "Y";
+        default:
+            throw "Invalid channel id passed " + channel;
+    }
+};
+var getChannelByCode = function (channelCode) {
+    switch (channelCode) {
+        case "R": return Channel.Red;
+        case "G": return Channel.Green;
+        case "B": return Channel.Blue;
+        case "Y": return Channel.Luma;
+        default:
+            throw "Invalid channel code passed " + channelCode;
+    }
+};
+//#endregion
+//#region Image class
+/** Represents the image class. */
 var VImage = /** @class */ (function () {
     function VImage(imageData) {
         this.channels = 3;
@@ -22,21 +75,34 @@ var VImage = /** @class */ (function () {
     /**
      * Returns the intesity at give coordinates
      *
-     * @param {Number} x X Coordinate
-     * @param {Number} y Y Coordinate
-     * @param {Number} c Color channel, 0, 1, 2 are R, G, B respectively
+     * @param {number} x X Coordinate
+     * @param {number} y Y Coordinate
+     * @param {number} c Color channel, 0, 1, 2 are R, G, B respectively
      */
     VImage.prototype.at = function (x, y, c) {
         var index = (y * this.width + x) * 4 + c;
         return this.imageData.data[index];
     };
     /**
+     * Returns the gray intensity at give coordinates
+     *
+     * @param {number} x X Coordinate
+     * @param {number} y Y Coordinate
+     */
+    VImage.prototype.grayAt = function (x, y) {
+        var sum = 0;
+        for (var c = 0; c < this.channels; ++c) {
+            sum += this.at(x, y, c);
+        }
+        return Math.floor(sum / this.channels);
+    };
+    /**
      * Updates the image at given coordinates.
      *
-     * @param {Number} x X Coordinate
-     * @param {Number} y Y Coordinate
-     * @param {Number} c Color channel, 0, 1, 2 are R, G, B respectively
-     * @param {Number} val Intensity value at given coordinates
+     * @param {number} x X Coordinate
+     * @param {number} y Y Coordinate
+     * @param {number} c Color channel, 0, 1, 2 are R, G, B respectively
+     * @param {number} val Intensity value at given coordinates
      */
     VImage.prototype.update = function (x, y, c, val) {
         this.imageData.data[(y * this.width + x) * 4 + c] = val;
@@ -44,9 +110,9 @@ var VImage = /** @class */ (function () {
     /**
      * Updates the image at given coordinates with gray value.
      *
-     * @param {Number} x X Coordinate
-     * @param {Number} y Y Coordinate
-     * @param {Number} val Intensity value at given coordinates
+     * @param {number} x X Coordinate
+     * @param {number} y Y Coordinate
+     * @param {number} val Intensity value at given coordinates
      */
     VImage.prototype.updateGray = function (x, y, val) {
         for (var c = 0; c < this.channels; ++c) {
@@ -115,48 +181,69 @@ var VImage = /** @class */ (function () {
         // TODO(mebjas): abstract better
         fn(this);
     };
+    /**
+     * Convolves a given mask centered at given coordinates on gray values.
+     *
+     * @param {number} x X Coordinate
+     * @param {number} y Y Coordinate
+     * @param {number} c channel index
+     * @param {ConvolutionMask2D} mask Mask to apply
+     * @param {number} scalingFactor Value to scale the convolution result with
+     */
+    VImage.prototype.convolve = function (x, y, c, mask, scalingFactor) {
+        if (scalingFactor === void 0) { scalingFactor = 1; }
+        var sum = 0;
+        // Assuming mask are always odd sized.
+        var yMiddle = Math.floor(mask.height / 2);
+        var xMiddle = Math.floor(mask.width / 2);
+        for (var j = 0; j < mask.height; ++j) {
+            for (var i = 0; i < mask.width; ++i) {
+                sum += (mask.at(i, j) *
+                    this.paddedValueAt(x + i - xMiddle, y + j - yMiddle, c));
+            }
+        }
+        return sum * scalingFactor;
+    };
+    /** Zero padded */
+    VImage.prototype.paddedValueAt = function (x, y, c) {
+        if (x < 0 || y < 0 || x >= this.width || y >= this.height) {
+            return 0;
+        }
+        return this.at(x, y, c);
+    };
     return VImage;
 }());
-var Channel;
-(function (Channel) {
-    Channel[Channel["Red"] = 0] = "Red";
-    Channel[Channel["Blue"] = 1] = "Blue";
-    Channel[Channel["Green"] = 2] = "Green";
-    Channel[Channel["Luma"] = 3] = "Luma";
-})(Channel || (Channel = {}));
-var AllChannels = [
-    Channel.Red,
-    Channel.Blue,
-    Channel.Green,
-    Channel.Luma
-];
-var CreateDefaultSelectionOfChannelsToShow = function () {
-    var result = {};
-    AllChannels.forEach(function (channel) {
-        result[channel] = true;
-    });
-    return result;
-};
-var getChannelCode = function (channel) {
-    switch (channel) {
-        case Channel.Red: return "R";
-        case Channel.Green: return "G";
-        case Channel.Blue: return "B";
-        case Channel.Luma: return "Y";
-        default:
-            throw "Invalid channel id passed " + channel;
+var ConvolutionMask2D = /** @class */ (function () {
+    function ConvolutionMask2D(data, width, height) {
+        this.data = data;
+        this.width = width;
+        this.height = height;
     }
-};
-var getChannelByCode = function (channelCode) {
-    switch (channelCode) {
-        case "R": return Channel.Red;
-        case "G": return Channel.Green;
-        case "B": return Channel.Blue;
-        case "Y": return Channel.Luma;
-        default:
-            throw "Invalid channel code passed " + channelCode;
-    }
-};
+    ConvolutionMask2D.createMask = function (matrix) {
+        // Validate
+        var height = matrix.length;
+        assert(height > 0, "Mask height should be greater than 0.");
+        var width = matrix[0].length;
+        assert(width > 0, "Mask width should be greater than 0.");
+        for (var i = 1; i < height; i++) {
+            assert(width == matrix[1].length, "Every row in the mask should have same width");
+        }
+        assert(height % 2 != 0, "Only odd masks supported at the moment.");
+        assert(width % 2 != 0, "Only odd masks supported at the moment.");
+        return new ConvolutionMask2D(matrix, width, height);
+    };
+    /**
+     * Returns the element at the given coordinates. Doesn't check for out of
+     * bounds.
+     *
+     * @param x x coordinates
+     * @param y y coordinates
+     */
+    ConvolutionMask2D.prototype.at = function (x, y) {
+        return this.data[y][x];
+    };
+    return ConvolutionMask2D;
+}());
 var Histograms = /** @class */ (function () {
     function Histograms(image, binSize) {
         if (binSize === void 0) { binSize = 32; }

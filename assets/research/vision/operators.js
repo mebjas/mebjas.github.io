@@ -180,6 +180,17 @@ var ScalingArgument = /** @class */ (function (_super) {
     }
     return ScalingArgument;
 }(ContinousArgumentBase));
+var SigmaArgument = /** @class */ (function (_super) {
+    __extends(SigmaArgument, _super);
+    function SigmaArgument(min, max, step, defaultValue) {
+        if (min === void 0) { min = 0; }
+        if (max === void 0) { max = 5; }
+        if (step === void 0) { step = 0.2; }
+        if (defaultValue === void 0) { defaultValue = 1; }
+        return _super.call(this, "Sigma (s)", defaultValue, new VRange(min, max, step)) || this;
+    }
+    return SigmaArgument;
+}(ContinousArgumentBase));
 var ThresholdArgument = /** @class */ (function (_super) {
     __extends(ThresholdArgument, _super);
     function ThresholdArgument(min, max, step, defaultValue) {
@@ -375,7 +386,8 @@ var GaussianBlurringOperator = /** @class */ (function () {
         this.arguments.push(new GaussianTypeArgument());
         this.arguments.push(new ColorSpaceType());
         this.arguments.push(new KernelSize());
-        this.arguments.push(new ContrastArgument(0, 10));
+        this.arguments.push(new SigmaArgument(0, 2, 0.1, 1));
+        this.arguments.push(new ContrastArgument(0, 20));
     }
     GaussianBlurringOperator.prototype.fn = function () {
         var _this = this;
@@ -384,7 +396,8 @@ var GaussianBlurringOperator = /** @class */ (function () {
         var kernelSize = parseInt(this.arguments[2].getValue());
         var shouldRun = blurringType !== NONE_VALUE;
         var returnGray = colorSpaceType === ColorSpaceType.GRAY;
-        var alphaValue = parseInt(this.arguments[3].getValue());
+        var sigmaValue = parseFloat(this.arguments[3].getValue());
+        var alphaValue = parseFloat(this.arguments[4].getValue());
         return function (image) {
             if (kernelSize == 1 || !shouldRun) {
                 return;
@@ -392,18 +405,27 @@ var GaussianBlurringOperator = /** @class */ (function () {
             if (returnGray) {
                 convertToGray(image);
             }
+            var kernel = _this.createKernel(kernelSize, sigmaValue);
             if (blurringType == GaussianTypeArgument.BLURRING) {
-                _this.runGaussianOnImage(image, kernelSize);
+                _this.runGaussianOnImage(image, kernel, returnGray);
             }
             else if (blurringType == GaussianTypeArgument.SUBTRACTION) {
                 var clone = image.clone();
-                _this.runGaussianOnImage(clone, kernelSize);
-                for (var c = 0; c < image.channels; ++c) {
-                    for (var y = 0; y < image.height; ++y) {
-                        for (var x = 0; x < image.width; ++x) {
-                            var delta = image.at(x, y, c) - clone.at(x, y, c);
+                _this.runGaussianOnImage(clone, kernel, returnGray);
+                for (var y = 0; y < image.height; ++y) {
+                    for (var x = 0; x < image.width; ++x) {
+                        if (returnGray) {
+                            var delta = image.at(x, y, 0) - clone.at(x, y, 0);
                             delta = delta * alphaValue;
-                            image.update(x, y, c, clamp(Math.abs(delta)));
+                            image.updateGray(x, y, clamp(Math.abs(delta)));
+                        }
+                        else {
+                            for (var c = 0; c < image.channels; ++c) {
+                                var delta = image.at(x, y, c)
+                                    - clone.at(x, y, c);
+                                delta = delta * alphaValue;
+                                image.update(x, y, c, clamp(Math.abs(delta)));
+                            }
                         }
                     }
                 }
@@ -413,24 +435,55 @@ var GaussianBlurringOperator = /** @class */ (function () {
             }
         };
     };
-    GaussianBlurringOperator.prototype.runGaussianOnImage = function (image, kernelSize) {
-        var k1 = Math.floor(kernelSize / 2);
-        var k2 = Math.ceil(kernelSize / 2) - 1;
-        for (var c = 0; c < image.channels; ++c) {
-            for (var y = 0; y < image.height; ++y) {
-                for (var x = 0; x < image.width; ++x) {
-                    var sum = 0;
-                    var count = 0;
-                    for (var y1 = y - k1; y1 <= y + k2; ++y1) {
-                        for (var x1 = x - k1; x1 <= x + k2; ++x1) {
-                            if (y1 >= 0 && y1 < image.height
-                                && x1 >= 0 && x1 < image.width) {
-                                sum += image.at(x1, y1, c);
-                                count++;
-                            }
-                        }
+    GaussianBlurringOperator.prototype.createKernel = function (kernelSize, sigma) {
+        if (sigma === void 0) { sigma = 1; }
+        assert(kernelSize % 2 != 0, "kernel size should be odd.");
+        var kernel = this.createEmptyKernel(kernelSize);
+        var s = 2 * sigma * sigma;
+        var r;
+        var middleVal = Math.floor(kernelSize / 2);
+        var sum = 0; // For normalization
+        for (var y = -middleVal; y <= middleVal; ++y) {
+            for (var x = -middleVal; x <= middleVal; ++x) {
+                r = (x * x + y * y);
+                kernel[y + middleVal][x + middleVal]
+                    = Math.exp(-r / s) / Math.PI * s;
+                sum += kernel[y + middleVal][x + middleVal];
+            }
+        }
+        // Normalize
+        for (var y = 0; y < kernelSize; ++y) {
+            for (var x = 0; x < kernelSize; ++x) {
+                kernel[y][x] /= sum;
+            }
+        }
+        return ConvolutionMask2D.createMask(kernel);
+    };
+    GaussianBlurringOperator.prototype.createEmptyKernel = function (kernelSize) {
+        assert(kernelSize % 2 != 0, "kernel size should be odd.");
+        var emptyKernel = [];
+        for (var i = 0; i < kernelSize; ++i) {
+            emptyKernel.push([]);
+            for (var j = 0; j < kernelSize; ++j) {
+                emptyKernel[i][j] = 0;
+            }
+        }
+        return emptyKernel;
+    };
+    // Expects the image to be gray if {@param isGray} == true.
+    GaussianBlurringOperator.prototype.runGaussianOnImage = function (image, kernel, isGray) {
+        var clone = image.clone();
+        for (var y = 0; y < image.height; ++y) {
+            for (var x = 0; x < image.width; ++x) {
+                if (isGray) {
+                    var intensity = clone.convolve(x, y, 0, kernel);
+                    image.updateGray(x, y, clamp(intensity));
+                }
+                else {
+                    for (var c = 0; c < image.channels; ++c) {
+                        var intensity = clone.convolve(x, y, c, kernel);
+                        image.update(x, y, c, clamp(intensity));
                     }
-                    image.update(x, y, c, Math.floor(sum / count));
                 }
             }
         }
@@ -447,12 +500,11 @@ var DerivativeOperator = /** @class */ (function () {
         this.description = "Converts to first order derivative of image";
         this.arguments = [];
         this.arguments.push(new DerivativeArgument());
-        this.arguments.push(new ScalingArgument(0.1, 5, 0.05, 0.4));
+        this.arguments.push(new ScalingArgument(0.1, 5, 0.05, 1));
         this.arguments.push(new DerivativeThresholdArgument());
         this.arguments.push(new ThresholdArgument());
     }
     DerivativeOperator.prototype.fn = function () {
-        var _this = this;
         var selectedType = this.arguments[0].getValue();
         var scalingFactor = parseFloat(this.arguments[1].getValue());
         var thresholdType = this.arguments[2].getValue();
@@ -463,22 +515,23 @@ var DerivativeOperator = /** @class */ (function () {
             if (!isEnabled) {
                 return;
             }
+            // Convert to gray scale.
             convertToGray(image);
-            var xConvolution = [
+            var xConvolution = ConvolutionMask2D.createMask([
                 [-1, 0, 1],
                 [-1, 0, 1],
                 [-1, 0, 1]
-            ];
-            var yConvolution = [
+            ]);
+            var yConvolution = ConvolutionMask2D.createMask([
                 [1, 1, 1],
                 [0, 0, 0],
                 [-1, -1, -1],
-            ];
+            ]);
             var clone = image.clone();
             for (var y = 0; y < image.height; ++y) {
                 for (var x = 0; x < image.width; ++x) {
-                    var fx = _this.convolve(clone, x, y, xConvolution, scalingFactor);
-                    var fy = _this.convolve(clone, x, y, yConvolution, scalingFactor);
+                    var fx = clone.convolve(x, y, /* c= */ 0, xConvolution, scalingFactor);
+                    var fy = clone.convolve(x, y, /* c= */ 0, yConvolution, scalingFactor);
                     var magnitude = Math.sqrt(fx * fx + fy * fy);
                     if (!isThresholdingEnabled) {
                         image.updateGray(x, y, clamp(Math.floor(magnitude)));
@@ -490,33 +543,6 @@ var DerivativeOperator = /** @class */ (function () {
                 }
             }
         };
-    };
-    DerivativeOperator.prototype.convolve = function (image, x, y, convolution, scalingFactor) {
-        if (scalingFactor === void 0) { scalingFactor = 1; }
-        console.assert(convolution.length != 0, "Empty convolution not expected");
-        console.assert(convolution.length % 2 != 0, "Odd convolution expected");
-        console.assert(convolution[0].length % 2 != 0, "Odd convolution expecte");
-        var sum = 0;
-        var yMiddle = Math.floor(convolution.length / 2);
-        var xMiddle = Math.floor(convolution[0].length / 2);
-        for (var j = 0; j < convolution.length; ++j) {
-            for (var i = 0; i < convolution[j].length; ++i) {
-                // if (x == 10 && y == 10) {
-                //     debugger;
-                // }
-                var xOffset = x + i - xMiddle;
-                var yOffset = y + j - yMiddle;
-                sum += (convolution[j][i] * this.valueAt(image, xOffset, yOffset));
-            }
-        }
-        return sum * scalingFactor;
-    };
-    DerivativeOperator.prototype.valueAt = function (image, x, y, c) {
-        if (c === void 0) { c = 0; }
-        if (x < 0 || y < 0 || x >= image.width || y >= image.height) {
-            return 0;
-        }
-        return image.at(x, y, c);
     };
     return DerivativeOperator;
 }());

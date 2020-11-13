@@ -1,6 +1,65 @@
 /**
- * Represents the image class.
+ * This file contains some basic hand written image processing library classes,
+ * interfaces, enums and global functions.
+ * 
+ * @author Minhaz <minhazav@gmail.com>
  */
+
+//#region Global enums, methods
+const assert = (conditionResult: boolean, failureMessage: string): void => {
+    console.assert(conditionResult, failureMessage);
+    if (!conditionResult) {
+        throw `Assertion failed: ${failureMessage}`;
+    }
+}
+
+enum Channel {
+    Red = 0,
+    Blue = 1,
+    Green = 2,
+    Luma = 3
+}
+const AllChannels: Array<Channel> = [
+    Channel.Red,
+    Channel.Blue,
+    Channel.Green,
+    Channel.Luma];
+
+const CreateDefaultSelectionOfChannelsToShow
+    = (): { [channel: number]: boolean } => {
+    let result: { [channel: number]: boolean } = {};
+    AllChannels.forEach(channel => {
+        result[channel] = true;
+    });
+
+    return result;
+}
+
+const getChannelCode = (channel: Channel): string => {
+    switch(channel) {
+        case Channel.Red: return "R";
+        case Channel.Green: return "G";
+        case Channel.Blue: return "B";
+        case Channel.Luma: return "Y";
+        default:
+            throw `Invalid channel id passed ${channel}`;
+    }
+}
+
+const getChannelByCode = (channelCode: string): Channel => {
+    switch(channelCode) {
+        case "R": return Channel.Red;
+        case "G": return Channel.Green;
+        case "B": return Channel.Blue;
+        case "Y": return Channel.Luma;
+        default:
+            throw `Invalid channel code passed ${channelCode}`;
+    }
+}
+//#endregion
+
+//#region Image class
+/** Represents the image class. */
 class VImage {
 
     readonly width : number;
@@ -43,9 +102,9 @@ class VImage {
     /**
      * Returns the intesity at give coordinates
      *
-     * @param {Number} x X Coordinate
-     * @param {Number} y Y Coordinate
-     * @param {Number} c Color channel, 0, 1, 2 are R, G, B respectively
+     * @param {number} x X Coordinate
+     * @param {number} y Y Coordinate
+     * @param {number} c Color channel, 0, 1, 2 are R, G, B respectively
      */
     public at(x : number, y : number, c : number) : number {
         let index : number = (y * this.width + x) * 4 + c;
@@ -53,12 +112,26 @@ class VImage {
     }
 
     /**
+     * Returns the gray intensity at give coordinates
+     *
+     * @param {number} x X Coordinate
+     * @param {number} y Y Coordinate
+     */
+    public grayAt(x : number, y : number) : number {
+        let sum = 0;
+        for (let c = 0; c < this.channels; ++c) {
+            sum += this.at(x, y, c);
+        }
+        return Math.floor(sum / this.channels);
+    }
+
+    /**
      * Updates the image at given coordinates.
      *
-     * @param {Number} x X Coordinate
-     * @param {Number} y Y Coordinate
-     * @param {Number} c Color channel, 0, 1, 2 are R, G, B respectively
-     * @param {Number} val Intensity value at given coordinates
+     * @param {number} x X Coordinate
+     * @param {number} y Y Coordinate
+     * @param {number} c Color channel, 0, 1, 2 are R, G, B respectively
+     * @param {number} val Intensity value at given coordinates
      */
     public update(x : number, y : number, c : number, val: number) : void {
         this.imageData.data[(y * this.width + x) * 4 + c] = val;
@@ -67,9 +140,9 @@ class VImage {
     /**
      * Updates the image at given coordinates with gray value.
      *
-     * @param {Number} x X Coordinate
-     * @param {Number} y Y Coordinate
-     * @param {Number} val Intensity value at given coordinates
+     * @param {number} x X Coordinate
+     * @param {number} y Y Coordinate
+     * @param {number} val Intensity value at given coordinates
      */
     public updateGray(x : number, y : number, val: number) : void {
         for (let c = 0; c < this.channels; ++c) {
@@ -140,51 +213,88 @@ class VImage {
         // TODO(mebjas): abstract better
         fn(this);
     }
-}
 
-enum Channel {
-    Red = 0,
-    Blue = 1,
-    Green = 2,
-    Luma = 3
-}
-const AllChannels: Array<Channel> = [
-    Channel.Red,
-    Channel.Blue,
-    Channel.Green,
-    Channel.Luma];
+    /**
+     * Convolves a given mask centered at given coordinates on gray values.
+     * 
+     * @param {number} x X Coordinate
+     * @param {number} y Y Coordinate
+     * @param {number} c channel index
+     * @param {ConvolutionMask2D} mask Mask to apply
+     * @param {number} scalingFactor Value to scale the convolution result with
+     */
+    public convolve(
+        x: number,
+        y: number,
+        c: number,
+        mask: ConvolutionMask2D,
+        scalingFactor: number = 1): number {
+        let sum = 0;
+        // Assuming mask are always odd sized.
+        const yMiddle = Math.floor(mask.height / 2);
+        const xMiddle = Math.floor(mask.width / 2);
+        for (let j = 0; j < mask.height; ++j) {
+            for (let i = 0; i < mask.width; ++i) {
+                sum += (mask.at(i, j) * 
+                    this.paddedValueAt(x + i - xMiddle, y + j - yMiddle, c));
+            }
+        }
+        return sum * scalingFactor;
+    }
 
-const CreateDefaultSelectionOfChannelsToShow
-    = (): { [channel: number]: boolean } => {
-    let result: { [channel: number]: boolean } = {};
-    AllChannels.forEach(channel => {
-        result[channel] = true;
-    });
-
-    return result;
-}
-
-const getChannelCode = (channel: Channel): string => {
-    switch(channel) {
-        case Channel.Red: return "R";
-        case Channel.Green: return "G";
-        case Channel.Blue: return "B";
-        case Channel.Luma: return "Y";
-        default:
-            throw `Invalid channel id passed ${channel}`;
+    /** Zero padded */
+    private paddedValueAt(x: number, y: number, c: number): number {
+        if (x < 0 || y < 0 || x >= this.width || y >= this.height) {
+            return 0;
+        }
+        return this.at(x, y, c);
     }
 }
+//#endregion
 
-const getChannelByCode = (channelCode: string): Channel => {
-    switch(channelCode) {
-        case "R": return Channel.Red;
-        case "G": return Channel.Green;
-        case "B": return Channel.Blue;
-        case "Y": return Channel.Luma;
-        default:
-            throw `Invalid channel code passed ${channelCode}`;
+//#region Convolutions
+type Matrix2D = Array<Array<number>>;
+class ConvolutionMask2D {
+    public static createMask(matrix: Matrix2D): ConvolutionMask2D {
+        // Validate
+        let height = matrix.length;
+        assert(height > 0, "Mask height should be greater than 0.");
+        let width = matrix[0].length;
+        assert(width > 0, "Mask width should be greater than 0.");
+        for (let i = 1; i < height; i++) {
+            assert(
+                width == matrix[1].length,
+                "Every row in the mask should have same width");
+        }
+
+        assert(height % 2 != 0, "Only odd masks supported at the moment.");
+        assert(width % 2 != 0, "Only odd masks supported at the moment.");
+
+        return new ConvolutionMask2D(matrix, width, height);
     }
-}
+
+    public readonly data: Matrix2D;
+    public readonly width: number;
+    public readonly height: number;
+
+    private constructor(data: Matrix2D, width: number, height: number) {
+        this.data = data;
+        this.width = width;
+        this.height = height;
+    }
+
+    /**
+     * Returns the element at the given coordinates. Doesn't check for out of
+     * bounds.
+     * 
+     * @param x x coordinates
+     * @param y y coordinates
+     */
+    at(x: number, y: number): number {
+        return this.data[y][x];
+    }
+ }
+//#endregion
 
 type Histogram = Array<number>;
 

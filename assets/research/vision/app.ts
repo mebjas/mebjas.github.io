@@ -59,8 +59,8 @@ class Workspace {
     private lastImage?: VImage;
     private ctx: CanvasRenderingContext2D;
  
-    private readonly maxWidth = 800;
-    private readonly maxHeight = 600;
+    private readonly maxWidth = 600;
+    private readonly maxHeight = 800;
 
     constructor(element: HTMLElement, metadata: Metadata) {
         this.element = element;

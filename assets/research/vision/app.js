@@ -39,8 +39,8 @@ var FileSelector = /** @class */ (function () {
 }());
 var Workspace = /** @class */ (function () {
     function Workspace(element, metadata) {
-        this.maxWidth = 800;
-        this.maxHeight = 600;
+        this.maxWidth = 600;
+        this.maxHeight = 800;
         this.element = element;
         this.metadata = metadata;
     }

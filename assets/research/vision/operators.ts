@@ -70,9 +70,6 @@ class OperatorManager {
         return this.operators;
     }
 }
-
-// TODO(mebjas): Define a class called convolution.
-type Matrix2D = Array<Array<number>>;
 //#endregion
 
 //#region Global functions
@@ -216,6 +213,16 @@ class ScalingArgument extends ContinousArgumentBase {
         step: number = 0.2,
         defaultValue = 1) {
         super("Scale (s)", defaultValue, new VRange(min, max, step));
+    }
+}
+
+class SigmaArgument extends ContinousArgumentBase {
+    constructor(
+        min: number = 0,
+        max: number = 5,
+        step: number = 0.2,
+        defaultValue = 1) {
+        super("Sigma (s)", defaultValue, new VRange(min, max, step));
     }
 }
 
@@ -444,7 +451,8 @@ class GaussianBlurringOperator implements Operator {
         this.arguments.push(new GaussianTypeArgument());
         this.arguments.push(new ColorSpaceType());
         this.arguments.push(new KernelSize());
-        this.arguments.push(new ContrastArgument(0, 10));
+        this.arguments.push(new SigmaArgument(0, 2, 0.1, 1));
+        this.arguments.push(new ContrastArgument(0, 20));
     }
 
     public fn() {
@@ -453,7 +461,8 @@ class GaussianBlurringOperator implements Operator {
         const kernelSize = parseInt(this.arguments[2].getValue());
         const shouldRun: boolean = blurringType !== NONE_VALUE;
         const returnGray: boolean = colorSpaceType === ColorSpaceType.GRAY;
-        const alphaValue = parseInt(this.arguments[3].getValue());
+        const sigmaValue = parseFloat(this.arguments[3].getValue());
+        const alphaValue = parseFloat(this.arguments[4].getValue());
 
         return (image: VImage) => {
             if (kernelSize == 1 || !shouldRun) {
@@ -463,18 +472,27 @@ class GaussianBlurringOperator implements Operator {
             if (returnGray) {
                 convertToGray(image);
             }
-            
+
+            const kernel: ConvolutionMask2D = this.createKernel(
+                kernelSize, sigmaValue);    
             if (blurringType == GaussianTypeArgument.BLURRING) {
-                this.runGaussianOnImage(image, kernelSize);
+                this.runGaussianOnImage(image, kernel, returnGray);
             } else if (blurringType == GaussianTypeArgument.SUBTRACTION) {
                 const clone = image.clone();
-                this.runGaussianOnImage(clone, kernelSize);
-                for (let c = 0; c < image.channels; ++c) {
-                    for (let y = 0; y < image.height; ++y) {
-                        for (let x = 0; x < image.width; ++x) {
-                            let delta = image.at(x, y, c) - clone.at(x, y, c);
+                this.runGaussianOnImage(clone, kernel, returnGray);
+                for (let y = 0; y < image.height; ++y) {
+                    for (let x = 0; x < image.width; ++x) {
+                        if (returnGray) {
+                            let delta = image.at(x, y, 0) - clone.at(x, y, 0);
                             delta = delta * alphaValue;
-                            image.update(x, y, c, clamp(Math.abs(delta)));
+                            image.updateGray(x, y, clamp(Math.abs(delta)));
+                        } else {
+                            for (let c = 0; c < image.channels; ++c) {
+                                let delta = image.at(x, y, c)
+                                    - clone.at(x, y, c);
+                                delta = delta * alphaValue;
+                                image.update(x, y, c, clamp(Math.abs(delta)));
+                            }
                         }
                     }
                 }
@@ -484,30 +502,63 @@ class GaussianBlurringOperator implements Operator {
         }
     }
 
-    private runGaussianOnImage(image: VImage, kernelSize: number) {
-        const k1 = Math.floor(kernelSize / 2);
-            const k2 = Math.ceil(kernelSize / 2) - 1;
+    private createKernel(
+        kernelSize: number, sigma: number = 1): ConvolutionMask2D {
+        assert(kernelSize % 2 != 0, "kernel size should be odd.");
+        let kernel: Matrix2D = this.createEmptyKernel(kernelSize);
+        const s: number = 2 * sigma * sigma;
+        let r: number;
+        const middleVal = Math.floor(kernelSize / 2);
+        let sum: number = 0;    // For normalization
+        for (let y = -middleVal; y <= middleVal; ++y) {
+            for (let x = -middleVal; x <= middleVal; ++x) {
+                r = (x * x + y * y);
+                kernel[y + middleVal][x + middleVal]
+                    = Math.exp(-r / s) / Math.PI * s;
+                sum +=  kernel[y + middleVal][x + middleVal];
+            }
+        }
 
-            for (let c = 0; c < image.channels; ++c) {
-                for (let y = 0; y < image.height; ++y) {
-                    for (let x = 0; x < image.width; ++x) {
-                        let sum = 0;
-                        let count = 0;
+        // Normalize
+        for (let y = 0; y < kernelSize; ++y) {
+            for (let x = 0; x < kernelSize; ++x) {
+                kernel[y][x] /= sum;
+            }   
+        }
 
-                        for (let y1 = y - k1; y1 <= y + k2; ++y1) {
-                            for (let x1 = x - k1; x1 <= x + k2; ++x1) {
-                                if (y1 >= 0 && y1 < image.height
-                                        && x1 >= 0 && x1 < image.width) {
-                                    sum += image.at(x1, y1, c);
-                                    count++;
-                                }
-                            }
-                        }
+        return ConvolutionMask2D.createMask(kernel);
+    }
 
-                        image.update(x, y, c, Math.floor(sum / count));
+    private createEmptyKernel(kernelSize: number): Matrix2D {
+        assert(kernelSize % 2 != 0, "kernel size should be odd.");
+        let emptyKernel: Matrix2D = [];
+        for (let i = 0; i < kernelSize; ++i) {
+            emptyKernel.push([]);
+            for (let j = 0; j < kernelSize; ++j) {
+                emptyKernel[i][j] = 0;
+            }
+        }
+
+        return emptyKernel;
+    }
+
+    // Expects the image to be gray if {@param isGray} == true.
+    private runGaussianOnImage(
+        image: VImage, kernel: ConvolutionMask2D, isGray: boolean) {
+        const clone = image.clone();
+        for (let y = 0; y < image.height; ++y) {
+            for (let x = 0; x < image.width; ++x) {
+                if (isGray) {
+                    let intensity = clone.convolve(x, y, 0, kernel);
+                    image.updateGray(x, y, clamp(intensity));
+                } else {
+                    for (let c = 0; c < image.channels; ++c) {
+                        let intensity = clone.convolve(x, y, c, kernel);
+                        image.update(x, y, c, clamp(intensity));
                     }
                 }
             }
+        }
     }
 }
 
@@ -541,25 +592,28 @@ class DerivativeOperator implements Operator {
                 return;
             }
 
+            // Convert to gray scale.
             convertToGray(image);
-            const xConvolution: Matrix2D = [
+            const xConvolution: ConvolutionMask2D
+                = ConvolutionMask2D.createMask([
                 [-1, 0, 1],
                 [-1, 0, 1],
                 [-1, 0, 1]
-            ];
-            const yConvolution: Matrix2D = [
+            ]);
+            const yConvolution: ConvolutionMask2D
+                = ConvolutionMask2D.createMask([
                 [1, 1, 1],
                 [0, 0, 0],
                 [-1, -1, -1],
-            ];
+            ]);
             const clone = image.clone();
             for (let y = 0; y < image.height; ++y) {
                 for (let x = 0; x < image.width; ++x) {
-                    const fx = this.convolve(
-                        clone, x, y, xConvolution, scalingFactor);
-                    const fy = this.convolve(
-                        clone, x, y, yConvolution, scalingFactor);
-                    const magnitude = Math.sqrt(fx*fx + fy*fy);
+                    const fx = clone.convolve(
+                        x, y, /* c= */ 0, xConvolution, scalingFactor);
+                    const fy = clone.convolve(
+                        x, y, /* c= */ 0, yConvolution, scalingFactor);
+                    const magnitude = Math.sqrt(fx * fx + fy * fy);
                     if (!isThresholdingEnabled) {
                         image.updateGray(x, y, clamp(Math.floor(magnitude)));
                     } else {
@@ -570,44 +624,6 @@ class DerivativeOperator implements Operator {
                 } 
             }
         }
-    }
-
-    private convolve(
-        image: VImage,
-        x: number,
-        y: number,
-        convolution: Matrix2D,
-        scalingFactor: number = 1): number {
-        console.assert(
-            convolution.length != 0, "Empty convolution not expected");
-        console.assert(
-            convolution.length % 2 != 0, "Odd convolution expected");
-        console.assert(
-            convolution[0].length % 2 != 0, "Odd convolution expecte");
-
-        let sum = 0;
-        const yMiddle = Math.floor(convolution.length / 2);
-        const xMiddle = Math.floor(convolution[0].length / 2);
-        for (let j = 0; j < convolution.length; ++j) {
-            for (let i = 0; i < convolution[j].length; ++i) {
-                // if (x == 10 && y == 10) {
-                //     debugger;
-                // }
-                const xOffset = x + i - xMiddle;
-                const yOffset = y + j - yMiddle;
-                sum += (convolution[j][i] * this.valueAt(
-                    image, xOffset, yOffset));
-            }
-        }
-        return sum * scalingFactor;
-    }
-
-    private valueAt(image: VImage, x: number, y: number, c: number = 0) {
-        if (x < 0 || y < 0 || x >= image.width || y >= image.height) {
-            return 0;
-        }
-
-        return image.at(x, y, c);
     }
 }
 
