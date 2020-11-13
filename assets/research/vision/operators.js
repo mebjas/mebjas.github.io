@@ -265,6 +265,13 @@ var DerivativeThresholdArgument = /** @class */ (function (_super) {
     }
     return DerivativeThresholdArgument;
 }(DiscreteArgumentBase));
+var BinaryDiscreteArgument = /** @class */ (function (_super) {
+    __extends(BinaryDiscreteArgument, _super);
+    function BinaryDiscreteArgument() {
+        return _super.call(this, "Operation", ["Run"]) || this;
+    }
+    return BinaryDiscreteArgument;
+}(DiscreteArgumentBase));
 //#endregion
 //#endregion
 //#region Point Operators
@@ -372,6 +379,45 @@ var HistogramEqOperator = /** @class */ (function () {
     return HistogramEqOperator;
 }());
 OperatorManager.getInstance().register(new HistogramEqOperator());
+//#endregion
+//#region GammaOperator
+var ClippedRegionVisualizationOperator = /** @class */ (function () {
+    function ClippedRegionVisualizationOperator() {
+        this.type = OperatorType.Global;
+        this.name = "Clipped region";
+        this.description = "Visualize clipped regions";
+        this.arguments = [];
+        this.arguments.push(new BinaryDiscreteArgument());
+    }
+    ClippedRegionVisualizationOperator.prototype.fn = function () {
+        var selection = this.arguments[0].getValue();
+        var shouldRun = selection !== NONE_VALUE;
+        return function (image) {
+            if (!shouldRun) {
+                return;
+            }
+            for (var y = 0; y < image.height; ++y) {
+                for (var x = 0; x < image.width; ++x) {
+                    var isAnyChannelClipped = false;
+                    for (var c = 0; c < image.channels; ++c) {
+                        if (image.at(x, y, c) >= 255) {
+                            isAnyChannelClipped = true;
+                            break;
+                        }
+                    }
+                    if (isAnyChannelClipped) {
+                        image.update(x, y, 0, 255);
+                        for (var c = 1; c < image.channels; ++c) {
+                            image.update(x, y, c, 0);
+                        }
+                    }
+                }
+            }
+        };
+    };
+    return ClippedRegionVisualizationOperator;
+}());
+OperatorManager.getInstance().register(new ClippedRegionVisualizationOperator());
 //#endregion
 //#endregion
 //#region Local Operators

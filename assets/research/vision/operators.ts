@@ -313,6 +313,15 @@ class DerivativeThresholdArgument extends DiscreteArgumentBase {
         );
     }
 }
+
+class BinaryDiscreteArgument extends DiscreteArgumentBase {
+    constructor() {
+        super(
+            "Operation",
+            ["Run"]
+        );
+    }
+}
 //#endregion
 //#endregion
 
@@ -434,6 +443,50 @@ class HistogramEqOperator implements Operator {
 }
 
 OperatorManager.getInstance().register(new HistogramEqOperator());
+//#endregion
+
+//#region GammaOperator
+class ClippedRegionVisualizationOperator implements Operator {
+    readonly type = OperatorType.Global;
+    readonly name = "Clipped region";
+    readonly description = "Visualize clipped regions (red color)";
+    readonly arguments: Array<OperatorArgument> = [];
+
+    constructor() {
+        this.arguments.push(new BinaryDiscreteArgument());
+    }
+
+    public fn() {
+        const selection = this.arguments[0].getValue();
+        const shouldRun = selection !== NONE_VALUE;
+
+        return (image: VImage) => {
+            if (!shouldRun) {
+                return;
+            }
+            for (let y = 0; y < image.height; ++y) {
+                for (let x = 0; x < image.width; ++x) {
+                    let isAnyChannelClipped: boolean = false;
+                    for (let c = 0; c < image.channels; ++c) {
+                        if (image.at(x, y, c) >= 255) {
+                            isAnyChannelClipped = true;
+                            break;
+                        }
+                    }
+
+                    if (isAnyChannelClipped) {
+                        image.update(x, y, 0, 255);
+                        for (let c = 1; c < image.channels; ++c) {
+                            image.update(x, y, c, 0);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+OperatorManager.getInstance().register(new ClippedRegionVisualizationOperator());
 //#endregion
 //#endregion
 
