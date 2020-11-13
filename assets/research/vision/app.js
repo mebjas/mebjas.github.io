@@ -92,8 +92,10 @@ var Workspace = /** @class */ (function () {
     };
     return Workspace;
 }());
+;
 var Toolbar = /** @class */ (function () {
     function Toolbar(element, workspace) {
+        this.operatorSliderMap = {};
         this.uiMaxHeight = 450;
         this.element = element;
         this.workspace = workspace;
@@ -118,15 +120,21 @@ var Toolbar = /** @class */ (function () {
         operatorsHeader.innerHTML = "Operators";
         operatorsHeader.innerHTML += " (<a href='https://github.com/mebjas/mebjas.github.io/blob/master/assets/research/vision/operators.ts'>source code</a>)";
         this.element.appendChild(operatorsHeader);
+        var resetLink = document.createElement("a");
+        resetLink.innerHTML = "reset";
+        resetLink.href = "#reset";
+        resetLink.style.marginLeft = "5px";
+        resetLink.addEventListener("click", function (_) { return _this.reset(); });
+        operatorsHeader.appendChild(resetLink);
         var operatorBody = document.createElement("div");
         operatorBody.style.maxHeight = this.uiMaxHeight + "px";
         operatorBody.style.overflowY = "auto";
         operatorBody.style.paddingBottom = "100px";
         this.element.appendChild(operatorBody);
         var operators = OperatorManager.getInstance().getOperators();
-        console.log(operators);
         var _loop_1 = function (i) {
             var operator = operators[i];
+            this_1.operatorSliderMap[operator.name] = [];
             // Create top level element.
             var div = document.createElement("div");
             div.style.marginTop = "5px";
@@ -162,6 +170,10 @@ var Toolbar = /** @class */ (function () {
                 slider.value = argument.getValue();
                 slider.style.flex = "3";
                 argumentDiv.appendChild(slider);
+                this_1.operatorSliderMap[operator.name].push({
+                    element: slider,
+                    defaultValue: argument.defaultValue
+                });
                 var meta = document.createElement("span");
                 meta.innerHTML = "" + argument.getValue();
                 meta.style.flex = "1";
@@ -180,9 +192,28 @@ var Toolbar = /** @class */ (function () {
                 _loop_2(j);
             }
         };
+        var this_1 = this;
         for (var i = 0; i < operators.length; ++i) {
             _loop_1(i);
         }
+    };
+    Toolbar.prototype.reset = function () {
+        var _this = this;
+        console.log(this.operatorSliderMap);
+        var keys = Object.keys(this.operatorSliderMap);
+        keys.forEach(function (key) {
+            var sliderValuePairs = _this.operatorSliderMap[key];
+            sliderValuePairs.forEach(function (pair) {
+                var isChanged = (pair.element.value !== "" + pair.defaultValue);
+                if (!isChanged) {
+                    return;
+                }
+                pair.element.value = "" + pair.defaultValue;
+                var changeEvent = new Event('change');
+                pair.element.dispatchEvent(changeEvent);
+            });
+        });
+        // TODO(mebjas): Move to original image and not the inverted value.
     };
     return Toolbar;
 }());

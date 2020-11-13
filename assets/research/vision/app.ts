@@ -134,10 +134,17 @@ class Workspace {
     }
 }
 
+interface SliderDefaultValuePair {
+    element: HTMLInputElement;
+    defaultValue: number;
+};
+
 class Toolbar {
     private element: HTMLElement;
     private workspace: Workspace;
     private locked: boolean;
+    private operatorSliderMap?:
+        { [ key: string] : Array<SliderDefaultValuePair>} = {};
     
     private readonly uiMaxHeight: number = 450;
 
@@ -168,8 +175,15 @@ class Toolbar {
 
         const operatorsHeader = document.createElement("div");
         operatorsHeader.innerHTML = "Operators";
-        operatorsHeader.innerHTML += " (<a href='https://github.com/mebjas/mebjas.github.io/blob/master/assets/research/vision/operators.ts'>source code</a>)"
+        operatorsHeader.innerHTML += " (<a href='https://github.com/mebjas/mebjas.github.io/blob/master/assets/research/vision/operators.ts'>source code</a>)";
         this.element.appendChild(operatorsHeader);
+
+        const resetLink = document.createElement("a");
+        resetLink.innerHTML = "reset";
+        resetLink.href = "#reset";
+        resetLink.style.marginLeft = "5px";
+        resetLink.addEventListener("click", _ => this.reset());
+        operatorsHeader.appendChild(resetLink);
 
         const operatorBody = document.createElement("div");
         operatorBody.style.maxHeight = `${this.uiMaxHeight}px`;
@@ -178,10 +192,10 @@ class Toolbar {
         this.element.appendChild(operatorBody);
 
         const operators = OperatorManager.getInstance().getOperators();
-        console.log(operators);
         for (let i = 0; i < operators.length; ++i) {
             let operator = operators[i];
 
+            this.operatorSliderMap[operator.name] = [];
             // Create top level element.
             let div = document.createElement("div");
             div.style.marginTop = "5px";
@@ -224,6 +238,11 @@ class Toolbar {
                 slider.style.flex = "3";
                 argumentDiv.appendChild(slider);
 
+                this.operatorSliderMap[operator.name].push({
+                    element: slider,
+                    defaultValue: argument.defaultValue
+                });
+
                 let meta = document.createElement("span");
                 meta.innerHTML = `${argument.getValue()}`;
                 meta.style.flex = "1";
@@ -236,9 +255,29 @@ class Toolbar {
                 });
                 argumentDiv.appendChild(meta);
                 div.appendChild(argumentDiv);
-            }
-            
+            }      
         }
+    }
+
+    reset() {
+        console.log(this.operatorSliderMap);
+        const keys = Object.keys(this.operatorSliderMap);
+        keys.forEach(key => {
+            const sliderValuePairs = this.operatorSliderMap[key];
+            sliderValuePairs.forEach(pair => {
+                const isChanged: boolean
+                    = (pair.element.value !== `${pair.defaultValue}`);
+                if (!isChanged) {
+                    return;
+                }
+
+                pair.element.value = `${pair.defaultValue}`;
+                const changeEvent = new Event('change');
+                pair.element.dispatchEvent(changeEvent);
+            });
+        });
+
+        // TODO(mebjas): Move to original image and not the inverted value.
     }
 }
 
