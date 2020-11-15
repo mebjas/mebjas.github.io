@@ -594,6 +594,62 @@ var DerivativeOperator = /** @class */ (function () {
 }());
 OperatorManager.getInstance().register(new DerivativeOperator());
 //#endregion
+//#region DerivativeOperator
+var SobelEdgeOperator = /** @class */ (function () {
+    function SobelEdgeOperator() {
+        this.type = OperatorType.Local;
+        this.name = "Sobel Edge";
+        this.description = "Edge detection";
+        this.arguments = [];
+        this.arguments.push(new DerivativeArgument());
+        this.arguments.push(new ScalingArgument(0.1, 5, 0.05, 1));
+        this.arguments.push(new DerivativeThresholdArgument());
+        this.arguments.push(new ThresholdArgument(0, 255, 1, 100));
+    }
+    SobelEdgeOperator.prototype.fn = function () {
+        var selectedType = this.arguments[0].getValue();
+        var scalingFactor = parseFloat(this.arguments[1].getValue());
+        var thresholdType = this.arguments[2].getValue();
+        var threshold = parseInt(this.arguments[3].getValue());
+        var isEnabled = selectedType !== NONE_VALUE;
+        var isThresholdingEnabled = thresholdType !== NONE_VALUE;
+        return function (image) {
+            if (!isEnabled) {
+                return;
+            }
+            // Convert to gray scale.
+            convertToGray(image);
+            var xConvolution = ConvolutionMask2D.createMask([
+                [1, 0, -1],
+                [2, 0, -2],
+                [1, 0, -1]
+            ]);
+            var yConvolution = ConvolutionMask2D.createMask([
+                [1, 2, 1],
+                [0, 0, 0],
+                [-1, -2, -1],
+            ]);
+            var clone = image.clone();
+            for (var y = 0; y < image.height; ++y) {
+                for (var x = 0; x < image.width; ++x) {
+                    var fx = clone.convolve(x, y, /* c= */ 0, xConvolution, scalingFactor);
+                    var fy = clone.convolve(x, y, /* c= */ 0, yConvolution, scalingFactor);
+                    var magnitude = Math.sqrt(fx * fx + fy * fy);
+                    if (!isThresholdingEnabled) {
+                        image.updateGray(x, y, clamp(Math.floor(magnitude)));
+                    }
+                    else {
+                        var intensity = clamp(Math.floor(magnitude));
+                        image.updateGray(x, y, intensity >= threshold ? 255 : 0);
+                    }
+                }
+            }
+        };
+    };
+    return SobelEdgeOperator;
+}());
+OperatorManager.getInstance().register(new SobelEdgeOperator());
+//#endregion
 //#region Sharpening
 var SharpeningOperator = /** @class */ (function () {
     function SharpeningOperator() {

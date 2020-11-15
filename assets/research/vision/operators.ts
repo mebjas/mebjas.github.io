@@ -683,6 +683,73 @@ class DerivativeOperator implements Operator {
 OperatorManager.getInstance().register(new DerivativeOperator());
 //#endregion
 
+
+//#region DerivativeOperator
+class SobelEdgeOperator implements Operator {
+    readonly type = OperatorType.Local;
+    readonly name = "Sobel Edge";
+    readonly description = "Edge detection";
+    readonly arguments: Array<OperatorArgument> = [];
+
+    constructor() {
+        this.arguments.push(new DerivativeArgument());
+        this.arguments.push(new ScalingArgument(0.1, 5, 0.05, 1));
+        this.arguments.push(new DerivativeThresholdArgument());
+        this.arguments.push(new ThresholdArgument(0, 255, 1, 100));
+    }
+
+    public fn() {
+        const selectedType = this.arguments[0].getValue();
+        const scalingFactor = parseFloat(this.arguments[1].getValue());
+        const thresholdType = this.arguments[2].getValue();
+        const threshold = parseInt(this.arguments[3].getValue());
+
+        const isEnabled: boolean = selectedType !== NONE_VALUE;
+        const isThresholdingEnabled: boolean = thresholdType !== NONE_VALUE;
+        return (image: VImage) => {
+            if (!isEnabled) {
+                return;
+            }
+
+            // Convert to gray scale.
+            convertToGray(image);
+            const xConvolution: ConvolutionMask2D
+                = ConvolutionMask2D.createMask([
+                [1, 0, -1],
+                [2, 0, -2],
+                [1, 0, -1]
+            ]);
+            const yConvolution: ConvolutionMask2D
+                = ConvolutionMask2D.createMask([
+                [1, 2, 1],
+                [0, 0, 0],
+                [-1, -2, -1],
+            ]);
+            const clone = image.clone();
+            for (let y = 0; y < image.height; ++y) {
+                for (let x = 0; x < image.width; ++x) {
+                    const fx = clone.convolve(
+                        x, y, /* c= */ 0, xConvolution, scalingFactor);
+                    const fy = clone.convolve(
+                        x, y, /* c= */ 0, yConvolution, scalingFactor);
+                    const magnitude = Math.sqrt(fx * fx + fy * fy);
+                    if (!isThresholdingEnabled) {
+                        image.updateGray(x, y, clamp(Math.floor(magnitude)));
+                    } else {
+                        const intensity = clamp(Math.floor(magnitude));
+                        image.updateGray(
+                            x, y, intensity >= threshold ? 255 : 0);
+                    }
+                } 
+            }
+        }
+    }
+}
+
+OperatorManager.getInstance().register(new SobelEdgeOperator());
+//#endregion
+
+
 //#region Sharpening
 class SharpeningOperator implements Operator {
     readonly type = OperatorType.Local;
