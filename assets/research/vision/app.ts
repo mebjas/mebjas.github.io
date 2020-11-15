@@ -162,14 +162,13 @@ class Toolbar {
     private operatorElementMap?:
         { [ key: string] : Array<SliderDefaultValuePair>} = {};
     
-    private readonly uiMaxHeight: number = 450;
-
-    constructor(element: HTMLElement, workspace: Workspace) {
+    constructor(
+        element: HTMLElement, workspace: Workspace, footerElem: HTMLElement) {
         this.element = element;
         this.workspace = workspace;
 
         this.locked = true;
-        this.render();
+        this.render(footerElem.offsetTop);
     }
 
     public lock() {
@@ -186,7 +185,7 @@ class Toolbar {
         return this.locked;
     }
 
-    private render() {
+    private render(footerOffsetTop: number) {
         this.element.style.opacity = "0.5";
 
         const operatorsHeader = document.createElement("div");
@@ -202,7 +201,8 @@ class Toolbar {
         operatorsHeader.appendChild(resetLink);
 
         const operatorBody = document.createElement("div");
-        operatorBody.style.maxHeight = `${this.uiMaxHeight}px`;
+        const maxHeight = footerOffsetTop - this.element.offsetTop - 100;
+        operatorBody.style.maxHeight = `${maxHeight}px`;
         operatorBody.style.overflowY = "auto";
         operatorBody.style.paddingBottom = "100px";
         this.element.appendChild(operatorBody);
@@ -441,10 +441,12 @@ class App {
         fileSelectorElem: HTMLInputElement,
         workspaceElem: HTMLElement,
         toolbarElem: HTMLElement,
-        metadataElem: HTMLElement) {
+        metadataElem: HTMLElement,
+        footerElem: HTMLElement) {
+
         this.metadata = new Metadata(metadataElem);
         this.workspace = new Workspace(workspaceElem, this.metadata);
-        this.toolbar = new Toolbar(toolbarElem, this.workspace);
+        this.toolbar = new Toolbar(toolbarElem, this.workspace, footerElem);
 
         // Unused argument.
         const unusedFileSelector = new FileSelector(

@@ -67,7 +67,12 @@ docReady(function() {
     let workspaceElem = document.getElementById('workspace');
     let toolbarElem = document.getElementById('toolbar');
     let metadataElem = document.getElementById('metadata');
-    let app = new App(fileSelectionElem, workspaceElem, toolbarElem, metadataElem);
-    app.render();
+    let footerElem = document.getElementsByClassName('site-footer')[0];
+    (new App(
+        fileSelectionElem,
+        workspaceElem,
+        toolbarElem,
+        metadataElem,
+        footerElem)).render();
 });
 </script>

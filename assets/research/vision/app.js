@@ -108,13 +108,12 @@ var Workspace = /** @class */ (function () {
 }());
 ;
 var Toolbar = /** @class */ (function () {
-    function Toolbar(element, workspace) {
+    function Toolbar(element, workspace, footerElem) {
         this.operatorElementMap = {};
-        this.uiMaxHeight = 450;
         this.element = element;
         this.workspace = workspace;
         this.locked = true;
-        this.render();
+        this.render(footerElem.offsetTop);
     }
     Toolbar.prototype.lock = function () {
         this.locked = true;
@@ -127,7 +126,7 @@ var Toolbar = /** @class */ (function () {
     Toolbar.prototype.isLocked = function () {
         return this.locked;
     };
-    Toolbar.prototype.render = function () {
+    Toolbar.prototype.render = function (footerOffsetTop) {
         var _this = this;
         this.element.style.opacity = "0.5";
         var operatorsHeader = document.createElement("div");
@@ -141,7 +140,8 @@ var Toolbar = /** @class */ (function () {
         resetLink.addEventListener("click", function (_) { return _this.reset(); });
         operatorsHeader.appendChild(resetLink);
         var operatorBody = document.createElement("div");
-        operatorBody.style.maxHeight = this.uiMaxHeight + "px";
+        var maxHeight = footerOffsetTop - this.element.offsetTop - 100;
+        operatorBody.style.maxHeight = maxHeight + "px";
         operatorBody.style.overflowY = "auto";
         operatorBody.style.paddingBottom = "100px";
         this.element.appendChild(operatorBody);
@@ -340,11 +340,11 @@ var Metadata = /** @class */ (function () {
     return Metadata;
 }());
 var App = /** @class */ (function () {
-    function App(fileSelectorElem, workspaceElem, toolbarElem, metadataElem) {
+    function App(fileSelectorElem, workspaceElem, toolbarElem, metadataElem, footerElem) {
         var _this = this;
         this.metadata = new Metadata(metadataElem);
         this.workspace = new Workspace(workspaceElem, this.metadata);
-        this.toolbar = new Toolbar(toolbarElem, this.workspace);
+        this.toolbar = new Toolbar(toolbarElem, this.workspace, footerElem);
         // Unused argument.
         var unusedFileSelector = new FileSelector(fileSelectorElem, function (image) {
             _this.onImageLoaded(image);

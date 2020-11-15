@@ -385,7 +385,7 @@ var ClippedRegionVisualizationOperator = /** @class */ (function () {
     function ClippedRegionVisualizationOperator() {
         this.type = OperatorType.Global;
         this.name = "Clipped region";
-        this.description = "Visualize clipped regions";
+        this.description = "Visualize clipped regions (red color)";
         this.arguments = [];
         this.arguments.push(new BinaryDiscreteArgument());
     }
