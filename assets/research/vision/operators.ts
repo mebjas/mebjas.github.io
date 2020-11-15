@@ -263,18 +263,36 @@ class BinaryArgument extends ContinousArgumentBase {
     }
 }
 
-class GaussianTypeArgument extends DiscreteArgumentBase {
+class BlurTaskArgument extends DiscreteArgumentBase {
 
     static BLURRING: string = "Blurring";
     static SUBTRACTION: string = "Subtraction";
 
     constructor() {
         super(
-            "GaussianType",
+            "Blur Task",
             [
-                GaussianTypeArgument.BLURRING,
-                GaussianTypeArgument.SUBTRACTION
+                BlurTaskArgument.BLURRING,
+                BlurTaskArgument.SUBTRACTION
             ]
+        );
+    }
+}
+
+
+class BlurTypeArgument extends DiscreteArgumentBase {
+
+    static Gaussian: string = "Gaussian";
+    static BoxBlur: string = "BoxBlur";
+
+    constructor() {
+        super(
+            "Blur Type",
+            [
+                BlurTypeArgument.Gaussian,
+                BlurTypeArgument.BoxBlur
+            ],
+            /* defaultValue= */ BlurTypeArgument.Gaussian
         );
     }
 }
@@ -493,16 +511,17 @@ OperatorManager.getInstance().register(new ClippedRegionVisualizationOperator())
 //#region Local Operators
 
 //#region GaussianBlurring
-class GaussianBlurringOperator implements Operator {
+class BlurringOperator implements Operator {
     readonly type = OperatorType.Local;
-    readonly name = "Gaussian Blurring";
+    readonly name = "Blurring";
     readonly description = "Blurs the image (Not all arguments work"
         + " with eachother).";
     readonly arguments: Array<OperatorArgument> = [];
 
     constructor() {
-        this.arguments.push(new GaussianTypeArgument());
+        this.arguments.push(new BlurTaskArgument());
         this.arguments.push(new ColorSpaceType());
+        this.arguments.push(new BlurTypeArgument());
         this.arguments.push(new KernelSize());
         this.arguments.push(new SigmaArgument(0, 2, 0.1, 1));
         this.arguments.push(new ContrastArgument(0, 20));
@@ -511,11 +530,12 @@ class GaussianBlurringOperator implements Operator {
     public fn() {
         const blurringType: string = this.arguments[0].getValue();
         const colorSpaceType: string = this.arguments[1].getValue();
-        const kernelSize = parseInt(this.arguments[2].getValue());
+        const blurType: string = this.arguments[2].getValue();
+        const kernelSize = parseInt(this.arguments[3].getValue());
         const shouldRun: boolean = blurringType !== NONE_VALUE;
         const returnGray: boolean = colorSpaceType === ColorSpaceType.GRAY;
-        const sigmaValue = parseFloat(this.arguments[3].getValue());
-        const alphaValue = parseFloat(this.arguments[4].getValue());
+        const sigmaValue = parseFloat(this.arguments[4].getValue());
+        const alphaValue = parseFloat(this.arguments[5].getValue());
 
         return (image: VImage) => {
             if (kernelSize == 1 || !shouldRun) {
@@ -527,12 +547,13 @@ class GaussianBlurringOperator implements Operator {
             }
 
             const kernel: ConvolutionMask2D = this.createKernel(
-                kernelSize, sigmaValue);    
-            if (blurringType == GaussianTypeArgument.BLURRING) {
-                this.runGaussianOnImage(image, kernel, returnGray);
-            } else if (blurringType == GaussianTypeArgument.SUBTRACTION) {
+                kernelSize, blurType, sigmaValue);
+            console.log(kernel.data);
+            if (blurringType == BlurTaskArgument.BLURRING) {
+                this.convolveOnImage(image, kernel, returnGray);
+            } else if (blurringType == BlurTaskArgument.SUBTRACTION) {
                 const clone = image.clone();
-                this.runGaussianOnImage(clone, kernel, returnGray);
+                this.convolveOnImage(clone, kernel, returnGray);
                 for (let y = 0; y < image.height; ++y) {
                     for (let x = 0; x < image.width; ++x) {
                         if (returnGray) {
@@ -556,7 +577,17 @@ class GaussianBlurringOperator implements Operator {
     }
 
     private createKernel(
-        kernelSize: number, sigma: number = 1): ConvolutionMask2D {
+        kernelSize: number, blurType: string, sigma: number = 1): ConvolutionMask2D {
+       if (blurType == BlurTypeArgument.Gaussian) {
+           return this.createGaussianKernel(kernelSize, sigma);
+       } else if (blurType == BlurTypeArgument.BoxBlur) {
+           return this.createBoxBlur(kernelSize);
+       } else {
+           throw `Unsupported blurType = ${blurType}`;
+       }
+    }
+
+    private createGaussianKernel(kernelSize: number, sigma: number): ConvolutionMask2D {
         assert(kernelSize % 2 != 0, "kernel size should be odd.");
         let kernel: Matrix2D = this.createEmptyKernel(kernelSize);
         const s: number = 2 * sigma * sigma;
@@ -582,13 +613,19 @@ class GaussianBlurringOperator implements Operator {
         return ConvolutionMask2D.createMask(kernel);
     }
 
-    private createEmptyKernel(kernelSize: number): Matrix2D {
+    private createBoxBlur(kernelSize: number): ConvolutionMask2D {
+        assert(kernelSize % 2 != 0, "kernel size should be odd.");
+        const kernel = this.createEmptyKernel(kernelSize, 1 / (kernelSize * kernelSize));
+        return ConvolutionMask2D.createMask(kernel);
+    }
+
+    private createEmptyKernel(kernelSize: number, defaultValue: number = 0): Matrix2D {
         assert(kernelSize % 2 != 0, "kernel size should be odd.");
         let emptyKernel: Matrix2D = [];
         for (let i = 0; i < kernelSize; ++i) {
             emptyKernel.push([]);
             for (let j = 0; j < kernelSize; ++j) {
-                emptyKernel[i][j] = 0;
+                emptyKernel[i][j] = defaultValue;
             }
         }
 
@@ -596,7 +633,7 @@ class GaussianBlurringOperator implements Operator {
     }
 
     // Expects the image to be gray if {@param isGray} == true.
-    private runGaussianOnImage(
+    private convolveOnImage(
         image: VImage, kernel: ConvolutionMask2D, isGray: boolean) {
         const clone = image.clone();
         for (let y = 0; y < image.height; ++y) {
@@ -615,7 +652,7 @@ class GaussianBlurringOperator implements Operator {
     }
 }
 
-OperatorManager.getInstance().register(new GaussianBlurringOperator());
+OperatorManager.getInstance().register(new BlurringOperator());
 //#endregion
 
 //#region DerivativeOperator

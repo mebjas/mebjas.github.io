@@ -226,17 +226,30 @@ var BinaryArgument = /** @class */ (function (_super) {
     }
     return BinaryArgument;
 }(ContinousArgumentBase));
-var GaussianTypeArgument = /** @class */ (function (_super) {
-    __extends(GaussianTypeArgument, _super);
-    function GaussianTypeArgument() {
-        return _super.call(this, "GaussianType", [
-            GaussianTypeArgument.BLURRING,
-            GaussianTypeArgument.SUBTRACTION
+var BlurTaskArgument = /** @class */ (function (_super) {
+    __extends(BlurTaskArgument, _super);
+    function BlurTaskArgument() {
+        return _super.call(this, "Blur Task", [
+            BlurTaskArgument.BLURRING,
+            BlurTaskArgument.SUBTRACTION
         ]) || this;
     }
-    GaussianTypeArgument.BLURRING = "Blurring";
-    GaussianTypeArgument.SUBTRACTION = "Subtraction";
-    return GaussianTypeArgument;
+    BlurTaskArgument.BLURRING = "Blurring";
+    BlurTaskArgument.SUBTRACTION = "Subtraction";
+    return BlurTaskArgument;
+}(DiscreteArgumentBase));
+var BlurTypeArgument = /** @class */ (function (_super) {
+    __extends(BlurTypeArgument, _super);
+    function BlurTypeArgument() {
+        return _super.call(this, "Blur Type", [
+            BlurTypeArgument.Gaussian,
+            BlurTypeArgument.BoxBlur
+        ], 
+        /* defaultValue= */ BlurTypeArgument.Gaussian) || this;
+    }
+    BlurTypeArgument.Gaussian = "Gaussian";
+    BlurTypeArgument.BoxBlur = "BoxBlur";
+    return BlurTypeArgument;
 }(DiscreteArgumentBase));
 var ColorSpaceType = /** @class */ (function (_super) {
     __extends(ColorSpaceType, _super);
@@ -422,28 +435,30 @@ OperatorManager.getInstance().register(new ClippedRegionVisualizationOperator())
 //#endregion
 //#region Local Operators
 //#region GaussianBlurring
-var GaussianBlurringOperator = /** @class */ (function () {
-    function GaussianBlurringOperator() {
+var BlurringOperator = /** @class */ (function () {
+    function BlurringOperator() {
         this.type = OperatorType.Local;
-        this.name = "Gaussian Blurring";
+        this.name = "Blurring";
         this.description = "Blurs the image (Not all arguments work"
             + " with eachother).";
         this.arguments = [];
-        this.arguments.push(new GaussianTypeArgument());
+        this.arguments.push(new BlurTaskArgument());
         this.arguments.push(new ColorSpaceType());
+        this.arguments.push(new BlurTypeArgument());
         this.arguments.push(new KernelSize());
         this.arguments.push(new SigmaArgument(0, 2, 0.1, 1));
         this.arguments.push(new ContrastArgument(0, 20));
     }
-    GaussianBlurringOperator.prototype.fn = function () {
+    BlurringOperator.prototype.fn = function () {
         var _this = this;
         var blurringType = this.arguments[0].getValue();
         var colorSpaceType = this.arguments[1].getValue();
-        var kernelSize = parseInt(this.arguments[2].getValue());
+        var blurType = this.arguments[2].getValue();
+        var kernelSize = parseInt(this.arguments[3].getValue());
         var shouldRun = blurringType !== NONE_VALUE;
         var returnGray = colorSpaceType === ColorSpaceType.GRAY;
-        var sigmaValue = parseFloat(this.arguments[3].getValue());
-        var alphaValue = parseFloat(this.arguments[4].getValue());
+        var sigmaValue = parseFloat(this.arguments[4].getValue());
+        var alphaValue = parseFloat(this.arguments[5].getValue());
         return function (image) {
             if (kernelSize == 1 || !shouldRun) {
                 return;
@@ -451,13 +466,14 @@ var GaussianBlurringOperator = /** @class */ (function () {
             if (returnGray) {
                 convertToGray(image);
             }
-            var kernel = _this.createKernel(kernelSize, sigmaValue);
-            if (blurringType == GaussianTypeArgument.BLURRING) {
-                _this.runGaussianOnImage(image, kernel, returnGray);
+            var kernel = _this.createKernel(kernelSize, blurType, sigmaValue);
+            console.log(kernel.data);
+            if (blurringType == BlurTaskArgument.BLURRING) {
+                _this.convolveOnImage(image, kernel, returnGray);
             }
-            else if (blurringType == GaussianTypeArgument.SUBTRACTION) {
+            else if (blurringType == BlurTaskArgument.SUBTRACTION) {
                 var clone = image.clone();
-                _this.runGaussianOnImage(clone, kernel, returnGray);
+                _this.convolveOnImage(clone, kernel, returnGray);
                 for (var y = 0; y < image.height; ++y) {
                     for (var x = 0; x < image.width; ++x) {
                         if (returnGray) {
@@ -481,8 +497,19 @@ var GaussianBlurringOperator = /** @class */ (function () {
             }
         };
     };
-    GaussianBlurringOperator.prototype.createKernel = function (kernelSize, sigma) {
+    BlurringOperator.prototype.createKernel = function (kernelSize, blurType, sigma) {
         if (sigma === void 0) { sigma = 1; }
+        if (blurType == BlurTypeArgument.Gaussian) {
+            return this.createGaussianKernel(kernelSize, sigma);
+        }
+        else if (blurType == BlurTypeArgument.BoxBlur) {
+            return this.createBoxBlur(kernelSize);
+        }
+        else {
+            throw "Unsupported blurType = " + blurType;
+        }
+    };
+    BlurringOperator.prototype.createGaussianKernel = function (kernelSize, sigma) {
         assert(kernelSize % 2 != 0, "kernel size should be odd.");
         var kernel = this.createEmptyKernel(kernelSize);
         var s = 2 * sigma * sigma;
@@ -505,19 +532,25 @@ var GaussianBlurringOperator = /** @class */ (function () {
         }
         return ConvolutionMask2D.createMask(kernel);
     };
-    GaussianBlurringOperator.prototype.createEmptyKernel = function (kernelSize) {
+    BlurringOperator.prototype.createBoxBlur = function (kernelSize) {
+        assert(kernelSize % 2 != 0, "kernel size should be odd.");
+        var kernel = this.createEmptyKernel(kernelSize, 1 / (kernelSize * kernelSize));
+        return ConvolutionMask2D.createMask(kernel);
+    };
+    BlurringOperator.prototype.createEmptyKernel = function (kernelSize, defaultValue) {
+        if (defaultValue === void 0) { defaultValue = 0; }
         assert(kernelSize % 2 != 0, "kernel size should be odd.");
         var emptyKernel = [];
         for (var i = 0; i < kernelSize; ++i) {
             emptyKernel.push([]);
             for (var j = 0; j < kernelSize; ++j) {
-                emptyKernel[i][j] = 0;
+                emptyKernel[i][j] = defaultValue;
             }
         }
         return emptyKernel;
     };
     // Expects the image to be gray if {@param isGray} == true.
-    GaussianBlurringOperator.prototype.runGaussianOnImage = function (image, kernel, isGray) {
+    BlurringOperator.prototype.convolveOnImage = function (image, kernel, isGray) {
         var clone = image.clone();
         for (var y = 0; y < image.height; ++y) {
             for (var x = 0; x < image.width; ++x) {
@@ -534,9 +567,9 @@ var GaussianBlurringOperator = /** @class */ (function () {
             }
         }
     };
-    return GaussianBlurringOperator;
+    return BlurringOperator;
 }());
-OperatorManager.getInstance().register(new GaussianBlurringOperator());
+OperatorManager.getInstance().register(new BlurringOperator());
 //#endregion
 //#region DerivativeOperator
 var DerivativeOperator = /** @class */ (function () {
