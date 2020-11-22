@@ -1,0 +1,79 @@
+---
+layout: default_research
+---
+<style>
+#reader {
+    width: 640px;
+}
+
+@media(max-width: 600px) {
+	#reader {
+		width: 300px;
+	}
+}
+.empty {
+    display: block;
+    width: 100%;
+    height: 20px;
+}
+</style>
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+<h1> HTML5 QR Code scanner (beta with ZXing) </h1>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12" style="text-align: center;margin-bottom: 20px;">
+			<div id="reader" style="display: inline-block;"></div>
+			<div class="empty"></div>
+			<div id="scanned-result"></div>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+    <h2>Demo based on latest HEAD on Github</h2>
+    <a href="./html5-qrcode">Demo of html5-qrcode</a>
+    <br>
+</div>
+
+<h2>Comments</h2>
+<script src="https://utteranc.es/client.js"
+    repo="mebjas/mebjas.github.io"
+    issue-term="title"
+    label="test"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
+<script src="/assets/research/html5qrcode/html5-qrcode.min.js"></script>
+<script>
+function docReady(fn) {
+    // see if DOM is already available
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+        // call on next available tick
+        setTimeout(fn, 1);
+    } else {
+        document.addEventListener("DOMContentLoaded", fn);
+    }
+}
+
+docReady(function() {
+	hljs.initHighlightingOnLoad();
+
+	var results = document.getElementById('scanned-result');
+	var lastMessage;
+	var codesFound = 0;
+	function onScanSuccess(qrCodeMessage) {
+		if (lastMessage !== qrCodeMessage) {
+			lastMessage = qrCodeMessage;
+			++codesFound;
+			results.innerHTML += `<div>[${codesFound}] - ${qrCodeMessage}</div>`;
+		}
+	}
+
+	var html5QrcodeScanner = new Html5QrcodeScanner(
+		"reader", { fps: 10, qrbox: 250 }, /* verbose= */ true);
+	html5QrcodeScanner.render(onScanSuccess, _ => { /** ignore error */ });
+});
+</script>
