@@ -206,6 +206,15 @@ class ContrastArgument extends ContinousArgumentBase {
     }
 }
 
+class SaturationArgument extends ContinousArgumentBase {
+    constructor(min: number = 0, max: number = 10, step: number = 0.1) {
+        super(
+            "Saturation (s)",
+            /* defaultValue= */ 1,
+            new VRange(min, max, step));
+    }
+}
+
 class ScalingArgument extends ContinousArgumentBase {
     constructor(
         min: number = 0,
@@ -337,6 +346,26 @@ class BinaryDiscreteArgument extends DiscreteArgumentBase {
         super(
             "Operation",
             ["Run"]
+        );
+    }
+}
+
+class SharpnessType extends DiscreteArgumentBase {
+
+    static Laplacian: string = "Laplacian";
+    static DoubleLaplacian: string = "DoubleLaplacian";
+    static LaplacianOfGaussian: string = "Laplacian of Gaussian";
+    static UnsharpMask: string = "UnsharpMask";
+
+    constructor() {
+        super(
+            "Sharpening Type",
+            [
+                SharpnessType.Laplacian,
+                SharpnessType.DoubleLaplacian,
+                SharpnessType.LaplacianOfGaussian,
+                SharpnessType.UnsharpMask,
+            ],
         );
     }
 }
@@ -506,6 +535,28 @@ class ClippedRegionVisualizationOperator implements Operator {
 
 OperatorManager.getInstance().register(new ClippedRegionVisualizationOperator());
 //#endregion
+
+//#region Sharpening
+class SaturationOperator implements Operator {
+    readonly type = OperatorType.Local;
+    readonly name = "Saturation (WIP)";
+    readonly description = "Saturate the image";
+    readonly arguments: Array<OperatorArgument> = [];
+
+    constructor() {
+        this.arguments.push(new SaturationArgument());
+    }
+
+    public fn() {    
+        return (image: VImage) => {
+                return image;
+        }
+    }
+}
+
+OperatorManager.getInstance().register(new SaturationOperator());
+//#endregion
+
 //#endregion
 
 //#region Local Operators
@@ -720,7 +771,6 @@ class DerivativeOperator implements Operator {
 OperatorManager.getInstance().register(new DerivativeOperator());
 //#endregion
 
-
 //#region DerivativeOperator
 class SobelEdgeOperator implements Operator {
     readonly type = OperatorType.Local;
@@ -786,7 +836,6 @@ class SobelEdgeOperator implements Operator {
 OperatorManager.getInstance().register(new SobelEdgeOperator());
 //#endregion
 
-
 //#region Sharpening
 class SharpeningOperator implements Operator {
     readonly type = OperatorType.Local;
@@ -795,19 +844,44 @@ class SharpeningOperator implements Operator {
     readonly arguments: Array<OperatorArgument> = [];
 
     constructor() {
-        this.arguments.push(new LinearBlendArgument(0));
+        this.arguments.push(new SharpnessType());
+        this.arguments.push(new ScalingArgument(0.1, 5, 0.05, 1));
     }
 
     public fn() {
-        const blend = parseFloat(this.arguments[0].getValue());
+        const sharpnessType = this.arguments[0].getValue();
+        const isEnabled: boolean = sharpnessType !== NONE_VALUE;
+        const scalingFactor = parseFloat(this.arguments[1].getValue());
 
         return (image: VImage) => {
-            // TODO(mebjas): implement this.
+            if (!isEnabled) {
+                return image;
+            }
+
+            if (sharpnessType == SharpnessType.UnsharpMask) {
+                const convolution: ConvolutionMask2D
+                    = ConvolutionMask2D.createMask([
+                    [0, -1, 0],
+                    [-1, 5, -1],
+                    [0, -1, 0]
+                ]);
+                const clone = image.clone();
+                for (let y = 0; y < image.height; ++y) {
+                    for (let x = 0; x < image.width; ++x) {
+                        for (let c = 0; c < image.channels; ++c) {
+                            const val = clone.convolve(
+                                x, y, c, convolution, scalingFactor);
+                            const intensity = clamp(Math.floor(val));
+                            image.update(x, y, c, intensity);
+                        }
+                    } 
+                } 
+            }
         }
     }
 }
 
-// OperatorManager.getInstance().register(new SharpeningOperator());
+OperatorManager.getInstance().register(new SharpeningOperator());
 //#endregion
 
 //#endregion

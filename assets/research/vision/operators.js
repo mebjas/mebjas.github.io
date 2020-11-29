@@ -169,6 +169,17 @@ var ContrastArgument = /** @class */ (function (_super) {
     }
     return ContrastArgument;
 }(ContinousArgumentBase));
+var SaturationArgument = /** @class */ (function (_super) {
+    __extends(SaturationArgument, _super);
+    function SaturationArgument(min, max, step) {
+        if (min === void 0) { min = 0; }
+        if (max === void 0) { max = 10; }
+        if (step === void 0) { step = 0.1; }
+        return _super.call(this, "Saturation (s)", 
+        /* defaultValue= */ 1, new VRange(min, max, step)) || this;
+    }
+    return SaturationArgument;
+}(ContinousArgumentBase));
 var ScalingArgument = /** @class */ (function (_super) {
     __extends(ScalingArgument, _super);
     function ScalingArgument(min, max, step, defaultValue) {
@@ -284,6 +295,22 @@ var BinaryDiscreteArgument = /** @class */ (function (_super) {
         return _super.call(this, "Operation", ["Run"]) || this;
     }
     return BinaryDiscreteArgument;
+}(DiscreteArgumentBase));
+var SharpnessType = /** @class */ (function (_super) {
+    __extends(SharpnessType, _super);
+    function SharpnessType() {
+        return _super.call(this, "Sharpening Type", [
+            SharpnessType.Laplacian,
+            SharpnessType.DoubleLaplacian,
+            SharpnessType.LaplacianOfGaussian,
+            SharpnessType.UnsharpMask,
+        ]) || this;
+    }
+    SharpnessType.Laplacian = "Laplacian";
+    SharpnessType.DoubleLaplacian = "DoubleLaplacian";
+    SharpnessType.LaplacianOfGaussian = "Laplacian of Gaussian";
+    SharpnessType.UnsharpMask = "UnsharpMask";
+    return SharpnessType;
 }(DiscreteArgumentBase));
 //#endregion
 //#endregion
@@ -431,6 +458,24 @@ var ClippedRegionVisualizationOperator = /** @class */ (function () {
     return ClippedRegionVisualizationOperator;
 }());
 OperatorManager.getInstance().register(new ClippedRegionVisualizationOperator());
+//#endregion
+//#region Sharpening
+var SaturationOperator = /** @class */ (function () {
+    function SaturationOperator() {
+        this.type = OperatorType.Local;
+        this.name = "Saturation (WIP)";
+        this.description = "Saturate the image";
+        this.arguments = [];
+        this.arguments.push(new SaturationArgument());
+    }
+    SaturationOperator.prototype.fn = function () {
+        return function (image) {
+            return image;
+        };
+    };
+    return SaturationOperator;
+}());
+OperatorManager.getInstance().register(new SaturationOperator());
 //#endregion
 //#endregion
 //#region Local Operators
@@ -690,17 +735,39 @@ var SharpeningOperator = /** @class */ (function () {
         this.name = "Sharpening";
         this.description = "Sharpens the image";
         this.arguments = [];
-        this.arguments.push(new LinearBlendArgument(0));
+        this.arguments.push(new SharpnessType());
+        this.arguments.push(new ScalingArgument(0.1, 5, 0.05, 1));
     }
     SharpeningOperator.prototype.fn = function () {
-        var blend = parseFloat(this.arguments[0].getValue());
+        var sharpnessType = this.arguments[0].getValue();
+        var isEnabled = sharpnessType !== NONE_VALUE;
+        var scalingFactor = parseFloat(this.arguments[1].getValue());
         return function (image) {
-            // TODO(mebjas): implement this.
+            if (!isEnabled) {
+                return image;
+            }
+            if (sharpnessType == SharpnessType.UnsharpMask) {
+                var convolution = ConvolutionMask2D.createMask([
+                    [0, -1, 0],
+                    [-1, 5, -1],
+                    [0, -1, 0]
+                ]);
+                var clone = image.clone();
+                for (var y = 0; y < image.height; ++y) {
+                    for (var x = 0; x < image.width; ++x) {
+                        for (var c = 0; c < image.channels; ++c) {
+                            var val = clone.convolve(x, y, c, convolution, scalingFactor);
+                            var intensity = clamp(Math.floor(val));
+                            image.update(x, y, c, intensity);
+                        }
+                    }
+                }
+            }
         };
     };
     return SharpeningOperator;
 }());
-// OperatorManager.getInstance().register(new SharpeningOperator());
+OperatorManager.getInstance().register(new SharpeningOperator());
 //#endregion
 //#endregion
 //# sourceMappingURL=operators.js.map
