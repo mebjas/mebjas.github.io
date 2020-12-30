@@ -1,18 +1,18 @@
 ---
 layout: post
-title: How to get latest commodity pricing in Google Sheet
+title: How to get the latest commodity pricing in Google Sheet
 categories: [finance, app-script, google-sheet, commodity, gold-price, silver-price]
-description: "I use Google Sheets for tracking my expenses, assets and liabilities. And 2020 has been a year where I was pushed to rethink my portfolio. Google Sheet has a first class support for getting the latest values of stocks on some US based exchanges like <code>NASDAQ</code>. On the other hand it doesn't have as well support for other exhanges like <code>SGX: Singapore Exchange</code>. To overcome this we are supposed to run awkward hacks like crawling <code>yahoo finance</code> pages. In this article I'll be writing about how to write an <code>AppScript</code> that will allow you to crawl such information from some API respository and mildly mention option to cache some data if there is limited API call per hour. I'll be using example of how to get latest gold price, silver price and platinum price in USD in Google Sheet. This can be easily extended to solve questions on how to get latest gold prices in India in Google Sheet or latest price of Indian stocks or Singapore Exachange stocks."
+description: "I use Google Sheets for tracking my expenses, assets, and liabilities. Google Sheet has a first-class support for querying the latest values of stocks on US-based exchanges like <code>NASDAQ</code> or <code>NYSE</code>. On the other hand, it doesn't have as well support for other exchanges like <code>SGX: Singapore Exchange</code>. To overcome this we are supposed to run awkward hacks like crawling <code>yahoo finance</code> pages. In this article I'll be writing about how to write an <code>AppScript</code> that will allow you to crawl such information from some API repository and mildly mention the option to cache some data if there is a limited API call per hour. I'll be using the example of how to get the latest gold price, silver price, and platinum price in USD in Google Sheet. This can be easily extended to solve questions on how to get the latest gold prices in India in Google Sheet or the latest price of Indian stocks or Singapore Exchange stocks."
 post-no: 22
 toc: true
 image: '../images/post22_image1.jpg'
 ---
 
-I use Google Sheets for tracking my expenses, assets and liabilities. And 2020 has been a year where I was pushed to rethink my portfolio. Google Sheet has a first class support for getting the latest values of stocks on some US based exchanges like `NASDAQ`. On the other hand it doesn't have as well support for other exhanges like `SGX: Singapore Exchange`. To overcome this we are supposed to run awkward hacks like crawling `yahoo finance` pages. In this article I'll be writing about how to write an `AppScript` that will allow you to crawl such information from some API respository and mildly mention option to cache some data if there is limited API call per hour. I'll be using example of how to get latest gold price, silver price and platinum price in USD in Google Sheet. This can be easily extended to solve questions on how to get latest gold prices in India in Google Sheet or latest price of Indian stocks or Singapore Exachange stocks.
+I use Google Sheets for tracking my expenses, assets, and liabilities. Google Sheet has first-class support for querying the latest values of stocks on US-based exchanges like `NASDAQ` or `NYSE`. On the other hand, it doesn't have as well support for other exchanges like `SGX: Singapore Exchange`. To overcome this we are supposed to run awkward hacks like crawling `yahoo finance` pages. In this article, I'll be writing about how to write an `AppScript` that will allow you to crawl such information from some API repository and mildly mention the option to cache some data if there is a limited API call per hour. I'll be using the example of how to get the latest gold price, silver price, and platinum price in USD in Google Sheet. This can be easily extended to solve questions on how to get the latest gold prices in India in Google Sheet or the latest price of Indian stocks or Singapore Exchange stocks.
 
 ## Some existing approaches
 ### Using GOOGLEFINANCE function, example: =GOOGLEFINANCE("NASDAQ:MSFT")
-This is very helpful in getting latest values of some `NASDAQ` or `NYSE` listed stocks. For example:
+This is very helpful in getting the latest values of some `NASDAQ` or `NYSE` listed stocks. For example:
 
 ```gs
 Some NASDAQ examples:
@@ -25,17 +25,17 @@ Some NYSE examples:
 =GOOGLEFINANCE("NYSE:PINS") --> for Pinterest Inc
 ```
 
-`GOOGLEFINANCE` function supports more options like getting values over a period of time for a given stock with different attributes. [Read more about it](https://support.google.com/docs/answer/3093281?hl=en) in Google support page.
+`GOOGLEFINANCE` function supports more options like getting values over a period of time for a given stock with different attributes. You can [read more about it](https://support.google.com/docs/answer/3093281?hl=en) on the Google support page.
 
 ### ImportHtml and ImportXml
-`ImportHtml` and `ImportXml` are functions that allow you to crawl a certain web page or xml respectively over internet, parse the structured data and get some values from it if you can pinpoint the position w.r.t document structure. An example of how I use this is for getting latest values of some `Singapore Exchange: SGX` listed stocks. Example of how to do this would be:
+`ImportHtml` and `ImportXml` are functions that allow you to crawl a certain web page or XML respectively over `HTTP/HTTPS`, parse the structured data and get some values from it if you can pinpoint the position w.r.t document structure. An example of how I use this is for getting the latest values of some `Singapore Exchange: SGX` listed stocks. An example of how to do this would be:
 
 ```gs
 =IMPORTXML("https://sg.finance.yahoo.com/quote/RW0U.SI",
     "//span[@class='Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(ib)']")
 ```
 
-This allows us to get the value of stock `RWOU.SI` which is ticker for [Mapletree North Asia Commercial Trust (RW0U.SI)](https://sg.finance.yahoo.com/quote/RW0U.SI)
+This allows us to get the value of stock `RWOU.SI` which is the ticker for [Mapletree North Asia Commercial Trust (RW0U.SI)](https://sg.finance.yahoo.com/quote/RW0U.SI)
 
 Another example of this would be:
 
@@ -43,20 +43,20 @@ Another example of this would be:
 =Dollar(Index(ImportHTML("http://www.apmex.com/spotprices/silver-price","table",8),2,2))
 ```
 
-This allow us to get the latest spot value of Silver in USD per ounce. The `Dollar` function is used ot convert the `text/decimal` value to Dollar directly.
+This allows us to get the latest spot value of Silver in USD per ounce. The `Dollar` function is used to convert the `text/decimal` value to Dollar directly.
 
-Now this option is what I call awkward hack, I found these references online but it's hard to do this all the time and is prone to changes in the source of information. Also, for Yahoo finance, I find the request rejected from time to time. The next option was using API endpoints which give structured data possibly in `JSON` format. While looking further I realised Google Sheets allow you to define your own function in `AppScript`.
+Now, this option is what I call an awkward hack, I found these references online but it's hard to do this all the time and is prone to changes in the source of information. Also, for Yahoo finance, I find the request rejected from time to time. The next option was using API endpoints which give structured data possibly in `JSON` format. While looking further I realized Google Sheets allow you to define your function in `AppScript`.
 
 ## Custom Function using App Script
 > Google Apps Script lets you do new and cool things with Google Sheets. You can use Apps Script to add custom menus, dialogs, and sidebars to Google Sheets. It also lets you write custom functions for Sheets, as well as integrate Sheets with other Google services like Calendar, Drive, and Gmail.
 
-[Source: developer.google.com](https://developers.google.com/apps-script/guides/sheets) - Read more about AppScript here. The syntax are almost same as Javascript.
+[Source: developer.google.com](https://developers.google.com/apps-script/guides/sheets) - Read more about AppScript here. The syntax are almost the same as Javascript.
 
 You can create a new script in Google Sheets by going to `Tools > Script Editor`.
 
 ![Tools > Script Editor](../images/post22_image2.png)
 
-As an example I'd be using API from `metals-api.com` which provides latest spot prices for commodities like Gold, Silver, Platinum, Rhodium etc. The API is returned as `JSON`. I'll be using free tier which allows me to query 50 times per hour. In interest of money I'll also show how to cache the results in local cache using `AppScript` so you probably don't have to use a paid tier of `metals-api`.
+As an example I'd be using API from `metals-api.com` which provides the latest spot prices for commodities like Gold, Silver, Platinum, Rhodium etc. The API is returned as `JSON`. I'll be using the free tier which allows me to query 50 times per hour. In the interest of money, I'll also show how to cache the results in the local cache using `AppScript` so you probably don't have to use a paid tier of `metals-api`.
 
 ### [1] Create a new script called `metalsApi.gs` and create a stub function
 In the script create a new function that takes `symbol` as input. The function can be directly called from Google Sheets after saving the script.
@@ -196,15 +196,15 @@ After saving you'd see output something like this*:
 | Rhodium | =Dollar(metalsApi("XRH")) | $16650.00 |
 | Error condition | =Dollar(metalsApi("")) | #VALUE! |
 
-_*The values are from the date I wrote this article._ The data here might be slightly delayes as expected due to caching with timeout of 5 minutes.
+_*The values are from the date I wrote this article._ The data here might be slightly delayed as expected due to caching with the timeout of 5 minutes.
 
-** This is just for reference, is't not an artefact of the AppScript.
+** This is just for reference, it's not an artifact of the `AppScript`.
 
-## Possibilties
+## Possibilities
 You can use the same approach to do different things like:
- - Get price of Gold in India in specific cities.
- - Get price of some Stock in Singapore Exchange.
- - Get price of some stock in `BSE` or `NSE`.
- - Get price of certain Mutual Fund or `ETF`
+ - Get the price of Gold in India in specific cities.
+ - Get the price of some Stock on the Singapore Exchange.
+ - Get the price of some stock in `BSE` or `NSE`.
+ - Get the price of a certain Mutual Fund or `ETF`
 
-Basically get any value you want from internet in numeric format into Google Sheet if you know a reliable source of data or preferrably an API endpoint.
+Basically get any value you want from the internet in numeric format into Google Sheet if you know a reliable source of data or preferably an API endpoint.
