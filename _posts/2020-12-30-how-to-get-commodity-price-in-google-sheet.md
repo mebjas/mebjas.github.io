@@ -8,7 +8,7 @@ toc: true
 image: '../images/post22_image1.jpg'
 ---
 
-I use Google Sheets for tracking my expenses, assets, and liabilities. Google Sheet has first-class support for querying the latest values of stocks on US-based exchanges like `NASDAQ` or `NYSE`. On the other hand, it doesn't have as well support for other exchanges like `SGX: Singapore Exchange`. To overcome this we are supposed to run awkward hacks like crawling `yahoo finance` pages. In this article, I'll be writing about how to write an `AppScript` that will allow you to crawl such information from some API repository and mildly mention the option to cache some data if there is a limited API call per hour. I'll be using the example of how to get the latest gold price, silver price, and platinum price in USD in Google Sheet. This can be easily extended to solve questions on how to get the latest gold prices in India in Google Sheet or the latest price of Indian stocks or Singapore Exchange stocks.
+I use Google Sheets for tracking my expenses, assets, and liabilities. Google Sheet has first-class support for querying the latest values of stocks on US-based exchanges like `NASDAQ` or `NYSE`. On the other hand, it doesn't have as well support for other exchanges like `SGX: Singapore Exchange`. To overcome this we are supposed to run awkward hacks like crawling `yahoo finance` pages. In this article, I'll be writing about how to write an `AppScript` that will allow you to crawl such information from some API repository and mildly mention the option to cache some data if there is a limited API call per month. I'll be using the example of how to get the latest gold price, silver price, and platinum price in USD in Google Sheet. This can be easily extended to solve questions on how to get the latest gold prices in India in Google Sheet or the latest price of Indian stocks or Singapore Exchange stocks.
 
 ## Some existing approaches
 ### Using GOOGLEFINANCE function, example: =GOOGLEFINANCE("NASDAQ:MSFT")
@@ -129,7 +129,7 @@ After saving you'd see output something like this*:
 _*The values are from the date I wrote this article._
 
 ### [3] (Optional) Add caching support
-If there is limited API calls per hour and you don't care much about the data being delayed by say 10 minutes you can leverage [CacheService](https://developers.google.com/apps-script/reference/cache/cache?hl=en) class in App Script. 
+If there is limited API calls per month and you don't care much about the data being delayed by say a day (might work for commodity like Gold) you can leverage [CacheService](https://developers.google.com/apps-script/reference/cache/cache?hl=en) class in App Script. 
 
 > This class allows you to insert, retrieve, and remove items from a cache. This can be particularly useful when you want frequent access to an expensive or slow resource. For example, say you have an RSS feed at example.com that takes 20 seconds to fetch, but you want to speed up access on an average request.
 [Source: developer.google.com](https://developers.google.com/apps-script/reference/cache/cache?hl=en)
@@ -170,10 +170,11 @@ function metalsApi(symbol) {
         return "No Success";
     }
 
-    // Put API response text to cache with timeout of 5 minutes = 60*5 seconds.
+    // Put API response text to cache with timeout of 24 hours = 60*60*5 seconds.
     // Note: this value can be made as a variable too with some default value for
     // different cache duration.
-    cache.put(cacheId, response.getContentText(), 300);
+    let cacheDuration = 60 * 60 * 24;
+    cache.put(cacheId, response.getContentText(), cacheDuration);
 
     let value = parseFloat(data.rates[symbol]);
     if (Number.isNaN(value)) {
@@ -196,7 +197,7 @@ After saving you'd see output something like this*:
 | Rhodium | =Dollar(metalsApi("XRH")) | $16650.00 |
 | Error condition | =Dollar(metalsApi("")) | #VALUE! |
 
-_*The values are from the date I wrote this article._ The data here might be slightly delayed as expected due to caching with the timeout of 5 minutes.
+_*The values are from the date I wrote this article._ The data here might be slightly delayed as expected due to caching.
 
 ** This is just for reference, it's not an artifact of the `AppScript`.
 
