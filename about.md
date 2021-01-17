@@ -7,10 +7,15 @@ permalink: /about/
 
 [LinkedIn](https://www.linkedin.com/in/minhazav/) . [Github](https://github.com/mebjas) . [Twitter](https://twitter.com/minhazav) . [My recent clicks](../photography/) . [500px](https://500px.com/mebjas)
 
+## Key area of expertise
+`Camera (particularly Android)`, `Computer Vision`, `Android app performance`, `Android memory`, `Distributed systems`
+
 ## `now()` Software Engineer III @Google
 > ⚓ Singapore, May 2019 to present
 
 I work for a team called **[NBU: Next Billion Users](https://www.blog.google/technology/next-billion-users)** where we build technologies for emerging markets. In these markets, resource-constrained Android devices are very popular. These days I spend most of my time writing code to deliver seamless user experiences for such devices => thus for all markets.
+
+Currently working on CameraGo (the camera for low-end Android devices) and led launches of features like [Night Mode](https://www.xda-developers.com/google-camera-android-go-mod-night-mode-low-light-photography/) and [HDR](https://www.xda-developers.com/google-camera-go-rolling-out-hdr-support/).
 
  > TIL: Did you know a 1Gb Android device only has ~880Mb of available RAM of which only about ~450 Mb is left for applications to run on? [Learn about carveout memory in Linux](https://developer.toradex.com/knowledge-base/carveout-memory-(linux))
 
@@ -31,8 +36,17 @@ I worked with **Microsoft Azure** for around 3 years. My day to day involved app
  - Distributed Systems, Systems design, High Availability
 
 ## Open Source Contributions
-#### OWASP CSRF Protector | Author, Lead Maintainer
+#### [html5-qrcode](https://github.com/mebjas/html5-qrcode) | Author, Maintainer
+> Since 2014
+
+![GitHub Repo stars](https://img.shields.io/github/stars/mebjas/html5-qrcode?style=social) ![GitHub forks](https://img.shields.io/github/forks/mebjas/html5-qrcode?style=social)
+
+It's a QR code reader for web, built on vanilla js works for different frameworks, operating systems and platform. Check [demo](https://blog.minhazav.dev/research/html5-qrcode.html) here.
+
+#### [OWASP CSRF Protector](https://github.com/mebjas/CSRF-Protector-PHP) | Author, Lead Maintainer
 > Since May 2014
+
+![GitHub Repo stars](https://img.shields.io/github/stars/mebjas/CSRF-Protector-PHP?style=social) ![GitHub forks](https://img.shields.io/github/forks/mebjas/CSRF-Protector-PHP?style=social)
 
 Author and main maintainer of this OWASP project since 2014. This project started with my participation in Google Summer of Code with OWASP in 2014 under the mentorship of K. W. Walls and Abbas Naderi. Read more about the project in [the OWASP Wiki](https://owasp.org/www-project-csrfprotector/).
 
