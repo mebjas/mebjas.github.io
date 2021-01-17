@@ -37,11 +37,11 @@ Currently working on **[CameraGo](https://blog.google/products/android/android-g
 ## `now(/* index= */ -1)` - Software Engineer II at Microsoft
 > 🇮🇳 Hyderabad, India, June 2016 to May 2019, ~3 years
 
-Worked primarily with **Microsoft Azure**. My day to day involved applied data science, Azure cloud services, distributed systems and some part of Azure UI. My team was working on an intelligent alerting platform in Azure on features like Smart Grouping capable of automatically grouping user alerts from different sources to reduce mean time to mitigation for customers.
+Worked primarily with **Microsoft Azure**. My day to day involved applied data science, Azure cloud services, distributed systems, and some part of Azure UI. My team was working on an intelligent alerting platform in Azure on features like Smart Grouping capable of automatically grouping user alerts from different sources to reduce mean time to mitigation for customers.
  - Led design and implementation of **99.99% available Azure Alerting platform** (4 9s of availability). The effort centered around making the service resilient to regional datacenter outages,
  - Led design and implementation of **alerts correlation service** that could group similar Azure alerts to surface relevant alerts to customers and reduce noise.
  - Awards:
-    - **1st prize (Microsoft wide)** in the annual hackathon in the Universal Windows App category. The project involved HoloLens and IOT.
+    - **1st prize (Microsoft wide)** in the annual hackathon in the Universal Windows App category. The project involved HoloLens and IoT.
     - Runner ups in short paper presentation in Synapse - **AI Meet 2017** (Microsoft IDC).
 
 > Did you know 99.99% availability means only acceptable downtime of only **4m 23.0s** per month :O
@@ -77,4 +77,15 @@ Author and main maintainer of this OWASP project since 2014. This project starte
 
 > OWASP CSRF Protector Project is an effort by a group of developers in securing web applications against Cross-Site Request Forgery, providing a PHP library and an Apache Module (to be used differently) for easy mitigation.
 
-
+<br>
+<br>
+<br>
+<h2>Ask me anything</h2>
+<script src="https://utteranc.es/client.js"
+    repo="mebjas/mebjas.github.io"
+    issue-term="title"
+    label="test"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
