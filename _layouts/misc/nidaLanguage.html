@@ -1,0 +1,66 @@
+---
+layout: default
+---
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../../assets/misc/nidaLanguage/main.css" type="text/css" />
+<h1>Helping Nida learn Malyalam</h1>
+<select id="direction"></select>
+<div id="workspace"></div>
+
+<script>
+let workspace = document.getElementById("workspace");
+let direction = document.getElementById("direction");
+let database = {
+    vocabulary: {
+        format: ["English", "Malyalam"],
+        words: [
+            ["Sky", "Aakasham"],
+            ["Less", "Kurav"],
+            ["More", "Kuduthal"],
+        ]
+    }
+}
+
+function addOption(fromIndex, toIndex) {
+    let option = document.createElement("option");
+    option.value = `${fromIndex}->${toIndex}`;
+    option.innerHTML = `${database.vocabulary.format[fromIndex]}`
+        + ` to ${database.vocabulary.format[toIndex]}`;
+    direction.appendChild(option);
+}
+addOption(0, 1);
+addOption(1, 0);
+
+function render(value) {
+    workspace.innerHTML = "";
+    for (let i = 0; i < database.vocabulary.words.length; i++) {
+        let words = database.vocabulary.words[i];
+        let flipCard = document.createElement("div");
+        flipCard.className = "flip-card";
+        workspace.appendChild(flipCard);
+
+        let flipCardInner = document.createElement("div");
+        flipCardInner.className = "flip-card-inner";
+        flipCard.appendChild(flipCardInner);
+
+        let frontValue = document.createElement("div");
+        frontValue.className = "flip-card-front";
+        frontValue.innerHTML = words[(value == "0->1") ? 0 : 1];
+
+        let backValue = document.createElement("div");
+        backValue.className = "flip-card-back";
+        backValue.innerHTML = words[(value == "0->1") ? 1 : 0];
+
+        flipCardInner.appendChild(frontValue);
+        flipCardInner.appendChild(backValue);
+    }
+}
+
+direction.addEventListener('change', function(e) {
+    let value = direction.value;
+    render(value);
+});
+
+render("0->1");
+
+</script>
