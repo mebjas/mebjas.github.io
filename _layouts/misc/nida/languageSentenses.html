@@ -1,0 +1,94 @@
+---
+layout: default
+---
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../../assets/misc/nidaLanguage/main.css" type="text/css" />
+<h1>Helping Nida learn Malyalam > Sentense Flashcards </h1>
+<div>
+    <a href="/nida/language-words-flashcard">Learn Words</a> | <a href="/nida/language-sentense-flashcard">Learn Sentenses</a>
+</div>
+<select id="direction"></select>
+<div id="workspace"></div>
+
+<script src="../../assets/misc/nidaLanguage/dataset.js" type="text/javascript"></script>
+<script>
+let workspace = document.getElementById("workspace");
+let direction = document.getElementById("direction");
+
+function addOption(fromIndex, toIndex) {
+    let option = document.createElement("option");
+    option.value = `${fromIndex}->${toIndex}`;
+    option.innerHTML = `${database.sentenses.format[fromIndex]}`
+        + ` to ${database.sentenses.format[toIndex]}`;
+    direction.appendChild(option);
+}
+addOption(0, 1);
+addOption(1, 0);
+
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+function render(value) {
+    workspace.innerHTML = "";
+
+    // deep copy
+    let sentensesCopy = [];
+    for (let i = 0; i < database.sentenses.sentenses.length; i++) {
+        let instance = [];
+        for (let j = 0; j < database.sentenses.sentenses[i].length; j++) {
+            instance.push(database.sentenses.sentenses[i][j]);
+        }
+        sentensesCopy.push(instance);
+    }
+
+    sentensesCopy = shuffle(sentensesCopy);
+
+    for (let i = 0; i < sentensesCopy.length; i++) {
+        let words = sentensesCopy[i];
+        let flipCard = document.createElement("div");
+        flipCard.classList.add("flip-card");
+        flipCard.classList.add("sentense");
+        workspace.appendChild(flipCard);
+
+        let flipCardInner = document.createElement("div");
+        flipCardInner.className = "flip-card-inner";
+        flipCard.appendChild(flipCardInner);
+
+        let frontValue = document.createElement("div");
+        frontValue.className = "flip-card-front";
+        frontValue.innerHTML = words[(value == "0->1") ? 0 : 1];
+
+        let backValue = document.createElement("div");
+        backValue.className = "flip-card-back";
+        backValue.innerHTML = words[(value == "0->1") ? 1 : 0];
+
+        flipCardInner.appendChild(frontValue);
+        flipCardInner.appendChild(backValue);
+    }
+}
+
+direction.addEventListener('change', function(e) {
+    let value = direction.value;
+    render(value);
+});
+
+render("0->1");
+
+</script>

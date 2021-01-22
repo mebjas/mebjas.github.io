@@ -7,6 +7,10 @@
     display: inline-block;
     margin: 10px;
 }
+
+.flip-card.sentense {
+  width: 350px;
+}
   
 .flip-card-inner {
     position: relative;

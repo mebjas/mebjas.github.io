@@ -1,72 +1,20 @@
 ---
 layout: default
 ---
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="../../assets/misc/nidaLanguage/main.css" type="text/css" />
-<h1>Helping Nida learn Malyalam</h1>
+<h1>Helping Nida learn Malyalam > Words Flashcards</h1>
+<div>
+    <a href="/nida/language-words-flashcard">Learn Words</a> | <a href="/nida/language-sentense-flashcard">Learn Sentenses</a>
+</div>
 <select id="direction"></select>
 <div id="workspace"></div>
 
+<script src="../../assets/misc/nidaLanguage/dataset.js" type="text/javascript"></script>
 <script>
 let workspace = document.getElementById("workspace");
 let direction = document.getElementById("direction");
-let database = {
-    vocabulary: {
-        format: ["English", "Malyalam"],
-        words: [
-            ["Sky", "Aakasham"],
-            ["Less", "Kurav"],
-            ["More", "Kuduthal"],
-            ["House", "Veed"],
-            ["Water", "Vellam"],
-            ["Yes", "Athe | Aan"],
-            ["No", "Illa"],
-            ["Food", "Bakshanam"],
-            ["Stop", "Nilku"],
-            ["Start", "Tudangu"],
-            ["Time", "Samayam"],
-            ["Shop", "Kada"],
-            ["Market", "Markett"],
-            ["Watch", "Watchi"],
-            ["Lock", "Lock"],
-            ["Key", "Chaabi"],
-            ["Table", "Mesha"],
-            ["Chair", "Kasaira"],
-            ["Morning", "Raavile"],
-            ["Evening", "Vegu nairam"],
-            ["Night", "Rathri"],
-            ["Noon", "Paghal"],
-            ["Today", "Innu"],
-            ["Tomorrow", "Naale"],
-            ["Day before yesterday", "Miniyaan"],
-            ["Flower", "Poov"],
-            ["Prayer / Namaz", "Niskaram"],
-            ["Song", "Paat"],
-            ["Inside", "Agath"],
-            ["Love", "Sneham"],
-            ["Sky", "Aakasham"],
-            ["Sun", "Suryan"],
-            ["Earth", "Bhoomi"],
-            ["Moon", "Chandran"],
-            ["Sea", "Kadal"],
-            ["River", "Poya"],
-            ["Rain", "Maya"],
-            ["Air", "Vaayu"],
-            ["Wind", "Kaat"],
-            ["Storm", "Idi"],
-            ["Lightening", "Minnal"],
-            ["Hot", "Chood"],
-            ["Cold", "Tanapp"],
-            ["Good", "Nallath"],
-            ["Bad", "Nallath ella"],
-            ["Big", "Veluth"],
-            ["Small", "Cheruth"],
-            ["Bridge", "Paalam"],
-            ["Fish", "Meen"],
-            ["Chiken", "Koi"],
-        ]
-    }
-}
 
 function addOption(fromIndex, toIndex) {
     let option = document.createElement("option");
