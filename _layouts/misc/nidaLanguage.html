@@ -17,6 +17,53 @@ let database = {
             ["Sky", "Aakasham"],
             ["Less", "Kurav"],
             ["More", "Kuduthal"],
+            ["House", "Veed"],
+            ["Water", "Vellam"],
+            ["Yes", "Athe | Aan"],
+            ["No", "Illa"],
+            ["Food", "Bakshanam"],
+            ["Stop", "Nilku"],
+            ["Start", "Tudangu"],
+            ["Time", "Samayam"],
+            ["Shop", "Kada"],
+            ["Market", "Markett"],
+            ["Watch", "Watchi"],
+            ["Lock", "Lock"],
+            ["Key", "Chaabi"],
+            ["Table", "Mesha"],
+            ["Chair", "Kasaira"],
+            ["Morning", "Raavile"],
+            ["Evening", "Vegu nairam"],
+            ["Night", "Rathri"],
+            ["Noon", "Paghal"],
+            ["Today", "Innu"],
+            ["Tomorrow", "Naale"],
+            ["Day before yesterday", "Miniyaan"],
+            ["Flower", "Poov"],
+            ["Prayer / Namaz", "Niskaram"],
+            ["Song", "Paat"],
+            ["Inside", "Agath"],
+            ["Love", "Sneham"],
+            ["Sky", "Aakasham"],
+            ["Sun", "Suryan"],
+            ["Earth", "Bhoomi"],
+            ["Moon", "Chandran"],
+            ["Sea", "Kadal"],
+            ["River", "Poya"],
+            ["Rain", "Maya"],
+            ["Air", "Vaayu"],
+            ["Wind", "Kaat"],
+            ["Storm", "Idi"],
+            ["Lightening", "Minnal"],
+            ["Hot", "Chood"],
+            ["Cold", "Tanapp"],
+            ["Good", "Nallath"],
+            ["Bad", "Nallath ella"],
+            ["Big", "Veluth"],
+            ["Small", "Cheruth"],
+            ["Bridge", "Paalam"],
+            ["Fish", "Meen"],
+            ["Chiken", "Koi"],
         ]
     }
 }
@@ -31,10 +78,42 @@ function addOption(fromIndex, toIndex) {
 addOption(0, 1);
 addOption(1, 0);
 
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
 function render(value) {
     workspace.innerHTML = "";
+
+    // deep copy
+    let wordsCopy = [];
     for (let i = 0; i < database.vocabulary.words.length; i++) {
-        let words = database.vocabulary.words[i];
+        let instance = [];
+        for (let j = 0; j < database.vocabulary.words[i].length; j++) {
+            instance.push(database.vocabulary.words[i][j]);
+        }
+        wordsCopy.push(instance);
+    }
+
+    wordsCopy = shuffle(wordsCopy);
+
+    for (let i = 0; i < wordsCopy.length; i++) {
+        let words = wordsCopy[i];
         let flipCard = document.createElement("div");
         flipCard.className = "flip-card";
         workspace.appendChild(flipCard);
