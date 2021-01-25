@@ -2,7 +2,7 @@
 layout: post
 title: Joyalukkas gold scheme Singapore - is it a good investment? an analysis.
 categories: [finance, joyalukkas, analysis, gold-scheme, gold]
-description: "Joyalukkas is a fairly well-known certified jewelry group based out of India. They have a variety of gold schemes that allow customers to pre-plan for the future buy of gold and in a way invest in it. In Singapore, the scheme is as follows:<br><br><br><ol><li>Invest a fixed amount say 1000 SGD every month for 12 month.</li><li>In the end of 12th month you can buy gold worth 12000 SGD + 1000 SGD.</li></ol><br>This was introduced to me by a friend and in the beginning, this sounded like a no-brainer. This looked like a `8.3% ROI` (with naive math) - which is greater than most of the instruments available to us for investment. I went down to the stores to understand more and finally decided it to not be a good investment vehicle. In this article, I intend to share my findings on why it is not as attractive as it looks and explain why."
+description: "Joyalukkas is a fairly well-known certified jewelry group based out of India. They have a variety of gold schemes that allow customers to pre-plan for the future buy of gold and in a way invest in it. In Singapore, the scheme is as follows:<br><br><br><ol><li>Invest a fixed amount say 1000 SGD every month for 12 month.</li><li>In the end of 12th month you can buy gold worth 12000 SGD + 1000 SGD.</li></ol><br>This was introduced to me by a friend and in the beginning, this sounded like a no-brainer. This looked like a `8.3% ROI` (with naive math) - which is greater than most of the instruments available to us for investment. I went down to the stores to understand more and finally decided it to not be a good investment vehicle. In this article, In this article, I intend to share my findings on why it turned out to be not as attractive as it looks."
 post-no: 23
 toc: true
 image: '../images/post23_image1.png'
@@ -10,38 +10,36 @@ wip: true
 ---
 Joyalukkas is a fairly well-known certified jewelry group based out of India. They have a variety of gold schemes that allow customers to pre-plan for the future buy of gold and in a way invest in it. In Singapore, the scheme is as follows:
 
-```
 1. Invest a fixed amount say 1000 SGD every month for 12 month.
 2. In the end of 12th month you can buy gold worth 12000 SGD + 1000 SGD.
 Notes:
  - This can be done for a smaller amount per month, starting from 100 SGD a month.
-```
 
-This was introduced to me by a friend and in the beginning, this sounded like a no-brainer. This looked like a `8.3% ROI` (with naive math) - which is greater than most of the instruments available to us for investment. I went down to the stores to understand more and finally decided it to not be a good investment vehicle. In this article, I intend to share my findings on why it is not as attractive as it looks and explain why.
+This was introduced to me by a friend and in the beginning, this sounded like a no-brainer. This looked like a `8.3% ROI` (with naive math) - which is greater than most of the instruments available to us for investment. I went down to the stores to understand more and finally decided it to not be a good investment vehicle. In this article, I intend to share my findings on why it turned out to be not as attractive as it looks.
 
-## TL;DR; or Bottom line
-Most of the content in the rest of the section could be considered unnecessary, so here is my interpretation in few points:
+## TL;DR;
+Here is my conclusion in a few points:
 
  - It's not an investment that gives `8%+` rate of interest per annum on maturity.
  - If the goal is to buy gold as jewelry for the purpose for jewelry it might be a good scheme to go with, assuming you know you want to buy it after 12 months. 
 
 ## First the correct math
-Considering we are paying a principle amount `P` in the beginning of every month for 12 months and then in the end we can buy gold worth `13P` the actual rate of interest can be computed as:
+Considering we are paying a principle amount `P` in the beginning of every month for 12 months and then in the end we are given an extra `P` value making the total value to be `13P` the actual rate of interest can be computed using the simple interest formula:
 ```
 Interest = (Principle * ROI * Time) / 100
 ```
-In this case, we want to compute `ROI`, we know the principle and interest and time for each investment we make at the beginning of each month.
+In this case, we want to compute `Rate of interest per annum (ROI)`, we know the principle and interest and time for each investment we make at the beginning of each month.
 
 ![equation](../images/post23_image2.png)
 
-Solving this equation for `r` we get `r = 13.483% per annum`. 
+Solving this equation for `r` we get `r = 13.483% per annum`. If this was real I'll put a lot of eggs on this basket.
 
 ## The catch with `13.48%` ROI pa
 Now `13.48% pa` is a fantastic ROI and I would be very tempted to put a lot of my money into it, primarily when I compare it with other available instruments in Singapore. But it turns out there are a few conditions from Joyalukkas, which controls how the final value is materialized.
 
 1. The final `13P` value at the maturity of the scheme can only be used to buy 22K or 18K gold jewelry (or diamonds or other jewelry items) and not investment grade 24K bullions or coins.
-2. It cannot be directly liquidated at the exact value. Joyalukkas shall buy back gold jewelry back at 10% depreciation of the market price of gold.
-3. Jewelry items come with an additional mark-up called making charges which is nearly around 10% of the price of the gold per sales folks in the stores. However, Joyalukkas does offer certain jewelry w/o making charges. However, this is limited collection and might not be most attractive from the perspective of jewelry.
+2. It cannot be directly liquidated at the exact value. Joyalukkas shall buy back gold jewelry back at 10% depreciation of their selling price of gold (which is slightly above the spot price of gold commodity).
+3. Jewelry items come with an additional mark-up called making charges which is nearly around 10% of the price of the gold per sales folks in the stores. However, Joyalukkas does offer certain jewelry w/o making charges. However, this is limited collection and might not be most attractive from the perspective of jewelry. I'll evaluate both the options.
 4. Non-investment grade gold like 22K gold shall attract 7% GST at the time of purchase. The GST for investment-grade gold (i.e. atleast 99.5% purity of gold) was exempted in 2012. [[2]](https://www.buygold.sg/blog/post/buy-gold-and-silver-in-singapore-without-GST.html).
 5. The final gold will be bought at the market price of gold on the day gold is bought. Joyallukas allows buying the gold within one month of maturity of the scheme.
 
