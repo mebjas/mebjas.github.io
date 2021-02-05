@@ -11,6 +11,8 @@ source "https://rubygems.org"
 gem "jekyll", "4.0.0"
 gem "rb-fsevent"
 gem "html-proofer"
+gem "tzinfo"
+gem 'tzinfo-data'
 
 # If you have any plugins, put them here!
 group :jekyll_plugins do

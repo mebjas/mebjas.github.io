@@ -2,11 +2,10 @@
 layout: post
 title: Joyalukkas gold scheme Singapore - is it a good investment? an analysis.
 categories: [finance, joyalukkas, analysis, gold-scheme, gold]
-description: "Joyalukkas is a fairly well-known certified jewelry group based out of India. They have a variety of gold schemes that allow customers to pre-plan for the future buy of gold and in a way invest in it. In Singapore, the scheme is as follows:<br><br><br><ol><li>Invest a fixed amount say 1000 SGD every month for 12 month.</li><li>In the end of 12th month you can buy gold worth 12000 SGD + 1000 SGD.</li></ol><br>This was introduced to me by a friend and in the beginning, this sounded like a no-brainer. This looked like a `8.3% ROI` (with naive math) - which is greater than most of the instruments available to us for investment. I went down to the stores to understand more and finally decided it to not be a good investment vehicle. In this article, In this article, I intend to share my findings on why it turned out to be not as attractive as it looks."
+description: "Joyalukkas is a fairly well-known certified jewelry group based out of India. They have a variety of gold schemes that allow customers to pre-plan for the future buy of gold and in a way invest in it. In Singapore, the scheme is as follows:<br><br><br><ol style='margin-left: 10px'><li>Invest a fixed amount say 1000 SGD every month for 12 month.</li><li>In the end of 12th month you can buy gold worth 12000 SGD + 1000 SGD.</li></ol><br>This was introduced to me by a friend and in the beginning, this sounded like a no-brainer. This looked like a <code>8.3% ROI</code> (with naive math) - which is greater than most of the instruments available to us for investment. I went down to the stores to understand more and finally decided it to not be a good investment vehicle. In this article, In this article, I intend to share my findings on why it turned out to be not as attractive as it looks."
 post-no: 23
 toc: true
 image: '../images/post23_image1.png'
-wip: true
 ---
 Joyalukkas is a fairly well-known certified jewelry group based out of India. They have a variety of gold schemes that allow customers to pre-plan for the future buy of gold and in a way invest in it. In Singapore, the scheme is as follows:
 
