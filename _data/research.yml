@@ -1,4 +1,22 @@
 - {
+    title: "HTML 5 QR Code Demo",
+    description: "Demo for html 5 QR code hosted at <a href=''>github.com/mebjas/html5-qrcode</a>. It uses the camera on device to scan for feeds and detects and decodes if any QR code is available.",
+    image: "/images/post14_image1.png",
+    link: "html5-qrcode"
+}
+- {
+    title: "ImageEditor: My vision experiments",
+    description: "Learning computer vision: Trying out some CV techiques from scratch to get a better understanding of different techniques. Starting with point operators.",
+    image: "/images/vision.jpg",
+    link: "vision",
+}
+- {
+    title: "Exposure fusion visualizer",
+    description: "Visualization of HDR exposure fusion process. This is based on <a href='http://ntp-0.cs.ucl.ac.uk/staff/j.kautz/publications/exposure_fusion.pdf'>Merten et al's paper on </a>. This involves visualization of different steps like computing weights based on contrast, saturation and well exposedness, merging and normalizing the weights, and then producing the final fused image using pyramidal decomposition and blending of three images and the computed weights into one HDR image.",
+    image: "https://farbspiel-photo.com/wp-content/uploads/2014/07/candlelight-exposure-fusion-before-and-after-001.jpg",
+    link: "exposure-fusion",
+}
+- {
     title: "Realtime Sudoku solver",
     description: "An attempt at sudoku solver which takes feed from webcam and indetify sudoku and solves it and shows the result.",
     image: "/assets/research/sudoku-solver/data.jpg",
@@ -13,10 +31,11 @@
     wip: true
 }
 - {
-    title: "HTML 5 QR Code Demo",
-    description: "Demo for html 5 QR code hosted at <a href=''>github.com/mebjas/html5-qrcode</a>. It uses the camera on device to scan for feeds and detects and decodes if any QR code is available.",
-    image: "/images/post14_image1.png",
-    link: "html5-qrcode"
+    title: "My WebGl experiments",
+    description: "Processing camera input using html and javascript WebGl apis.",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/WebGL_Logo.svg/1200px-WebGL_Logo.svg.png",
+    link: "webgl",
+    wip: true
 }
 - {
     title: "jQuery Sticky elements",
@@ -29,17 +48,4 @@
     description: "In this experiment I have tried to create an agent that attempts at beating human in the game of Rock Paper Scissor. Interestingly I found it's just as hard to beat an agent that uses random policy. The agent alternates between different strategies.",
     image: "/assets/research/rockpaperscissor/rps.png",
     link: "rock-paper-scissor"
-}
-- {
-    title: "My vision experiments",
-    description: "Learning computer vision: Trying out some CV techiques from scratch to get a better understanding of different techniques. Starting with point operators.",
-    image: "/images/vision.jpg",
-    link: "vision",
-}
-- {
-    title: "My WebGl experiments",
-    description: "Processing camera input using html and javascript WebGl apis.",
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/WebGL_Logo.svg/1200px-WebGL_Logo.svg.png",
-    link: "webgl",
-    wip: true
 }

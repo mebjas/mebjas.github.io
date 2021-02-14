@@ -1,0 +1,138 @@
+---
+layout: default_research
+---
+<style>
+/* .wrapper-content {
+    max-width: 100%;
+} */
+
+.input_images {
+    display: flex
+}
+.input_images img {
+    flex: 1;
+    margin: 10px;
+    width: 30%;
+}
+
+@media only screen and (max-width: 500px) {
+  
+    .input_images {
+        display: block
+    }
+    .input_images img {
+        margin: 10px;
+        width: 90%;
+    }
+}
+
+
+.canvas {
+    padding: 10px;
+    border: 1px solid silver;
+    margin: 10px;
+}
+
+.weight_canvas {
+    border: 1px solid #c0c0c036;
+    margin: 1px;
+}
+
+.weight_header {
+    font-size: 16pt;
+    color: #1a62bf;
+}
+</style>
+
+
+<h2>Exposure fusion (HDR) visualization</h2>
+<div>
+    This is a step by step visualization of Exposure Fusion technique by Mertens et all in popular paper <a href="http://ntp-0.cs.ucl.ac.uk/staff/j.kautz/publications/exposure_fusion.pdf">Exposure Fusion</a> which is used for generating HDR images by merging multiple images captured at different exposures.
+</div>
+
+<h3>Input images</h3>
+<select id="dataset_selector">
+    <option value="d1">sample1</option>
+    <option value="d2">sample2</option>
+</select>
+<div class="input_images">
+    <img id="input_1" src="/assets/research/exposure_fusion/d1/1.jpg">
+    <img id="input_2" src="/assets/research/exposure_fusion/d1/2.jpg">
+    <img id="input_3" src="/assets/research/exposure_fusion/d1/3.jpg">
+</div>
+
+<h3>Weights</h3>
+<div>
+    First for each image a weight map is computed based on objective parameters like <code>Contrast</code>, <code>Saturation</code> & <code>Well exposedness</code>. The weights are computed as follows:
+    <ol>
+        <li>
+            <b>Contrast</b> we apply a <code>Laplacian filter to the grayscale</code> version of each image, and take the absolute value of the filter response. This yields a simple indicator <code>C</code> for contrast.
+        </li>
+        <li>
+            <b>Saturation</b> We include a saturation measure S, which is computed as the <code>standard deviation within the R, G and B channel</code>, at each pixel
+        </li>
+        <li>
+            <b>Well-exposedness</b> We want to keep intensities that are not near zero (underexposed) or one (overexposed). We measure this based on closeless to an average intensity of <code>122</code> (for 8bit values). This is measured using gaussian curve:<br> <img src="/assets/research/exposure_fusion/exposure_map.png" height="50px"> 
+        </li>
+    </ol>
+</div>
+<h4>Contrast, Saturation and Exposure Map</h4>
+<div>
+    <div id="weights_canvas" class="canvas">processing...</div>
+</div>
+
+<h4>Merged Map</h4>
+<div>
+    The weights are then merged to create a single weight map using<br>
+    <img src="/assets/research/exposure_fusion/merge.png" height="50px"><br>
+    Then the weights are normalized to fall under range <code>[0, 1]</code> using<br>
+    <img src="/assets/research/exposure_fusion/normalized.png" height="75px"><br>
+</div>
+
+<div>
+    <div id="merged_weights_canvas" class="canvas">processing...</div>
+    <blockquote>Contrast map skipped for now. TODO(mebjas) fix this.</blockquote>
+</div>
+
+<h3>Pyramidal Merge aka Fusion</h3>
+<div>
+    Technique by Burt and Adelson [2] is used to blend the input and weight maps into single fused HDR image. The original technique was proposed to blend tow images guided by an alpha mask and works at multiple resolution usinmg a pyramidal image decomposition.
+</div>
+<div>
+    <div id="pyr_merge_canvas" class="canvas">Processing...</div>
+</div>
+
+<h3>How is this implemented?</h3>
+<div>
+    <ol>
+        <li>This visualizer is built using <code>OpenCV js</code> - <a href="https://docs.opencv.org/3.4.0/opencv.js">https://docs.opencv.org/3.4.0/opencv.js</a></li>
+        <li>Laplacian of image - <a href="https://docs.opencv.org/3.4/da/d85/tutorial_js_gradients.html">https://docs.opencv.org/3.4/da/d85/tutorial_js_gradients.html</a></li>
+        <li>Saturation Map - </li>
+        <li>Exposure Map - </li>
+    </ol>
+</div>
+
+
+<h3>References</h3>
+<div>
+    <ol>
+        <li><a href="http://ntp-0.cs.ucl.ac.uk/staff/j.kautz/publications/exposure_fusion.pdf">Exposure Fusion</a> by Tom Mertens, Jan Kautz, Frank Van Reeth</li>
+        <li>P. Burt and T. Adelson. The Laplacian Pyramid as a Compact Image Code. IEEE Transactions on Communication, COM-31:532–540, 1983</li>
+    </ol>
+</div>
+
+<script src="https://docs.opencv.org/3.4.0/opencv.js"></script>
+<script src="/assets/research/exposure_fusion/ef.js"></script>
+<script>
+    function docReady(fn) {
+    // see if DOM is already available
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+        // call on next available tick
+        setTimeout(fn, 1);
+    } else {
+        document.addEventListener("DOMContentLoaded", fn);
+    }
+}
+
+docReady(setupEfCanvas);
+</script>
