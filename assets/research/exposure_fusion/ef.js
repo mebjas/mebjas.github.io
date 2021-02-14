@@ -1,3 +1,9 @@
+/**
+ * Do not look at this code and use it to judge me. The intent of writing this peice of code was
+ * to understand how exposure fusion works (i.e. with visualization of each steps) and not
+ * writing a library or any reusable component.
+ */
+
 let input1 = document.getElementById('input_1');
 let input2 = document.getElementById('input_2');
 let input3 = document.getElementById('input_3');
