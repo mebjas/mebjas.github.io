@@ -11,7 +11,7 @@
  * Note: ECMA Script is not supported by all browsers. Use minified/html5-qrcode.min.js for better
  * browser support. Alternatively the transpiled code lives in transpiled/html5-qrcode.js
  */
-class Html5QrcodeScanner {
+ class Html5QrcodeScanner {
 
     static SCAN_TYPE_CAMERA = "SCAN_TYPE_CAMERA";
     static SCAN_TYPE_FILE = "SCAN_TYPE_FILE";
@@ -50,15 +50,15 @@ class Html5QrcodeScanner {
      *          mirrored feed if you are facing performance constraints.
      *      - videoConstraints: {MediaTrackConstraints}, Optional
      *          @beta(this config is not well supported yet).
-     *          
-     *          Important: When passed this will override other configurations
+     *
+     *          Important: When passed this will override other parameters
      *          like 'cameraIdOrConfig' or configurations like 'aspectRatio'.
-     *          
+     *
      *          videoConstraints should be of type {@code MediaTrackConstraints}
      *          as defined in
      *          https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints
      *          and is used to specify a variety of video or camera controls
-     *          like: aspect ratio, facing mode, video frame rate.
+     *          like: aspectRatio, facingMode, frameRate, etc.
      * @param {Boolean} verbose - Optional argument, if true, all logs
      *                  would be printed to console. 
      */

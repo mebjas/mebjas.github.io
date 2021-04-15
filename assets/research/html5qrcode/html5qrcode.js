@@ -2,16 +2,16 @@
  * @fileoverview
  * HTML5 QR code scanning library.
  * - Decode QR Code using web cam or smartphone camera
- * 
+ *
  * @author mebjas <minhazav@gmail.com>
- * 
+ *
  * The word "QR Code" is registered trademark of DENSO WAVE INCORPORATED
  * http://www.denso-wave.com/qrcode/faqpatent-e.html
- * 
+ *
  * Note: ECMA Script is not supported by all browsers. Use minified/html5-qrcode.min.js for better
  * browser support. Alternatively the transpiled code lives in transpiled/html5-qrcode.js
  */
-class Html5Qrcode {
+ class Html5Qrcode {
     //#region static constants
     static DEFAULT_WIDTH = 300;
     static DEFAULT_WIDTH_OFFSET = 2;
@@ -30,22 +30,39 @@ class Html5Qrcode {
 
     /**
      * Initialize QR Code scanner.
-     * 
-     * @param {String} elementId - Id of the HTML element. 
+     *
+     * @param {String} elementId - Id of the HTML element.
      * @param {Boolean} verbose - Optional argument, if true, all logs
-     *                  would be printed to console. 
+     *                  would be printed to console.
      */
     constructor(elementId, verbose) {
-        if (!getLazarSoftScanner) {
-            throw 'Use html5qrcode.min.js without edit, getLazarSoftScanner'
-            + 'not found.';
+        if (!ZXing) {
+            throw 'Use html5qrcode.min.js without edit, ZXing not found.';
         }
 
-        this.qrcode = getLazarSoftScanner();
-        if (!this.qrcode) {
-            throw 'qrcode is not defined, use the minified/html5-qrcode.min.js'
-            + ' for proper support';
-        }
+        const hints = new Map();
+        const formats = [
+            ZXing.BarcodeFormat.QR_CODE,
+            ZXing.BarcodeFormat.AZTEC,
+            ZXing.BarcodeFormat.CODABAR,
+            ZXing.BarcodeFormat.CODE_39,
+            ZXing.BarcodeFormat.CODE_93,
+            ZXing.BarcodeFormat.CODE_128,
+            ZXing.BarcodeFormat.DATA_MATRIX,
+            ZXing.BarcodeFormat.MAXICODE,
+            ZXing.BarcodeFormat.ITF,
+            ZXing.BarcodeFormat.EAN_13,
+            ZXing.BarcodeFormat.EAN_8,
+            ZXing.BarcodeFormat.PDF_417,
+            ZXing.BarcodeFormat.RSS_14,
+            ZXing.BarcodeFormat.RSS_EXPANDED,
+            ZXing.BarcodeFormat.UPC_A,
+            ZXing.BarcodeFormat.UPC_E,
+            ZXing.BarcodeFormat.UPC_EAN_EXTENSION,
+        ];
+        hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, formats);
+        this.qrcode = new ZXing.MultiFormatReader(verbose);
+        this.qrcode.setHints(hints);
 
         this._elementId = elementId;
         this._foreverScanTimeout = null;
@@ -63,13 +80,13 @@ class Html5Qrcode {
 
     /**
      * Start scanning QR Code for given camera.
-     * 
+     *
      * @param {String or Object} identifier of the camera, it can either be the
      *  cameraId retrieved from {@code Html5Qrcode#getCameras()} method or
      *  object with facingMode constraint.
      *  Example values:
      *      - "a76afe74e95e3aba9fc1b69c39b8701cde2d3e29aa73065c9cd89438627b3bde"
-     *          ^ This is 'deviceId' from camera retrieved from 
+     *          ^ This is 'deviceId' from camera retrieved from
      *          {@code Html5Qrcode#getCameras()}
      *      - { facingMode: "user" }
      *      - { facingMode: "environment" }
@@ -102,22 +119,22 @@ class Html5Qrcode {
      *          mirrored feed if you are facing performance constraints.
      *      - videoConstraints: {MediaTrackConstraints}, Optional
      *          @beta(this config is not well supported yet).
-     *          
-     *          Important: When passed this will override other configurations
+     *
+     *          Important: When passed this will override other parameters
      *          like 'cameraIdOrConfig' or configurations like 'aspectRatio'.
-     *          
+     *
      *          videoConstraints should be of type {@code MediaTrackConstraints}
      *          as defined in
      *          https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints
      *          and is used to specify a variety of video or camera controls
-     *          like: aspect ratio, facing mode, video frame rate.
+     *          like: aspectRatio, facingMode, frameRate, etc.
      * @param {Function} qrCodeSuccessCallback callback on QR Code found.
      *  Example:
      *      function(qrCodeMessage) {}
      * @param {Function} qrCodeErrorCallback callback on QR Code parse error.
      *  Example:
      *      function(errorMessage) {}
-     * 
+     *
      * @returns Promise for starting the scan. The Promise can fail if the user
      * doesn't grant permission or some API is not supported by the browser.
      */
@@ -150,8 +167,10 @@ class Html5Qrcode {
         let videoConstraintsAvailableAndValid = false;
         if (config.videoConstraints) {
             if (!this._isMediaStreamConstraintsValid(config.videoConstraints)) {
-                console.error("'videoConstraints' is not valid "
-                    + "'MediaStreamConstraints, it will be ignored.'");
+                Html5Qrcode._logError(
+                    "'videoConstraints' is not valid 'MediaStreamConstraints, "
+                        + "it will be ignored.'",
+                    /* experimental= */ true);
             } else {
                 videoConstraintsAvailableAndValid = true;
             }
@@ -167,7 +186,6 @@ class Html5Qrcode {
 
         this._shouldScan = true;
         this._element = element;
-        this.qrcode.callback = qrCodeSuccessCallback;
 
         // Validate before insertion
         if (isShadedBoxEnabled) {
@@ -186,13 +204,14 @@ class Html5Qrcode {
         //#region local methods
         /**
          * Setups the UI elements, changes the state of this class.
-         * 
+         *
          * @param width derived width of viewfinder.
          * @param height derived height of viewfinder.
          */
         const setupUi = (width, height) => {
             const qrboxSize = config.qrbox;
             if (qrboxSize > height) {
+                // TODO(mebjas): Migrate to common logging.
                 console.warn("[Html5Qrcode] config.qrboxsize is greater "
                     + "than video height. Shading will be ignored");
             }
@@ -218,7 +237,7 @@ class Html5Qrcode {
             // Insert the canvas
             element.append(canvasElement);
             if (shouldShadingBeApplied) {
-                this._possiblyInsertShadingElement(element, height, qrRegion);
+                this._possiblyInsertShadingElement(element, width, height, qrboxSize);
             }
 
             // Update local states
@@ -229,15 +248,18 @@ class Html5Qrcode {
 
         /**
          * Scans current context using the qrcode library.
-         * 
+         *
          * <p>This method call would result in callback being triggered by the
          * qrcode library. This method also handles the border coloring.
-         * 
+         *
          * @returns true if scan match is found, false otherwise.
          */
         const scanContext = () => {
             try {
-                $this.qrcode.decode();
+                const luminanceSource = new ZXing.HTMLCanvasElementLuminanceSource($this._canvasElement);
+                const binaryBitmap = new ZXing.BinaryBitmap(new ZXing.HybridBinarizer(luminanceSource));
+                let result = $this.qrcode.decode(binaryBitmap);
+                qrCodeSuccessCallback(result.text);
                 this._possiblyUpdateShaders(/* qrMatch= */ true);
                 return true;
             } catch (exception) {
@@ -323,8 +345,7 @@ class Html5Qrcode {
                 }
 
                 $this._localMediaStream = mediaStream;
-                // If videoConstraints is passed, ignore all other
-                // configurations.
+                // If videoConstraints is passed, ignore all other configs.
                 if (videoConstraintsEnabled || !config.aspectRatio) {
                     setupVideo();
                 } else {
@@ -335,7 +356,11 @@ class Html5Qrcode {
                     track.applyConstraints(constraints)
                         .then(_ => setupVideo())
                         .catch(error => {
-                            console.log("[Warning] [Html5Qrcode] Constriants could not be satisfied, ignoring constraints", error);
+                            // TODO(mebjas): Migrate to common logging.
+                            console.log(
+                                "[Warning] [Html5Qrcode] Constriants could not "
+                                    + "be satisfied, ignoring constraints",
+                                error);
                             setupVideo();
                         });
                 }
@@ -396,8 +421,8 @@ class Html5Qrcode {
     }
 
     /**
-     * Stops streaming QR Code video and scanning. 
-     * 
+     * Stops streaming QR Code video and scanning.
+     *
      * @returns Promise for safely closing the video stream.
      */
     stop() {
@@ -407,7 +432,6 @@ class Html5Qrcode {
 
         const $this = this;
         return new Promise((resolve, /* ignore */ reject) => {
-            $this.qrcode.callback = null;
             const tracksToClose
                 = $this._localMediaStream.getVideoTracks().length;
             var tracksClosed = 0;
@@ -450,14 +474,14 @@ class Html5Qrcode {
 
     /**
      * Scans an Image File for QR Code.
-     * 
+     *
      * This feature is mutually exclusive to camera based scanning, you should
      * call stop() if the camera based scanning was ongoing.
-     * 
+     *
      * @param {File} imageFile a local file with Image content.
      * @param {boolean} showImage if true the Image will be rendered on given
      * element.
-     * 
+     *
      * @returns Promise with decoded QR code string on success and error message
       *             on failure. Failure could happen due to different reasons:
      *            1. QR Code decode failed because enough patterns not found in
@@ -575,7 +599,10 @@ class Html5Qrcode {
                     /* dWidth= */ config.width,
                     /* dHeight= */ config.height);
                 try {
-                    resolve($this.qrcode.decode());
+                    const luminanceSource = new ZXing.HTMLCanvasElementLuminanceSource(hiddenCanvas);
+                    const binaryBitmap = new ZXing.BinaryBitmap(new ZXing.HybridBinarizer(luminanceSource));
+                    let result = $this.qrcode.decode(binaryBitmap);
+                    resolve(result.text);
                 } catch (exception) {
                     reject(`QR code parse error, error = ${exception}`);
                 }
@@ -591,7 +618,7 @@ class Html5Qrcode {
 
     /**
      * Clears the existing canvas.
-     * 
+     *
      * Note: in case of ongoing web cam based scan, it needs to be explicitly
      * closed before calling this method, else it will throw exception.
      */
@@ -601,7 +628,7 @@ class Html5Qrcode {
 
     /**
      * Returns a Promise with list of all cameras supported by the device.
-     * 
+     *
      * The returned object is a list of result object of type:
      * [{
      *      id: String;     // Id of the camera.
@@ -680,7 +707,7 @@ class Html5Qrcode {
 
     /**
      * Returns the capabilities of the running video track.
-     * 
+     *
      * @beta This is an experimental API
      * @returns the capabilities of a running video track.
      * @throws error if the scanning is not in running state.
@@ -690,25 +717,25 @@ class Html5Qrcode {
             throw "Scanning is not in running state, call this API only when"
                 + " QR code scanning using camera is in running state.";
         }
-    
+
         if (this._localMediaStream.getVideoTracks().length == 0) {
             throw "No video tracks found";
         }
 
         const videoTrack = this._localMediaStream.getVideoTracks()[0];
-        return videoTrack.getCapabilities();        
+        return videoTrack.getCapabilities();
     }
 
     /**
-     * Apply a video constraints on running video track.
-     * 
+     * Apply a video constraints on running video track from camera.
+     *
      * Important:
      *  1. Must be called only if the camera based scanning is in progress.
      *  2. Changing aspectRatio while scanner is running is not yet supported.
-     * 
+     *
      * @beta This is an experimental API
      * @param {MediaTrackConstraints} specifies a variety of video or camera
-     *  controls as defined in 
+     *  controls as defined in
      *  https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints
      * @returns a Promise which succeeds if the passed constraints are applied,
      *  fails otherwise.
@@ -725,7 +752,7 @@ class Html5Qrcode {
             throw "Scanning is not in running state, call this API only when"
                 + " QR code scanning using camera is in running state.";
         }
-    
+
         if (this._localMediaStream.getVideoTracks().length == 0) {
             throw "No video tracks found";
         }
@@ -791,156 +818,60 @@ class Html5Qrcode {
         };
     }
 
-    _possiblyInsertShadingElement(element, height, qrRegion) {
-        if (qrRegion.x == 0 && qrRegion.y == 0) {
-            // No shading
-            return;
-        }
+    _possiblyInsertShadingElement(element, width, height, qrboxSize) {
+      if ((width - qrboxSize) < 1 || (height - qrboxSize) < 1) {
+        return;
+      }
+      const shadingElement = document.createElement('div');
+      shadingElement.style.position = "absolute";
+      shadingElement.style.borderLeft = `${(width-qrboxSize)/2}px solid #0000007a`;
+      shadingElement.style.borderRight = `${(width-qrboxSize)/2}px solid #0000007a`;
+      shadingElement.style.borderTop = `${(height-qrboxSize)/2}px solid #0000007a`;
+      shadingElement.style.borderBottom = `${(height-qrboxSize)/2}px solid #0000007a`;
+      shadingElement.style.boxSizing = "border-box";
+      shadingElement.style.top = "0px";
+      shadingElement.style.bottom = "0px";
+      shadingElement.style.left = "0px";
+      shadingElement.style.right = "0px";
+      shadingElement.id = `${Html5Qrcode.SHADED_REGION_CLASSNAME}`;
 
-        const shaders = {};
-        shaders[Html5Qrcode.SHADED_LEFT] = this._createShadedElement(
-            height, qrRegion, Html5Qrcode.SHADED_LEFT);
-        shaders[Html5Qrcode.SHADED_RIGHT] = this._createShadedElement(
-            height, qrRegion, Html5Qrcode.SHADED_RIGHT);
-        shaders[Html5Qrcode.SHADED_TOP] = this._createShadedElement(
-            height, qrRegion, Html5Qrcode.SHADED_TOP);
-        shaders[Html5Qrcode.SHADED_BOTTOM] = this._createShadedElement(
-            height, qrRegion, Html5Qrcode.SHADED_BOTTOM);
-
-        Object.keys(shaders).forEach(key => element.append(shaders[key]));
-
-        if (qrRegion.x < 10 || qrRegion.y < 10) {
-            this.hasBorderShaders = false;
-        } else {
-            Object.keys(shaders).forEach(key =>
-                this._insertShaderBorders(shaders[key], qrRegion, key));
-            this.hasBorderShaders = true;
-        }
-
-    }
-
-    _createShadedElement(height, qrRegion, shadingPosition) {
-        const elem = document.createElement('div');
-        elem.style.position = "absolute";
-        elem.style.height = `${height}px`;
-        elem.className = Html5Qrcode.SHADED_REGION_CLASSNAME;
-        elem.id = `${Html5Qrcode.SHADED_REGION_CLASSNAME}_${shadingPosition}`
-        // TODO(mebjas): maken this configurable
-        elem.style.background = `#0000007a`;
-        switch (shadingPosition) {
-            case Html5Qrcode.SHADED_LEFT:
-                elem.style.top = "0px";
-                elem.style.left = "0px";
-                elem.style.width = `${qrRegion.x}px`;
-                elem.style.height = `${height}px`;
-                break;
-            case Html5Qrcode.SHADED_RIGHT:
-                elem.style.top = "0px";
-                elem.style.right = "0px";
-                elem.style.width = `${qrRegion.x}px`;
-                elem.style.height = `${height}px`;
-                break;
-            case Html5Qrcode.SHADED_TOP:
-                elem.style.top = "0px";
-                elem.style.left = `${qrRegion.x}px`;
-                elem.style.width = `${qrRegion.width}px`;
-                elem.style.height = `${qrRegion.y}px`;
-                break;
-            case Html5Qrcode.SHADED_BOTTOM:
-                const top = qrRegion.y + qrRegion.height;
-                elem.style.top = `${top}px`;
-                elem.style.left = `${qrRegion.x}px`;
-                elem.style.width = `${qrRegion.width}px`;
-                elem.style.height = `${qrRegion.y}px`;
-                break;
-            default:
-                throw "Unsupported shadingPosition";
-        }
-
-        return elem;
-    }
-
-    _insertShaderBorders(shaderElem, qrRegion, shadingPosition) {
-        shadingPosition = parseInt(shadingPosition);
-        const $this = this;
-        const borderOffset = 5;
+      // Check if div is too small for shadows. As there are two 5px width borders the needs to have a size above 10px.
+      if ((width - qrboxSize) < 11 || (height - qrboxSize) < 11) {
+        this.hasBorderShaders = false;
+      } else {
         const smallSize = 5;
         const largeSize = 40;
-        const createBorder = () => {
-            const elem = document.createElement("div");
-            elem.style.position = "absolute";
-            elem.style.backgroundColor
-                = Html5Qrcode.BORDER_SHADER_DEFAULT_COLOR;
-            switch (shadingPosition) {
-                case Html5Qrcode.SHADED_LEFT:   // intentional
-                case Html5Qrcode.SHADED_RIGHT:
-                    const height = largeSize + borderOffset;
-                    elem.style.width = `${smallSize}px`;
-                    elem.style.height = `${height}px`;
-                    break;
-                case Html5Qrcode.SHADED_TOP:   // intentional
-                case Html5Qrcode.SHADED_BOTTOM:
-                    const width = largeSize + borderOffset;
-                    elem.style.width = `${width}px`;
-                    elem.style.height = `${smallSize}px`;
-                    break;
-                default:
-                    throw "Unsupported shadingPosition";
-            }
-            return elem;
+        this._insertShaderBorders(shadingElement, largeSize, smallSize, -smallSize, 0, true);
+        this._insertShaderBorders(shadingElement, largeSize, smallSize, -smallSize, 0, false);
+        this._insertShaderBorders(shadingElement, largeSize, smallSize, qrboxSize+smallSize, 0, true);
+        this._insertShaderBorders(shadingElement, largeSize, smallSize, qrboxSize+smallSize, 0, false);
+        this._insertShaderBorders(shadingElement, smallSize, largeSize+smallSize, -smallSize, -smallSize, true);
+        this._insertShaderBorders(shadingElement, smallSize, largeSize+smallSize, qrboxSize+smallSize-largeSize, -smallSize, true);
+        this._insertShaderBorders(shadingElement, smallSize, largeSize+smallSize, -smallSize, -smallSize, false);
+        this._insertShaderBorders(shadingElement, smallSize, largeSize+smallSize, qrboxSize+smallSize-largeSize, -smallSize, false);
+        this.hasBorderShaders = true;
+      }
+      element.append(shadingElement);
+
+    }
+
+    _insertShaderBorders(shaderElem, width, height, top, side, isLeft) {
+        const elem = document.createElement("div");
+        elem.style.position = "absolute";
+        elem.style.backgroundColor = Html5Qrcode.BORDER_SHADER_DEFAULT_COLOR;
+        elem.style.width = `${width}px`;
+        elem.style.height = `${height}px`;
+        elem.style.top = `${top}px`;
+        if (isLeft) {
+          elem.style.left = `${side}px`;
+        } else {
+          elem.style.right = `${side}px`;
         }
-
-        const insertBorder = (top, left) => {
-            if (!(top !== null && left !== null)) {
-                throw "Shaders should have defined positions"
-            }
-            const borderElem = createBorder();
-            borderElem.style.top = `${top}px`;
-            borderElem.style.left = `${left}px`;
-            shaderElem.appendChild(borderElem);
-
-            if (!$this.borderShaders) {
-                $this.borderShaders = [];
-            }
-
-            $this.borderShaders.push(borderElem);
+        if (!this.borderShaders) {
+          this.borderShaders = [];
         }
-
-        let firstTop = null;
-        let firstLeft = null;
-        let secondTop = null;
-        let secondLeft = null;
-        switch (shadingPosition) {
-            case Html5Qrcode.SHADED_LEFT:
-                firstTop = qrRegion.y - borderOffset;
-                firstLeft = qrRegion.x - smallSize;
-                secondTop = qrRegion.y + qrRegion.height - largeSize;
-                secondLeft = firstLeft;
-                break;
-            case Html5Qrcode.SHADED_RIGHT:
-                firstTop = qrRegion.y - borderOffset;
-                firstLeft = 0;
-                secondTop = qrRegion.y + qrRegion.height - largeSize;
-                secondLeft = firstLeft;
-                break;
-            case Html5Qrcode.SHADED_TOP:
-                firstTop = qrRegion.y - borderOffset;
-                firstLeft = -smallSize;
-                secondTop = firstTop;
-                secondLeft = qrRegion.width - largeSize;
-                break;
-            case Html5Qrcode.SHADED_BOTTOM:
-                firstTop = 0;
-                firstLeft = -smallSize;
-                secondTop = firstTop;
-                secondLeft = qrRegion.width - largeSize;
-                break;
-            default:
-                throw "Unsupported shadingPosition";
-        }
-
-        insertBorder(firstTop, firstLeft);
-        insertBorder(secondTop, secondLeft);
+        this.borderShaders.push(elem);
+        shaderElem.appendChild(elem);
     }
 
     _possiblyUpdateShaders(qrMatch) {
@@ -1064,17 +995,18 @@ class Html5Qrcode {
 
     //#region private method to check for valid videoConstraints
     _isMediaStreamConstraintsValid(videoConstraints) {
-        // TODO(mebjas): Migrate to leveraging verbose flag when support for
-        // this feature is out of beta.
         if (!videoConstraints) {
-            console.error("Empty videoConstraints");
+            Html5Qrcode._logError(
+                "Empty videoConstraints", /* experimental= */ true);
             return false;
         }
 
         if (typeof videoConstraints !== "object") {
             const typeofVideoConstraints = typeof videoConstraints;
-            console.error("videoConstraints should be of type object, the "
-                + `object passed is of type ${typeofVideoConstraints}.`);
+            Html5Qrcode._logError(
+                "videoConstraints should be of type object, the "
+                    + `object passed is of type ${typeofVideoConstraints}.`,
+                /* experimental= */ true);
             return false;
         }
         // TODO(mebjas): Make this validity check more sophisticuated
@@ -1094,7 +1026,9 @@ class Html5Qrcode {
         for (let i = 0; i < keysInVideoConstraints.length; i++) {
             const key = keysInVideoConstraints[i];
             if (bannedkeysSet.has(key)) {
-                console.error(`${key} is not supported videoConstaints.`);
+                Html5Qrcode._logError(
+                    `${key} is not supported videoConstaints.`,
+                    /* experimental= */ true);
                 return false;
             }
         }
@@ -1110,6 +1044,12 @@ class Html5Qrcode {
     static _log(message) {
         if (Html5Qrcode.VERBOSE) {
             console.log(message);
+        }
+    }
+
+    static _logError(message, experimental) {
+        if (Html5Qrcode.VERBOSE || experimental === true) {
+            console.error(message);
         }
     }
 }
