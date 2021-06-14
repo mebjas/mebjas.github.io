@@ -243,7 +243,7 @@ function docReady(fn) {
 }
 
 /** Ugly function to write the results to a table dynamically. */
-function printScanResultPretty(codesFound, qrCodeMessage, qrcodeResult) {
+function printScanResultPretty(codeId, decodedText, decodedResult) {
 	let resultSection = document.getElementById('scanned-result');
     let tableBodyId = "scanned-result-table-body";
     if (!document.getElementById(tableBodyId)) {
@@ -274,11 +274,11 @@ function printScanResultPretty(codesFound, qrCodeMessage, qrcodeResult) {
     let tbody = document.getElementById(tableBodyId);
     let trow = document.createElement('tr');
     let td1 = document.createElement('td');
-    td1.innerText = `${codesFound}`;
+    td1.innerText = `${codeId}`;
     let td2 = document.createElement('td');
-    td2.innerText = `${qrcodeResult.result.format.formatName}`;
+    td2.innerText = `${decodedResult.result.format.formatName}`;
     let td3 = document.createElement('td');
-    td3.innerText = `${qrCodeMessage}`;
+    td3.innerText = `${decodedText}`;
     trow.appendChild(td1);
     trow.appendChild(td2);
     trow.appendChild(td3);
@@ -288,18 +288,18 @@ function printScanResultPretty(codesFound, qrCodeMessage, qrcodeResult) {
 docReady(function() {
 	hljs.initHighlightingOnLoad();
 	var lastMessage;
-	var codesFound = 0;
-	function onScanSuccess(qrCodeMessage, qrcodeResult) {
+	var codeId = 0;
+	function onScanSuccess(decodedText, decodedResult) {
         /**
          * If you following the code example of this page by looking at the
          * source code of the demo page - good job!!
          * 
          * Tip: update this function with a success callback of your choise.
          */
-		if (lastMessage !== qrCodeMessage) {
-			lastMessage = qrCodeMessage;
-            printScanResultPretty(codesFound, qrCodeMessage, qrcodeResult);
-            ++codesFound;
+		if (lastMessage !== decodedText) {
+			lastMessage = decodedText;
+            printScanResultPretty(codeId, decodedText, decodedResult);
+            ++codeId;
 		}
 	}
 
