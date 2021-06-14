@@ -113,5 +113,6 @@ If you are excited or interested you can contribute to this project by:
 
 ## Related articles
  - [Demo: HTML5 QR Code scanner](https://blog.minhazav.dev/research/html5-qrcode)
- - [HTML5 QR Code scanning with javascript - launched v1.0.1](https://blog.minhazav.dev/HTML5-QR-Code-scanning-launched-v1.0.1)
- - [Support for scanning the local file and using default camera added (v1.0.5)](https://blog.minhazav.dev/HTML5-QR-Code-scanning-support-for-local-file-and-default-camera/)
+ - [QR and barcode scanner using HTML and Javascript](/QR-and-barcode-scanner-using-html-and-javascript/)
+ - [HTML5 QR Code scanning with javascript - launched v1.0.1](/HTML5-QR-Code-scanning-launched-v1.0.1)
+ - [Support for scanning the local file and using default camera added (v1.0.5)](/HTML5-QR-Code-scanning-support-for-local-file-and-default-camera/)

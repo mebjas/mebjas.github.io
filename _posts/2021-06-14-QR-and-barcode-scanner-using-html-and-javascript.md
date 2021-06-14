@@ -2,7 +2,7 @@
 layout: post
 title: QR and barcode scanner using HTML and Javascript
 categories: [html, javascript, typescript, qr-code, camera, barcode]
-description: "The <a href='https://github.com/mebjas/html5-qrcode'>little QR code scanning library</a> I have been maintaining since 2015 has been getting more attention recently. And with power came responsibilities, bugs, and feature requests. Some of the key features requested by developers were more reliable scanning and the ability to scan different types of bar codes. With <code>version 2.0.0</code> onwards developers can scan different types of 1D codes (bar codes) and 2D codes (like QR codes or AZTEC).<br><br> This article lists out everything new in `version 2.x.x`. I'll also list out the new APIs and capabilities that developers can use to
+description: "The <a href='https://github.com/mebjas/html5-qrcode'>little QR code scanning library</a> I have been maintaining since 2015 has been getting more attention recently. And with power came responsibilities, bugs, and feature requests. Some of the key features requested by developers were more reliable scanning and the ability to scan different types of bar codes. With <code>version 2.0.0</code> onwards developers can scan different types of 1D codes (bar codes) and 2D codes (like QR codes or AZTEC).<br><br> This article lists out everything new in <code>version 2.x.x</code>. I'll also list out the new APIs and capabilities that developers can use to
 integrate a more powerful code scanning capability to their web pages or apps."
 post-no: 24
 toc: true
@@ -181,6 +181,11 @@ If you are excited or interested you can contribute to this project by:
  - Raising issues for bugs faced, at [Github issue page for the project](https://github.com/mebjas/html5-qrcode/issues). Feel free to add some related interesting discussions which could be taken up as work-item.
  - Sending a Pull Request for bugs fixed by you.
  - Rating the project with stars and shares.
+
+## Related articles
+ - [Demo: HTML5 QR Code scanner](https://blog.minhazav.dev/research/html5-qrcode)
+ - [HTML5 QR Code scanning with javascript - launched v1.0.1](/HTML5-QR-Code-scanning-launched-v1.0.1)
+ - [Support for scanning the local file and using default camera added (v1.0.5)](/HTML5-QR-Code-scanning-support-for-local-file-and-default-camera/)
 
 <!-- Script area -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>

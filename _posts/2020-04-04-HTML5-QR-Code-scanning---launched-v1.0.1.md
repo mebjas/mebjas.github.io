@@ -12,6 +12,9 @@ In 2015 I had written an HTML5 based QR code scanning library as a jQuery extens
  - Removed jQuery dependency
  - Refactored the APIs to return [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) rather than being purely based on callbacks.
 
+## Edit 1 (14th June 2021)
+Lot of things have changed since `v1.0.1` and latest release for the library is `v2.0.9` - Please visit [QR and barcode scanner using HTML and Javascript](/QR-and-barcode-scanner-using-html-and-javascript/) for latest content.
+
 ## Introduction
 QR Code is a very common technique of encoding information as images. Its a very common used in physical stores for identifying products like bar code is used.
 
@@ -195,4 +198,5 @@ If you are excited or interested you can contribute to this project by:
  - The decoder used for the QRcode reading is from `LazarSoft` - [LazarSoft/jsqrcode](https://github.com/LazarSoft/jsqrcode).
 
 ## Updates to this article
+ - `14th June 2021` - [QR and barcode scanner using HTML and Javascript](/QR-and-barcode-scanner-using-html-and-javascript/)
  - `18th April 2020` - [Added support for local file scanning and using default camera on smartphones](https://blog.minhazav.dev/HTML5-QR-Code-scanning-support-for-local-file-and-default-camera/)
