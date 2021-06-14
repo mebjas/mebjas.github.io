@@ -116,7 +116,7 @@ html5QrcodeScanner.render(onScanSuccess, onScanError);</code></pre>
         The library supports certain configurations that allows you to change the behavior.
         You can read more about it <a href="https://github.com/mebjas/html5-qrcode#extra-optional-configuration-in-start-method">here</a>.
 
-        <table style="text-align: left;">
+        <table style="text-align: left; border-spacing: 0 1em; border-collapse: separate;">
             <tr>
                 <th style="width: 150px;">Configuration</th>
                 <th>Description</th>
@@ -151,6 +151,16 @@ html5QrcodeScanner.render(onScanSuccess, onScanError);</code></pre>
                     By default, the scanner can scan for horizontally flipped QR Codes. This also enables scanning QR code using the front camera on mobile devices which are sometimes mirrored. This is false by default and I recommend changing this only if:
                     <li>You are sure that the camera feed cannot be mirrored (Horizontally flipped).</li>
                     <li>You are facing performance issues with this enabled.</li>
+                </td>
+            </tr>
+            <tr style="margin-top: 10px;">
+                <td style="font-weight: bold;">formatsToSupport</td>
+                <td>
+                    <strong><a href="https://github.com/mebjas/html5-qrcode/blob/master/src/core.ts#L14">Html5QrcodeSupportedFormats</a> (Optional)</strong><br>
+                    By default, both camera stream and image files are scanned against all the supported code
+                    formats. Both <code>Html5QrcodeScanner</code> and <code>Html5Qrcode</code> classes can be
+                    configured to only support a subset of supported formats. Supported formats are defined in enum <a href="https://github.com/mebjas/html5-qrcode/blob/master/src/core.ts#L14">Html5QrcodeSupportedFormats</a>.<br>
+                    <a href="https://github.com/mebjas/html5-qrcode#scanning-only-specific-formats">Read more...</a>
                 </td>
             </tr>
         </table>
@@ -228,22 +238,69 @@ function docReady(fn) {
     }
 }
 
+/** Ugly function to write the results to a table dynamically. */
+function printScanResultPretty(codesFound, qrCodeMessage, qrcodeResult) {
+	let resultSection = document.getElementById('scanned-result');
+    let tableBodyId = "scanned-result-table-body";
+    if (!document.getElementById(tableBodyId)) {
+        let table = document.createElement("table");
+        table.className = "styled-table";
+        table.style.width = "100%";
+        resultSection.appendChild(table);
+
+        let theader = document.createElement('thead');
+        let trow = document.createElement('tr');
+        let th1 = document.createElement('td');
+        th1.innerText = "Count";
+        let th2 = document.createElement('td');
+        th2.innerText = "Format";
+        let th3 = document.createElement('td');
+        th3.innerText = "Result";
+        trow.appendChild(th1);
+        trow.appendChild(th2);
+        trow.appendChild(th3);
+        theader.appendChild(trow);
+        table.appendChild(theader);
+
+        let tbody = document.createElement("tbody");
+        tbody.id = tableBodyId;
+        table.appendChild(tbody);
+    }
+
+    let tbody = document.getElementById(tableBodyId);
+    let trow = document.createElement('tr');
+    let td1 = document.createElement('td');
+    td1.innerText = `${codesFound}`;
+    let td2 = document.createElement('td');
+    td2.innerText = `${qrcodeResult.result.format.formatName}`;
+    let td3 = document.createElement('td');
+    td3.innerText = `${qrCodeMessage}`;
+    trow.appendChild(td1);
+    trow.appendChild(td2);
+    trow.appendChild(td3);
+    tbody.appendChild(trow);
+}
+
 docReady(function() {
 	hljs.initHighlightingOnLoad();
-
-	var results = document.getElementById('scanned-result');
 	var lastMessage;
 	var codesFound = 0;
-	function onScanSuccess(qrCodeMessage) {
+	function onScanSuccess(qrCodeMessage, qrcodeResult) {
+        /**
+         * If you following the code example of this page by looking at the
+         * source code of the demo page - good job!!
+         * 
+         * Tip: update this function with a success callback of your choise.
+         */
 		if (lastMessage !== qrCodeMessage) {
 			lastMessage = qrCodeMessage;
-			++codesFound;
-			results.innerHTML += `<div>[${codesFound}] - ${qrCodeMessage}</div>`;
+            printScanResultPretty(codesFound, qrCodeMessage, qrcodeResult);
+            ++codesFound;
 		}
 	}
 
 	let html5QrcodeScanner = new Html5QrcodeScanner(
-		"reader", { fps: 10, qrbox: 250 });
-	html5QrcodeScanner.render(onScanSuccess, _ => { /** ignore error */ });
+        "reader", { fps: 10, qrbox: 250 });
+	html5QrcodeScanner.render(onScanSuccess);
 });
 </script>
