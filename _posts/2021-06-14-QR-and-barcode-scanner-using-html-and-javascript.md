@@ -33,7 +33,7 @@ Latest: [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/mebj
 
 
 3.  [Minor] Library now reports more granular errors to reduce debugging time for developers.
-     - For example, if the library is used in `http` url, the exact issue will be reported.
+     - For example, if the library is used in `HTTP` url, the exact issue will be reported.
 
 **Code health fixes**
 1.   Entire code **migrated to Typescript** for scalable & less error-prone development.
@@ -44,14 +44,14 @@ Check out [changelog since Version 2.0.0](https://github.com/mebjas/html5-qrcode
 
 ## Using the library
 The library exposes two main classes:
- - `Html5QrcodeScanner` - Use this to setup end to end scanner with UI, built on top of `Html5Qrcode`.
+ - `Html5QrcodeScanner` - Use this to set up end to end scanner with UI, built on top of `Html5Qrcode`.
     - Takes care of building full user interface
-    - Supports scanning using web cam or camera on the device with real time camera feeds.
-    - Support scannign local images on the device.
- - `Html5Qrcode` - lower level library, exposes APIs to build your own code scanner.
+    - Supports scanning using a web-cam or camera on the device with real-time camera feeds.
+    - Support scanning local images on the device.
+ - `Html5Qrcode` - lower-level library, exposes APIs to build your code scanner.
 
 ## Integrating code scanner using `Html5QrcodeScanner`
-Follow the steps below to integrate QR code or barcode scanning capabilities to your web application:
+Follow the steps below to integrate QR code or barcode scanning capabilities into your web application:
 
 ### Install the library
 You could install the library using `npm` or load it directly using some CDNS like [unpkg](https://unpkg.com/browse/html5-qrcode@2.0.9/)
@@ -68,14 +68,14 @@ npm install --save-dev html5-qrcode
 ```
 
 ### Add placeholder HTML element
-Add a placeholder HTML element to your web page. The scanning UI would be rendered in this element. Give it appropriate styling like `width` or `height`.
+Add a placeholder HTML element to your web page. The scanning UI would be rendered in this element. Give it appropriate stylings like `width` or `height`.
 
 ```html
 <div id="qr-reader" style="width: 600px"></div>
 ```
 
 ### Initialize in javascript
-Now you can setup the scanner with these `4 lines of code`.
+Now you can set up the scanner with these `4 lines of code`.
 
 ```js
 function onScanSuccess(decodedText, decodedResult) {
@@ -90,8 +90,8 @@ html5QrcodeScanner.render(onScanSuccess);
 <div id="qr-reader" style="width:600px; margin: auto"></div>
 
 ### Notes:
-- You can customise the scanner by passing a different config object - [read more](https://github.com/mebjas/html5-qrcode#extra-optional-configuration-in-start-method).
-- The success callback has following interface ([/src/core.ts](https://github.com/mebjas/html5-qrcode/blob/master/src/core.ts#L225))
+- You can customize the scanner by passing a different config object - [read more](https://github.com/mebjas/html5-qrcode#extra-optional-configuration-in-start-method).
+- The success callback has the following interface ([/src/core.ts](https://github.com/mebjas/html5-qrcode/blob/master/src/core.ts#L225))
 
 ```ts
 /** Format of detected code. */
@@ -177,7 +177,7 @@ These are the different code formats now supported by the library, with examples
 ## How to contribute
 If you are excited or interested you can contribute to this project by:
 
- - If you find compatibility issues with certain browser, [create an issue here](https://github.com/mebjas/html5-qrcode/issues/new?assignees=&labels=compatibility&template=compatibility-issue.md&title=Compatibility+-+%5BOS%5D+%5BBrowser%5D+-+%5BWhat+is+not+working%5D).
+ - If you find compatibility issues with a certain browser, [create an issue here](https://github.com/mebjas/html5-qrcode/issues/new?assignees=&labels=compatibility&template=compatibility-issue.md&title=Compatibility+-+%5BOS%5D+%5BBrowser%5D+-+%5BWhat+is+not+working%5D).
  - Raising issues for bugs faced, at [Github issue page for the project](https://github.com/mebjas/html5-qrcode/issues). Feel free to add some related interesting discussions which could be taken up as work-item.
  - Sending a Pull Request for bugs fixed by you.
  - Rating the project with stars and shares.
