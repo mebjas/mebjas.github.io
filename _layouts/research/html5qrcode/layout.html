@@ -75,8 +75,9 @@ layout: default_research
 		<pre style="background: none;"><code class="html">&#60;div style="width: 500px" id="reader">&#60;/div></code></pre>
 
 		<h4>[3] Initialize</h4>
-		<pre style="background: none;"><code class="javascript">function onScanSuccess(qrCodeMessage) {
-	// handle on success condition with the decoded message
+		<pre style="background: none;"><code class="javascript">function onScanSuccess(decodedText, decodedResult) {
+    // Handle on success condition with the decoded text or result.
+    console.log(`Scan result: ${decodedText}`, decodedResult);
 }
 
 var html5QrcodeScanner = new Html5QrcodeScanner(
@@ -89,8 +90,10 @@ html5QrcodeScanner.render(onScanSuccess);
         <pre style="background: none;"><code class="javascript">var html5QrcodeScanner = new Html5QrcodeScanner(
     "reader", { fps: 10, qrbox: 250 });
         
-function onScanSuccess(qrCodeMessage) {
-    // handle on success condition with the decoded message
+function onScanSuccess(decodedText, decodedResult) {
+    // Handle on success condition with the decoded text or result.
+    console.log(`Scan result: ${decodedText}`, decodedResult);
+    // ...
     html5QrcodeScanner.clear();
     // ^ this will stop the scanner (video feed) and clear the scan area.
 }
@@ -99,8 +102,9 @@ html5QrcodeScanner.render(onScanSuccess);</code></pre>
 
         <h4>[5] Optional - Handle scan failure?</h4>
         You can handle scan failure or video failure using failure callback. Here's an example:
-        <pre style="background: none;"><code class="javascript">function onScanSuccess(qrCodeMessage) {
-    // handle on success condition with the decoded message
+        <pre style="background: none;"><code class="javascript">function onScanSuccess(decodedText, decodedResult) {
+    // Handle on success condition with the decoded text or result.
+    console.log(`Scan result: ${decodedText}`, decodedResult);
 }
 
 function onScanError(errorMessage) {
