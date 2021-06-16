@@ -1,6 +1,8 @@
 ---
 layout: default
 ---
+<!-- ads script -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 <article class="post">
   <div class="home"> 
@@ -19,6 +21,19 @@ layout: default
     </div>
     {% endif %}
 
+    {% assign remainder = forloop.index | modulo: 5 %}
+    {% if remainder == 0 %}
+    <ins class="adsbygoogle"
+     style="display:block; margin-bottom: 15px;"
+     data-ad-format="fluid"
+     data-ad-layout-key="-dh-t-71-de+1p7"
+     data-ad-client="ca-pub-2583590292295592"
+     data-ad-slot="9184666129"></ins>
+     <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    {% endif %}
+
     {% endfor %}
 
   </div>
@@ -27,3 +42,5 @@ layout: default
 <div style="border-top: 1px solid #cfcfcf; margin-top: 30px">
     {% include widget-self.html %}
 </div>
+
+<!-- ads script -->
