@@ -327,7 +327,17 @@ docReady(function() {
 	}
 
 	let html5QrcodeScanner = new Html5QrcodeScanner(
-        "reader", { fps: 10, qrbox: 250 });
+        "reader", 
+        { 
+            fps: 10,
+            qrbox: 250,
+            // Important notice: this is experimental feature, use it at your
+            // own risk. See documentation in
+            // mebjas@/html5-qrcode/src/experimental-features.ts
+            experimentalFeatures: {
+                useBarCodeDetectorIfSupported: true
+            }
+        });
 	html5QrcodeScanner.render(onScanSuccess);
 });
 </script>
