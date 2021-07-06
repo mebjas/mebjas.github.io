@@ -2,7 +2,7 @@
 layout: post
 title: Could not build wheels for argon2-cffi which use PEP 517 and cannot be installed directly - Jupyter Notebook Mac OS
 categories: [Mac, MacOS, jupyter, notebook, argon2-cffi, troubleshooting]
-description: "While trying to install `jupyter notebook` in Mac OS with PIP you could get error like 'ERROR: Could not build wheels for argon2-cffi which use PEP 517 and cannot be installed directly'. This took me a while to fix and here's a quick writeup on how to address it based on my experience."
+description: "While trying to install <code>jupyter notebook</code> in Mac OS with PIP you could get error like 'ERROR: Could not build wheels for argon2-cffi which use PEP 517 and cannot be installed directly'. This took me a while to fix and here's a quick writeup on how to address it based on my experience."
 post-no: 26
 toc: true
 image: '../images/post26_image2.png'
