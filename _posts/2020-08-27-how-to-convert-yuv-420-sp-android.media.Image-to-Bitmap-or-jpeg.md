@@ -87,9 +87,9 @@ You will see there is one U & V (chroma) value for four luma values. I'll try to
 
 ```java
 Bitmap yuv420ToBitmap(Image image) {
-    checkArgument(
-        image.getFormat() == ImageFormat.YUV_420_888,
-        "Only YUV_420_888 image format supported.");
+    if (image.getFormat() != ImageFormat.YUV_420_888) {
+      throw new IllegalArgumentException("Invalid image format");
+    }
 
     int imageWidth = image.getWidth();
     int imageHeight = image.getHeight();
@@ -113,7 +113,7 @@ Bitmap yuv420ToBitmap(Image image) {
     // UVUVUVUVUVUVUVUV   <-- Interleaved UV channel
     // ................
     // This is defined by row stride and pixel strides in the planes of the
-    // image. 
+    // image.
 
     // Plane 1 is always U & plane 2 is always V
     // https://developer.android.com/reference/android/graphics/ImageFormat#YUV_420_888
@@ -124,21 +124,23 @@ Bitmap yuv420ToBitmap(Image image) {
 
     // The U/V planes are guaranteed to have the same row stride and pixel
     // stride.
+    int yRowStride = image.getPlanes()[0].getRowStride();
+    int yPixelStride = image.getPlanes()[0].getPixelStride();
     int uvRowStride = image.getPlanes()[1].getRowStride();
     int uvPixelStride = image.getPlanes()[1].getPixelStride();
 
     int r, g, b;
     int yValue, uValue, vValue;
 
-    for (int y = 0; y < imageHeight - 2; y++) {
-        for (int x = 0; x < imageWidth - 2; x++) {
-            int yIndex = y * imageWidth + x;
+    for (int y = 0; y < imageHeight; ++y) {
+        for (int x = 0; x < imageWidth; ++x) {
+            int yIndex = y * yRowStride + x * yPixelStride;
             // Y plane should have positive values belonging to [0...255]
             yValue = (yBuffer.get(yIndex) & 0xff);
 
             int uvx = x / 2;
             int uvy = y / 2;
-            // U/V Values are subsampled i.e. each pixel in U/V chanel in a 
+            // U/V Values are subsampled i.e. each pixel in U/V chanel in a
             // YUV_420 image act as chroma value for 4 neighbouring pixels
             int uvIndex = uvy * uvRowStride +  uvx * uvPixelStride;
 
@@ -155,15 +157,16 @@ Bitmap yuv420ToBitmap(Image image) {
             r = clamp(r, 0, 255);
             g = clamp(g, 0, 255);
             b = clamp(b, 0, 255);
+            if (y == 0 && x < 100) Log.d(PRIVATE_TAG, String.format("%d, %d, %d", r, g, b));
+
             // Use 255 for alpha value, no transparency. ARGB values are
             // positioned in each byte of a single 4 byte integer
             // [AAAAAAAARRRRRRRRGGGGGGGGBBBBBBBB]
-            argbArray[yIndex] = (255 << 24) | (r & 255) << 16 | (g & 255) << 8 | (b & 255);
+            int argbIndex = y * imageWidth + x;
+            argbArray[argbIndex]
+                = (255 << 24) | (r & 255) << 16 | (g & 255) << 8 | (b & 255);
         }
     }
-
-    return Bitmap.createBitmap(
-        argbArray, imageWidth, imageHeight, Config.ARGB_8888);
 }
 ```
 
@@ -312,7 +315,7 @@ Here's code example to convert [android.media.Image](https://developer.android.c
 
 ```java
 YuvImage toYuvImage(Image image) {
-    if (image.getFormat != ImageFormat.YUV_420_888) {
+    if (image.getFormat() != ImageFormat.YUV_420_888) {
         throw new IllegalArgumentException("Invalid image format");
     }
 
