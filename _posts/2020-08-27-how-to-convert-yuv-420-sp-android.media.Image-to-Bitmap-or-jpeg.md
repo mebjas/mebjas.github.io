@@ -313,29 +313,55 @@ Here's code example to convert [android.media.Image](https://developer.android.c
 #### Code
 
 ```java
-YuvImage toYuvImage(Image image) {
+YYuvImage toYuvImage(Image image) {
     if (image.getFormat() != ImageFormat.YUV_420_888) {
-        throw new IllegalArgumentException("Invalid image format");
+      throw new IllegalArgumentException("Invalid image format");
     }
-
-    ByteBuffer yBuffer = image.getPlanes()[0].getBuffer();
-    ByteBuffer uBuffer = image.getPlanes()[1].getBuffer();
-    ByteBuffer vBuffer = image.getPlanes()[2].getBuffer();
-
-    int ySize = yBuffer.remaining();
-    int uSize = uBuffer.remaining();
-    int vSize = vBuffer.remaining();
-
-    byte[] nv21 = new byte[ySize + uSize + vSize];
-
-    // U and V are swapped
-    yBuffer.get(nv21, 0, ySize);
-    vBuffer.get(nv21, ySize, vSize);
-    uBuffer.get(nv21, ySize + vSize, uSize);
 
     int width = image.getWidth();
     int height = image.getHeight();
-    return new YuvImage(nv21, NV21, width, height, /* strides= */ null);
+
+    // Order of U/V channel guaranteed, read more:
+    // https://developer.android.com/reference/android/graphics/ImageFormat#YUV_420_888
+    Plane yPlane = image.getPlanes()[0];
+    Plane uPlane = image.getPlanes()[1];
+    Plane vPlane = image.getPlanes()[2];
+
+    ByteBuffer yBuffer = yPlane.getBuffer();
+    ByteBuffer uBuffer = uPlane.getBuffer();
+    ByteBuffer vBuffer = vPlane.getBuffer();
+
+    // Full size Y channel and quarter size U+V channels.
+    int numPixels = (int) (width * height * 1.5f);
+    byte[] nv21 = new byte[numPixels];
+    int index = 0;
+
+    // Copy Y channel.
+    int yRowStride = yPlane.getRowStride();
+    int yPixelStride = yPlane.getPixelStride();
+    for(int y = 0; y < height; ++y) {
+      for (int x = 0; x < width; ++x) {
+        nv21[index++] = yBuffer.get(y * yRowStride + x * yPixelStride);
+      }
+    }
+
+    // Copy VU data
+    // NV21 format is expected to have YYYYVU packaging.
+    // The U/V planes are guaranteed to have the same row stride and pixel stride.
+    int uvRowStride = uPlane.getRowStride();
+    int uvPixelStride = uPlane.getPixelStride();
+    int uvWidth = width / 2;
+    int uvHeight = height / 2;
+
+    for(int y = 0; y < uvHeight; ++y) {
+        for (int x = 0; x < uvWidth; ++x) {
+            // V channel
+            nv21[index++] = vBuffer.get(y * uvRowStride + x * uvPixelStride);
+            // U channel
+            nv21[index++] = uBuffer.get(y * uvRowStride + x * uvPixelStride);
+        }
+    }
+    return new YuvImage(nv21, ImageFormat.NV21, width, height, /* strides= */ null);
 }
 ```
 
@@ -344,13 +370,14 @@ YuvImage toYuvImage(Image image) {
 {:class="styled-table"}
 | Resolution | Average (ms) | Min (ms) | Max (ms)
 | ------ | ----- | ---- | ----- |
-| 320 X 240 |  11.14 ms | 6.00 ms | 65.00 ms |
-| 1600 X 1200 (2MP) | 10.30 ms | 6.00 ms | 40.00 ms |
-| 3264 X 2488 (8MP) | 38.66 ms | 25.00 ms | 109.00 ms |
+| 176 x 144 | 2.6 ms | - | 14 ms |
+| 320 X 240 |  3.6 ms | 1 ms | 18 ms |
+| 1600 X 1200 (2MP) | 47.5 ms | 43 ms | 70 ms |
+| 3264 X 2488 (8MP) | 68.3 ms | 63 ms | 88 ms |
 
-_Table 4: Running time for algorithm above on a certain Android device (low end)._
+_Table 4: Running time for algorithm above on Pixel 4a._
 
-Overall these algorithms didn't seem to have an inherent high cost on its own - its practically memory copy.
+Overall these algorithms didn't seem to have an inherent high cost on its own - its primarily memory copy. This can probably be optimised a more CPU centric for loop structure - but that is out of scope of this article.
 
 ### How to convert YUV_420_888 `Image` to JPEG format?
 You can convert the [android.media.Image](https://developer.android.com/reference/android/media/Image) to JPEG format (like single plane `byte[]`):
