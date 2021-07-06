@@ -69,26 +69,64 @@ If you look at how the YUV image looks like once again:
 
 ![](../images/post21_image2.png){:width="500px"}<br>
 
+Per definition of [YUV_420_888](https://developer.android.com/reference/android/graphics/ImageFormat#YUV_420_888) format (very important - the code below is based on following principles):
+
+> Multi-plane Android YUV 420 format
+>
+> This format is a generic YCbCr format, capable of describing any 4:2:0 chroma-subsampled planar or semiplanar buffer (but not fully interleaved), with 8 bits per color sample.
+>
+> Images in this format are always represented by three separate buffers of data, one for each color plane. Additional information always accompanies the buffers, describing the row stride and the pixel stride for each plane.
+> 
+> The order of planes in the array returned by [Image#getPlanes()](https://developer.android.com/reference/android/media/Image#getPlanes()) is guaranteed such that plane #0 is always Y, plane #1 is always U (Cb), and plane #2 is always V (Cr).
+>
+> The Y-plane is guaranteed not to be interleaved with the U/V planes.
+>
+> The U/V planes are guaranteed to have the same row stride and pixel stride.
+
 You will see there is one U & V (chroma) value for four luma values. I'll try to use this information along with the `yuv to rgb` translation above to bring up some java code.
 
 ```java
 Bitmap yuv420ToBitmap(Image image) {
+    checkArgument(
+        image.getFormat() == ImageFormat.YUV_420_888,
+        "Only YUV_420_888 image format supported.");
+
     int imageWidth = image.getWidth();
     int imageHeight = image.getHeight();
-      // sRGB array needed by Bitmap static factory method I use below.
+    // ARGB array needed by Bitmap static factory method I use below.
     int[] argbArray = new int[imageWidth * imageHeight];
     ByteBuffer yBuffer = image.getPlanes()[0].getBuffer();
     yBuffer.position(0);
 
-    // This is specific to YUV420SP format where U & V planes are interleaved
-    // so you can access them directly from one ByteBuffer. The data is saved as
-    // UVUVUVUVU... for NV12 format and VUVUVUVUV... for NV21 format.
+    // A YUV Image could be implemented with planar or semi planar layout.
+    // A planar YUV image would have following structure:
+    // YYYYYYYYYYYYYYYY
+    // ................
+    // UUUUUUUU
+    // ........
+    // VVVVVVVV
+    // ........
     //
-    // The alternative way to handle this would be refer U & V as separate
-    // `ByteBuffer`s and then use PixelStride and RowStride to find the right
-    // index of the U or V value per pixel.
-    ByteBuffer uvBuffer = image.getPlanes()[1].getBuffer();
-    uvBuffer.position(0);
+    // While a semi-planar YUV image would have layout like this:
+    // YYYYYYYYYYYYYYYY
+    // ................
+    // UVUVUVUVUVUVUVUV   <-- Interleaved UV channel
+    // ................
+    // This is defined by row stride and pixel strides in the planes of the
+    // image. 
+
+    // Plane 1 is always U & plane 2 is always V
+    // https://developer.android.com/reference/android/graphics/ImageFormat#YUV_420_888
+    ByteBuffer uBuffer = image.getPlanes()[1].getBuffer();
+    uBuffer.position(0);
+    ByteBuffer vBuffer = image.getPlanes()[2].getBuffer();
+    vBuffer.position(0);
+
+    // The U/V planes are guaranteed to have the same row stride and pixel
+    // stride.
+    int uvRowStride = image.getPlanes()[1].getRowStride();
+    int uvPixelStride = image.getPlanes()[1].getPixelStride();
+
     int r, g, b;
     int yValue, uValue, vValue;
 
@@ -100,18 +138,17 @@ Bitmap yuv420ToBitmap(Image image) {
 
             int uvx = x / 2;
             int uvy = y / 2;
-            // Remember UV values are common for four pixel values.
-            // So the actual formula if U & V were in separate plane would be:
-            // `pos (for u or v) = (y / 2) * (width / 2) + (x / 2)`
-            // But since they are in single plane interleaved the position becomes:
-            // `u = 2 * pos`
-            // `v = 2 * pos + 1`, if the image is in NV12 format, else reverse.
-            int uIndex = uvy * imageWidth + 2 * uvx;
-            // ^ Note that here `uvy = y / 2` and `uvx = x / 2`
-            int vIndex = uIndex + 1;
+            // U/V Values are subsampled i.e. each pixel in U/V chanel in a 
+            // YUV_420 image act as chroma value for 4 neighbouring pixels
+            int uvIndex = uvy * uvRowStride +  uvx * uvPixelStride;
 
-            uValue = (uvBuffer.get(uIndex) & 0xff) - 128;
-            vValue = (uvBuffer.get(vIndex) & 0xff) - 128;
+            // U/V values ideally fall under [-0.5, 0.5] range. To fit them into
+            // [0, 255] range they are scaled up and centered to 128.
+            // Operation below brings U/V values to [-128, 127].
+            uValue = (uBuffer.get(uvIndex) & 0xff) - 128;
+            vValue = (vBuffer.get(uvIndex) & 0xff) - 128;
+
+            // Compute RGB values per formula above.
             r = (int) (yValue + 1.370705f * vValue);
             g = (int) (yValue - (0.698001f * vValue) - (0.337633f * uValue));
             b = (int) (yValue + 1.732446f * uValue);
@@ -125,7 +162,8 @@ Bitmap yuv420ToBitmap(Image image) {
         }
     }
 
-    return Bitmap.createBitmap(argbArray, imageWidth, imageHeight, Config.ARGB_8888);
+    return Bitmap.createBitmap(
+        argbArray, imageWidth, imageHeight, Config.ARGB_8888);
 }
 ```
 
