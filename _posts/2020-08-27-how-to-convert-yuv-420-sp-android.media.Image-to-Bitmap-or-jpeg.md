@@ -157,7 +157,6 @@ Bitmap yuv420ToBitmap(Image image) {
             r = clamp(r, 0, 255);
             g = clamp(g, 0, 255);
             b = clamp(b, 0, 255);
-            if (y == 0 && x < 100) Log.d(PRIVATE_TAG, String.format("%d, %d, %d", r, g, b));
 
             // Use 255 for alpha value, no transparency. ARGB values are
             // positioned in each byte of a single 4 byte integer
