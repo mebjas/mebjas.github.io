@@ -1,0 +1,420 @@
+---
+layout: default_research
+---
+
+<!-- <link rel="stylesheet" href="/assets/css/bootstrap.min.css"> -->
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+<style type="text/css">
+.target div {
+    display: block;
+    margin: 0px;
+    padding: 0px;
+}
+.target_ {
+    display: inline-block;
+    margin-right: 20px;
+}
+._target {display: inline-block;}
+</style>
+
+
+<section class="full-section" id="anim-frame" style="width: 100%; text-align: center; min-height: 200px">
+	<div id="W_placeholder" class="target_"></div>
+	<div class="target_ E_placeholder"></div>
+	<div id="L_placeholder" class="target_"></div>
+	<div id="C_placeholder" class="target_"></div>
+	<div id="O_placeholder" class="target_"></div>
+	<div id="M_placeholder" class="target_"></div>
+	<div class="target_ E_placeholder"></div>
+</section>
+
+<div class="container">
+	<h1 style="text-align: center">jQuery DigitalWrite plugin</h1>
+	<div class="clearfix"></div>
+    <p>
+        This is a <strong>jQuery plugin</strong> that allows you to create <strong>UPPERCASE</strong>
+        english alphabets in a <strong>5X5 matrix</strong>. Its very easy to use! 
+        <ol>
+            <li>
+                Include jQuery js library <br>
+                <pre style="background: none;"><code class="lanugage-html">&lt;script src="&lt;path to jQuery.version.js&gt;">&lt;/script&gt;</code></pre>
+            </li>
+            <br>
+            <li>
+                Include this library
+                <code>&lt;script src="./js/jquery.digitalwrite.js"&gt;&lt;script&gt;</code>
+                <br>
+                <strong>OR</strong> use the minified version
+                <code>&lt;script src="./js/jquery.digitalwrite.min.js"&gt;&lt;script&gt;</code>
+
+            </li>
+            <br>
+            <li>
+                And tadaa! - for any html dom element call the <code>digitalwrite</code> method!<br>
+                <pre style="background: none;"><code class="javascript">$("#target").digitalwrite({char: 'W'});</code></pre>
+
+            </li>
+            <br>
+            <li>
+                And then transform to some other charecter using <code>transformTo</code> method!<br>
+                <pre style="background: none;"><code class="javascript">$("#target").transformTo({'M'});</code></pre>
+            </li>
+        </ol>
+    </p>
+</div>
+
+<br>
+<br>
+<br>
+
+<div class="container">
+	<div style="text-align: center; font-size: 16pt;">
+		Fork this on
+		<a href="https://github.com/mebjas/digital-write-jquery-plugin">
+			<div class="_target" id="github_g"></div>
+			<div class="_target" id="github_i"></div>
+			<div class="_target" id="github_t"></div>
+			<div class="_target" id="github_h"></div>
+			<div class="_target" id="github_u"></div>
+			<div class="_target" id="github_b"></div>
+		</a>
+	</div>
+	<div class="clearfix"></div>
+</div>
+
+<br>
+<br>
+<br>
+
+<div class="container">
+	<h1 style="text-align: center">Properties</h1>
+	<div class="clearfix"></div>
+    <p>Properties are passed as parameter, for example: <pre style="background: none;"><code class="javascript">$("#target").digitalwrite({char: 'W'});</code></pre> Here 
+    <code>{char: 'W'}</code> is the charecter property! Other customisable properties include</p>
+
+	<table class="table table-bordered">
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+		</tr>
+		<tr>
+			<td><code>char</code></td>
+			<td><strong>(REQUIRED)</strong> Charecter to print: <pre style="background: none;"><code class="javascript">$("#target").digitalwrite({char: 'W'});</code></pre></td>
+		</tr>
+		<tr>
+			<td><code>width</code></td>
+			<td>Width of the charecter block <code>in px</code> <pre style="background: none;"><code class="javascript">$("#target").digitalwrite({char: 'W', width: 100});</code></pre></td>
+		</tr>
+		<tr>
+			<td><code>height</code></td>
+			<td>Height of the charecter block <code>in px</code> <pre style="background: none;"><code class="javascript">$("#target").digitalwrite({char: 'W', height: 100});</code></pre></td>
+		</tr>
+		<tr>
+			<td><code>background</code></td>
+			<td>
+				background of the charecter block <br>
+                <pre style="background: none;"><code class="javascript">$("#target").digitalwrite({char: 'W', background: 'red'});
+$("#target").digitalwrite({char: 'W', background: 'rgb(255, 255, 0)'});
+$("#target").digitalwrite({char: 'W', background: 'rgba(0, 0, 0, 0.1)'});
+$("#target").digitalwrite({char: 'W', background: '#abc123'});
+</code></pre>
+
+			</td>
+		</tr>
+		<tr>
+			<td><code>border</code></td>
+			<td>Border of the charecter block <code>in px</code> <pre style="background: none;"><code class="javascript">$("#target").digitalwrite({char: 'W', border: '1px dashed red'});           
+</code></pre></td>
+		</tr>
+		<tr>
+			<td><code>animation</code></td>
+			<td>animation you expect for final transition! The categories are: <code>motion</code>, <code>spiral</code>, <code>contract</code> & <code>fade</code> 
+
+			<br>
+            Note that <code>fade</code> is experimental and buggy!
+
+            <pre style="background: none;"><code class="javascript">$("#target").digitalwrite({char: 'W', border: '1px dashed red'});</code></pre>
+			</td>
+		</tr>
+		<tr>
+			<td><code>success</code></td>
+			<td> (callback function) called when the alphabet has been created on screen.
+
+				<br>
+				<br>
+				<pre style="background: none;"><code class="javascript">$("#target").digitalwrite({
+	char: 'W',
+	border: '1px dashed red',
+	success: function() {
+		console.log('successfully wrote alphabet W');
+	}
+});</code></pre>
+			</td>
+		</tr>
+		<tr>
+			<td><code>timeout</code></td>
+			<td>time in ms, for animations <code>1000, default</code> 
+				<br>
+				<br>
+				<pre style="background: none;"><code class="javascript">$("#target").digitalwrite({char: 'W', border: '1px dashed red', timeout: 500});</code></pre>
+			</td>
+		</tr>
+	</table>
+
+</div>
+
+<div class="clearfix" style="height: 20px"></div>
+<div class="clearfix" style="height: 20px"></div>
+<div class="clearfix" style="height: 20px"></div>
+	
+<div class="container">
+	<h1 style="text-align: center"><code>transformTo()</code> method</h1>
+	<div class="clearfix"></div>
+	<div class="row">
+		<div class="col-md-6">
+			<blockquote>
+				Once you have created some digital alphabet, you can transform it to some other alphabet using the <code>transformTo()</code> method.<br>
+				For example call <code>$('#transform_MK').transformTo('N');</code>
+				<br>
+				<button class="btn btn-md btn-primary disabled" id="trnaform_btn">Transform this to K</button>
+			</blockquote>
+		</div>
+		<div class="col-md-6">
+			<div class="example_transform">
+				<div id="transform_MK" class="target_"></div>
+			</div>
+		</div>
+        <div class="clearfix" style="height: 30px"></div>
+		<div class="col-md-12">
+			<h4> You can make a whole storyline using the <code>success</code> callback</h4>
+			<pre style="background: none;"><code class="javascript">$('#transform_MK').digitalwrite({
+	char: 'M',
+	background: 'rgba(0,0,0,.1)',
+	animation: 'default',
+	success: function() {
+		setTimeout(function() {
+			$('#transform_MK').transformTo('N');
+		}, 1000);
+	}
+});		
+</code></pre>
+		</div>
+		<div class="clearfix" style="height: 20px"></div>
+		<div class="col-md-6">
+			<h3><code>transformTo()</code> method format</h3>
+			<pre style="background: none;"><code class="javascript">$(identifier).transformTo(char, callback);</code></pre>
+		</div>
+		<div class="col-md-6">
+			<code>char</code> - (charecter) the charecter to transform to.
+			<code>callback</code> - (function, optional) callback called on completion of transformation.
+		</div>
+	</div>
+	<div class="clearfix" style="height: 20px"></div>
+	<div class="clearfix" style="height: 20px"></div>
+	<div class="clearfix" style="height: 20px"></div>
+</div>
+
+<div class="container">
+	<h1 style="text-align: center">Customisations</h1>
+	<div class="clearfix"></div>
+	<h2>Size</h1>
+
+	<div class="example_size">
+		<div id="m20" class="target_"></div>
+		<div id="m40" class="target_"></div>
+		<div id="m60" class="target_"></div>
+		<div id="m80" class="target_"></div>
+		<div id="m100" class="target_"></div>
+		<div id="m120" class="target_"></div>
+	</div>
+	<br>
+	<br>
+	<br>
+	<h3>Code used for them respectively are:</h3>
+
+	<div class="codes">
+		<pre style="background: none;"><code class="javascript">$("#m20").digitalwrite({char: 'M', height: 20, width: 20, animation: 'none'});
+$("#m40").digitalwrite({char: 'M', height: 40, width: 40, animation: 'none'});
+$("#m60").digitalwrite({char: 'M', height: 60, width: 60, animation: 'none'});
+$("#m80").digitalwrite({char: 'M', height: 80, width: 80, animation: 'none'});
+$("#m100").digitalwrite({char: 'M', height: 100, width: 100, animation: 'none'});
+$("#m120").digitalwrite({char: 'M', height: 120, width: 120, animation: 'none'});
+</code></pre>
+	</div>
+
+	<h2>Colors</h1>
+
+	<div class="example_size">
+		<div id="c1" class="target_"></div>
+		<div id="c2" class="target_"></div>
+		<div id="c3" class="target_"></div>
+		<div id="c4" class="target_"></div>
+		<div id="c5" class="target_"></div>
+		<div id="c6" class="target_"></div>
+	</div>
+	<br>
+	<br>
+	<br>
+	<h3>Code used for them respectively are:</h3>
+
+	<div class="codes">
+		<pre style="background: none;"><code class="javascript">$("#c1").digitalwrite({char: 'M', background: 'rgba(0, 0, 0, .1)'})
+$("#c2").digitalwrite({char: 'I', background: 'rgba(255, 0, 0, .1)', border: '1px dotted red'});
+$("#c3").digitalwrite({char: 'N', background: 'yellow', border: '1px solid red'});
+$("#c4").digitalwrite({char: 'H', background: 'yellowGreen', border: '1px solid green'});
+$("#c5").digitalwrite({char: 'A'});
+$("#c6").digitalwrite({char: 'Z', background: 'red', border: '1px solid red'});
+</code></pre>
+	</div>
+	<br>
+	<br>
+
+	<h2>Animations <button class="btn btn-default" id="test" type="submit">TEST ANIMATIONS</button> </h1>
+
+	<div class="example_size row" style="text-align: center">
+		<div class="col-md-3">
+			<h4>motion</h4>
+			<br>
+			<div id="m1" class="target_"></div>
+		</div>
+
+		<div class="col-md-3">
+			<h4>spiral (experimental)</h4>
+			<br>
+			<div id="m2" class="target_"></div>
+		</div>
+
+		<div class="col-md-3">
+			<h4>contract</h4>
+			<br>
+			<div id="m3" class="target_"></div>
+		</div>
+
+		<div class="col-md-3">
+			<h4>fade (experimental)</h4>
+			<br>
+			<div id="m4" class="target_"></div>
+		</div>
+	</div>
+	<br>
+	<br>
+	<br>
+	<h3>Code used for them respectively are:</h3>
+
+	<div class="codes">
+		<pre style="background: none;"><code class="javascript">$("#m1").digitalwrite({char: 'M', background: 'rgba(0, 0, 0, .1)'});
+$("#m3").digitalwrite({char: 'M', background: 'rgba(0, 0, 0, .1)', animation: 'contract'});
+$("#m4").digitalwrite({char: 'M', background: 'rgba(0, 0, 0, .1)', animation: 'fade'});
+</code></pre>
+	</div>
+
+	<br>
+	<br>
+	<br>
+
+    <div>
+    <!-- Place this tag where you want the button to render. -->
+    <a class="github-button" href="https://github.com/mebjas/jquery-digitalwrite" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star mebjas/jquery-digitalwrite on GitHub">Star</a>
+    <!-- Place this tag where you want the button to render. -->
+    <a class="github-button" href="https://github.com/mebjas/jquery-digitalwrite/fork" data-icon="octicon-repo-forked" data-size="large" data-show-count="true" aria-label="Fork mebjas/jquery-digitalwrite on GitHub">Fork</a>
+    <!-- Place this tag where you want the button to render. -->
+    <a class="github-button" href="https://github.com/mebjas/jquery-digitalwrite/issues" data-icon="octicon-issue-opened" data-size="large" data-show-count="true" aria-label="Issue mebjas/jquery-digitalwrite on GitHub">Issue</a>
+    <!-- Place this tag where you want the button to render. -->
+    <a class="github-button" href="https://github.com/mebjas/jquery-digitalwrite/archive/HEAD.zip" data-icon="octicon-download" data-size="large" aria-label="Download mebjas/jquery-digitalwrite on GitHub">Download</a>
+    </div>
+</div>
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+<h2>Comments</h2>
+<script src="https://utteranc.es/client.js"
+    repo="mebjas/mebjas.github.io"
+    issue-term="title"
+    label="test"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+<br><br>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-2583590292295592"
+     data-ad-slot="6079689311"></ins>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
+
+<!-- All javascript codes -->
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/research/jquery-digital-write/jquery.digitalwrite.min.js"></script>
+<script>
+hljs.initHighlightingOnLoad();
+
+let W1 = 20;
+$("#github_g").digitalwrite({height: W1, width: W1, char: 'G', success: function() {}});
+$("#github_i").digitalwrite({height: W1, width: W1, char: 'I', timeout: 500});
+$("#github_t").digitalwrite({height: W1, width: W1, char: 'T'});
+$("#github_h").digitalwrite({height: W1, width: W1, char: 'H', timeout: 500});
+$("#github_u").digitalwrite({height: W1, width: W1, char: 'U'});
+$("#github_b").digitalwrite({height: W1, width: W1, char: 'B', timeout: 500});
+
+let W2 = 80;
+$("#W_placeholder").digitalwrite({char: 'W', background: 'rgba(0, 0, 0, .1)', height: W2, width: W2});
+$("#L_placeholder").digitalwrite({char: 'L', background: 'rgba(0, 0, 0, .1)', height: W2, width: W2});
+$("#C_placeholder").digitalwrite({char: 'C', background: 'rgba(0, 0, 0, .1)', height: W2, width: W2});
+$("#O_placeholder").digitalwrite({char: 'O', background: 'rgba(0, 0, 0, .1)', height: W2, width: W2});
+$("#M_placeholder").digitalwrite({char: 'M', background: 'rgba(0, 0, 0, .1)', height: W2, width: W2});
+$(".E_placeholder").digitalwrite({char: 'E', background: 'rgba(0, 0, 0, .1)', height: W2, width: W2});
+
+setTimeout(function() {
+    $("#W_placeholder").transformTo('M');
+    $(".E_placeholder").eq(0).transformTo('I');
+    $("#L_placeholder").transformTo('N');
+
+    $("#C_placeholder").transformTo('H');
+    $("#O_placeholder").transformTo('A');
+    $("#M_placeholder").transformTo('Z');
+    $(".E_placeholder").eq(1).css('opacity', '0');
+
+}, 10000);
+
+$("#m20").digitalwrite({char: 'M', height: 20, width: 20, animation: 'none'});
+$("#m40").digitalwrite({char: 'M', height: 40, width: 40, animation: 'none'});
+$("#m60").digitalwrite({char: 'M', height: 60, width: 60, animation: 'none'});
+$("#m80").digitalwrite({char: 'M', height: 80, width: 80, animation: 'none'});
+$("#m100").digitalwrite({char: 'M', height: 100, width: 100, animation: 'none'});
+$("#m120").digitalwrite({char: 'M', height: 120, width: 120, animation: 'none'});
+
+$("#c1").digitalwrite({char: 'M', background: 'rgba(0, 0, 0, .1)'});
+$("#c2").digitalwrite({char: 'I', background: 'rgba(255, 0, 0, .1)', border: '1px dotted red'});
+$("#c3").digitalwrite({char: 'N', background: 'yellow', border: '1px solid red'});
+$("#c4").digitalwrite({char: 'H', background: 'yellowGreen', border: '1px solid green'});
+$("#c5").digitalwrite({char: 'A'});
+$("#c6").digitalwrite({char: 'Z', background: 'red', border: '1px solid red'});
+
+$("#transform_MK").digitalwrite({char: 'M', background: 'yellowGreen', border: '1px solid green'});
+
+$(document).ready(function() {
+    $("#test").on('click', function() {
+        $("#m1").digitalwrite({char: 'M', background: 'rgba(0, 0, 0, .1)'});
+        $("#m2").digitalwrite({char: 'M', background: 'rgba(0, 0, 0, .1)', animation: 'spiral'});
+        $("#m3").digitalwrite({char: 'M', background: 'rgba(0, 0, 0, .1)', animation: 'contract'});
+        $("#m4").digitalwrite({char: 'M', background: 'rgba(0, 0, 0, .1)', animation: 'flow'});
+    });
+
+    setTimeout(function() {
+        $("#trnaform_btn").removeClass('disabled');
+        $("#trnaform_btn").on('click', function() {
+            $("#transform_MK").transformTo('K');
+            $(this).unbind('click');
+        });
+    }, 6000);
+});
+
+</script>

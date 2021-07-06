@@ -13,7 +13,7 @@
 - {
     title: "Exposure fusion visualizer",
     description: "Visualization of HDR exposure fusion process. This is based on <a href='http://ntp-0.cs.ucl.ac.uk/staff/j.kautz/publications/exposure_fusion.pdf'>Merten et al's paper on </a>. This involves visualization of different steps like computing weights based on contrast, saturation and well exposedness, merging and normalizing the weights, and then producing the final fused image using pyramidal decomposition and blending of three images and the computed weights into one HDR image.",
-    image: "https://farbspiel-photo.com/wp-content/uploads/2014/07/candlelight-exposure-fusion-before-and-after-001.jpg",
+    image: "/assets/research/exposure_fusion/DRI-enfuse.jpeg",
     link: "exposure-fusion",
 }
 - {
@@ -38,14 +38,20 @@
     wip: true
 }
 - {
-    title: "jQuery Sticky elements",
-    description: "Demo of a jQuery library I wrote way back which allows you to stick HTML element on the webpage with a certain <code>floor</code>, <code>ceiling</code> and <code>flow</code> rate.<br> While in college I thought it's pretty cool, now I am embarressed about it. Please ignore.",
-    link: "jquery-sticky-elements",
-    image: "/assets/research/jquerystickyelements/sticky.png"
-}
-- {
     title: "Rock Paper Scissor Challenge",
     description: "In this experiment I have tried to create an agent that attempts at beating human in the game of Rock Paper Scissor. Interestingly I found it's just as hard to beat an agent that uses random policy. The agent alternates between different strategies.",
     image: "/assets/research/rockpaperscissor/rps.png",
     link: "rock-paper-scissor"
+}
+- {
+    title: "jQuery Digital Write Plugin",
+    description: "This is a jQuery plugin that allows you to create UPPERCASE english alphabets in a 5X5 matrix. Its very easy to use.",
+    link: "jquery-digital-write",
+    image: "/assets/research/jquery-digital-write/jquery-digital-write.png"
+}
+- {
+    title: "jQuery Sticky elements",
+    description: "Demo of a jQuery library I wrote way back which allows you to stick HTML element on the webpage with a certain <code>floor</code>, <code>ceiling</code> and <code>flow</code> rate.<br> While in college I thought it's pretty cool, now I am embarressed about it. Please ignore.",
+    link: "jquery-sticky-elements",
+    image: "/assets/research/jquerystickyelements/sticky.png"
 }
