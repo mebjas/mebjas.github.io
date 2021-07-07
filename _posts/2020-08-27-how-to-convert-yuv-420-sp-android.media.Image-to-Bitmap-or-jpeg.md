@@ -134,7 +134,7 @@ Bitmap yuv420ToBitmap(Image image) {
 
     for (int y = 0; y < imageHeight; ++y) {
         for (int x = 0; x < imageWidth; ++x) {
-            int yIndex = y * yRowStride + x * yPixelStride;
+            int yIndex = (y * yRowStride) + (x * yPixelStride);
             // Y plane should have positive values belonging to [0...255]
             yValue = (yBuffer.get(yIndex) & 0xff);
 
@@ -142,7 +142,7 @@ Bitmap yuv420ToBitmap(Image image) {
             int uvy = y / 2;
             // U/V Values are subsampled i.e. each pixel in U/V chanel in a
             // YUV_420 image act as chroma value for 4 neighbouring pixels
-            int uvIndex = uvy * uvRowStride +  uvx * uvPixelStride;
+            int uvIndex = (uvy * uvRowStride) +  (uvx * uvPixelStride);
 
             // U/V values ideally fall under [-0.5, 0.5] range. To fit them into
             // [0, 255] range they are scaled up and centered to 128.
@@ -208,10 +208,10 @@ Android team has published an `intrinsic` for converting an Android YUV buffer t
 
 Here's a `java` code sample on how to use it:
 ```java
-static Bitmap yuv420ToBitmap(Image image, Context context) {
+Bitmap yuv420ToBitmap(Image image, Context context) {
     RenderScript rs = RenderScript.create(context);
     ScriptIntrinsicYuvToRGB script = ScriptIntrinsicYuvToRGB.create(
-            rs, Element.U8_4(rs));
+        rs, Element.U8_4(rs));
 
     // Refer the logic in a section below on how to convert a YUV_420_888 image
     // to single channel flat 1D array. For sake of this example I'll abstract it
@@ -219,13 +219,13 @@ static Bitmap yuv420ToBitmap(Image image, Context context) {
     byte[] yuvByteArray = yuv420ToByteArray(image);
 
     Type.Builder yuvType = new Type.Builder(rs, Element.U8(rs))
-            .setX(yuvByteArray.length);
+        .setX(yuvByteArray.length);
     Allocation in = Allocation.createTyped(
-            rs, yuvType.create(), Allocation.USAGE_SCRIPT);
+        rs, yuvType.create(), Allocation.USAGE_SCRIPT);
 
     Type.Builder rgbaType = new Type.Builder(rs, Element.RGBA_8888(rs))
-            .setX(image.getWidth())
-            .setY(image.getHeight());
+        .setX(image.getWidth())
+        .setY(image.getHeight());
     Allocation out = Allocation.createTyped(
         rs, rgbaType.create(), Allocation.USAGE_SCRIPT);
 
@@ -236,7 +236,7 @@ static Bitmap yuv420ToBitmap(Image image, Context context) {
     script.forEach(out);
 
     Bitmap bitmap = Bitmap.createBitmap(
-            image.getWidth(), image.getHeight(), Config.ARGB_8888);
+        image.getWidth(), image.getHeight(), Config.ARGB_8888);
     out.copyTo(bitmap);
     return bitmap;
 }
@@ -313,7 +313,7 @@ Here's code example to convert [android.media.Image](https://developer.android.c
 #### Code
 
 ```java
-YYuvImage toYuvImage(Image image) {
+YuvImage toYuvImage(Image image) {
     if (image.getFormat() != ImageFormat.YUV_420_888) {
       throw new IllegalArgumentException("Invalid image format");
     }
@@ -345,8 +345,7 @@ YYuvImage toYuvImage(Image image) {
       }
     }
 
-    // Copy VU data
-    // NV21 format is expected to have YYYYVU packaging.
+    // Copy VU data; NV21 format is expected to have YYYYVU packaging.
     // The U/V planes are guaranteed to have the same row stride and pixel stride.
     int uvRowStride = uPlane.getRowStride();
     int uvPixelStride = uPlane.getPixelStride();
@@ -355,13 +354,15 @@ YYuvImage toYuvImage(Image image) {
 
     for(int y = 0; y < uvHeight; ++y) {
         for (int x = 0; x < uvWidth; ++x) {
-            // V channel
-            nv21[index++] = vBuffer.get(y * uvRowStride + x * uvPixelStride);
-            // U channel
-            nv21[index++] = uBuffer.get(y * uvRowStride + x * uvPixelStride);
+            int bufferIndex = (y * uvRowStride) + (x * uvPixelStride);
+            // V channel.
+            nv21[index++] = vBuffer.get(bufferIndex);
+            // U channel.
+            nv21[index++] = uBuffer.get(bufferIndex);
         }
     }
-    return new YuvImage(nv21, ImageFormat.NV21, width, height, /* strides= */ null);
+    return new YuvImage(
+        nv21, ImageFormat.NV21, width, height, /* strides= */ null);
 }
 ```
 
