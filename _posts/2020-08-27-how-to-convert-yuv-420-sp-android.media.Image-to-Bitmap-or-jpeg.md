@@ -1,7 +1,7 @@
 ---
 layout: post
 title: How to use YUV (YUV_420_888) Image in Android
-categories: [android, camera, camera2, YUV_420_888, android.media.Image, YUV, JPEG, Bitmap]
+categories: [android, camera, camera2, YUV_420_888, android.media.Image, YUV, JPEG, Bitmap, optimisation, c++, ndk]
 description: "<a href='https://developer.android.com/reference/android/graphics/ImageFormat#YUV_420_888' target='new'>ImageFormat#YUV_420_888</a> is one of the most common image format supported by Android Cameras. It's a multi-plane YUV (YCbCr) format represented by three separate planes in <a href='https://developer.android.com/reference/android/media/Image' target='new'>android.media.Image</a>. This format can be used for processing the input frames before saving to disk or some other action. A very common question around YUV is how to consume it in Android. In this article, I'd describe different ways it can be used. The most common question is <b>how to convert YUV to Bitmap or jpeg format in Android?</b>"
 post-no: 21
 toc: true

@@ -263,3 +263,14 @@
     font-weight: bold;
     color: #009879;
 }
+
+.embedded-post {
+    border: 1px solid #e6e6e6;
+    padding: 10px;
+    margin: 10px;
+}
+
+.embedded-post .embedded-post-title {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
