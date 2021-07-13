@@ -420,7 +420,7 @@ not included here._
 But the GPU implementation using Vulcan or NEON extensions could be faster. I plan to do this full investigation soon.
 (I'll update this article).
 
-## Just FYI, RenderScript is being deprecated in Android 2 (Android 12)
+## Just FYI, RenderScript is being deprecated in Android S (Android 12)
 > What why? I just learned about it :(
 >
 > And why the hell, did you just explain the whole stuff?
