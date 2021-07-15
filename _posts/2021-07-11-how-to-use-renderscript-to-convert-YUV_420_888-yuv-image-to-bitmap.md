@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How to use ScriptIntrinsicYuvToRGB renderscript to convert YUV_420_888 YUV Image to Bitmap
+title: How to use RenderScript to convert YUV_420_888 YUV Image to Bitmap
 categories: [android, camera2, YUV_420_888, android.media.Image, YUV, Bitmap, optimisation, RenderScript, ScriptIntrinsicYuvToRGB]
 description: "RenderScript turns out to be one of the best APIs for running
 computationally-intensive code on the CPU or GPU (that too, without having to
