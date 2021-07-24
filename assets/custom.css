@@ -357,4 +357,20 @@
         margin-top: 50px;
         margin-left: 40px;
     }
+
+    .recommended-books {
+        margin-top: 40px;
+    }
+
+    .recommended-books .astriek {
+        margin-top: 10px;
+        font-size: 10pt;
+        font-style: italic;
+        color: #000000a1;
+        display: none;
+    }
+
+    .recommended-books:hover > .astriek {
+        display: block;
+    }
 }
