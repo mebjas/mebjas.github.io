@@ -4,3 +4,5 @@ _site/
 .jekyll-metadata
 .DS_Store
 _drafts/
+.vscode/ltex.dictionary.en-US.txt
+.vscode/ltex.hiddenFalsePositives.en-US.txt

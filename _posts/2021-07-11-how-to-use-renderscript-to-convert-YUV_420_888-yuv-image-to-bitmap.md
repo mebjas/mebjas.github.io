@@ -4,10 +4,10 @@ title: How to use RenderScript to convert YUV_420_888 YUV Image to Bitmap
 categories: [android, camera2, YUV_420_888, android.media.Image, YUV, Bitmap, optimisation, RenderScript, ScriptIntrinsicYuvToRGB]
 description: "RenderScript turns out to be one of the best APIs for running
 computationally-intensive code on the CPU or GPU (that too, without having to
-make use of the NDK or GPU-specific APIs). We can use some of the existing
+make use of the NDK or GPU-specific APIs). We can use some existing
 intrinsics or create our new kernels that describe the computation and the
 framework takes care of scheduling & execution. In this code I have explained
-how to use <code>ScriptIntrinsicYuvToRGB</code> intrinsic that is available in Android APIs
+how to use<code>ScriptIntrinsicYuvToRGB</code> intrinsic that is available in Android APIs
 to convert an <code>android.media.Image</code> in <code>YUV_420_888</code> format
 to <code>Bitmap</code>."
 post-no: 27
@@ -16,7 +16,7 @@ image: '../images/post21_image1.png'
 ---
 RenderScript turns out to be one of the best APIs for running
 computationally-intensive code on the CPU or GPU (that too, without having to
-make use of the NDK or GPU-specific APIs). We can use some of the existing
+make use of the NDK or GPU-specific APIs). We can use some existing
 intrinsics or create our new kernels that describe the computation and the
 framework takes care of scheduling & execution. In this code I have explained
 how to use `ScriptIntrinsicYuvToRGB` intrinsic that is available in Android APIs
@@ -26,9 +26,9 @@ to convert an `android.media.Image` in `YUV_420_888` format to `Bitmap`.
 <img src="../images/common_note2.jpg" style="width: 50%; margin-left: 25%"><br>
 
 -   I have a habit of explaining concepts before showing the code, if you want to see the money, no code - go to [Java code section](#java-code).
--   Despite lacking a good sense of humour, I tend to try to write funny.
--   For this article, I expect readers to be familier with Android, Java, JNI, Images in YUV and Bitmap formats.
--   This article also serves as an example of how to use `RenderScript` in Android and it's performance benefits - even if this is not the exact usecase you are targetting.
+-   Despite lacking a good sense of humor, I tend to try to write funny.
+-   For this article, I expect readers to be familiar with Android, Java, JNI, Images in YUV and Bitmap formats.
+-   This article also serves as an example of how to use `RenderScript` in Android, and it's performance benefits — even if this is not the exact use case you are targeting.
 
 ## RenderScript
 You can read much more about RenderScript in
@@ -36,15 +36,15 @@ You can read much more about RenderScript in
 
 -   RenderScript is a framework for running computationally intensive tasks at high performance on Android.
 -   Primarily oriented for data-parallel computation (very well suited for image processing).
--   Runtime parallelzes the work across available processors such as multi-core CPUs & GPUs.
--   Developers can focus on the algoirthm rather than it's scheduling.
+-   Runtime parallelizes the work across available processors such as multi-core CPUs & GPUs.
+-   Developers can focus on the algorithm rather than it's scheduling.
 -   Language derived from [C99](https://en.wikipedia.org/wiki/C99)
 
 ## YUV_420_888 to Bitmap in Android using RenderScript
 If you are here, I assume you are fairly aware of `YUV_420_888` format & `Bitmap`.
 
-If you are not and you want to learn more or find other ways to convert `YUV_420_888` to `Bitmap`
-in Android, you can checkout another article:
+If you are not, and you want to learn more or find other ways to convert `YUV_420_888` to `Bitmap`
+in Android, you can check out another article:
 
 <div class="embedded-post">
     <div class="embedded-post-title">
@@ -68,7 +68,7 @@ For a 4X4 image it would look like YYYYYYYYYYYYYYYYVUVUVUVU.
 BTW if you are wondering what an `intrinsic` means:
 > intrinsic: Normally, "intrinsics" refers to functions that are built-in -- i.e. most standard library functions that the compiler can/will generate inline instead of calling an actual function in the library.
 
-(source: [What are intirinsics? - StackOverflow](https://stackoverflow.com/questions/2268562/what-are-intrinsics))
+(source: [What are intrinsics? — StackOverflow](https://stackoverflow.com/questions/2268562/what-are-intrinsics))
 
 ### How to use this intrinsic
 So basically, lets say we want to use the Java APIs available. We:
@@ -77,7 +77,7 @@ So basically, lets say we want to use the Java APIs available. We:
     - An Allocation is a `RenderScript` object that provides storage for a fixed amount of data.
     This needs to be provided by the caller.
     - Allocations are of type [Element](https://developer.android.com/reference/android/renderscript/Element).
-    In this case we would want to create one allocation for input (yuv) and other for output (`Bitmap`).
+    In this case we would want to create one allocation for input (YUV) and other for output (`Bitmap`).
     - For `Bitmap` we can directly use the `Element` of type [RGBA_8888](https://developer.android.com/reference/android/renderscript/Element#RGBA_8888(android.renderscript.RenderScript)).
     - For `Image` we don't have a direct element type, and we need to convert the data into a flat
     `NV21` `byte[]`.
@@ -88,7 +88,8 @@ So basically, lets say we want to use the Java APIs available. We:
 Since the allocations are expensive, I'd design the allocations to be reusable.
 
 > Note: In this example I am not taking care of the thread-safety or making the
-code async. Leaving both of those tasks to you :)
+code asynchronous or whether we should do resource allocation in the constructor.
+> Leaving all of those tasks to you :)
 
 So we can start with a skeleton of our YuvConvertor class:
 
@@ -142,8 +143,8 @@ class YuvConvertor {
 
 > Note: There is a certain overhead associated with construction of this object 
 (driven by initialization cost). Be mindful of when to initialize this. On a
-mid tier Android device I observed it to take between `0ms - 14ms`. The cost
-could be higher on a low end device.
+mid-tier Android device I observed it to take between `0ms - 14ms`. The cost
+could be higher on a low-end device.
 
 #### toBitmap(Image image) method.
 ```java
@@ -176,13 +177,13 @@ to convert the `Image` to a `byte[]`. This is going to be slow down every thing.
 
 <image src="../images/post27_image1.webp" style="width: 60%; margin-left: 15%" /><br>
 
-Unless ofcourse we can write a fast highly parallelized way to do so (which should be doable).
+Unless of course we can write a fast highly parallelized way to do so (which should be doable).
 So I have found two ways to do it - one is fast other is not. Also, important to note that
-neither of these appraoches leverage the parallelizability of this copy.
+neither of these approaches leverage the parallelizability of this copy.
 
 Let's start with our Java approach which is slower.
 
-#### toNv21(Image image) Java Appraoch
+#### toNv21(Image image) Java Approach
 ```java
 private byte[] toNv21(Image image) {
     int width = yuv420Image.getWidth();
@@ -246,14 +247,14 @@ I have the split the performance numbers into two part:
 
 _Table: The numbers are computed on Pixel 4a for an 8MP (3264x2448) image_
 
-Do you see just how sad that Java copy was. It took `83%` of net computation time. BTW, this total time is still faster
-than pure Java appraoch but slower than full native approach methoned in [How to use YUV (YUV_420_888) Image in Android](https://blog.minhazav.dev/how-to-convert-yuv-420-sp-android.media.Image-to-Bitmap-or-jpeg/).
+Do you see just how sad that Java copy was? It took `83%` of net computation time. BTW, this total time is still faster
+than pure Java approach but slower than full native approach mentioned in [How to use YUV (YUV_420_888) Image in Android](https://blog.minhazav.dev/how-to-convert-yuv-420-sp-android.media.Image-to-Bitmap-or-jpeg/).
 
 Let's do better with a native `toNv21(..)` method.
 
-#### toNv21(Image image) Java Native (JNI) Appraoch
+#### toNv21(Image image) Java Native (JNI) Approach
 In this case we basically port the java copy code to native and plug it in to the Android code with JNI.
-Here I am assuming you know how to setup JNI.
+Here I am assuming you know how to set up JNI.
 
 Java code:
 
@@ -380,8 +381,8 @@ I have the split the performance numbers into two part:
 {:class="styled-table"}
 | # | Average | Max | Min
 | ------ | ----- | -- | -- |
-| Full `toBitmap(..)` | 31.5 ms |  62 ms | 41 ms |
-| Without `toNv21(..)`| 24.6 ms |  30 ms | 23 ms |
+| Full `toBitmap(..)` | 31.5 ms | 62 ms | 41 ms |
+| Without `toNv21(..)`| 24.6 ms | 30 ms | 23 ms |
 
 _Table: The numbers are computed on Pixel 4a for an 8MP (3264x2448) image_
 
@@ -399,7 +400,7 @@ I am fairly sure this can be made much faster by:
 > Ok fine, take what you came for!
 
 
-[YUV_420_888 Image to Bitmap using ScriptIntrinsicYuvToRGB - Github Gist](https://gist.github.com/mebjas/a3a6b39e7288d23a2fc7188fa883dc5f)
+[YUV_420_888 Image to Bitmap using ScriptIntrinsicYuvToRGB — GitHub Gist](https://gist.github.com/mebjas/a3a6b39e7288d23a2fc7188fa883dc5f)
 
 ## Performance verdict
 
@@ -408,45 +409,44 @@ See [How to use YUV (YUV_420_888) Image in Android](https://blog.minhazav.dev/ho
 
 
 {:class="styled-table"}
-| # | Average | Max | Min | Comparision |
+| # | Average | Max | Min | Comparison |
 | ------ | ----- | -- | -- | -- |
-| Pure Java approach | 353 ms | 362 ms | 334 ms  | 11.2x slower |
-| Standard Native appraoch | 89.5 ms | 91 ms | 88 ms | 2.8x slower |
-| ScriptIntrinsicYuvToRGB approach  | 31.5 ms |  62 ms | 41 ms | - |
+| Pure Java approach | 353 ms | 362 ms | 334 ms | 11.2x slower |
+| Standard Native approach | 89.5 ms | 91 ms | 88 ms | 2.8x slower |
+| ScriptIntrinsicYuvToRGB approach | 31.5 ms | 62 ms | 41 ms | NA |
 
-_Table: The numbers are computed on Pixel 4a for an 8MP (3264x2448) image. There are potentiall faster native appraoches
-not included here._
+_Table: The numbers are computed on Pixel 4a for an 8MP (3264x2448) image. There are potential faster native approaches not included here._
 
 But the GPU implementation using Vulcan or NEON extensions could be faster. I plan to do this full investigation soon.
 (I'll update this article).
 
 ## Just FYI, RenderScript is being deprecated in Android S (Android 12)
-> What why? I just learned about it :(
+> What why? I just learned about it `:(`
 >
 > And why the hell, did you just explain the whole stuff?
 >
 >
 > Relax, read more below first!
 
-With Android S (Android 12), the team seems to have annouced deprecation of Renderscript for following reasons in
+With Android S (Android 12), the team seems to have announced deprecation of RenderScript for following reasons in
 [the blog post](https://android-developers.googleblog.com/2021/04/android-gpu-compute-going-forward.html):
 
--   RenderScript was introduced to allow developers to run computationally intesive code on CPU/GPU without making use of NDK or GPU specific APIs. It was abstracted by RenderScript.
--   With Android's evolution, NDK and GPU libraries using OpenGl have significantly improved. They give low level access to GPU hardware buffers and RenderScript no longer seems the most optimal way to accomplish the most performance critical tasks.
+-   RenderScript was introduced to allow developers to run computationally intensive code on CPU/GPU without making use of NDK or GPU specific APIs. It was abstracted by RenderScript.
+-   With Android's evolution, NDK and GPU libraries using OpenGL have significantly improved. They give low level access to GPU hardware buffers and RenderScript no longer seems the most optimal way to accomplish the most performance critical tasks.
 -   Your current RenderScript will continue to work on existing devices, it would still compile for Android but on future Android devices, the internal implementation may be CPU only.
--   Android team seems to have written a toolkit for migrating core intrinsics in Renderscript to highly optimised C++ impls - [android/renderscript-intrinsics-replacement-toolki](https://github.com/android/renderscript-intrinsics-replacement-toolkit/blob/main/README.md)
+-   Android team seems to have written a toolkit for migrating core intrinsics in RenderScript to highly optimized C++ implementations — [android/renderscript-intrinsics-replacement-toolki](https://github.com/android/renderscript-intrinsics-replacement-toolkit/blob/main/README.md)
 
 > I'll try out the intrinsic example by Android team and write about it!
 
 **If you know of a faster way** to get this done with RenderScript or with other APIs in Android please let me know in the comment section.
 
 ## References
-1.  [RenderScript - Android documentation](https://developer.android.com/guide/topics/renderscript/compute)
-2.  [C99 language - Wikipedia](https://en.wikipedia.org/wiki/C99)
+1.  [RenderScript — Android documentation](https://developer.android.com/guide/topics/renderscript/compute)
+2.  [C99 language — Wikipedia](https://en.wikipedia.org/wiki/C99)
 3.  [How to use YUV (YUV_420_888) Image in Android](https://blog.minhazav.dev/how-to-convert-yuv-420-sp-android.media.Image-to-Bitmap-or-jpeg/)
-4.  [What are intirinsics? - StackOverflow](https://stackoverflow.com/questions/2268562/what-are-intrinsics)
-5.  [RenderScript depreciation - Google Blog](https://android-developers.googleblog.com/2021/04/android-gpu-compute-going-forward.html)
-6.  [RenderScript migration - Android documentation](https://developer.android.com/guide/topics/renderscript/migrate)
+4.  [What are intrinsics? — StackOverflow](https://stackoverflow.com/questions/2268562/what-are-intrinsics)
+5.  [RenderScript depreciation — Google Blog](https://android-developers.googleblog.com/2021/04/android-gpu-compute-going-forward.html)
+6.  [RenderScript migration — Android documentation](https://developer.android.com/guide/topics/renderscript/migrate)
 
 ## Attributions
-1.  [People vector created by freepik - www.freepik.com](https://www.freepik.com/vectors/people)
+1.  [People vector created by freepik — www.freepik.com](https://www.freepik.com/vectors/people)
