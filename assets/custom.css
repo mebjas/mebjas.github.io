@@ -264,10 +264,21 @@
     color: #009879;
 }
 
-.embedded-post {
+.embedded-post, .so-embedded-post {
     border: 1px solid #e6e6e6;
     padding: 10px;
     margin: 10px;
+}
+
+.so-embedded-post {
+    padding-left: 60px;
+    background-image: url(/images/common/stack-overflow.png);
+    background-repeat: no-repeat;
+    background-position-x: 10px;
+    background-position-y: center;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
 }
 
 .embedded-post .embedded-post-title {
