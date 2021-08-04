@@ -65,15 +65,20 @@ In this article, I have explained some of the different ways to convert a YUV im
 ## Why is the Java code slower than C++ code?
 > To be honest I am still exploring this deeply and would update this article as I continue to find more.
 
-I initially thought it's related to the good `auto-vectorization` support in LLVM compilers used currently
-in NDK. But as Android adopted ART (Android Runtime), it came with support for loop optimization techniques
-like `SIMDization`, also known as auto vectorization.
+Let's look at some key differences between Java code running on Android and Native code running on Android.
 
-> If some of these concepts are not familiar to you, please check the appendix.
+{:class="styled-table"}
+| # | Java on Android | Native on Android |
+| -- | -- | -- | 
+| Compiler | With Android 8.0, Android adopted Android Runtime (ART) | Native Development Kit (NDK) in Android uses Clang front end with LLVM backend for compiling native code. |
+| Features | Ahead of Time (AOT) compilation + JIT compiler running with the runtime continuously optimizing the algorithm.| No JIT compiler |
+| Auto Vectorization | Supported | Has `loop-vectorizer` which widens the instructions in the loop, converting scalar code to vector instructions |
 
-One difference with Android Runtime vs C++ compiler is, ART also includes a just in time (JIT)
-compiler with code profiling that continually improves the performance of an Android Application as
-they run. The JIT compiler complements ART's current ahead-of-time (AOT) compiler and improves runtime performance, saves storage space, and speeds application and system updates.
+> If some of these concepts are not familiar to you, please check the [appendix](#appendix).
+
+I initially thought it's related to the good `auto-vectorization` support in LLVM compilers used currently in NDK. But as Android adopted ART (Android Runtime), it came with support for loop optimization techniques like `SIMDization`, also known as auto vectorization.
+
+One key difference between Android Runtime vs the C++ compiler is, ART also includes a jJst in Time (JIT) compiler with code profiling that continually improves the performance of an Android Application as they run. The JIT compiler complements ART's current ahead-of-time (AOT) compiler and improves runtime performance, saves storage space, and speeds application and system updates.
 
 To verify this I ran 100 iteration of the algorithm but found the convergence to happen to soon yet not matching the performance of the C++ code:
 
