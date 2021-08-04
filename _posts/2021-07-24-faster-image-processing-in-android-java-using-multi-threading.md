@@ -411,7 +411,20 @@ void yuvToArgb(int startX, int endX, int startY, /** rest of image params. */) {
 | Java Threads=8, TilesPerAxis=16 | 54.5 ms | 2.19x faster |
 | Java Threads=16, TilesPerAxis=16 | **53.8 ms** | 2.2x, **fastest among these**|
 
-> So with optimized (multithreaded + `byte[]` loops) - we can get performance faster than unoptimized C++ code in Android! Nice!!
+> So with optimized (multithreaded + `byte[]` loops) — we can get performance faster than unoptimized C++ code in Android! Nice!!
+
+Also, with respect to CPU usage — I saw following numbers:
+
+{:class="styled-table"}
+| Approach	| Avg CPU usage |
+| -- | -- | 
+| Java (single threaded, `ByteBuffer`) | ~12% |
+| Native | ~70%+ |
+| Java `byte[]` + multithreaded | ~33%+ |
+
+> Still not super sure about the 70% usage in native code and lower usage for java code.
+>
+> TODO(minhazav): Dig more...
 
 #### With `ByteBuffer` approach
 <div style="text-align: center">
@@ -485,6 +498,7 @@ I didn't see any performance boost because of this, see the numbers (both of the
 | Java 1D loop | 142.4 ms | 1.219x slower|
 
 > I suppose this is slower due to more math involved in computing `x` and `y`.
+>
 > TODO(minhazav): Read more about this, has bound checks been optimized for Java between 2D and 1D loops.
 
 ## Appendix
