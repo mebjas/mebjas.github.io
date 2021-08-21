@@ -34,6 +34,17 @@ For the actual article I am hoping to finish it in a week's time. In the meantim
  - Photography
  - And very seldom about personal finance and hacks around that.
 
+
+<div style="margin: 20px 0px 20px 0px; border: 1px solid #00000021; padding: 20px;">
+    <form action="https://tinyletter.com/minhazav" method="post" target="popupwindow"
+        onsubmit="window.open('https://tinyletter.com/minhazav', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
+        <p><label for="tlemail">Subscribe to newsletter</label></p>
+        <p><input type="text" style="width:140px" name="email" id="tlemail" placeholder="email id" /></p>
+        <input type="hidden" value="1" name="embed"/>
+        <input type="submit" value="Subscribe Now" />
+    </form>
+</div>
+
 Also open to writing about other topics relevant to my experience if you'd benefit from them, please feel free to add a comment.
 
 If you'd like to reach out to me regarding any similar problem statement you or your company is facing, let's chat :) — `minhazav@gmail.com`.
@@ -45,4 +56,5 @@ If you'd like to reach out to me regarding any similar problem statement you or 
 
 > Sorry, since this is not **yet** the content — for what you came!
 
+## Request for feedbacks on the talk
 Also, I asked for some feedbacks around the talk, please take some time to fill it up - [here](https://forms.gle/KxfQbLKR1HE8nrKK8). It's fairly small, but it'd help me grow as a speaker and a blogger.
