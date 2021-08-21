@@ -26,7 +26,7 @@ to convert an `android.media.Image` in `YUV_420_888` format to `Bitmap`.
 <img src="../images/common_note2.jpg" style="width: 50%; margin-left: 25%"><br>
 
 -   I have a habit of explaining concepts before showing the code, if you want to see the money, no code - go to [Java code section](#java-code).
--   Despite lacking a good sense of humor, I tend to try to write funny.
+-   Despite lacking a good sense of humour, I tend to try to write funny.
 -   For this article, I expect readers to be familiar with Android, Java, JNI, Images in YUV and Bitmap formats.
 -   This article also serves as an example of how to use `RenderScript` in Android, and it's performance benefits — even if this is not the exact use case you are targeting.
 
@@ -71,8 +71,8 @@ BTW if you are wondering what an `intrinsic` means:
 (source: [What are intrinsics? — StackOverflow](https://stackoverflow.com/questions/2268562/what-are-intrinsics))
 
 ### How to use this intrinsic
-So basically, lets say we want to use the Java APIs available. We:
-1.  Initialize a `RenderScript` Context.
+So basically, let's say we want to use the Java APIs available. We:
+1.  Initialise a `RenderScript` Context.
 2.  Create input and output `Allocations`.
     - An Allocation is a `RenderScript` object that provides storage for a fixed amount of data.
     This needs to be provided by the caller.
