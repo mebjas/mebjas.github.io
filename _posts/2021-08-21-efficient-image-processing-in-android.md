@@ -9,4 +9,12 @@ image: ''
 wip: true
 ---
 
+# This ARTICLE is WIP, please come back later.
+
+Potential ETA — 08/22/2021
+
+<!--
+
 Different ways to do image processing in Android
+
+-->
