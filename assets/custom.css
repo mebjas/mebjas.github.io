@@ -369,6 +369,15 @@
         margin-left: 40px;
     }
 
+    .sidebar-subscribe {
+        margin-top: 40px;
+        border: 1px solid #6464642e;
+        padding-left: 10px;
+        padding-bottom: 20px;
+        padding-top: 20px;
+        border-radius: 5px;
+    }
+
     .recommended-books {
         margin-top: 40px;
     }
