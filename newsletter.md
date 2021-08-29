@@ -32,9 +32,12 @@ I have started sending them out as newsletter, so my readers can stay updated wi
 </div>
 
 ### Steps
-2.   Confirm you are not a bot!
-3.   Verify with a verification link sent to your inbox with title. If you can't find it look for it in the spam folder.
-
+1.   Confirm you are not a bot!
+2.   Verify with a verification link sent to your inbox with title. 
+> In your email look for **Minhaz's blog newsletter — please confirm your email address.**
+>
+> If you can't find it look for it in the spam folder.
+3.   Click on <u>Subscribe me to Tech newsletter</u> to subscribe.
 
 ## Attributions
-<a href='https://www.freepik.com/vectors/technology'>Technology vector created by jcomp - www.freepik.com</a>
+<a href='https://www.freepik.com/vectors/technology'>Technology vector created by jcomp — www.freepik.com</a>
