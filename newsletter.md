@@ -60,3 +60,12 @@ I have started sending them out as newsletter, so my readers can stay updated wi
 
 ## Attributions
 <a href='https://www.freepik.com/vectors/technology'>Technology vector created by jcomp — www.freepik.com</a>
+
+  <script src="https://utteranc.es/client.js"
+        repo="mebjas/mebjas.github.io"
+        issue-term="title"
+        label="test"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
