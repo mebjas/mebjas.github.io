@@ -17,6 +17,25 @@ Android, computational photography and sometime dwell into personal finance and 
 
 Here are some of my recent articles:
 
+<div class="post-info" style="border: 1px solid #cfcfcf73;padding: 10px;margin: 10px 0px 0px 0px;">
+    <h3 class="post-header"><a class="post-link" href="https://blog.minhazav.dev/guide-compiler-to-auto-vectorise/">Guide C++ compiler to auto vectorise the code</a></h3>
+     <span class="post-description">
+       <img src="../images/post28_image3.gif" style="max-width: 10%; float: left; margin: 0px 15px 10px 0px;">
+       C++ compilers these days have code optimization techniques like <code>loop vectorizer</code> which allows the compilers to generate vector instructions for code written in scalar format. It also depends on how the code is written for the compiler to understand if it can auto-vectorize
+     </span>
+     <span class="read-more"><a href="https://blog.minhazav.dev/guide-compiler-to-auto-vectorise/">[.. &nbsp;Read&&nbsp;more&nbsp;]</a></span>
+</div>
+
+<div class="post-info" style="border: 1px solid #cfcfcf73;padding: 10px;margin: 10px 0px 0px 0px;">
+    <h3 class="post-header"><a class="post-link" href="https://blog.minhazav.dev/guide-compiler-to-auto-vectorise/">Faster image processing in Android Java using multi threading</a></h3>
+     <span class="post-description">
+       <img src="../images/post28_image1.gif" style="max-width: 10%; float: left; margin: 0px 15px 10px 0px;">
+       While I was exploring different ways to do efficient image processing in Android I realized that a simple two-dimensional for-loop when written in Java vs C++ could have very different performance. For example: I have been comparing different ways we
+     </span>
+     <span class="read-more"><a href="https://blog.minhazav.dev/guide-compiler-to-auto-vectorise/">[.. &nbsp;Read&&nbsp;more&nbsp;]</a></span>
+</div>
+<br>
+
 I have started sending them out as newsletter, so my readers can stay updated with the latest content. You can join my newsletter by providing your email address below.
 
 <div style="margin: 20px 0px 20px 0px; border: 1px solid #00000021;">
