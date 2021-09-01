@@ -10,7 +10,7 @@ image: '../images/post30_image1.jpg'
 
 I use Google Sheets for tracking my expenses, assets, and liabilities. Google Sheet has a first-class support for querying the latest values of stocks on US-based exchanges like <code>NASDAQ</code> or <code>NYSE</code>. On the other hand it doesn't have support for getting spot price of metals and commodities which can vary market by market.
 
-In this article I have shared a hack on how to scrape some reliable sources of gold prices and get the latest values in Google sheets to easily track the latest value of gold by market.
+In this article I have shared a hack on how to scrape some reliable sources of gold prices and get the latest values in Google sheets to easily track the latest value of gold by market. This will be really helpful in getting gold prices in India.
 
 <div style="text-align: center">
     <img src="../images/common/money.jpg" style="margin: auto; width: 100%; max-width: 550px;">
