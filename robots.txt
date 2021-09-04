@@ -1,1 +1,4 @@
-Sitemap: /sitemap
+User-agent: *
+Allow: /
+
+Sitemap: https://blog.minhazav.dev/sitemap.xml

@@ -1,6 +1,8 @@
 ---
 layout: default_research
 ---
+<link rel="canonical" href="https://blog.minhazav.dev/research/html5-qrcode"/>
+
 <style>
 #reader {
     width: 640px;
@@ -55,9 +57,9 @@ layout: default_research
 </div>
 
 <div class="post-info" style="border: 1px solid #cfcfcf73;padding: 10px;margin: 10px 0px 0px 0px;">
-    <h3 class="post-header"><a class="post-link" href="https://minhazav.medium.com/qr-and-barcode-scanner-using-html-and-javascript-2cdc937f793d">Latest article: QR and barcode scanner using HTML and Javascript</a></h3>
+    <h3 class="post-header"><a class="post-link" href="https://minhazav.medium.com/qr-and-barcode-scanner-using-html-and-javascript-2cdc937f793d">The latest article: QR and barcode scanner using HTML and JavaScript</a></h3>
      <span class="post-description">
-       <img src="/images/post24_image1.jpeg" style="max-width: 10%; float: left; margin: 0px 15px 10px 0px;">
+       <img src="/images/post24_image1.jpeg" style="max-width: 10%; float: left; margin: 0px 15px 10px 0px;" alt="different 1D and 2D codes">
        <strong>For more details on everything that's new read</strong> - This article lists out everything new in <code>version 2.x.x</code>. I'll also list out the new APIs and capabilities that developers can use to integrate a more powerful code scanning capability to their web pages or apps
      </span>
      <span class="read-more"><a href="https://minhazav.medium.com/qr-and-barcode-scanner-using-html-and-javascript-2cdc937f793d">[&nbsp;Read&&nbsp;more&nbsp;]</a></span>
@@ -68,19 +70,17 @@ layout: default_research
 	<h2>How to use?</h2>
 	<div>
 		You can either use <code>Html5QrcodeScanner</code> which takes of end to end
-		user interface and functionaility or you can use <code>Html5Qrcode</code>
+		user interface and functionality, or you can use <code>Html5Qrcode</code>
 		with your own user interface. This demo is build using <code>Html5QrcodeScanner</code>.
 	</div>
 	<div class="empty"></div>
 	<div>
 		<h4>[1] Add javascript to your webpage either using npm</h4>
 		<a href="https://www.npmjs.com/package/html5-qrcode" target="new">
-			<img src="https://nodei.co/npm/html5-qrcode.png">
+			<img src="https://nodei.co/npm/html5-qrcode.png" alt="library on npm">
 		</a><br><br>
-		Or include the script directly using<br>
-		<pre style="background: none;"><code class="html">&#60;script src="html5-qrcode.min.js">&#60;/script></code></pre>
-		You can download the script from 
-		<a href="https://raw.githubusercontent.com/mebjas/html5-qrcode/master/minified/html5-qrcode.min.js">here</a>.
+		Or include the <a href="https://raw.githubusercontent.com/mebjas/html5-qrcode/master/minified/html5-qrcode.min.js">JavaScript script</a> directly using<br>
+		<pre style="background: none;"><code class="html">&#60;script src="html5-qrcode.min.js">&#60;/script></code></pre>.
 		<br><br>
 		<h4>[2] Add an empty div where you want to place the qrcode scanner</h4>
 		<pre style="background: none;"><code class="html">&#60;div style="width: 500px" id="reader">&#60;/div></code></pre>
@@ -129,7 +129,7 @@ html5QrcodeScanner.render(onScanSuccess, onScanError);</code></pre>
     
         <h4>[6] More configurations</h4>
         The library supports certain configurations that allows you to change the behavior.
-        You can read more about it <a href="https://github.com/mebjas/html5-qrcode#extra-optional-configuration-in-start-method">here</a>.
+         Visit the <a href="https://github.com/mebjas/html5-qrcode#extra-optional-configuration-in-start-method">Github documentation</a> to learn more about different configurations.
 
         <table style="text-align: left; border-spacing: 0 1em; border-collapse: separate;">
             <tr>
@@ -194,18 +194,18 @@ html5QrcodeScanner.render(onScanSuccess, onScanError);</code></pre>
         Few identified reasons so far:
         <ol>
             <li>Camera access only work for <code>https</code> and not <code>http</code> except for <code>localhost or local server</code>.</li>
-            <li>You cannot test this by opening the html file, it should be backed by a server - <a href="https://stackoverflow.com/questions/16835421/how-to-allow-chrome-to-access-my-camera-on-localhost">More info</a>.</li>
+            <li>You cannot test this by opening the HTML file, it should be backed by a server — <a href="https://stackoverflow.com/questions/16835421/how-to-allow-chrome-to-access-my-camera-on-localhost">How to allow Chrome to access my camera on localhost?</a>.</li>
         </ol>
     </div>
     <div class="empty"></div>
-    <strong>Where can I read more about this, is there a refernce article?</strong>
+    <strong>Where can I read more about this, is there a reference article?</strong>
     <div>
         Apart from the documentation on the <a href="https://github.com/mebjas/html5-qrcode">github project</a>, following blog article may be helpful.
         <div class="empty"></div>
         <div class="post-info" style="border: 1px solid #cfcfcf73;padding: 10px;margin: 10px 0px 0px 0px;">
             <h3 class="post-header"><a class="post-link" href="/QR-and-barcode-scanner-using-html-and-javascript/">QR and barcode scanner using HTML and Javascript</a></h3>
              <span class="post-description">
-               <img src="/images/post24_image1.jpeg" style="max-width: 50%; float: left; margin: 0px 15px 10px 0px;">
+               <img src="/images/post24_image1.jpeg" style="max-width: 50%; float: left; margin: 0px 15px 10px 0px;" alt="Different 1D and 2D codes">
                The little QR code scanning library I have been maintaining since 2015 has been getting more attention recently. And with power came responsibilities, bugs, and feature requests. Some of the key features requested by developers were more reliable scanning and the ability to scan different types of bar codes. With <code>version 2.0.0 </code>onwards developers can scan different types of 1D codes (bar codes) and 2D codes (like QR codes or AZTEC).<br><br>This article lists out everything new in <code>version 2.x.x</code>. I'll also list out the new APIs and capabilities that developers can use to integrate a more powerful code scanning capability to their web pages or apps
              </span>
              <span class="read-more"><a href="/QR-and-barcode-scanner-using-html-and-javascript/">[&nbsp;Read&&nbsp;more&nbsp;]</a></span>
@@ -213,8 +213,8 @@ html5QrcodeScanner.render(onScanSuccess, onScanError);</code></pre>
         <div class="post-info" style="border: 1px solid #cfcfcf73;padding: 10px;margin: 10px 0px 0px 0px;">
             <h3 class="post-header"><a class="post-link" href="/HTML5-QR-Code-scanning-support-for-local-file-and-default-camera/">HTML5 QR Code scanning with javascript - Support for scanning the local file and using default camera added (v1.0.5)</a></h3>
              <span class="post-description">
-               <img src="/images/post18_image2.jpg" style="max-width: 50%; float: left; margin: 0px 15px 10px 0px;">
-               <a href="https://github.com/mebjas/html5-qrcode">html5-qrcode</a> helps developer to integrate QR code scanning in HTML5 based applications. It abstracts camera access and usage on different browsers and simplify QR Code scanning for developers. The primary goal of the library is cross-platform support across different OS versions and Browsers. One of the key problems with cross-platform support was some browsers in Android and many browsers in iOS (almost all other than Safari which are based on WebKit for iOS) did not support camera access. This prevents users from doing inline QR Code scanning which is the primary feature of the library. To mitigate this I have added support for scanning local media on the device and it implicitly adds support for capturing QR Code using default camera on the device and scanning it. This is an upgrade to the existing library - you can read more about it <a href="/HTML5-QR-Code-scanning-launched-v1.0.1/">here</a>. In this article I have explained now file-based scanning works and how to use it.
+               <img src="/images/post18_image2.jpg" style="max-width: 50%; float: left; margin: 0px 15px 10px 0px;" alt="Scanning QR code using local file">
+               <a href="https://github.com/mebjas/html5-qrcode">html5-qrcode</a> helps developer to integrate QR code scanning in HTML5 based applications. It abstracts camera access and usage on different browsers and simplify QR Code scanning for developers. The primary goal of the library is cross-platform support across different OS versions and Browsers. One of the key problems with cross-platform support was some browsers in Android and many browsers in iOS (almost all other than Safari which are based on WebKit for iOS) did not support camera access. This prevents users from doing inline QR Code scanning which is the primary feature of the library. To mitigate this I have added support for scanning local media on the device, and it implicitly adds support for capturing QR Code using default camera on the device and scanning it. This is an upgrade to the existing library — <a href="/HTML5-QR-Code-scanning-launched-v1.0.1/">Read this article to learn more</a>. In this article I have explained now file-based scanning works and how to use it.
              </span>
              <span class="read-more"><a href="/HTML5-QR-Code-scanning-support-for-local-file-and-default-camera/">[&nbsp;Read&nbsp;more&nbsp;]</a></span>
         </div>
@@ -250,9 +250,7 @@ html5QrcodeScanner.render(onScanSuccess, onScanError);</code></pre>
 <script>
     (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
-<!-- <script src="/assets/research/html5qrcode/zxing-js.umd.min.js"></script> -->
-<!-- <script src="/assets/research/html5qrcode/html5-qrcode.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
 <script src="/assets/research/html5qrcode/html5-qrcode.min.js"></script>
 <script>
 function docReady(fn) {

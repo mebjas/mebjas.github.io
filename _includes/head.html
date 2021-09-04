@@ -5,14 +5,16 @@
   <meta name="google-site-verification" content="Xs4Y8kOjxCHZvery6v-Y6yVIptmWsSjownRLWpRDDlc" />
   <meta name="msvalidate.01" content="C21F82032619E6AE38AEC7FFE4D05827" />
 
+  <link rel="preload" href={{ "/assets/main.css" | relative_url }} as="style">
   <link rel="stylesheet" href={{ "/assets/main.css" | relative_url }}>
+
+  <link rel="preload" href={{ "/assets/custom.css" | relative_url }} as="style">
   <link rel="stylesheet" href={{ "/assets/custom.css" | relative_url }}>
+  
   <link rel="stylesheet" href={{ "/assets/css/sharebar.css" | relative_url }}>
   <link rel="alternate" type="application/rss+xml" title="{{ site.title | escape }}" href="{{ "/feed.xml" | relative_url }}">
   <link rel="shortcut icon" href={{ "assets/favicon.ico" | relative_url }}>
   <link rel="icon" type="image/png" sizes="32x32" href={{ "assets/favicon.ico" | relative_url }}>
-  <script src="/assets/js/jquery.js"></script>
-  
   {% if page.style %}
   <style>
     {{ page.style }}
@@ -23,3 +25,4 @@
   {% seo %}
     
 </head>
+<!-- <script src="/assets/js/jquery.js"></script> -->
