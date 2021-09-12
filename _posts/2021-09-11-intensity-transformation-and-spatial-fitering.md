@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Intensity transformation and spatial filtering
-categories: [android, java, multitheading, image-processing, optimisation]
+categories: [image-processing, spatial-filters]
 description: "I have been reading the book <a href='https://www.amazon.com/gp/product/9353062985/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=9353062985&linkCode=as2&tag=minhazav07-20&linkId=1f68b39f7dc9c5752a6ba0e8a391571c'>Digital Image Processing — by Rafael C. Gonzalez & Richard E. Woods</a> and writing some notes to remember. But I realized I have done this before, but I don't know where the notebooks are. So here I am writing my notes in an article, chapter by chapter. This one is from chapter — 2 — <b>Intensity transformation and spatial filtering</b>. I'll only be listing some key pointers, sample code and the result of running them. For other readers this article may be interesting if you are looking for code examples on how to run a certain algorithm you read about in the chapter."
 post-no: 31
 toc: true
@@ -29,9 +29,6 @@ C = 255.0 / 5.545177444479562
 lut = [C * math.log(1 + i) for i in range(0, 256)]
 lut = np.array(lut, dtype='uint8')
 transformed = cv2.LUT(img, lut)
-
-## Plot side by side.
-plotimage2(img, transformed, "Original image", "Log transformed image")
 ```
 
 <div style="text-align: center">
@@ -49,13 +46,6 @@ lut = [math.pow(i / 255, 1.0 / G) * 255.0 for i in range(0, 256)]
 lut = np.array(lut, dtype='uint8')
 
 transformed = cv2.LUT(img, lut)
-
-## Plot side by side.
-plotimage2(
-    img,
-    transformed,
-    "Original image",
-    "Gamma %.2f transformed image" % G)
 ```
 
 <div style="text-align: center">
@@ -238,3 +228,6 @@ sobel_y = cv2.filter2D(gray, -1, sobel_y_kernel)
 1.   [https://docs.opencv.org/3.4/d4/d1b/tutorial_histogram_equalization.html](https://docs.opencv.org/3.4/d4/d1b/tutorial_histogram_equalization.html)
 2.   [Histogram equalization](https://medium.com/@kyawsawhtoon/a-tutorial-to-histogram-equalization-497600f270e2)
 3.   [histogram transfer](https://towardsdatascience.com/histogram-matching-ee3a67b4cbc1)
+
+## Attributions
+1.   [Amazing free stock photos from pexels.com](https://www.pexels.com/)
