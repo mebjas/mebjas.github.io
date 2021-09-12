@@ -6,6 +6,7 @@ description: "Different ways to do image processing in Android"
 post-no: 34
 toc: true
 image: ''
+wip: true
 ---
 
 ## Placeholder at the moment!
