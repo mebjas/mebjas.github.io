@@ -1,0 +1,169 @@
+---
+layout: default_research
+---
+<link rel="canonical" href="https://blog.minhazav.dev/research/html5-qrcode"/>
+
+<style>
+#reader {
+    width: 640px;
+}
+
+@media(max-width: 600px) {
+	#reader {
+		width: 300px;
+	}
+}
+.empty {
+    display: block;
+    width: 100%;
+    height: 20px;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-info {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+</style>
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+<h1> HTML5 QR Code scanner </h1>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12" style="text-align: center;margin-bottom: 20px;">
+			<div id="reader" style="display: inline-block;"></div>
+			<div class="empty"></div>
+			<div id="scanned-result"></div>
+		</div>
+	</div>
+</div>
+
+<div class="alert alert-success">
+    <strong>Update!</strong> This library now supports scanning different types of barcode formats starting version 2.0.0 (<a href="https://github.com/mebjas/html5-qrcode/blob/master/README.md#supported-code-formats">See supported formats</a>, <a href="https://github.com/mebjas/html5-qrcode/blob/master/changelog.md#version-200">changelog</a>).
+    <br>
+</div>
+
+<div class="post-info" style="border: 1px solid #cfcfcf73;padding: 10px;margin: 10px 0px 0px 0px;">
+    <h3 class="post-header"><a class="post-link" href="https://minhazav.medium.com/qr-and-barcode-scanner-using-html-and-javascript-2cdc937f793d">The latest article: QR and barcode scanner using HTML and JavaScript</a></h3>
+     <span class="post-description">
+       <img src="/images/post24_image1.jpeg" style="max-width: 10%; float: left; margin: 0px 15px 10px 0px;" alt="different 1D and 2D codes">
+       <strong>For more details on everything that's new read</strong> - This article lists out everything new in <code>version 2.x.x</code>. I'll also list out the new APIs and capabilities that developers can use to integrate a more powerful code scanning capability to their web pages or apps
+     </span>
+     <span class="read-more"><a href="https://minhazav.medium.com/qr-and-barcode-scanner-using-html-and-javascript-2cdc937f793d">[&nbsp;Read&&nbsp;more&nbsp;]</a></span>
+</div>
+<br>
+
+<br><br>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-2583590292295592"
+     data-ad-slot="6079689311"></ins>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
+<script src="/assets/research/html5qrcode/html5-qrcode.min.js"></script>
+<script>
+function docReady(fn) {
+    // see if DOM is already available
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+        // call on next available tick
+        setTimeout(fn, 1);
+    } else {
+        document.addEventListener("DOMContentLoaded", fn);
+    }
+}
+
+/** Ugly function to write the results to a table dynamically. */
+function printScanResultPretty(codeId, decodedText, decodedResult) {
+	let resultSection = document.getElementById('scanned-result');
+    let tableBodyId = "scanned-result-table-body";
+    if (!document.getElementById(tableBodyId)) {
+        let table = document.createElement("table");
+        table.className = "styled-table";
+        table.style.width = "100%";
+        resultSection.appendChild(table);
+
+        let theader = document.createElement('thead');
+        let trow = document.createElement('tr');
+        let th1 = document.createElement('td');
+        th1.innerText = "Count";
+        let th2 = document.createElement('td');
+        th2.innerText = "Format";
+        let th3 = document.createElement('td');
+        th3.innerText = "Result";
+        trow.appendChild(th1);
+        trow.appendChild(th2);
+        trow.appendChild(th3);
+        theader.appendChild(trow);
+        table.appendChild(theader);
+
+        let tbody = document.createElement("tbody");
+        tbody.id = tableBodyId;
+        table.appendChild(tbody);
+    }
+
+    let tbody = document.getElementById(tableBodyId);
+    let trow = document.createElement('tr');
+    let td1 = document.createElement('td');
+    td1.innerText = `${codeId}`;
+    let td2 = document.createElement('td');
+    td2.innerText = `${decodedResult.result.format.formatName}`;
+    let td3 = document.createElement('td');
+    td3.innerText = `${decodedText}`;
+    trow.appendChild(td1);
+    trow.appendChild(td2);
+    trow.appendChild(td3);
+    tbody.appendChild(trow);
+}
+
+docReady(function() {
+	hljs.initHighlightingOnLoad();
+	var lastMessage;
+	var codeId = 0;
+	function onScanSuccess(decodedText, decodedResult) {
+        /**
+         * If you following the code example of this page by looking at the
+         * source code of the demo page - good job!!
+         * 
+         * Tip: update this function with a success callback of your choise.
+         */
+		if (lastMessage !== decodedText) {
+			lastMessage = decodedText;
+            printScanResultPretty(codeId, decodedText, decodedResult);
+            ++codeId;
+		}
+	}
+
+	let html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader", 
+        { 
+            fps: 10,
+            qrbox: 250,
+            // Important notice: this is experimental feature, use it at your
+            // own risk. See documentation in
+            // mebjas@/html5-qrcode/src/experimental-features.ts
+            experimentalFeatures: {
+                useBarCodeDetectorIfSupported: false
+            }
+        });
+	html5QrcodeScanner.render(onScanSuccess);
+});
+</script>
