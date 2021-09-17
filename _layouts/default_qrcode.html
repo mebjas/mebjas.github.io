@@ -1,0 +1,38 @@
+---
+layout: compress
+---
+
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+  {% include head.html %}
+
+  <!-- Enable pre-loading pages with query strings and for external links -->
+  <body data-instant-allow-query-string data-instant-allow-external-links>
+
+    {% include header_research.html %}
+
+    <main class="default-content" aria-label="Content">
+      {% include qrcode-sidebar-right.html %}
+      <div class="wrapper-content">
+        {{ content }}
+      </div>
+    </main>
+
+    {% include footer.html %}
+
+    <!-- Pre-load pages when hovering over a link -->
+    <!-- <script src="/assets/js/instantpage.js" type="module"></script> -->
+    <!-- analytics -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-158605510-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-158605510-1');
+    </script>
+  </body>
+  
+</html>

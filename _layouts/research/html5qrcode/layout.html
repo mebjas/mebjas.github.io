@@ -1,5 +1,5 @@
 ---
-layout: default_research
+layout: default_qrcode
 ---
 <link rel="canonical" href="https://blog.minhazav.dev/research/html5-qrcode"/>
 
@@ -49,6 +49,11 @@ layout: default_research
 			<div id="scanned-result"></div>
 		</div>
 	</div>
+</div>
+
+<div class="alert alert-success">
+    <strong>Update (September 2021)!</strong> 
+    Library now supports for remembering user granted camera permissions and last used camera (<a href="https://github.com/mebjas/html5-qrcode/blob/master/changelog.md#version-2012">See changelog</a>).<br>
 </div>
 
 <div class="alert alert-success">
@@ -334,7 +339,8 @@ docReady(function() {
             // mebjas@/html5-qrcode/src/experimental-features.ts
             experimentalFeatures: {
                 useBarCodeDetectorIfSupported: true
-            }
+            },
+            rememberLastUsedCamera: true
         });
 	html5QrcodeScanner.render(onScanSuccess);
 });
