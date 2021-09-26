@@ -29,22 +29,23 @@ this article I have notes, code examples and image output for each one of them.
 
 <!-- TODO(minhazav) Add image samples for all of these. -->
 
-### Spatial kernels in terms of low-pass kernel —  $ lp(x, y)  $
+### Spatial kernels in terms of low-pass kernel —  ` lp(x, y)  `
 
 {:class="styled-table"}
 | Kernels | Equation |
 | ------ | --------- |
-| Lowpass kernel | $ lp(x, y) $ |
-| Highpass kernel | $ hp(x, y) = δ(x, y) - lp(x, y) $ |
-| Bandreject kernel | $ br(x, y) = lp1(x, y) + hp2(x, y) $ <br>  $ br(x, y) = lp1(x, y) + (δ(x, y) - lp2(x, y)) $ |
-| Bandpass kernel | $ bp(x, y) = δ(x, y) - br(x, y) $ |
+| Lowpass kernel | ` lp(x, y) `|
+| Highpass kernel | ` hp(x, y) = δ(x, y) - lp(x, y) ` |
+| Bandreject kernel | ` br(x, y) = lp1(x, y) + hp2(x, y) ` <br>  ` br(x, y) = lp1(x, y) + (δ(x, y) - lp2(x, y)) ` |
+| Bandpass kernel | `bp(x, y) = δ(x, y) - br(x, y)` |
 
->  $ δ(x, y) $ is a unit impulse kernel
+>  `δ(x, y)` is a unit impulse kernel
 
 ## Processing images with these filters using Zone plate
 Zone plate is used for testing the characteristics of the filters. There are various versions of zone plates the one I'd be using can be generated with:
 
-$ f(x, y) = 0.5 * (1 + cos(x^2 + y^2)) $
+<img src="https://render.githubusercontent.com/render/math?math=f(x, y) = 0.5 * (1%20%2B%20cos(x^2%20%2B%20y^2))" alt="f(x, y) = 0.5 * (1 + cos(x^2 + y^2))">
+
 
 > Where x, y belong to `[-8.2, 8.2]` increasing in steps of `0.0275` to form a 597x597 image.
 
