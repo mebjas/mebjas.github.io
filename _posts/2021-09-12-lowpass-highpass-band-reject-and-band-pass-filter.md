@@ -29,14 +29,14 @@ this article I have notes, code examples and image output for each one of them.
 
 <!-- TODO(minhazav) Add image samples for all of these. -->
 
-### Spatial kernels in terms of low-pass kernel —  ` lp(x, y)  `
+### Spatial kernels in terms of low-pass kernel — `lp(x, y)`
 
 {:class="styled-table"}
 | Kernels | Equation |
 | ------ | --------- |
-| Lowpass kernel | ` lp(x, y) `|
-| Highpass kernel | ` hp(x, y) = δ(x, y) - lp(x, y) ` |
-| Bandreject kernel | ` br(x, y) = lp1(x, y) + hp2(x, y) ` <br>  ` br(x, y) = lp1(x, y) + (δ(x, y) - lp2(x, y)) ` |
+| Lowpass kernel | `lp(x, y) `|
+| Highpass kernel | `hp(x, y) = δ(x, y) - lp(x, y)` |
+| Bandreject kernel | `br(x, y) = lp1(x, y) + hp2(x, y)` <br>  `br(x, y) = lp1(x, y) + (δ(x, y) - lp2(x, y))` |
 | Bandpass kernel | `bp(x, y) = δ(x, y) - br(x, y)` |
 
 >  `δ(x, y)` is a unit impulse kernel
