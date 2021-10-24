@@ -90,4 +90,5 @@ Author and main maintainer of this OWASP project since 2014. This project starte
     async>
 </script>
 
-<script data-ad-client="ca-pub-2583590292295592" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- <script data-ad-client="ca-pub-2583590292295592" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
+<script data-ad-client="ca-pub-6209792783516879" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
