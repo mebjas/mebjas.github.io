@@ -27,12 +27,12 @@ Here are some of my recent articles:
 </div>
 
 <div class="post-info" style="border: 1px solid #cfcfcf73;padding: 10px;margin: 10px 0px 0px 0px;">
-    <h3 class="post-header"><a class="post-link" href="https://blog.minhazav.dev/guide-compiler-to-auto-vectorise/">Faster image processing in Android Java using multi threading</a></h3>
+    <h3 class="post-header"><a class="post-link" href="https://blog.minhazav.dev/faster-image-processing-in-android-java-using-multi-threading/">Faster image processing in Android Java using multi threading</a></h3>
      <span class="post-description">
        <img src="../images/post28_image1.gif" style="max-width: 10%; float: left; margin: 0px 15px 10px 0px;">
        While I was exploring different ways to do efficient image processing in Android I realized that a simple two-dimensional for-loop when written in Java vs C++ could have very different performance. For example: I have been comparing different ways we
      </span>
-     <span class="read-more"><a href="https://blog.minhazav.dev/guide-compiler-to-auto-vectorise/">[.. &nbsp;Read&&nbsp;more&nbsp;]</a></span>
+     <span class="read-more"><a href="https://blog.minhazav.dev/faster-image-processing-in-android-java-using-multi-threading/">[.. &nbsp;Read&&nbsp;more&nbsp;]</a></span>
 </div>
 <br>
 

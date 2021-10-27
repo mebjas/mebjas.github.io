@@ -172,15 +172,16 @@ experimental feature is one that is:
 -   Is not recommeded for production usage yet
 -   Can be migrated to full scale feature set if the feature is well tested and has wider compatibility.
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6209792783516879"
+    crossorigin="anonymous"></script>
 <ins class="adsbygoogle"
-     style="display:block; text-align:center;"
-     data-ad-layout="in-article"
-     data-ad-format="fluid"
-     data-ad-client="ca-pub-2583590292295592"
-     data-ad-slot="7717603415"></ins>
+    style="display:block; text-align:center;"
+    data-ad-layout="in-article"
+    data-ad-format="fluid"
+    data-ad-client="ca-pub-6209792783516879"
+    data-ad-slot="5886734070"></ins>
 <script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
+    (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 
 ### How to use this in the library
