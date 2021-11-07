@@ -18,12 +18,13 @@ permalink: /about/
 |Android Memory| Android Internals, Java and Native memory, ION memory manager |
 |Distributed Systems| High Availability, Resilience & Robustness |
 
-## `now()` Software Engineer III @Google
+## `now()` Senior Software Engineer @Google
 > ⚓ Singapore, May 2019 to present
 
-I work for a team called **[NBU: Next Billion Users](https://www.blog.google/technology/next-billion-users)** where we build technologies for emerging markets. In these markets, resource-constrained Android devices are very popular. These days I spend most of my time writing code to deliver seamless user experiences for such devices => thus for all markets.
+I lead computational photography features like HDR & NightMode in **[CameraGo](https://blog.google/products/android/android-go-camera-go/)**. It's an exciting project which requires building best in class computational photography algorithms improving image quality on less than ideal hardware while being able to process millions of pixels under low latency on rather low end devices.
 
-Currently working on **[CameraGo](https://blog.google/products/android/android-go-camera-go/) (the camera for low-end Android devices)**.
+My primary area of focus have been around optimising the app to run feasibly on low CPU, low RAM devices, but these days I spend a fair share of time improving image quality of HDR tonemapping.
+
  - Led launches of features like [Night Mode](https://www.xda-developers.com/google-camera-android-go-mod-night-mode-low-light-photography/) and [HDR](https://www.xda-developers.com/google-camera-go-rolling-out-hdr-support/) that run on devices with as low as 1Gb ram & low CPU specs.
  - Designed and implemented the processing pipeline responsible for scheduling processing of multi-stage image processing on resource-constrained devices.
 
