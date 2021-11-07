@@ -14,16 +14,16 @@ permalink: /about/
 |-----|---------|
 |Camera | Particularly Android App side, Camera2, Good knowledge of ISP pipeline |
 |Computer Vision | Primarily around Camera needs, Night Mode, HDR imaging |
-|Android Performance | JNI, Native, Android Image processing, Realtime processing (OpenGL), Renderscript, Tflite inference on device |
+|Android Performance | JNI, Native, Android Image processing, Real-time processing (OpenGL), Renderscript, Tflite inference on device |
 |Android Memory| Android Internals, Java and Native memory, ION memory manager |
 |Distributed Systems| High Availability, Resilience & Robustness |
 
-## `now()` Senior Software Engineer @Google
+## `now()` Senior Software Engineer at Google
 > ⚓ Singapore, May 2019 to present
 
-I lead computational photography features like HDR & NightMode in **[CameraGo](https://blog.google/products/android/android-go-camera-go/)**. It's an exciting project which requires building best in class computational photography algorithms improving image quality on less than ideal hardware while being able to process millions of pixels under low latency on rather low end devices.
+I lead computational photography features like HDR & NightMode in **[CameraGo](https://blog.google/products/android/android-go-camera-go/)**. It's an exciting project which requires building best in class computational photography algorithms improving image quality on less than ideal hardware while being able to process millions of pixels under low latency on rather low-end devices.
 
-My primary area of focus have been around optimising the app to run feasibly on low CPU, low RAM devices, but these days I spend a fair share of time improving image quality of HDR tonemapping.
+My primary area of focus have been around optimizing the app to run feasibly on low CPU, low RAM devices, but these days I spend a fair share of time improving image quality of HDR.
 
  - Led launches of features like [Night Mode](https://www.xda-developers.com/google-camera-android-go-mod-night-mode-low-light-photography/) and [HDR](https://www.xda-developers.com/google-camera-go-rolling-out-hdr-support/) that run on devices with as low as 1Gb ram & low CPU specs.
  - Designed and implemented the processing pipeline responsible for scheduling processing of multi-stage image processing on resource-constrained devices.
