@@ -37,6 +37,18 @@ layout: default_qrcode
     background-color: #dff0d8;
     border-color: #d6e9c6;
 }
+
+#scanapp_ad {
+    display: none;
+}
+
+@media(max-width: 1500px) {
+	#scanapp_ad {
+		display: block;
+	}
+}
+
+
 </style>
 <link rel="stylesheet"
       href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
@@ -51,14 +63,18 @@ layout: default_qrcode
 	</div>
 </div>
 
-<div class="alert alert-success">
-    <strong>Update (September 2021)!</strong> 
-    Library now supports for remembering user granted camera permissions and last used camera (<a href="https://github.com/mebjas/html5-qrcode/blob/master/changelog.md#version-2012">See changelog</a>).<br>
-</div>
-
-<div class="alert alert-success">
-    <strong>Update!</strong> This library now supports scanning different types of barcode formats starting version 2.0.0 (<a href="https://github.com/mebjas/html5-qrcode/blob/master/README.md#supported-code-formats">See supported formats</a>, <a href="https://github.com/mebjas/html5-qrcode/blob/master/changelog.md#version-200">changelog</a>).
-    <br>
+<div id="scanapp_ad">
+    <div class="alert alert-success" style="display: flex;">
+        <div style="max-width: 100px; display: inline-block;">
+            <a href="https://scanapp.org"><img src="/assets/img/scanapp-logo-removebg-preview.png" style="width: 100px;"></a>
+        </div>
+        <div style="display: inline-block; margin-left: 10px">
+            <strong>ScanApp - Free QR code and barcode scanner for web</strong>
+            <br>
+            <a href="https://scanapp.org">scanapp.org</a> is a free online QR code and barcode reader for web built using this library - <a href="https://scanapp.org">try it out</a>.
+            <br>
+        </div>
+    </div>
 </div>
 
 <div class="post-info" style="border: 1px solid #cfcfcf73;padding: 10px;margin: 10px 0px 0px 0px;">
