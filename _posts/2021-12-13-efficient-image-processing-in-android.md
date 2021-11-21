@@ -3,7 +3,7 @@ layout: post
 title: Efficient image processing in Android - Placeholder
 categories: [android, java, multitheading, image-processing, optimisation]
 description: "Different ways to do image processing in Android"
-post-no: 34
+post-no: 36
 toc: true
 image: ''
 wip: true

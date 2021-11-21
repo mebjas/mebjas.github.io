@@ -10,8 +10,8 @@ framework takes care of scheduling & execution. In this code I have explained
 how to use<code>ScriptIntrinsicYuvToRGB</code> intrinsic that is available in Android APIs
 to convert an <code>android.media.Image</code> in <code>YUV_420_888</code> format
 to <code>Bitmap</code>."
-post-no: 32
+post-no: 35
 toc: true
-image: '../images/post21_image1.png'
+image: '../images/post35_image1.png'
 wip: true
 ---

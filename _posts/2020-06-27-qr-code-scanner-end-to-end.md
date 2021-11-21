@@ -14,9 +14,9 @@ Another key reason I implemented this end to end wrapper was: I started getting 
 
 ## What's new?
 Introduced `Html5QrcodeScanner` class for adding end to end QR code scanning in your existing web application. It is written on top of the existing `Html5Qrcode` class, which anyone can continue to use with their application's user interface. `Html5QrcodeScanner` supports all features of `Html5Qrcode` like
- - Inline scanning using a video feed from Camera or webcam
- - Local Image scanning
- - Scanning media captured from the camera on mobile devices
+ - Inline scanning using a video feed from Camera or webcam.
+ - Local Image scanning.
+ - Scanning media captured from the camera on mobile devices.
 
 **To show the ease of use, I have embedded the QR scanner in next section**. 
 > Please note this article is based on Jekyll, written in markdown.
@@ -98,7 +98,7 @@ I don't know if this is the right way to do things in Vue, but this works FWIW.
 
 ## Future plans
  - Add examples for React integration
- - Add exmaples for Angular integration
+ - Add examples for Angular integration
  - Add examples for using with webpack - [#54](https://github.com/mebjas/html5-qrcode/issues/54)
  - Add details on how to use with Android Webview - [#58](https://github.com/mebjas/html5-qrcode/issues/58), [#57](https://github.com/mebjas/html5-qrcode/issues/57)
  - Fix most of open issues at - [mebjas/html5-qrcode/issues](https://github.com/mebjas/html5-qrcode/issues)
