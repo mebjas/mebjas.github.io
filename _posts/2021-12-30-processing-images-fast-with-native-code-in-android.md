@@ -6,6 +6,7 @@ description: "Halide is a programming language designed to make it easier to wri
 post-no: 39
 toc: true
 image: '../images/post21_image1.png'
+wip: true
 ---
 
 > Introduction

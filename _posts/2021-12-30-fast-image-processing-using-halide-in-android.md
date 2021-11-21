@@ -6,6 +6,7 @@ description: "Halide is a programming language designed to make it easier to wri
 post-no: 38
 toc: true
 image: '../images/post21_image1.png'
+wip: true
 ---
 
 `Halide` is a programming language designed to make it easier to write high-performance image and array processing code on modern machines.

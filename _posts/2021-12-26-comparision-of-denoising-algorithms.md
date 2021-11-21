@@ -6,6 +6,7 @@ description: ""
 post-no: 37
 toc: true
 image: '../images/post33_image1.png'
+wip: true
 ---
 
 <link rel="stylesheet" href="https://unpkg.com/image-compare-viewer/dist/image-compare-viewer.min.css">
