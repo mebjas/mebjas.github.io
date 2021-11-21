@@ -26,20 +26,6 @@ If you are just interested in implementing QR code or barcode scanning on web wi
      <span class="read-more"><a href="https://blog.minhazav.dev/QR-and-barcode-scanner-using-html-and-javascript/">[&nbsp;Read&nbsp;more&nbsp;]</a></span>
 </div>
 
-<div id="scanapp_ad" style="margin: 10px">
-    <div class="alert alert-success" style="display: flex;">
-        <div style="max-width: 100px; display: inline-block;">
-            <a href="https://scanapp.org"><img src="/assets/img/scanapp-logo-removebg-preview.png" style="width: 100px;"></a>
-        </div>
-        <div style="display: inline-block; margin-left: 10px">
-            <strong>ScanApp - Free QR code and barcode scanner for web</strong>
-            <br>
-            <a href="https://scanapp.org">scanapp.org</a> is a free online QR code and barcode reader for web built using this library - <a href="https://scanapp.org">try it out</a>.
-            <br>
-        </div>
-    </div>
-</div>
-
 ## Install the library using npm
 First, install the latest version of the library in your React project, using `npm`
 
