@@ -164,4 +164,4 @@ The full example has been created at [scanapp-org/html5-qrcode-react](https://gi
 </div>
 
 ## Closing note
-I have to admit, I am not React savvy, if you see errors or know of better way to do things please suggest it using the comments or send a pull request to scanapp-org/html5-qrcode-react](https://github.com/scanapp-org/html5-qrcode-react).
+I have to admit, I am not React savvy, if you see errors or know of better way to do things please suggest it using the comments or send a pull request to [scanapp-org/html5-qrcode-react](https://github.com/scanapp-org/html5-qrcode-react).
