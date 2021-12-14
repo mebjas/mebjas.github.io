@@ -21,10 +21,11 @@ permalink: /about/
 ## `now()` Senior Software Engineer at Google
 > ⚓ Singapore, May 2019 to present
 
-I lead computational photography features like HDR & NightMode in **[CameraGo](https://blog.google/products/android/android-go-camera-go/)**. It's an exciting project which requires building best in class computational photography algorithms improving image quality on less than ideal hardware while being able to process millions of pixels under low latency on rather low-end devices.
+I lead computational photography features like HDR & NightMode in **[CameraGo](https://blog.google/products/android/android-go-camera-go/)**. It's an exciting project which requires building best in "segment" computational photography algorithms improving image quality on less than ideal hardware while being able to process millions of pixels under low latency on rather low-end devices.
 
 My primary area of focus have been around optimizing the app to run feasibly on low CPU, low RAM devices, but these days I spend a fair share of time improving image quality of HDR.
 
+ - Leading a team building computational photography features in Camera Go, our feature portforlio inlcudes Night Mode, HDR, Portrait & Face Enhance.
  - Led launches of features like [Night Mode](https://www.xda-developers.com/google-camera-android-go-mod-night-mode-low-light-photography/) and [HDR](https://www.xda-developers.com/google-camera-go-rolling-out-hdr-support/) that run on devices with as low as 1Gb ram & low CPU specs.
  - Designed and implemented the processing pipeline responsible for scheduling processing of multi-stage image processing on resource-constrained devices.
 
@@ -33,7 +34,7 @@ My primary area of focus have been around optimizing the app to run feasibly on 
 #### Areas I work on these days
  - Android, Android Fundamentals, Android Camera, Android storage
  - Linux Fundamentals, Memory management in Android
- - Image Processing
+ - Computational Photography, Image Processing
  
 ## `now(/* index= */ -1)` - Software Engineer II at Microsoft
 > 🇮🇳 Hyderabad, India, June 2016 to May 2019, ~3 years
