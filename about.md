@@ -25,7 +25,7 @@ I lead computational photography features like HDR & NightMode in **[CameraGo](h
 
 My primary area of focus have been around optimizing the app to run feasibly on low CPU, low RAM devices, but these days I spend a fair share of time improving image quality of HDR.
 
- - Leading a team building computational photography features in Camera Go, our feature portforlio inlcudes Night Mode, HDR, Portrait & Face Enhance.
+ - Leading a team building computational photography features in Camera Go, our feature portfolio includes Night Mode, HDR, Portrait & Face Enhance.
  - Led launches of features like [Night Mode](https://www.xda-developers.com/google-camera-android-go-mod-night-mode-low-light-photography/) and [HDR](https://www.xda-developers.com/google-camera-go-rolling-out-hdr-support/) that run on devices with as low as 1Gb ram & low CPU specs.
  - Designed and implemented the processing pipeline responsible for scheduling processing of multi-stage image processing on resource-constrained devices.
 
