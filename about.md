@@ -83,6 +83,9 @@ Author and main maintainer of this OWASP project since 2014. This project starte
 <br>
 <br>
 <h2>Ask me anything</h2>
+
+> Please note that, I'll delete the comments here after the request / question is answered.
+
 <script src="https://utteranc.es/client.js"
     repo="mebjas/mebjas.github.io"
     issue-term="title"
