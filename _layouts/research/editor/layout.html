@@ -1,0 +1,68 @@
+---
+layout: default_research
+---
+<style>
+.wrapper-header, .wrapper-content, .wrapper-footer {
+    /* max-width: -webkit-calc(880px - (30px * 2)); */
+    max-width: none;
+    padding-right: 30px;
+    padding-left: 30px;
+    margin: 0 auto;
+}
+.flex-grid {
+  display: flex;
+}
+.col-3 {
+  flex: 3;
+  margin: 5px;
+}
+.col-6 {
+  flex: 6;
+  margin: 5px;
+}
+</style>
+<h1> Editor </h1>
+<div class="container">
+    <div class="row flex-grid">
+        <div class="col col-3">
+            Select a new image: 
+            <input type="file" id="file-selector" accept="image/x-png,image/gif,image/jpeg" />
+            <div style="margin-top: 10px" id="metadata"></div>
+        </div>
+        <div class="col col-6">
+            <div id="workspace"></div>
+        </div>
+        <div class="col col-3">
+            <div id="toolbar"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/research/vision/library.js"></script>
+<script src="/assets/research/vision/operators.js"></script>
+<script src="/assets/research/vision/app.js"></script>
+<script>
+function docReady(fn) {
+    // see if DOM is already available
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+        // call on next available tick
+        setTimeout(fn, 1);
+    } else {
+        document.addEventListener("DOMContentLoaded", fn);
+    }
+}
+
+docReady(function() {
+    let fileSelectionElem = document.getElementById('file-selector');
+    let workspaceElem = document.getElementById('workspace');
+    let toolbarElem = document.getElementById('toolbar');
+    let metadataElem = document.getElementById('metadata');
+    let footerElem = document.getElementsByClassName('site-footer')[0];
+    (new App(
+        fileSelectionElem,
+        workspaceElem,
+        toolbarElem,
+        metadataElem,
+        footerElem)).render();
+});
+</script>

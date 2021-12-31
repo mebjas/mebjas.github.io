@@ -1,0 +1,20 @@
+.wrapper-header, .wrapper-content, .wrapper-footer {
+    max-width: none;
+    padding-right: 30px;
+    padding-left: 30px;
+    margin: 0 auto;
+}
+.flex-grid {
+  display: flex;
+}
+.col-3 {
+  flex: 3;
+  margin: 5px;
+}
+.col-6 {
+  flex: 6;
+  margin: 5px;
+}
+button.operator-buttons {
+  margin: 5px;
+}

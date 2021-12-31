@@ -1,0 +1,273 @@
+---
+layout: default_research
+---
+<link rel="stylesheet" href="/assets/research/image-callibration/style.css" />
+
+<div class="container">
+    <div class="row flex-grid">
+        <div class="col col-3">
+            Select a new image:
+            <br />
+            <input type="file" id="file-selector" accept="image/x-png,image/gif,image/jpeg" />
+            <div style="margin-top: 10px" id="logger"></div>
+        </div>
+        <div class="col col-6">
+            <div id="workspace"></div>
+        </div>
+        <div class="col col-3">
+            <div id="toolbar">
+                <div class="action"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <script type="text/javascript" src="/assets/research/image-callibration/script.js"></script> -->
+<script src="https://docs.opencv.org/4.5.0/opencv.js"></script>
+<script src="/assets/research/image-callibration/script.js"></script>
+<script>
+function docReady(fn) {
+    // see if DOM is already available
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+        // call on next available tick
+        setTimeout(fn, 1);
+    } else {
+        document.addEventListener("DOMContentLoaded", fn);
+    }
+}
+
+var RadiometricEstimator = (function() {
+    //#region Mediator
+    var Mediator = (function() {
+        function Mediator() {
+            this.producers = [];
+            this.config = {};
+        }
+
+        Mediator.prototype.registerProducer = function(elem, tag) {
+            this.producers.push(elem);
+            this.config[tag] = parseFloat(elem.value);
+        }
+
+        Mediator.prototype.onChange = function(tag, value) {
+            var _this = this;
+            value = parseFloat(value);
+            _this.config[tag] = value;
+            _this.consume();
+        }
+
+        Mediator.prototype.consume = function() {
+            var _this = this;
+            function disableProducers() {
+                for (var i = 0; i < _this.producers.length; ++i) {
+                    _this.producers[i].disabled = true;
+                }
+            }
+
+            function enableAllProducers() {
+                for (var i = 0; i < _this.producers.length; ++i) {
+                    _this.producers[i].disabled = false;
+                }
+            }
+
+            if (_this.consumer) {
+                disableProducers();
+                _this.consumer.estimate(_this.config);
+                enableAllProducers();
+            }
+        }
+
+        Mediator.prototype.registerConsumer = function(consumer) {
+            this.consumer = consumer;
+        }
+
+        return Mediator;
+    }());
+
+    //#endregion
+
+    function RadiometricEstimator(workspace, logger) {
+        this.workspace = workspace;
+        this.logger = logger;
+
+        this.mediator = new Mediator();
+    }
+
+    RadiometricEstimator.prototype.init = function() {
+        this.colorChecker = new ColorChecker24(
+            this.workspace, this.logger);
+        this.mediator.registerConsumer(this.colorChecker);
+    }
+
+    RadiometricEstimator.prototype.renderInside = function(rootElement) {
+        var _this = this;
+
+        var optionsElem = document.createElement("div");
+        rootElement.appendChild(optionsElem);
+        function createOptionElement(
+            rootContainer, id, tag, placeholder, defaultValue, onChange,
+            minValue, maxValue) {
+            var elemContainer = document.createElement("div");
+            elemContainer.innerHTML = `${tag}: `;
+            rootElement.appendChild(elemContainer);
+            var elem = document.createElement("input");
+            elem.type = "range";
+            // elem.placeholder = placeholder;
+            elem.id = id;
+            elem.min = minValue;
+            elem.max = maxValue;
+            elem.value = `${defaultValue}`;
+            elemContainer.appendChild(elem);
+
+            var valueSpanElem = document.createElement("span");
+            elemContainer.appendChild(valueSpanElem);
+            valueSpanElem.style.marginLeft = "10px";
+            valueSpanElem.innerText = `val = ${elem.value}`;
+
+            elem.addEventListener("change", function() {
+                valueSpanElem.innerText = `val = ${elem.value}`;
+                onChange(tag, elem.value);
+            });
+
+            return elem;
+        }
+
+        //#region input options
+        var thresholdMinElem = createOptionElement(
+            optionsElem, "thresholdMin", "thresholdMin", "thresholdMin",
+            80, function(tag, val) { _this.mediator.onChange(tag, val)},
+            /*minValue=*/0, /*maxValue=*/ 255);
+        this.mediator.registerProducer(thresholdMinElem, "thresholdMin");
+        var thresholdMaxElem = createOptionElement(
+            optionsElem, "thresholdMax", "thresholdMax", "thresholdMax",
+            255, function(tag, val) { _this.mediator.onChange(tag, val)},
+            /*minValue=*/0, /*maxValue=*/ 255);
+        this.mediator.registerProducer(thresholdMaxElem, "thresholdMax");
+        var contourMinAreaElem = createOptionElement(
+            optionsElem, "contourMinArea", "contourMinArea", "contourMinArea",
+            5000, function(tag, val) { _this.mediator.onChange(tag, val)},
+            /*minValue=*/1000, /*maxValue=*/ 10000);
+        this.mediator.registerProducer(contourMinAreaElem, "contourMinArea");
+
+        //#endregion
+
+        var estimateButton = document.createElement("button");
+        estimateButton.className = "operator-buttons";
+        estimateButton.innerText = "Estimate LUT";
+        estimateButton.addEventListener("click", function() {
+            _this.mediator.consume();
+        });
+
+        rootElement.appendChild(estimateButton);
+    }
+
+    RadiometricEstimator.prototype.onImageRotated = function() {
+        if (this.colorChecker) {
+            this.colorChecker.onImageRotated();
+        }
+    }
+
+    return RadiometricEstimator;
+}());
+
+var Toolbar = /** @class */ (function () {
+    function Toolbar(element, workspace, footerElem, logger) {
+        this.operatorElementMap = {};
+        this.element = element;
+        this.workspace = workspace;
+        this.logger = logger;
+
+        this.locked = true;
+        this.__render(footerElem.offsetTop);
+    }
+    Toolbar.prototype.lock = function () {
+        this.locked = true;
+        this.element.style.opacity = "0.5";
+    };
+    Toolbar.prototype.unlock = function () {
+        this.locked = false;
+        this.element.style.opacity = "1";
+    };
+    Toolbar.prototype.isLocked = function () {
+        return this.locked;
+    };
+    Toolbar.prototype.onImageLoaded = function() {
+        if (!this.estimatorUi) {
+            throw "this.estimatorUi not set";
+        }
+
+        this.estimatorUi.init();
+    }
+    
+    //#region Private methods
+    Toolbar.prototype.__onImageRotated = function() {
+        if (!this.estimatorUi) {
+            throw "this.estimatorUi not set";
+        }
+
+        this.estimatorUi.onImageRotated();
+    }
+
+    Toolbar.prototype.__render = function (footerOffsetTop) {
+        var _this = this;
+        this.element.style.opacity = "0.5";
+
+        //#region Headers
+        var operatorsHeader = document.createElement("div");
+        operatorsHeader.innerHTML = "Operators";
+        this.element.appendChild(operatorsHeader);
+
+        var resetLink = document.createElement("a");
+        resetLink.innerHTML = "reset";
+        resetLink.href = "#reset";
+        resetLink.style.marginLeft = "5px";
+        resetLink.addEventListener("click", function (_) { return _this.reset(); });
+        this.element.appendChild(resetLink);
+
+        var headerHr = document.createElement("hr");
+        this.element.appendChild(headerHr);
+        //#endregion
+
+        //#region Main operators
+        var operatorSection = document.createElement("div");
+        this.element.appendChild(operatorSection);
+
+        //#region Rotate button
+        var rotateButton = document.createElement("button");
+        rotateButton.className = "operator-buttons";
+        rotateButton.innerText = "Rotate image";
+        rotateButton.addEventListener("click", function() {
+            _this.workspace.rotateClockwise();
+            _this.__onImageRotated();
+        })
+        operatorSection.appendChild(rotateButton);
+        //#endregion
+
+        this.estimatorUi = new RadiometricEstimator(_this.workspace, _this.logger);
+        this.estimatorUi.renderInside(operatorSection);  
+        //#endregion
+    };
+
+    Toolbar.prototype.reset = function () {
+        // TODO(mebjas): Implement this.
+    };
+    //#endregion
+
+    return Toolbar;
+}());
+
+docReady(function() {
+
+let fileSelectionElem = document.getElementById('file-selector');
+let workspaceElem = document.getElementById('workspace');
+let toolbarElem = document.getElementById('toolbar');
+let loggerElem = document.getElementById('logger');
+let footerElem = document.getElementsByClassName('site-footer')[0];
+(new App(
+    fileSelectionElem,
+    workspaceElem,
+    toolbarElem,
+    loggerElem,
+    footerElem)).render();
+});
+</script>

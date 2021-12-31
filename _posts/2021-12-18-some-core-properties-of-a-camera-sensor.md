@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Some core properties of a camera sensor - what makes a good camera sensor?.
+title: Some core properties of a camera sensor - what makes a good camera sensor?
 categories: [camera, sensor, computational-photography, optics]
 description: "Most of us today have a smartphone we can't keep our hands off of. And one of the most important features of the smartphone, is the camera. And many photography enthusiasts may have additional equipments like a DSLR or a mirrorless camera or even a GoPro or a drone. So how do we decide if a camera is good or bad? It depends on several components - like the main 'sensor' in the camera, the software stack (thats usually associated with manufacturing company), the processor which dictates the performance of the camera and so on. In this article I'll be explaining some of the less known properties of a camera sensor that could be used to evaluate the sensors used in the camera."
 post-no: 34
