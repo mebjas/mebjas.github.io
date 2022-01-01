@@ -6,6 +6,7 @@ description: ""
 post-no: 35
 toc: true
 image: '../images/post33_image1.png'
+wip: true
 ---
 
 Very often it happens that when we take pictures particularly with DSLR or phone camera without HDR the images turns out to be like this
