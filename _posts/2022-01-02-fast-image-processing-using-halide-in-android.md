@@ -3,7 +3,7 @@ layout: post
 title: Fast image processing using Halide in Android
 categories: [android, camera2, YUV_420_888, Halide, YUV, Bitmap, optimisation, JNI]
 description: "Halide is a programming language designed to make it easier to write high-performance image and array processing code on modern machines. Rather than being a standalone programming language, Halide is embedded in C++. It currently targets different CPUs, OSs, differnt compute APIs like CUDA, OpenGl, OpenCL etc. In this article I'll share about what Halide is, how to write Halide code and share performance number of halide code taking the same example of YUV to Bitmap conversion."
-post-no: 35
+post-no: 37
 toc: true
 image: '../images/post21_image1.png'
 wip: true

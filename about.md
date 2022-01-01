@@ -18,7 +18,7 @@ permalink: /about/
 |Android Memory| Android Internals, Java and Native memory, ION memory manager |
 |Distributed Systems| High Availability, Resilience & Robustness |
 
-## `now()` Senior Software Engineer at Google
+## `now()` &nbsp; Senior Software Engineer at Google
 > ⚓ Singapore, May 2019 to present
 
 I lead computational photography features like HDR & NightMode in **[CameraGo](https://blog.google/products/android/android-go-camera-go/)**. It's an exciting project which requires building best in "segment" computational photography algorithms improving image quality on less than ideal hardware while being able to process millions of pixels under low latency on rather low-end devices.
@@ -36,7 +36,7 @@ My primary area of focus have been around optimizing the app to run feasibly on 
  - Linux Fundamentals, Memory management in Android
  - Computational Photography, Image Processing
  
-## `now(/* index= */ -1)` - Software Engineer II at Microsoft
+## `now(/* index= */ -1)` &nbsp; Software Engineer II at Microsoft
 > 🇮🇳 Hyderabad, India, June 2016 to May 2019, ~3 years
 
 Worked primarily with **Microsoft Azure**. My day to day involved applied data science, Azure cloud services, distributed systems, and some part of Azure UI. My team was working on an intelligent alerting platform in Azure on features like Smart Grouping capable of automatically grouping user alerts from different sources to reduce mean time to mitigation for customers.
@@ -52,7 +52,7 @@ Worked primarily with **Microsoft Azure**. My day to day involved applied data s
  - Applied ML, Unsupervised Learning, Bayesian Networks, Knowledge Graphs
  - Distributed Systems, Systems design, High Availability
 
-## `now(/* index= */ -2)` - All roles @Todofy
+## `now(/* index= */ -2)` &nbsp; All roles @Todofy
 > Built in my hostel room @New Delhi, Delhi Technological University, ~6 months in 2015
 
 [Todody](https://todofy.org/) was an ambitious project to organize more than 100 million `TODOs` present in Github codebase at the moment. The goal was to build a platform to add life-cycles for those todos and get them to completion and collaborate on them. See [mebjas/csrf-protector-php](https://todofy.org/r/mebjas/CSRF-Protector-PHP) for example. I built this from scratch in the final year of my engineering and hence my roles involved that of an Engineer, Product Manager, PMM, TPM, UX, UXR, and so on. I still feel the problem exists and this could be rebuilt with a much more matured design probably as a `PaaS` service if not `SaaS` solution and could leverage the huge corpus of data on Github to make it super powerful. 

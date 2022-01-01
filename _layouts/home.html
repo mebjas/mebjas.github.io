@@ -21,21 +21,6 @@ layout: default
     </div>
     {% endif %}
 
-    {% assign remainder = forloop.index | modulo: 5 %}
-    {% if remainder == 0 %}
-    <!-- Adsense -->
-    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6209792783516879" crossorigin="anonymous"></script> -->
-    <ins class="adsbygoogle"
-        style="display:block"
-        data-ad-format="fluid"
-        data-ad-layout-key="-fb+5w+4e-db+86"
-        data-ad-client="ca-pub-6209792783516879"
-        data-ad-slot="8896040793"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-    {% endif %}
-
     {% endfor %}
 
   </div>
@@ -44,5 +29,3 @@ layout: default
 <div style="border-top: 1px solid #cfcfcf; margin-top: 30px">
     {% include widget-self.html %}
 </div>
-
-<!-- ads script -->
