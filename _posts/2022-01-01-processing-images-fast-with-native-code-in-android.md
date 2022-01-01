@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Procesing images fast with native code in Android
+title: Processing images fast with native code in Android
 categories: [android, camera2, YUV_420_888, native, YUV, Bitmap, optimisation, JNI, c++]
 description: "If you are writing applications that processes large images captured with a camera or an existing image on the device you need to be extra careful. These days camera on phones are easily equipped with high resolution sensors. Let's look at a 13MP image. It has 13,000,000 pixels. Any operation that interact with every pixel needs like 13 million iterations. In my experience, its both easier and better to handle these complex image processing operations with native code very particularly to keep it performant. This is a very basic article demonstrating how to do image processing with native code in Android. I'll also show by an example that the performance of a very simple and unoptimized C++ code comes very close to fairly optimized Java code for the same problem statement."
 post-no: 36
