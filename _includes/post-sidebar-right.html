@@ -3,6 +3,7 @@
         <h3>Recent posts</h3>
         <ul>
         {% for page in site.posts %}
+            {% if page.wip != true %}
             <li>
                 <a class="post-link" href="{{ page.url | relative_url }}">
                     {{ page.title | escape }}
@@ -11,8 +12,8 @@
                 {% assign date_format = site.minutia.date_format | default: "%b %-d, %Y" %}
                 {{ page.date | date: date_format }}
             </li>
-
-            {% if forloop.index  == 8 %}
+            {% endif %}
+            {% if forloop.index  == 10 %}
             {% break %}
             {% endif %}
         {% endfor %}
