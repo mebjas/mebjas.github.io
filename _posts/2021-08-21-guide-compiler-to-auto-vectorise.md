@@ -19,6 +19,9 @@ C++ compilers these days have code optimization techniques like [loop vectorizer
 
 I gave it a try on Android for a certain code that would convert an 8MP YUV image to ARGB image and observed performance improvements.
 
+## Update - fyi (04/2022)
+An easier to read and updated revision of this article has now been published on [Medium - Guide the compiler to speed-up your code](https://minhazav.medium.com/guide-the-compiler-to-speed-up-your-code-655c1902b262). 
+
 ## SIMD, Vectorization and loop unrolling
 
 ### SIMD vs SISD
@@ -161,7 +164,7 @@ Using following `#pragma` declaration just before the for loop indicates to the 
 So if we fit it into current example:
 
 ```c++
- #pragma clang loop vectorize(assume_safety)
+#pragma clang loop vectorize(assume_safety)
 for (int y = 0; y < image_height; ++y) {
     for (int x = 0; x < image_width; ++x) {
         // .. rest of the code as above.
@@ -185,7 +188,7 @@ Similarly, we can instruct the compiler to unroll loops when compiling with foll
 So if we fit it into current example:
 
 ```c++
- #pragma clang loop vectorize(assume_safety)
+#pragma clang loop vectorize(assume_safety)
 for (int y = 0; y < image_height; ++y) {
     #pragma clang loop unroll_count(4)
     for (int x = 0; x < image_width; ++x) {

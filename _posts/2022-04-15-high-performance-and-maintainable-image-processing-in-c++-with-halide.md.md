@@ -1,19 +1,20 @@
 ---
 layout: post
 title: High performance and maintainable image processing in C++ with Halide
-categories: [android, camera2, Halide, YUV, Bitmap, optimization, JNI]
-description: "Halide is an open-source programming language designed to make it easier to write high-performance image processing or array processing code on modern machines. Rather than being a standalone programming language, Halide is embedded in C++. It currently targets different CPUs, Operating Systems, different compute APIs like CUDA, OpenGl, OpenCL etc.In this article, you can find more information on what Halide is, how to write image processing algorithms with Halide, how it is different from the rest and what kind of performance we can achieve with Halide."
-post-no: 37
+categories: [optimisation, halide, c++, performance, maintenance]
+description: "Halide is an open-source programming language designed to make it easier to write and maintain high-performance image processing or array processing code on modern machines. Rather than being a standalone programming language, Halide is embedded in C++. It currently targets different CPUs, Operating Systems, different compute APIs like CUDA, OpenGl, OpenCL etc. In this article, you can find more information on what Halide is, how to write image processing algorithms with Halide, how it is different from the rest and what kind of performance we can achieve with Halide."
+post-no: 38
 toc: true
-image: '../images/post37_image1.png'
+image: ''
+wip: true
 ---
 
 ## Introduction
 
-**Halide** is an open-source programming language designed to make it easier to write high-performance image processing or array processing code on modern machines. Halide currently targets
+**Halide** is an open-source programming language designed to make it easier to **write and maintain** high-performance image processing or array processing code on modern machines. Halide currently targets
 -   Different CPUs
 -   Different Operating Systems
--   Diff compute APIs like CUDA, OpenCL, OpenGL, etc.
+-   Diff compute APIs like `CUDA`, `OpenCL`, `OpenGL`, etc.
 
 Rather than being a standalone programming language, Halide is embedded in C++. This means you write C++ code that builds an in-memory representation of a Halide pipeline using Halide's C++ API. You can then compile this representation to an object file, or JIT-compile it and run it in the same process. You can [read more about it at halide-lang.org](https://halide-lang.org).
 
@@ -65,16 +66,6 @@ I have been experimenting with performance of different frameworks or technologi
 
 I plan to write a full series article that explains performance of different approaches. Here are the numbers for the approaches published so far:
 
-{:class="styled-table"}
-| Approach | Average | Notes |
-| --- | --- | --- |
-| [Java](https://blog.minhazav.dev/faster-image-processing-in-android-java-using-multi-threading/)	| 353 ms |	~11.2x slower |
-| [Java multithreaded](https://blog.minhazav.dev/faster-image-processing-in-android-java-using-multi-threading/#multi-threaded-java-code) | 53.8 ms |	~1.7x slower |
-| [RenderScript](https://blog.minhazav.dev/how-to-use-renderscript-to-convert-YUV_420_888-yuv-image-to-bitmap/) | 31.5 ms |	fastest among these |
-| [Native](https://blog.minhazav.dev/processing-images-fast-with-native-code-in-android/#performance) | 76.4 ms |	~2.4x slower |
-| [Native + some compiler directives](https://blog.minhazav.dev/guide-compiler-to-auto-vectorise/) | 64.5 ms |	~2x slower |
-
-_Table 1: Performance latency of converting a `8MP (3264x2448)` YUV Image to Bitmap on Pixel 4a device_.
 
 In next few sections I'll be explaining the general structure of Halide code, Halide code example for this problem statements, try out different kind of schedules for the target hardare and pick the best one and publish performance numbers. I'll also draw out some conclusions based on the findings towards the end of this article.
 
@@ -129,7 +120,25 @@ TBA
 TBA
 
 ## Performance comparision
-TBA
+## Personal experiments on Android
+I have been learning and testing performance of different ways we can write computational photography algorithms on Android. I have published a series of article on this topic:
+ -  
+ -   
+
+Here's summary of the performance and it's comparision to Halide counterpart.
+
+
+{:class="styled-table"}
+| Approach | Average | Notes |
+| --- | --- | --- |
+| [Java](https://blog.minhazav.dev/faster-image-processing-in-android-java-using-multi-threading/)	| 353 ms |	~11.2x slower |
+| [Java multithreaded](https://blog.minhazav.dev/faster-image-processing-in-android-java-using-multi-threading/#multi-threaded-java-code) | 53.8 ms |	~1.7x slower |
+| [RenderScript](https://medium.com/computational-photography/fast-image-processing-in-android-with-renderscript-4bc6992ba48e) | 31.5 ms |	fastest among these |
+| [Native](https://betterprogramming.pub/processing-images-fast-with-native-code-in-android-db8b21001fa9) | 76.4 ms |	~2.4x slower |
+| [Native + some compiler directives](https://betterprogramming.pub/guide-the-compiler-to-speed-up-your-code-655c1902b262) | 64.5 ms |	~2x slower |
+| Halide implementation | 64.5 ms |	~2x slower |
+
+_Table 1: Performance latency of converting a `8MP (3264x2448)` YUV Image to Bitmap on Pixel 4a device_.
 
 ## Conclusions
 TBA
