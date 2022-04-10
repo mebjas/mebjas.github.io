@@ -394,3 +394,47 @@
         display: block;
     }
 }
+
+.post-embed {
+    border: 1px solid silver;
+    margin: 10px;
+    display: flex;
+    padding: 0px;
+    max-height: 150px;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+  
+.post-embed .post-embed-image {
+    margin: 0px;
+    padding: 0px;
+}
+
+.post-embed .post-embed-article {
+    margin: 0px;
+    padding: 20px;
+}
+
+.post-embed .post-embed-image img {
+    margin: 0px;
+    padding: 0px;
+}
+
+.post-embed-article-title a {
+    text-decoration: none;
+    font-size: 16pt;
+    font-weight: bold;
+}
+
+.post-embed-article-title {
+    margin-bottom: 10px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.post-embed-article-subtitle {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-height: 75px;
+}
