@@ -147,9 +147,11 @@ This is very significant performance boost, but it comes with certain caveats:
 So the need was to have a way to achieve high performance while retaining portability, simplicity and maintainability of the code.
 
 ## What does Halide lang offer
-**Halide enables us to write simpler high performance code** by separating the algorithm of an image processing pipeline from how to efficiently run it on a certain maichine. As programmers, we still need to define how the algorithm should be executed - but defining these strategies much easier to **write**, **test** and **maintain**.
+**Halide enables us to write simpler high performance code** by separating the algorithm of an image processing pipeline from how to efficiently run it on a certain machine. As programmers, we still need to define how the algorithm should be executed - but defining these strategies much easier to **write**, **test** and **maintain**.
 
-This separation makes it much easier to separately maintain the algorithm and schedule. Also, it makes it much faster to try out different schedules which otherwise requires complex loop structure changes. The same `3x3 box blur` in Halide is written as
+This separation also makes it much easier to separately maintain the algorithm and schedule. It makes it much faster to try out different schedules which otherwise requires complex loop structure changes.
+
+The same `3x3 box blur` in Halide is written as
 
 ```c++
 Func halide_blur(Func in) {
@@ -193,6 +195,12 @@ Halide code makes it much easier to do so. From engineering perspective this sig
 | Maintainability | Easy to maintain | Hard to maintain, might be troublesome if the experts leave the team. | Easy to maintain. Some additional expertise still needed - but easier to learn than learning intrinsics for each hardware. |
 
 It's thus fair to conclude that - **Halide language allows us to write fast and maintainable code.**
+
+Even an expert takes time to come up with fast code - **Halide makes it much easier to explore the choise space for different approaches.**
+
+## Shout out to the development team
+A huge shout out to the Jonathan Ragan-Kelly and team for coming up with Halide and making it open source. Much of the content in this article is derived from their work published on - [Halide: decoupling algorithms from schedules for high-performance image processing](https://dl.acm.org/doi/10.1145/3150211).
+I have been very fortunate for getting change to work with some of the authors and involved members.
 
 ## Article Series
 This article is part of a multi part series. In the next article I'll be talking about the general concepts in Halide code.

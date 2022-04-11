@@ -27,10 +27,10 @@ In the last article of this series
   </div>
 </div>
 
-I explianed:
+I explained:
 -    What is Halide?
--    Need for Halide?
--    How Halide addresses this!
+-    What is the need for Halide?
+-    How Halide addresses the need.
 
 In this article I'll dig deeper and share some general concepts in Halide - key data types and different schedule primitives. For different schedule primitives - example of generated code and demo of code execution is included.
 
@@ -41,7 +41,7 @@ In this article I'll dig deeper and share some general concepts in Halide - key 
 ## Halide concepts - the general structure
 > I'll be covering this topic just at the surface, for learning more please checkout the tutorials at [halide-lang.org/tutorials](https://halide-lang.org/tutorials/tutorial_introduction.html).
 
-A Halide code typically have some `input(s)`, one or more `output(s)`, some expressions that expresses the conversion of `input(s)` to `output(s)` and one or more schedules defining how the algorithm should run. We can define multiple schedules each targetting a different subset of hardware. Also, Halide code typically have three key components:
+A Halide code typically have some `input(s)`, one or more `output(s)`, some expressions that expresses the conversion of `input(s)` to `output(s)` and one or more schedules defining how the algorithm should run. We can define multiple schedules each targeting a different subset of hardware. Also, Halide code typically have three key components:
 
 -   `Func`: A `Func` object represents a pipeline stage. It's a pure function that defines what value each pixel should have. You can think of it as a computed image.
 -   `Var`: `Var` objects are names to use as variables in the definition of a Func. They have no meaning by themselves. We generally use `x` and `y` as variables that define the `x axes` and `y axes` of images.
@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
 
 > Source: [halide-lang.org > tutorials > lesson 1](https://halide-lang.org/tutorials/tutorial_lesson_01_basics.html)
 
-This should generate something like this
+This should generate an image, something like this
 
 <div style="text-align: center; margin-bottom: 10px">
     <img src="../images/halide/gradient_vidris.png"
@@ -101,14 +101,14 @@ for (int y = 0; y < HEIGHT; ++y) {
     <i>Figure: Execution order of the gradient example - default. Source: <a href="https://halide-lang.org/tutorials/tutorial_lesson_05_scheduling_1.html">halide-lang.org</a>, Apache license.</i>
 </div>
 
-Let's take a look at different schedule options:
+Let's take a look at different schedule options.
 
 #### Reorder
 ```c++
 gradient.reorder(x, y);
 ```
 
-This reorders the sequence of iteration, in this the loop shall be exectured in column major fashion. The generated code will instead look like
+This reorders the sequence of iteration, in this the loop shall be executed in column major fashion. The generated code will instead look like
 
 ```c++
 for (int x = 0; x < WIDTH; ++x) {
@@ -176,7 +176,7 @@ Var x_outer, x_inner, y_outer, y_inner;
 gradient.tile(x, y, x_outer, y_outer, x_inner, y_inner, 4, 4);
 ```
 
-With both split and reorder in hand, we can now do tiled evaluations. The above shedule allows us to split both `x` and `y` loop by a factor of 4 and reorder the order of execution. The generated code is now complex but should look something like
+With both split and reorder in hand, we can now do tiled evaluations. The above schedule allows us to split both `x` and `y` loop by a factor of 4 and reorder the order of execution. The generated code is now complex but should look something like
 
 ```c++
 for (int y_outer = 0; y_outer < 2; y_outer++) {
@@ -210,7 +210,7 @@ gradient.vectorize(x_inner);
 gradient.vectorize(x, 4);
 ```
 
-We can instruct the compiler to now generate instructions to vectorise the inner loops in `x` for loops.
+We can instruct the compiler to now generate instructions to vectorize the inner loops in `x` for loops.
 This generates code like
 
 ```c++
@@ -328,6 +328,10 @@ And it gets executed something like this
     <br>
     <i>Figure: Putting it all together. Source: <a href="https://halide-lang.org/tutorials/figures/lesson_05_vectors.gif">halide-lang.org</a>, Apache license.</i>
 </div>
+
+## Shout out to the development team
+
+A huge shout out to the Jonathan Ragan-Kelly and team for coming up with Halide and making it open source. Much of the content in this article is derived from their work published as tutorials at [halide-lang.org/tutorials](https://halide-lang.org/tutorials/tutorial_introduction.html).
 
 ## References
 1.   [Halide - halide-lang.org](https://halide-lang.org/)
