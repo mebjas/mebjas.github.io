@@ -196,7 +196,7 @@ Halide code makes it much easier to do so. From engineering perspective this sig
 
 It's thus fair to conclude that - **Halide language allows us to write fast and maintainable code.**
 
-Even an expert takes time to come up with fast code - **Halide makes it much easier to explore the choise space for different approaches.**
+Even an expert takes time to come up with fast code - **Halide makes it much easier to explore the choice space for different approaches.**
 
 ## Shout out to the development team
 A huge shout out to the Jonathan Ragan-Kelly and team for coming up with Halide and making it open source. Much of the content in this article is derived from their work published on - [Halide: decoupling algorithms from schedules for high-performance image processing](https://dl.acm.org/doi/10.1145/3150211).
