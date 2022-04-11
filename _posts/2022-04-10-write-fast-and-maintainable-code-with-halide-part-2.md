@@ -36,6 +36,7 @@ In this article I'll dig deeper and share some general concepts in Halide - key 
 
 > This article is pretty much a fork of the [documentation](https://halide-lang.org/index.html#gettingstarted) and [tutorials](https://halide-lang.org/tutorials/tutorial_introduction.html) shared by the Halide development team. I have tried to summarize some of the primary concepts for the readers and my own future reference.
 
+> **Important Disclaimer**: Any opinion called out in this article are my own and don't reflect opinion or stance of the organizations I work with.
 
 ## Halide concepts - the general structure
 > I'll be covering this topic just at the surface, for learning more please checkout the tutorials at [halide-lang.org/tutorials](https://halide-lang.org/tutorials/tutorial_introduction.html).
