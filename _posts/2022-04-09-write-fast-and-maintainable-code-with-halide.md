@@ -31,6 +31,8 @@ Halide is used very often in Google, for example in the famous HDR+ algorithm th
 
 I work on [Camera from Google](https://developers.google.com/camera) at Google and we use Halide language extensively for implementing our features like [HDR](https://developers.google.com/camera/features#hdr) or [Night Mode](https://developers.google.com/camera/features#full-resolution-night-mode). Migrating to Halide from Open CV helped us significantly improve performance of some of these algorithms on the arm chipsets that power most of Android devices.
 
+> **Important Disclaimer**: Any opinion called out in this article are my own and don't reflect opinion or stance of the organizations I work with.
+
 ## Need: Why should I care about yet another programming language?
 
 ### Scale: Let's look at the scale first
@@ -42,9 +44,9 @@ Let's take the example of computational photography algorithms. These days mobil
 f(x) = a * x + b
 ```
 
-We have to run `~13 million` iterations.
+We have to run this function for `~13 million` pixels.
 
-But, its good for us that - the CPUs are neither single core nor scalar. So we can often take advantages of multiple cores and [support for vector instructions](https://minhazav.medium.com/guide-the-compiler-to-speed-up-your-code-655c1902b262) in the modern CPUs to improve the runtime latency of these algorithms by multiple order.
+But, its good for us that - the CPUs that we are dealing with, are neither single core nor scalar. So we can often take advantages of multiple cores and [support for vector instructions](https://minhazav.medium.com/guide-the-compiler-to-speed-up-your-code-655c1902b262) in the modern CPUs to improve the runtime latency of these algorithms by multiple order.
 
 ### Example: 3x3 blur
 
@@ -53,9 +55,9 @@ But, its good for us that - the CPUs are neither single core nor scalar. So we c
     <i>Figure: Original image (left) and Box Blurred image with 3x3 box kernel (right).</i>
 </div>
 
-You can blur an image by convolving it with a 3x3 box filter. For each pixel at position `(x, y)` you replace it with the average of all pixels in it's neighbourhood.
+You can blur an image by convolving it with a 3x3 box filter. For each pixel at position `(x, y)` you replace it with the average of all pixels in it's immediate neighborhood.
 
-The brute-force approach would be to do it for every pixel, thus getting a time complexity of `O(K^2 * WH)` for `K=3` and `W` and `H` being width and height of the image respectively.
+The brute-force approach would be to do it for every pixel, thus getting a time complexity of `O(K^2 * WH)` for `K` being the kernel size (= 3 here) and W and H being width and height of the image respectively.
 
 ```c++
 void blur(const Image<uint16_t> &in, Image<uint16_t> &bv) {
@@ -73,9 +75,9 @@ void blur(const Image<uint16_t> &in, Image<uint16_t> &bv) {
 }
 ```
 
-And one improvement over this is to leverage [seperability of kernel](https://en.wikipedia.org/wiki/Separable_filter). We can decompose the single `3x3` kernel into two `1x3` and `3x1` kernels.
+And one improvement over this is to leverage [separability of kernel](https://en.wikipedia.org/wiki/Separable_filter). We can decompose the single `3x3` kernel into two `1x3` and `3x1` kernels.
 
-thus split this step into row and colum interations reducing the complexity to `O((K + K)WH)`. For `K=3` that alone should be `~50%` optimisation.
+This way we split the single step into row and column interations reducing the complexity to `O((K + K)WH)`. For `K=3` that alone should be `~50%` optimisation.
 
 ```c++
 void blur(const Image<uint16_t> &in, Image<uint16_t> &bv) {
@@ -133,19 +135,23 @@ void fast_blur(const Image<uint16_t> &in, Image<uint16_t> &bv) {
 }
 ```
 
-This approach reduces the average latency to `0.30ms/MP` which is like **20x faster**. This is very significant performance boost, but this comes with caveats.
+This approach reduces the average latency to `0.30ms/MP` which is like **20x faster**. 
 
--    **Portability**: The instructions used in the code are not supported for all CPU types and are thus not portable across different chipsets. To achieve best performance on a different CPU type (example 32 bit architecture), we need to write another implementation of similar nature. One that leverages the intrinsics supported for that CPU type.
--    **Simplicity**: This requires the engineers in the team to have strong domain knowledge to both build and maintain the algorithms across different implementations. Realistically, such domain knowledge is often rare.
--   **Maintainability**: If the team needs to update the algorithms, they need to pay the cost of several modifications and sometimes even how the loops are structured to achieve best performance. This will overall cost the teams much more engieering-hours.
+This is very significant performance boost, but it comes with certain caveats:
+
+-    **Portability**: The instructions used in the code are not supported on all CPU types and thus, are not portable across different chipsets. To achieve best performance on a different CPU type (example 32 bit architecture), we need to write another implementation of similar nature. One that leverages the set of intrinsic, supported for that CPU type.
+-    **Simplicity**: This requires the engineers in the team to have strong domain knowledge - to both build and maintain these algorithms across different implementations. Realistically, such domain knowledge is often rare.
+-   **Maintainability**: If the team needs to update the algorithms, they need to pay the cost of several modifications and sometimes even down to - how the loops are structured to achieve best performance. This will overall cost the teams much more engineering-hours than standard approaches.
 
 ### Answer for "Need"
-So the need was to have a way to achieve both best performance while retaining portability, simplicity and maintainability of the code.
+So the need was to have a way to achieve high performance while retaining portability, simplicity and maintainability of the code.
 
 ## What does Halide lang offer
-**Halide enables us to write simpler high performance code** by separating the algorithm of an image processing pipeline from how to efficiently run it on a certain maichine. As programmers, we still need to define how the algorithm should be executed - but defining these strategies much easier to **write**, **test** and **maintain**.
+**Halide enables us to write simpler high performance code** by separating the algorithm of an image processing pipeline from how to efficiently run it on a certain machine. As programmers, we still need to define how the algorithm should be executed - but defining these strategies much easier to **write**, **test** and **maintain**.
 
-This separation makes it much easier to separately maintain the algorithm and schedule. Also, it makes it much faster to try out different schedules which otherwise requires complex loop structure changes. The same `3x3 box blur` in Halide is written as
+This separation also makes it much easier to separately maintain the algorithm and schedule. It makes it much faster to try out different schedules which otherwise requires complex loop structure changes.
+
+The same `3x3 box blur` in Halide is written as
 
 ```c++
 Func halide_blur(Func in) {
@@ -189,6 +195,12 @@ Halide code makes it much easier to do so. From engineering perspective this sig
 | Maintainability | Easy to maintain | Hard to maintain, might be troublesome if the experts leave the team. | Easy to maintain. Some additional expertise still needed - but easier to learn than learning intrinsics for each hardware. |
 
 It's thus fair to conclude that - **Halide language allows us to write fast and maintainable code.**
+
+Even an expert takes time to come up with fast code - **Halide makes it much easier to explore the choice space for different approaches.**
+
+## Shout out to the development team
+A huge shout out to the Jonathan Ragan-Kelly and team for coming up with Halide and making it open source. Much of the content in this article is derived from their work published on - [Halide: decoupling algorithms from schedules for high-performance image processing](https://dl.acm.org/doi/10.1145/3150211).
+I have been very fortunate for getting change to work with some of the authors and involved members.
 
 ## Article Series
 This article is part of a multi part series. In the next article I'll be talking about the general concepts in Halide code.

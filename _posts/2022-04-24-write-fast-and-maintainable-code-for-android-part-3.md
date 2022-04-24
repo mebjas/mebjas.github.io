@@ -27,6 +27,8 @@ This article is part of my multi-article effort showcasing different ways to wri
 
 For the purpose of evaluating different approaches I took one problem statement and benchmaked performance of different ways I could address the problem. Here's the problem statement
 
+> **Important Disclaimer**: Any opinion called out in this article are my own and don't reflect opinion or stance of the organizations I work with.
+
 ## Problem statement: YUV to RGB conversion
 
 The problem statement is to convert an 8MP (3264x2448) image in a certain format called [YUV_420_888](https://developer.android.com/reference/android/graphics/ImageFormat#YUV_420_888) which has one planar `Y` channel and two semi-planar subsampled `UV` channels to [ARGB_8888](https://developer.android.com/reference/android/graphics/Bitmap.Config#ARGB_8888) format which is commonly supported with [Bitmap](https://developer.android.com/reference/android/graphics/Bitmap) in Android. You can read more about [YUV format on Wikipedia](https://en.wikipedia.org/wiki/YUV). Also, the articles below have a better description of the problem statement.
