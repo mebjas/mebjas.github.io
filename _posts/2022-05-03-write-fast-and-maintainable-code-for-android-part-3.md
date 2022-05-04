@@ -3,9 +3,10 @@ layout: post
 title: write fast and maintainable code in Android, using Halide - part 3
 categories: [optimisation, halide, c++, performance, maintenance, android, jni]
 description: "Halide is an open-source programming language designed to make it easier to write and maintain high-performance image processing or array processing code on modern machines. Rather than being a standalone programming language, Halide is embedded in C++. It currently targets different CPUs, Operating Systems, different compute APIs like CUDA, OpenGl, OpenCL etc. In this article, you can find more information on what Halide is, how to write image processing algorithms with Halide, how it is different from the rest and what kind of performance we can achieve with Halide."
-post-no: 39
+post-no: 40
 toc: true
 image: '../images/pexels/city-buildings-through-the-silver-iphone-6-65538/image_w700.jpg'
+wip: true
 ---
 
 ## Introduction
