@@ -1,8 +1,8 @@
 ---
 layout: post
-title: write fast and maintainable code in Android, using Halide - part 3
+title: Fast and maintainable image processing in Android with Halide - Part 3
 categories: [optimisation, halide, c++, performance, maintenance, android, jni]
-description: "Halide is an open-source programming language designed to make it easier to write and maintain high-performance image processing or array processing code on modern machines. Rather than being a standalone programming language, Halide is embedded in C++. It currently targets different CPUs, Operating Systems, different compute APIs like CUDA, OpenGl, OpenCL etc. In this article, you can find more information on what Halide is, how to write image processing algorithms with Halide, how it is different from the rest and what kind of performance we can achieve with Halide."
+description: "Halide is an open-source domain specific language designed to make it easier to write and maintain high-performance image processing or array processing code on modern machines. I have been writing a series on Halide and this article is 3rd one in the series. In this article I will be wrting about how to use Halide with Android. To assert on the performance benefits I am going to use the problem statement of YUV to RGB color format conversion. I have written couple of articles in the past showing different ways to do image processing in Android with this example."
 post-no: 40
 toc: true
 image: '../images/pexels/city-buildings-through-the-silver-iphone-6-65538/image_w700.jpg'
