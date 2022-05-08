@@ -6,31 +6,26 @@ description: "Halide is an open-source programming language designed to make it 
 post-no: 40
 toc: true
 image: '../images/pexels/city-buildings-through-the-silver-iphone-6-65538/image_w700.jpg'
-wip: true
 ---
 
 ## Introduction
 
-**Halide** is an open-source programming language designed to make it easier to **write and maintain** high-performance image processing or array processing code on modern machines. Halide currently targets
--   Different CPUs
--   Different Operating Systems
--   Diff compute APIs like `CUDA`, `OpenCL`, `OpenGL`, etc.
+**Halide** is an open-source domain specific language designed to make it easier to **write and maintain** high-performance image processing or array processing code on modern machines. 
 
-Rather than being a standalone programming language, Halide is embedded in C++. This means you write C++ code that builds an in-memory representation of a Halide pipeline using Halide's C++ API. You can then compile this representation to an object file, or JIT-compile it and run it in the same process. You can [read more about it at halide-lang.org](https://halide-lang.org).
+I have been writing a series on Halide and this article is 3rd one in the series. In the last two articles I talked about:
 
-This article is part of my multi-article effort showcasing different ways to write image processing algorithms in Android. 
+-   [Part 2 - Understanding the General Concepts of Halide Programming Language](https://betterprogramming.pub/write-fast-and-maintainable-code-with-halide-the-general-concepts-4d865466bb8c)
+    -  [Mirror outside of Medium](https://blog.minhazav.dev/write-fast-and-maintainable-code-with-halide-part-2/)
+-   [Part 1 - Writing Fast and Maintainable Code With Halide —The Pilot Episode](https://betterprogramming.pub/write-fast-and-maintainable-code-with-halide-part-1-6a5c3a519250)
+    -  [Mirror outside of Medium](https://blog.minhazav.dev/write-fast-and-maintainable-code-with-halide/)
 
-<div style="text-align: center; margin-bottom: 10px">
-    <img src="../images/post37_image1.png"
-      style="margin: auto; width: 95%; max-width: 700px; margin-bottom: 20px">
-    <br>
-</div>
-
-For the purpose of evaluating different approaches I took one problem statement and benchmaked performance of different ways I could address the problem. Here's the problem statement
+In this article I will be wrting about how to use Halide with Android. To assert on the performance benefits I am going to use the problem statement of `YUV` to `RGB` color format conversion. I have written couple of articles in the past showing different ways to do image processing in Android with this example.
 
 > **Important Disclaimer**: Any opinion called out in this article are my own and don't reflect opinion or stance of the organizations I work with.
 
 ## Problem statement: YUV to RGB conversion
+
+> If you are purely interested in learning how to use Halide with Android, you can skip this sub-section.
 
 The problem statement is to convert an 8MP (3264x2448) image in a certain format called [YUV_420_888](https://developer.android.com/reference/android/graphics/ImageFormat#YUV_420_888) which has one planar `Y` channel and two semi-planar subsampled `UV` channels to [ARGB_8888](https://developer.android.com/reference/android/graphics/Bitmap.Config#ARGB_8888) format which is commonly supported with [Bitmap](https://developer.android.com/reference/android/graphics/Bitmap) in Android. You can read more about [YUV format on Wikipedia](https://en.wikipedia.org/wiki/YUV). Also, the articles below have a better description of the problem statement.
 
@@ -66,84 +61,186 @@ I have been experimenting with performance of different frameworks or technologi
 </div>
 <br>
 
-I plan to write a full series article that explains performance of different approaches. Here are the numbers for the approaches published so far:
+With the approaches listed above I got following performance running by benchmarking on Pixel 4a device.
 
+{:class="styled-table"}
+| Approach | Average | Notes |
+| --- | --- | --- |
+| [Java default](https://blog.minhazav.dev/faster-image-processing-in-android-java-using-multi-threading/)	| 353 ms |	11.2x slower |
+| [Java multi-threaded](https://blog.minhazav.dev/faster-image-processing-in-android-java-using-multi-threading/#multi-threaded-java-code) | 53.8 ms |	1.7x slower |
+| [RenderScript](https://blog.minhazav.dev/how-to-use-renderscript-to-convert-YUV_420_888-yuv-image-to-bitmap/) | 31.5 ms |	**fastest so far** |
+| [Native code](https://blog.minhazav.dev/processing-images-fast-with-native-code-in-android) | 76.4 ms | 2.42x slower |
+| [Native code with pragma directives](https://blog.minhazav.dev/guide-compiler-to-auto-vectorise/) | 64.5 ms | 2.04x slower |
 
-In next few sections I'll be explaining the general structure of Halide code, Halide code example for this problem statements, try out different kind of schedules for the target hardare and pick the best one and publish performance numbers. I'll also draw out some conclusions based on the findings towards the end of this article.
+So far, the `RenderScript` based approach was observed to be the fastest. However, RenderScript has been deprecated starting Android 12. You can read more about it [here](https://developer.android.com/guide/topics/renderscript/migrate). The development team has shared some alternatives which are expected to be much more performant on new hardware. 
 
-## Digging deeper: What is Halide and why it exists
-> This section is an optional read, in this section I'll be sharing some more in-depth information on what Halide does and why the project was started. A lot of the content here is derived from the original research paper by Jonathan Ragan-Kelley et. al. on [Halide: Decoupling Algorithms from Schedules for High-Performance Image Processing](https://dl.acm.org/doi/10.1145/3150211)
-
-I think the abstract of the paper tells a lot
-
-> Writing high-performance code on modern machines requires not just locally optimizing inner loops, but globally reorganizing computations to exploit parallelism and locality—doing things such as tiling and blocking whole pipelines to fit in cache. This is especially true for image processing pipelines, where individual stages do much too little work to amortize the cost of loading and storing results to and from off-chip memory. As a result, the performance difference between a naïve implementation of a pipeline and one globally optimized for parallelism and locality is often an order of magnitude. However, using existing programming tools, writing high-performance image processing code requires sacrificing simplicity, portability, and modularity. We argue that this is because traditional programming models conflate the computations defining the algorithm with decisions about intermediate storage and the order of computation, which we call the schedule.
->
-> We propose a new programming language for image processing pipelines, called Halide, that separates the algorithm from its schedule. Programmers can change the schedule to express many possible organizations of a single algorithm. The Halide compiler then synthesizes a globally combined loop nest for an entire algorithm, given a schedule. Halide models a space of schedules which is expressive enough to describe organizations that match or outperform state-of-the-art hand-written implementations of many computational photography and computer vision algorithms. Its model is simple enough to do so often in only a few lines of code, and small changes generate efficient implementations for x86, ARM, Graphics Processors (GPUs), and specialized image processors, all from a single algorithm. Halide has been public and open source for over four years, during which it has been used by hundreds of programmers to deploy code to tens of thousands of servers and hundreds of millions of phones, processing billions of images every day.
-
-## General structure of Halide Code
-> I'll be covering this topic just at the surface, for learning more please checkout the tutorials at [halide-lang.org/tutorials](https://halide-lang.org/tutorials/tutorial_introduction.html).
-
-A Halide code typically have some `input(s)`, one or more `output(s)`, some expressions that expresses the conversion of `input(s)` to `output(s)` and one or more schedules defining how the algorithm should run. We can define multiple schedules each targetting a different subset of hardware. Also, Halide code typically have three key components:
-
--   `Func`: A `Func` object represents a pipeline stage. It's a pure function that defines what value each pixel should have. You can think of it as a computed image.
--   `Var`: `Var` objects are names to use as variables in the definition of a Func. They have no meaning by themselves. We generally use `x` and `y` as variables that define the `x axes` and `y axes` of images.
--   `Expr`: `Expr` allows us to define complex expressions using `Var`s.
-
-I'll use the gradient example shared in the tutorials as example here:
-
-```c++
-int main(int argc, char **argv) {
-  Halide::Func gradient;        // Func defined.
-  Halide::Var x, y;             // Vars defined.
-  Halide::Expr e = x + y;       // An expression for gradient defined, this is
-                                // not really needed in this example, but serves the purpose.
-  gradient(x, y) = e;
-  // This is the same as writing:
-  //   gradient(x, y) = x + y;
-
-  // Run it.
-  Halide::Buffer<int32_t> output = gradient.realize({800, 600});
-  return 0;
-}
-```
-
-In Halide we separate our algorithms from 
-
-
-> Source: [halide-lang.org > tutorials > lesson 1](https://halide-lang.org/tutorials/tutorial_lesson_01_basics.html)
+In the following section, I'll share the Halide based solution for this problem and then look at the benchmark result using this approach.
 
 ## Halide code for YUV to ARGB generation
-As metioned above let's look at the expressions and schedules separately.
+As mentioned in the [previous article](https://betterprogramming.pub/write-fast-and-maintainable-code-with-halide-part-1-6a5c3a519250) Halide allows us to separate the algorithm from schedule. So first let's look at the algorithm for YUV to RGB conversion.
 
-### Expressions
-TBA
+In this case we shall assume that the input image format is [YUV_420_888](https://developer.android.com/reference/android/graphics/ImageFormat#YUV_420_888). Some key aspects of this image format is:
+ -  Luma channel (Y channel) is full resolution and planar. It means Y-plane is guarenteed not to be interleaved with the U/V plane.
+ -  Chroma channel (UV channel) is subsampled and can be interleaved.
+    -   By subsampled it means there is one UV pixel for four Y pixels.
+    -   By inteleaved it means the UV data can be packed in `UVUVUVUVUVUV` pattern in the memory for each row of the image.
+
+In the examples so far, the `ARGB` outputs were has each channel (`R` or `G` or `B` or `A = alpha`) with `uint8` data stored in single `int32` value. We'd continue to do the same.
+
+### The algorithm
+The Halide generator may look something like this.
+
+```c++
+#include "Halide.h"
+
+using namespace Halide;
+
+namespace {
+
+class Yuv2Rgb : public ::Halide::Generator<Yuv2Rgb> {
+ public:
+  // NV12 has UVUVUVUV packaging and NV21 has VUVUVUVU packaging.
+  GeneratorParam<bool> is_nv_12_{"is_nv_12_", true};
+
+  Input<Buffer<uint8_t, 2>> luma_{"luma_"};
+  Input<Buffer<uint8_t, 3>> chroma_subsampled_{"chroma_subsampled_"};
+
+  Output<Buffer<uint32_t, 2>> argb_output_{"argb_output_"};
+
+  void generate() {
+    Var x("x"), y("y"), c("c");
+
+    // Define UV input as interleaved (assumed planar by default).
+    chroma_subsampled_.dim(0).set_stride(2);
+    chroma_subsampled_.dim(2).set_stride(1);
+    chroma_subsampled_.dim(2).set_bounds(0, 2);
+
+    // Algorithm
+    Func uv_centered("uv_centered");
+    uv_centered(x, y, c) =
+        Halide::absd(i16(chroma_subsampled_(x / 2, y / 2, c)), i16(127));
+
+    Func u("u");
+    u(x, y) = uv_centered(x, y, is_nv_12_ ? 0 : 1);
+
+    Func v("v");
+    v(x, y) = uv_centered(x, y, is_nv_12_ ? 1 : 0);
+
+    Expr r = u32(luma_(x, y) + 1.370705f * v(x, y));
+    Expr g = u32(luma_(x, y) - (0.698001f * v(x, y)) - (0.337633f * u(x, y)));
+    Expr b = u32(luma_(x, y) + 1.732446f * u(x, y));
+    Expr alpha = (u32(255) << 24);
+    argb_output_(x, y) = alpha | r << 16 | g << 8 | b;
+
+    // TODO(unknown): Write optimised schedule.
+    argb_output_.compute_root();
+  }
+};
+
+}  // namspace
+
+HALIDE_REGISTER_GENERATOR(Yuv2Rgb, Yuv2RgbHalide)
+```
 
 ### Schedules
-TBA
+In Halide if we do not write any explicit schedule, everything is computed inline. Writing schedule often involve expertise with Halide, the target hardware and some level of hit and trial. IMO, the first step should always be to write benchmarks and run it on target hardware. You can use the open source benchmarking framework at [google/benchmark](https://github.com/google/benchmark) for this purpose.
 
-## Performance comparision
-## Personal experiments on Android
-I have been learning and testing performance of different ways we can write computational photography algorithms on Android. I have published a series of article on this topic:
- -  
- -   
+Let's start with the very first schedule
 
-Here's summary of the performance and it's comparision to Halide counterpart.
+#### Default schedule
+
+```c++
+argb_output_.compute_root();
+```
+
+This will do all the compute inline i.e. inside the two for-loops for each pixel.
+
+Running it on Pixel 4A, I get following results for the above mentioned generator.
+
+{:class="styled-table"}
+| Schedule | Benchmark results | Notes |
+| -- | -- | -- |
+| Default schedule | 62.3 ms | |
+
+This is not very good! We can definitely do better.
+
+#### Split, parallelise and vectorise
+To learn more about these primitives you can the article 2 in this series - [Understanding the General Concepts of Halide Programming Language](https://betterprogramming.pub/write-fast-and-maintainable-code-with-halide-the-general-concepts-4d865466bb8c).
+
+```c++
+// Schedule.
+Var xi("xi"), yi("yi");
+argb_output_.compute_root()
+    .split(y, y, yi, 64)
+    .split(x, x, xi, 32)
+    .vectorize(xi, natural_vector_size<uint8_t>())
+    .reorder(xi, x, y)
+    .parallel(y);
+```
+
+This schedule splits the loop into futher parts, vectorise the instructions in `xi` loop and parallelize `y` loop. Let's look at the benchmark results
+
+{:class="styled-table"}
+| Schedule | Benchmark results | Notes |
+| -- | -- | -- |
+| Default schedule | 62.3 ms | |
+| Split + Parallelise + Vectorise | 5.01 ms ||
+
+> Boom! Do you see the crazy speedup over the default schedule?
+
+There may be further optimisations possible like reducing the number of time `uv_centered` is computed or trying different split factor but it looks good so far.
+
+## Wrapping this Halide generated method with Android
+The above stated generator will generate a C++ method like this
+
+```c++
+int Yuv2RgbHalide(
+  const halide_buffer_t& luma_,
+  const halide_buffer_t& chroma_subsampled_,
+  halide_buffer_t& argb_output_);
+```
+
+Which can be used directly from c++ library or JNI code.
+
+> In future, if needed I'll write about how to setup Halide in Android studio and use it end to end. LMK if it would help over comments.
+
+To connect everything together we need to get the whole end to end pipeline connected which means
+
+```
+Java --> JNI --> Halide --> Java --> Bitmap
+```
+
+This leads to an overall latency of `~28ms`. So if we look at result of different approaches considered so far
 
 
 {:class="styled-table"}
 | Approach | Average | Notes |
 | --- | --- | --- |
-| [Java](https://blog.minhazav.dev/faster-image-processing-in-android-java-using-multi-threading/)	| 353 ms |	~11.2x slower |
-| [Java multithreaded](https://blog.minhazav.dev/faster-image-processing-in-android-java-using-multi-threading/#multi-threaded-java-code) | 53.8 ms |	~1.7x slower |
-| [RenderScript](https://medium.com/computational-photography/fast-image-processing-in-android-with-renderscript-4bc6992ba48e) | 31.5 ms |	fastest among these |
-| [Native](https://betterprogramming.pub/processing-images-fast-with-native-code-in-android-db8b21001fa9) | 76.4 ms |	~2.4x slower |
-| [Native + some compiler directives](https://betterprogramming.pub/guide-the-compiler-to-speed-up-your-code-655c1902b262) | 64.5 ms |	~2x slower |
-| Halide implementation | 64.5 ms |	~2x slower |
+| [Java](https://blog.minhazav.dev/faster-image-processing-in-android-java-using-multi-threading/)	| 353 ms |	~12.6x slower |
+| [Java multithreaded](https://blog.minhazav.dev/faster-image-processing-in-android-java-using-multi-threading/#multi-threaded-java-code) | 53.8 ms |	~1.9x slower |
+| [RenderScript](https://medium.com/computational-photography/fast-image-processing-in-android-with-renderscript-4bc6992ba48e) | 31.5 ms |	~1.1x slower |
+| [Native](https://betterprogramming.pub/processing-images-fast-with-native-code-in-android-db8b21001fa9) | 76.4 ms |	~2.7 slower |
+| [Native + some compiler directives](https://betterprogramming.pub/guide-the-compiler-to-speed-up-your-code-655c1902b262) | 64.5 ms |	~2.3 slower |
+| Halide implementation | 28 ms |	**New fastest** |
 
-_Table 1: Performance latency of converting a `8MP (3264x2448)` YUV Image to Bitmap on Pixel 4a device_.
+>  This gives us both high performance + easy to maintain code! What else does an engineering team want?
+>
+> For this problem I have found another solution which is even faster (latency of roughly ~12ms), but requires hardware specific implementation (leveraging NEON intrinsics) and handling parallelization and all. It's not as easy to write or maintain but definitely worth an article later.
+
 
 ## Conclusions
-TBA
+> People who write very efficient code say they spend at least twice as long optimizing code as they spend writing code. – some one on the Internet
+
+Halide makes it much easier to try and tune different schedules. Easier than manually changing loops order, splitting logic, threading etc. And removes the pain for writing & maintaining ABI specific vectorized code.
+
+-   Approaches like Halide, Auto vectorized C++ code are portable and easier to maintain.
+    -   As compared to explicitly hand tuned, CPU specific code
+-   Always, consider your use-case before optimising
+    -   Example - library developer vs app developer
+    -   Understand the real bottlenecks like if the full operation takes 2s, optimising between 28 ms and 12 ms might not give a huge advantage.
+-   If your application is performance critical
+    -   Benchmark → Breakdown → Optimize
+
 
 ## References
 -   [Halide - halide-lang.org](https://halide-lang.org/)

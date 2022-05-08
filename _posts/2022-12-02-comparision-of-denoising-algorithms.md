@@ -3,7 +3,7 @@ layout: post
 title: Denoising algorithms in image processing - A comparision (part 1)
 categories: [image-processing, spatial-filters, noise-reduction, ]
 description: ""
-post-no: 38
+post-no: 45
 toc: true
 image: '../images/post33_image1.png'
 wip: true
