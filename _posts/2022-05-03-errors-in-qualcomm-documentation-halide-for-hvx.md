@@ -119,7 +119,15 @@ I have a feeling this is intentionally done to make it easier to understand. Eve
 
 ## Actions taken / Updates
 -   `4th May 2022` I have sent emails to `support.cdmatech@qti.qualcomm.com`
-/ `halide@quicinc.com.` (reference from the document). I'll update this article in case there is some updates or response. 
+/ `halide@quicinc.com.` (reference from the document). I'll update this article in case there is some updates or response.
+-   `5th May 2022` I heard back from the lead from the Halide team at Qualcomm. Here's the summary from the email:
+
+> Thank you very much for pointing out these errors. All except the first one have been fixed in subsequent release of the user guide. The version that you have got your hands on is a fairly old ver (Rev. B – the latest is Rev E). It is available on [https://createpoint.qti.qualcomm.com/](https://createpoint.qti.qualcomm.com/) (You’ll need to sign up if you don’t have an account already) Once you log in search for “Halide” in the search bar in the upper right corner.
+>
+> Not only have we fixed these errors, but we have also enhanced the documentation considerably by diving deeper into some of the more nuanced concepts of Halide with particular focus on usage in the context of HVX. Additionally, the latest Qualcomm Halide distributions (starting v2.3.0) contain an HTML version of the User guide as well.
+>
+>
+> I have fixed the first problem ([https://blog.minhazav.dev/errors-in-qualcomm-documentation-halide-for-hvx/#additional-update-in-the-example](https://blog.minhazav.dev/errors-in-qualcomm-documentation-halide-for-hvx/#additional-update-in-the-example)) in our repo and it should be available in our next release and in the next revision of the user guide.
 
 ## References
 
