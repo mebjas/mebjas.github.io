@@ -21,7 +21,9 @@ I am writing this article, assuming:
 
 In this article I'll assume you are aware of Halide and Qualcomm's DSP called Hexagon. Halide has a first class support for generating instructions supported on hexagon called HVX or Hexagon Vector eXtension. If you are not familiar with Halide and are just curious, you can start [here](https://betterprogramming.pub/write-fast-and-maintainable-code-with-halide-part-1-6a5c3a519250).
 
-If you are from Qualcomm and in a position to fix the documentation - please do and let me know. Once again, thanks for the documentation.
+~~If you are from Qualcomm and in a position to fix the documentation - please do and let me know. Once again, thanks for the documentation.~~
+
+> Update: I heard back from Qualcomm team, these issues have been addressed. See more context on the update below. I'm keeping this article as is considering its still the document that shows up first in Google search on the topic.
 
 ## Issues
 Here are a few issues observed.
