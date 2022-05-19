@@ -19,7 +19,7 @@ I have been writing a series on Halide and this article is 3rd one in the series
 -   [Part 1 - Writing Fast and Maintainable Code With Halide —The Pilot Episode](https://betterprogramming.pub/write-fast-and-maintainable-code-with-halide-part-1-6a5c3a519250)
     -  [Mirror outside of Medium](https://blog.minhazav.dev/write-fast-and-maintainable-code-with-halide/)
 
-In this article I will be wrting about how to use Halide with Android. To assert on the performance benefits I am going to use the problem statement of `YUV` to `RGB` color format conversion. I have written couple of articles in the past showing different ways to do image processing in Android with this example.
+In this article I will be wrting about how to use Halide with Android. To show the performance benefits I am going to reuse the problem statement of `YUV` to `RGB` color format conversion. I have written couple of articles in the past showing different ways to do image processing in Android with this example using this example.
 
 > **Important Disclaimer**: Any opinion called out in this article are my own and don't reflect opinion or stance of the organizations I work with.
 
@@ -61,7 +61,7 @@ I have been experimenting with performance of different frameworks or technologi
 </div>
 <br>
 
-With the approaches listed above I got following performance running by benchmarking on Pixel 4a device.
+I have recorded following numbers for the problem statement with different solutions listed above by running them on a Pixel 4A device.
 
 {:class="styled-table"}
 | Approach | Average | Notes |
@@ -74,10 +74,10 @@ With the approaches listed above I got following performance running by benchmar
 
 So far, the `RenderScript` based approach was observed to be the fastest. However, RenderScript has been deprecated starting Android 12. You can read more about it [here](https://developer.android.com/guide/topics/renderscript/migrate). The development team has shared some alternatives which are expected to be much more performant on new hardware. 
 
-In the following section, I'll share the Halide based solution for this problem and then look at the benchmark result using this approach.
+In this article, I'll share the Halide based solution for this problem and then look at the performance numbers of Halide based solution.
 
 ## Halide code for YUV to ARGB generation
-As mentioned in the [previous article](https://betterprogramming.pub/write-fast-and-maintainable-code-with-halide-part-1-6a5c3a519250) Halide allows us to separate the algorithm from schedule. So first let's look at the algorithm for YUV to RGB conversion.
+As mentioned in the [previous article](https://betterprogramming.pub/write-fast-and-maintainable-code-with-halide-part-1-6a5c3a519250), Halide allows us to separate the algorithm from schedule. So first let's look at the algorithm for YUV to RGB conversion.
 
 In this case we shall assume that the input image format is [YUV_420_888](https://developer.android.com/reference/android/graphics/ImageFormat#YUV_420_888). Some key aspects of this image format is:
  -  Luma channel (Y channel) is full resolution and planar. It means Y-plane is guarenteed not to be interleaved with the U/V plane.
@@ -132,7 +132,7 @@ class Yuv2Rgb : public ::Halide::Generator<Yuv2Rgb> {
     Expr alpha = (u32(255) << 24);
     argb_output_(x, y) = alpha | r << 16 | g << 8 | b;
 
-    // TODO(unknown): Write optimised schedule.
+    // TODO(mebjas): Write optimised schedule.
     argb_output_.compute_root();
   }
 };
@@ -191,7 +191,7 @@ This schedule splits the loop into futher parts, vectorise the instructions in `
 There may be further optimisations possible like reducing the number of time `uv_centered` is computed or trying different split factor but it looks good so far.
 
 ## Wrapping this Halide generated method with Android
-The above stated generator will generate a C++ method like this
+The above stated generator will generate a C++ method definition like this
 
 ```c++
 int Yuv2RgbHalide(
