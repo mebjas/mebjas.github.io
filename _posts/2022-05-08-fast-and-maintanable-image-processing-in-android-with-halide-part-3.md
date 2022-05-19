@@ -19,9 +19,9 @@ I have been writing a series on Halide and this article is 3rd one in the series
 -   [Part 1 - Writing Fast and Maintainable Code With Halide —The Pilot Episode](https://betterprogramming.pub/write-fast-and-maintainable-code-with-halide-part-1-6a5c3a519250)
     -  [Mirror outside of Medium](https://blog.minhazav.dev/write-fast-and-maintainable-code-with-halide/)
 
-In this article I will be wrting about how to use Halide with Android. To show the performance benefits I am going to reuse the problem statement of `YUV` to `RGB` color format conversion. I have written couple of articles in the past showing different ways to do image processing in Android with this example using this example.
+In this article I will be writing about how to use Halide with Android. To show the performance benefits I am going to reuse the problem statement of `YUV` to `RGB` colour format conversion. I have written couple of articles in the past showing different ways to do image processing in Android with this example using this example.
 
-> **Important Disclaimer**: Any opinion called out in this article are my own and don't reflect opinion or stance of the organizations I work with.
+> **Important Disclaimer**: Any opinion called out in this article are my own and don't reflect opinion or stance of the organisations I work with.
 
 ## Problem statement: YUV to RGB conversion
 
@@ -68,9 +68,9 @@ I have recorded following numbers for the problem statement with different solut
 | --- | --- | --- |
 | [Java default](https://blog.minhazav.dev/faster-image-processing-in-android-java-using-multi-threading/)	| 353 ms |	11.2x slower |
 | [Java multi-threaded](https://blog.minhazav.dev/faster-image-processing-in-android-java-using-multi-threading/#multi-threaded-java-code) | 53.8 ms |	1.7x slower |
-| [RenderScript](https://blog.minhazav.dev/how-to-use-renderscript-to-convert-YUV_420_888-yuv-image-to-bitmap/) | 31.5 ms |	**fastest so far** |
-| [Native code](https://blog.minhazav.dev/processing-images-fast-with-native-code-in-android) | 76.4 ms | 2.42x slower |
-| [Native code with pragma directives](https://blog.minhazav.dev/guide-compiler-to-auto-vectorise/) | 64.5 ms | 2.04x slower |
+| [RenderScript](https://medium.com/computational-photography/fast-image-processing-in-android-with-renderscript-4bc6992ba48e) | 31.5 ms |	**fastest so far** |
+| [Native code](https://betterprogramming.pub/processing-images-fast-with-native-code-in-android-db8b21001fa9) | 76.4 ms | 2.42x slower |
+| [Native code with pragma directives](https://betterprogramming.pub/guide-the-compiler-to-speed-up-your-code-655c1902b262) | 64.5 ms | 2.04x slower |
 
 So far, the `RenderScript` based approach was observed to be the fastest. However, RenderScript has been deprecated starting Android 12. You can read more about it [here](https://developer.android.com/guide/topics/renderscript/migrate). The development team has shared some alternatives which are expected to be much more performant on new hardware. 
 
@@ -79,11 +79,11 @@ In this article, I'll share the Halide based solution for this problem and then 
 ## Halide code for YUV to ARGB generation
 As mentioned in the [previous article](https://betterprogramming.pub/write-fast-and-maintainable-code-with-halide-part-1-6a5c3a519250), Halide allows us to separate the algorithm from schedule. So first let's look at the algorithm for YUV to RGB conversion.
 
-In this case we shall assume that the input image format is [YUV_420_888](https://developer.android.com/reference/android/graphics/ImageFormat#YUV_420_888). Some key aspects of this image format is:
- -  Luma channel (Y channel) is full resolution and planar. It means Y-plane is guarenteed not to be interleaved with the U/V plane.
+In this case we shall assume that the input image format is [YUV_420_888](https://developer.android.com/reference/android/graphics/ImageFormat#YUV_420_888). Some key aspects of this image format are
+ -  Luma channel (Y channel) is full resolution and planar. It means Y-plane is guaranteed not to be interleaved with the U/V plane.
  -  Chroma channel (UV channel) is subsampled and can be interleaved.
     -   By subsampled it means there is one UV pixel for four Y pixels.
-    -   By inteleaved it means the UV data can be packed in `UVUVUVUVUVUV` pattern in the memory for each row of the image.
+    -   By interleaved it means the UV data can be packed in `UVUVUVUVUVUV` pattern in the memory for each row of the image.
 
 In the examples so far, the `ARGB` outputs were has each channel (`R` or `G` or `B` or `A = alpha`) with `uint8` data stored in single `int32` value. We'd continue to do the same.
 
@@ -178,7 +178,7 @@ argb_output_.compute_root()
     .parallel(y);
 ```
 
-This schedule splits the loop into futher parts, vectorise the instructions in `xi` loop and parallelize `y` loop. Let's look at the benchmark results
+This schedule splits the loop into further parts, vectorise the instructions in `xi` loop and parallelise `y` loop. Let's look at the benchmark results
 
 {:class="styled-table"}
 | Schedule | Benchmark results | Notes |
@@ -202,7 +202,7 @@ int Yuv2RgbHalide(
 
 Which can be used directly from c++ library or JNI code.
 
-> In future, if needed I'll write about how to setup Halide in Android studio and use it end to end. LMK if it would help over comments.
+> In future, if needed I will write about how to setup Halide in Android studio and use it end to end. LMK if it would help over comments.
 
 To connect everything together we need to get the whole end to end pipeline connected which means
 
@@ -225,27 +225,27 @@ This leads to an overall latency of `~28ms`. So if we look at result of differen
 
 >  This gives us both high performance + easy to maintain code! What else does an engineering team want?
 >
-> For this problem I have found another solution which is even faster (latency of roughly ~12ms), but requires hardware specific implementation (leveraging NEON intrinsics) and handling parallelization and all. It's not as easy to write or maintain but definitely worth an article later.
+> For this problem I have found another solution which is even faster (latency of roughly ~12ms), but requires hardware specific implementation (leveraging NEON intrinsics) and handling parallelisation and all. It's not as easy to write or maintain but definitely worth an article later.
 
 
 ## Conclusions
 > People who write very efficient code say they spend at least twice as long optimizing code as they spend writing code. – some one on the Internet
 
-Halide makes it much easier to try and tune different schedules. Easier than manually changing loops order, splitting logic, threading etc. And removes the pain for writing & maintaining ABI specific vectorized code.
+Halide makes it much easier to try and tune different schedules. Easier than manually changing loops order, splitting logic, threading etc. And removes the pain for writing & maintaining ABI specific vectorised code.
 
--   Approaches like Halide, Auto vectorized C++ code are portable and easier to maintain.
+-   Approaches like Halide, Auto vectorised C++ code are portable and easier to maintain.
     -   As compared to explicitly hand tuned, CPU specific code
 -   Always, consider your use-case before optimising
     -   Example - library developer vs app developer
     -   Understand the real bottlenecks like if the full operation takes 2s, optimising between 28 ms and 12 ms might not give a huge advantage.
 -   If your application is performance critical
-    -   Benchmark → Breakdown → Optimize
+    -   Benchmark → Breakdown → Optimise
 
 
 ## References
 -   [Halide - halide-lang.org](https://halide-lang.org/)
 -   [Halide tutorials](https://halide-lang.org/tutorials/tutorial_introduction.html)
 -   Some of my relevant articles
-    -   [Processing images fast with native code in Android](https://blog.minhazav.dev/processing-images-fast-with-native-code-in-android/)
-    -   [How to use RenderScript to convert YUV_420_888 YUV Image to Bitmap](https://blog.minhazav.dev/how-to-use-renderscript-to-convert-YUV_420_888-yuv-image-to-bitmap/)
+    -   [Processing images fast with native code in Android](https://betterprogramming.pub/processing-images-fast-with-native-code-in-android-db8b21001fa9)
+    -   [How to use RenderScript to convert YUV_420_888 YUV Image to Bitmap](https://medium.com/computational-photography/fast-image-processing-in-android-with-renderscript-4bc6992ba48e)
     -   [Faster image processing in Android Java using multi threading](https://blog.minhazav.dev/faster-image-processing-in-android-java-using-multi-threading/)
