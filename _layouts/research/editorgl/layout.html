@@ -108,8 +108,15 @@ code {
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Controls</h5>
-                                <h6>Brightness</h6>
+                                <h6>Blend</h6>
+                                <div>
+                                    <!-- Brightness alpha -->
+                                    <label for="slider_blend" class="form-label">Factor</label>
+                                    <input type="range" class="form-range" id="slider_blend" min="0" max="1" value="1" step="0.1" onInput="$('#slider_blend_value').html($(this).val())">
+                                    <span id="slider_blend_value">1</span>
+                                </div>
 
+                                <h6>Brightness</h6>
                                 <div>
                                     <!-- Brightness alpha -->
                                     <label for="slider_brightness_alpha" class="form-label">Alpha</label>
@@ -120,6 +127,18 @@ code {
                                     <label for="slider_brightness_beta" class="form-label">Beta</label>
                                     <input type="range" class="form-range" id="slider_brightness_beta" min="0" max="1" value="0" step="0.01" onInput="$('#slider_brightness_beta_value').html($(this).val())">
                                     <span id="slider_brightness_beta_value">0</span>
+                                </div>
+                                <div>
+                                    <label for="slider_brightness_gamma" class="form-label">Gamma</label>
+                                    <input type="range" class="form-range" id="slider_brightness_gamma" min="0" max="4" value="1" step="0.01" onInput="$('#slider_brightness_gamma_value').html($(this).val())">
+                                    <span id="slider_brightness_gamma_value">0</span>
+                                </div>
+                                <h6>Contrast</h6>
+                                <div>
+                                    <!-- Brightness alpha -->
+                                    <label for="slider_contrast" class="form-label">Alpha</label>
+                                    <input type="range" class="form-range" id="slider_contrast" min="0.5" max="2.5" value="1" step="0.05" onInput="$('#slider_contrast_value').html($(this).val())">
+                                    <span id="slider_contrast_value">0</span>
                                 </div>
                             </div>
                          </div>
@@ -208,8 +227,15 @@ precision mediump float;
 // our texture
 uniform sampler2D u_image;
 uniform vec2 u_textureSize;
+
+// Overall blend factor.
+uniform float u_blend;
+
+// Image processing operators.
 uniform float u_brightness_alpha;
 uniform float u_brightness_beta;
+uniform float u_tonemap_gamma;
+uniform float u_contrast;
  
 // the texCoords passed in from the vertex shader.
 varying vec2 v_texCoord;
@@ -219,12 +245,23 @@ void main() {
     vec2 onePixel = vec2(1.0, 1.0) / u_textureSize;
 
     // average the left, middle, and right pixels.
-    gl_FragColor = (texture2D(u_image, v_texCoord)); 
+    gl_FragColor = (texture2D(u_image, v_texCoord));
+
+    vec4 fragColorInitial = texture2D(u_image, v_texCoord);
+    vec4 fragColorModified = fragColorInitial * u_brightness_alpha + vec4(u_brightness_beta);
+    if (u_tonemap_gamma != 1.0) {
+        fragColorModified.rgb = pow(fragColorModified.rgb, vec3(1.0 / u_tonemap_gamma));
+    }
+    if (u_contrast != 1.0) {
+        fragColorModified.rgb = (fragColorModified.rgb - vec3(0.5)) * u_contrast + vec3(0.5);
+        fragColorModified.rgb = clamp(fragColorModified.rgb, 0.0, 1.0);
+    }
+
+    vec4 fragColor = fragColorModified * u_blend + fragColorInitial * (1.0 - u_blend);
 
     // Look up a color from the texture.
-    gl_FragColor = texture2D(u_image, v_texCoord) * u_brightness_alpha + vec4(u_brightness_beta);
+    gl_FragColor =  fragColor;
 }
-   
 </script>
 
 <script>
@@ -243,10 +280,13 @@ let DATA_CONTEXT = {
 
 let ENV_CONTEXT = {
     zoomFactor : 1.0,
+    blend: 1.0,
     brightness: {
         alpha: 0,
-        beta: 0
-    }
+        beta: 0,
+        gamma: 1.0
+    },
+    contrast: 1.0
 };
 
 //#region Contextual information
@@ -256,7 +296,7 @@ function onImageLoaded(imageFile, image) {
     let html =
         `${imageFile.name}<br><br>`
         + `Dimension: ${image.width}x${image.height}<br>`
-        + `Last Modified: ${imageFile.lastModified }<br>`
+        + `Last Modified: ${imageFile.lastModifiedDate }<br>`
         + `Size: ${size} Kb`;
     textImageInfo.innerHTML = html;
 }
@@ -265,9 +305,14 @@ function onEnvChange() {
     let zoomFactorWithPrecision1 = Math.floor(ENV_CONTEXT.zoomFactor * 10) / 10;
     let brightnessAlphaPrecision1 = Math.floor(ENV_CONTEXT.brightness.alpha * 10) / 10;
     let brightnessBetaPrecision1 = Math.floor(ENV_CONTEXT.brightness.beta * 10) / 10;
+    let brightnessGamma = ENV_CONTEXT.brightness.gamma;
+    let blend = ENV_CONTEXT.blend;
     let html = ""
         + `Zoom Factor: ${zoomFactorWithPrecision1}<br>`
-        + `Brightness: ${brightnessAlphaPrecision1}x + ${brightnessBetaPrecision1}<br>`;
+        + `Blend Factor: ${blend}<br>`
+        + `Brightness: ${brightnessAlphaPrecision1}x + ${brightnessBetaPrecision1}; `
+        + `γ = ${brightnessGamma}<br>`;
+        + `Contrast: ${ENV_CONTEXT.contrast}<br>`
     textEditorInfo.innerHTML = html;
 }
 //#endregion
@@ -372,25 +417,49 @@ function setupListeners(onImageLoadedCallback) {
         zoomFactor = clip(zoomFactor, minZoomFactor, maxZoomFactor);
         ENV_CONTEXT.zoomFactor = zoomFactor;
     });
-    
-    const brightnessAlphaSlider = document.getElementById("slider_brightness_alpha");
-    brightnessAlphaSlider.addEventListener("input", function(event) {
-        if (!isImageLoaded || !program) {
-            return;
-        }
-        
-        let value = brightnessAlphaSlider.value;
-        ENV_CONTEXT.brightness.alpha = value;
-    });
 
-    const brightnessBetaSlider = document.getElementById("slider_brightness_beta");
-    brightnessBetaSlider.addEventListener("input", function(event) {
-        if (!isImageLoaded || !program) {
-            return;
+    let sliders_to_bind = [
+        {
+            id: "slider_brightness_alpha",
+            path: "brightness/alpha"
+        },
+        {
+            id: "slider_brightness_beta",
+            path: "brightness/beta"
+        },
+        {
+            id: "slider_blend",
+            path: "blend"
+        },
+        {
+            id: "slider_brightness_gamma",
+            path: "brightness/gamma"
+        },
+        {
+            id: "slider_contrast",
+            path: "contrast"
         }
-        
-        let value = brightnessBetaSlider.value;
-        ENV_CONTEXT.brightness.beta = value;
+    ];
+
+    sliders_to_bind.forEach(function(val, idx) {
+        let slider = document.getElementById(val.id);
+        slider.addEventListener("input", function(event) {
+            if (!isImageLoaded || !program) {
+                return;
+            }
+            let value = slider.value;
+            let target = ENV_CONTEXT;
+            let splitPath = val.path.split("/");
+            for (let i = 0; i < splitPath.length - 1; ++i) {
+                let key = splitPath[i];
+                if (!(key in target)) {
+                    throw `${key} not found in ${i}`;
+                }
+                target = target[key];
+            }
+            // to ensure reference.
+            target[splitPath[splitPath.length - 1]] = value;
+        });
     });
 }
 
@@ -460,20 +529,31 @@ function setRectangle(gl, x, y, width, height) {
 function drawScene(timestamp) {
     var texcoordLocation = gl.getAttribLocation(program, "a_texCoord");
     var positionLocation = gl.getAttribLocation(program, "a_position");
+    // Top level uniforms.
     var zoomFactorLocation = gl.getUniformLocation(program, "u_zoomFactor");
+    var blendFactorLocation = gl.getUniformLocation(program, "u_blend");
+    var resolutionLocation = gl.getUniformLocation(program, "u_resolution");
+    // Brightness uniforms.
     var brightnessAlphaLocation = gl.getUniformLocation(program, "u_brightness_alpha");
     var brightnessBetaLocation = gl.getUniformLocation(program, "u_brightness_beta");
-    var resolutionLocation = gl.getUniformLocation(program, "u_resolution");
+    var brightnessGammaLocation = gl.getUniformLocation(program, "u_tonemap_gamma");
+    // Contrast uniforms.
+    var contrastLocation = gl.getUniformLocation(program, "u_contrast");
 
     // Clear the canvas
     gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT);
     
     gl.uniform1f(zoomFactorLocation, ENV_CONTEXT.zoomFactor);
+    gl.uniform1f(blendFactorLocation , ENV_CONTEXT.blend);
+    // Brightness
     let brightnessAlpha = Math.pow(2, ENV_CONTEXT.brightness.alpha);
     gl.uniform1f(brightnessAlphaLocation, brightnessAlpha);
     let brightnessBeta = ENV_CONTEXT.brightness.beta;
     gl.uniform1f(brightnessBetaLocation, brightnessBeta);
+    gl.uniform1f(brightnessGammaLocation, ENV_CONTEXT.brightness.gamma);
+    // Contrast.
+    gl.uniform1f(contrastLocation, ENV_CONTEXT.contrast);
 
     // Turn on the position attribute
     gl.enableVertexAttribArray(positionLocation);
