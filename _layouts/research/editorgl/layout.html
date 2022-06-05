@@ -1,0 +1,630 @@
+---
+layout: compress
+---
+
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+<head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<style>
+.wrapper-header, .wrapper-content, .wrapper-footer {
+    max-width: none;
+    margin: 0 auto;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  line-height: 60px; /* Vertically center the text there */
+  background-color: #f5f5f5;
+}
+body > .container {
+  padding: 60px 15px 0;
+}
+
+.footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+code {
+  font-size: 80%;
+}
+</style>
+
+<title>{{ page.title }}</title>
+</head>
+<body data-instant-allow-query-string data-instant-allow-external-links>
+
+<header>
+    <!-- reference: https://getbootstrap.com/docs/4.0/components/navs/-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Image Editor (using WebGL)</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/research">Research</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    File
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#" id="menu_open_image">Open Image</a>
+                    <a class="dropdown-item" href="#">Reload</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/">Exit</a>
+                </div>
+            </li>
+        </ul>
+        <span class="navbar-text">
+            <a class="nav-link" href="https://minhazav.medium.com/">Read how to build this on Medium</a>
+        </span>
+        </div>
+    </nav>
+</header>
+
+<!-- Main content -->
+<main>
+    <div class="container-fluid mt-2">
+        <div class="row no-gutters">
+            <div class="col col-lg-3 p-1" style="background-color: rgba(226, 224, 224, 0.24);">
+                <div class="row">
+                    <div class="col-12">
+                        <h3>Side bar</h3>
+                    </div>
+                    <div class="col-12 input-group mb-1">
+                        <input type="file" class="form-control" id="sidebar_open_image" aria-describedby="sidebar_open_image" aria-label="Open Image" accept="image/*">
+                    </div>
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title">Image Info</h5>
+                              <p class="card-text" id="text_image_info">
+                                  Load image to start.
+                              </p>
+                            </div>
+                         </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title">Editor Info</h5>
+                              <p class="card-text" id="text_editor_info">
+                                Load image to start.
+                              </p>
+                            </div>
+                         </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Controls</h5>
+                                <h6>Brightness</h6>
+
+                                <div>
+                                    <!-- Brightness alpha -->
+                                    <label for="slider_brightness_alpha" class="form-label">Alpha</label>
+                                    <input type="range" class="form-range" id="slider_brightness_alpha" min="-4" max="4" value="0" step="0.1" onInput="$('#slider_brightness_alpha_value').html($(this).val())">
+                                    <span id="slider_brightness_alpha_value">0</span>
+                                </div>
+                                <div>
+                                    <label for="slider_brightness_beta" class="form-label">Beta</label>
+                                    <input type="range" class="form-range" id="slider_brightness_beta" min="0" max="1" value="0" step="0.01" onInput="$('#slider_brightness_beta_value').html($(this).val())">
+                                    <span id="slider_brightness_beta_value">0</span>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+            <!-- Viewport area -->
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col">
+                            <canvas 
+                                id="viewport_canvas"
+                                style="width: 100%; min-height: 100px; border: 1px solid silver">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Main content end here -->
+
+<footer class="footer">
+    <!--
+        Read more: https://mdbootstrap.com/docs/standard/navigation/footer/
+    -->
+    <div class="container">
+        <span class="text-muted">
+            © 2022 Copyright:
+            <a href="https://blog.minhazav.dev/">minhazav.dev</a>
+        </span> 
+    </div>
+</footer>
+
+<!-- Pre-load pages when hovering over a link -->
+<!-- <script src="/assets/js/instantpage.js" type="module"></script> -->
+<!-- analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158605510-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-158605510-1');
+</script>
+
+<!-- scripts -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script src="/assets/research/editor-gl/webgl-utils.js"></script>
+<script id="vertex-shader-2d" type="notjs">
+attribute vec2 a_position;
+attribute vec2 a_texCoord;
+
+uniform vec2 u_resolution;
+uniform float u_zoomFactor;
+
+varying vec2 v_texCoord;
+
+void main() {  
+    // convert the rectangle from pixels to 0.0 to 1.0
+    vec2 zeroToOne = a_position / u_resolution;
+ 
+    // convert from 0->1 to 0->2
+    vec2 zeroToTwo = zeroToOne * 2.0;
+ 
+    // convert from 0->2 to -1->+1 (clipspace)
+    vec2 clipSpace = (zeroToTwo - 1.0) * u_zoomFactor;
+ 
+    gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
+
+    // pass the texCoord to the fragment shader
+    // The GPU will interpolate this value between points.
+    v_texCoord = a_texCoord;
+}   
+</script>
+
+<script id="fragment-shader-2d" type="notjs">
+precision mediump float;
+
+// our texture
+uniform sampler2D u_image;
+uniform vec2 u_textureSize;
+uniform float u_brightness_alpha;
+uniform float u_brightness_beta;
+ 
+// the texCoords passed in from the vertex shader.
+varying vec2 v_texCoord;
+
+void main() {
+    // compute 1 pixel in texture coordinates.
+    vec2 onePixel = vec2(1.0, 1.0) / u_textureSize;
+
+    // average the left, middle, and right pixels.
+    gl_FragColor = (texture2D(u_image, v_texCoord)); 
+
+    // Look up a color from the texture.
+    gl_FragColor = texture2D(u_image, v_texCoord) * u_brightness_alpha + vec4(u_brightness_beta);
+}
+   
+</script>
+
+<script>
+const textImageInfo = document.getElementById("text_image_info");
+const textEditorInfo = document.getElementById("text_editor_info");
+
+const canvas = document.getElementById("viewport_canvas");
+const openImageSidebarButton = document.getElementById("sidebar_open_image");
+const gl = canvas.getContext("webgl");
+let program;
+
+let DATA_CONTEXT = {
+    positionBuffer : null,
+    texcoordBuffer: null,
+};
+
+let ENV_CONTEXT = {
+    zoomFactor : 1.0,
+    brightness: {
+        alpha: 0,
+        beta: 0
+    }
+};
+
+//#region Contextual information
+function onImageLoaded(imageFile, image) {
+    let size = imageFile.size / 1024;
+    size = Math.floor(size * 100) / 100;
+    let html =
+        `${imageFile.name}<br><br>`
+        + `Dimension: ${image.width}x${image.height}<br>`
+        + `Last Modified: ${imageFile.lastModified }<br>`
+        + `Size: ${size} Kb`;
+    textImageInfo.innerHTML = html;
+}
+
+function onEnvChange() {
+    let zoomFactorWithPrecision1 = Math.floor(ENV_CONTEXT.zoomFactor * 10) / 10;
+    let brightnessAlphaPrecision1 = Math.floor(ENV_CONTEXT.brightness.alpha * 10) / 10;
+    let brightnessBetaPrecision1 = Math.floor(ENV_CONTEXT.brightness.beta * 10) / 10;
+    let html = ""
+        + `Zoom Factor: ${zoomFactorWithPrecision1}<br>`
+        + `Brightness: ${brightnessAlphaPrecision1}x + ${brightnessBetaPrecision1}<br>`;
+    textEditorInfo.innerHTML = html;
+}
+//#endregion
+
+//#region helper functions
+function docReady(fn) {
+    // see if DOM is already available
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+        // call on next available tick
+        setTimeout(fn, 1);
+    } else {
+        document.addEventListener("DOMContentLoaded", fn);
+    }
+}
+
+function isGlSupported() {
+    if (!gl) {
+        return false;
+    }
+    return true;
+}
+
+// returns scaled dimensions object
+function getScaledDim(img, maxWidth, maxHeight) {
+    var scaled = {
+        ratio: img.width / img.height,
+        width: img.width,
+        height: img.height
+    }
+    if (scaled.width > maxWidth) {
+        scaled.width = maxWidth;
+        scaled.height = scaled.width / scaled.ratio;
+    }
+    if (scaled.height > maxHeight) {
+        scaled.height = maxHeight;
+        scaled.width = scaled.height / scaled.ratio;
+    }
+    return scaled;
+}
+
+function onNewImage(files, onImageLoadedCallback) {
+    var reader  = new FileReader();
+    var file = files[0];
+    var img = new Image();
+    img.onload = function() {
+        onImageLoadedCallback(img);
+        onImageLoaded(file, img);
+    }
+    // this is to setup loading the image
+    reader.onloadend = function () {
+        img.src = reader.result;
+    }
+    // this is to read the file
+    reader.readAsDataURL(file);
+
+    // TODO:
+    // 1. Unlock controls.
+    // 2. Add image info, read exif?
+    // 3. render histogram to a different canvas - https://jsfiddle.net/greggman/sawx4507/
+}
+
+function resizeCanvas() {
+    // Reset canvas dimensions.
+    let canvasWidth = canvas.width;
+    let canvasHeight = Math.ceil(canvasWidth * 3/4);
+    canvas.height = canvasHeight;
+    canvas.dataMaxWidth = canvas.width;
+    canvas.dataMaxHeight = canvas.height;
+}
+
+function setupListeners(onImageLoadedCallback) {
+    let isImageLoaded = false;
+    let zoomFactor = 1.0;
+    const zoomFactorDelta = 0.2;
+    const maxZoomFactor = 8;
+    const minZoomFactor = 1/maxZoomFactor;
+
+    function clip(val, min, max) {
+        if (val < min) return min;
+        if (val > max) return max;
+        return val;
+    }
+
+    openImageSidebarButton.addEventListener("change", function(event) {
+        var files = openImageSidebarButton.files;
+        onNewImage(files, onImageLoadedCallback);
+        isImageLoaded = true;
+    });
+
+    canvas.addEventListener("wheel", function(event) {
+        if (!isImageLoaded || !program) {
+            return;
+        }
+
+        if (event.deltaY < 0) {
+            // Zoom in.
+            zoomFactor += zoomFactorDelta;
+        } else {
+            zoomFactor -= zoomFactorDelta;
+        }
+
+        zoomFactor = clip(zoomFactor, minZoomFactor, maxZoomFactor);
+        ENV_CONTEXT.zoomFactor = zoomFactor;
+    });
+    
+    const brightnessAlphaSlider = document.getElementById("slider_brightness_alpha");
+    brightnessAlphaSlider.addEventListener("input", function(event) {
+        if (!isImageLoaded || !program) {
+            return;
+        }
+        
+        let value = brightnessAlphaSlider.value;
+        ENV_CONTEXT.brightness.alpha = value;
+    });
+
+    const brightnessBetaSlider = document.getElementById("slider_brightness_beta");
+    brightnessBetaSlider.addEventListener("input", function(event) {
+        if (!isImageLoaded || !program) {
+            return;
+        }
+        
+        let value = brightnessBetaSlider.value;
+        ENV_CONTEXT.brightness.beta = value;
+    });
+}
+
+function resizeCanvasToDisplaySize(canvas) {
+  // Lookup the size the browser is displaying the canvas in CSS pixels.
+  const displayWidth  = canvas.clientWidth;
+  const displayHeight = canvas.clientHeight;
+ 
+  // Check if the canvas is not the same size.
+  const needResize = canvas.width  !== displayWidth ||
+                     canvas.height !== displayHeight;
+ 
+  if (needResize) {
+    // Make the canvas the same size
+    canvas.width  = displayWidth;
+    canvas.height = displayHeight;
+  }
+ 
+  return needResize;
+}
+//#endregion
+
+//#region WebGl code
+function createShader(gl, type, source) {
+  var shader = gl.createShader(type);
+  gl.shaderSource(shader, source);
+  gl.compileShader(shader);
+  var success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+  if (success) {
+    return shader;
+  }
+ 
+  console.error(gl.getShaderInfoLog(shader));
+  gl.deleteShader(shader);
+}
+
+function createProgram(gl, vertexShader, fragmentShader) {
+  var program = gl.createProgram();
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+  var success = gl.getProgramParameter(program, gl.LINK_STATUS);
+  if (success) {
+    return program;
+  }
+ 
+  console.error(gl.getProgramInfoLog(program));
+  gl.deleteProgram(program);
+}
+
+function setRectangle(gl, x, y, width, height) {
+  var x1 = x;
+  var x2 = x + width;
+  var y1 = y;
+  var y2 = y + height;
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+     x1, y1,
+     x2, y1,
+     x1, y2,
+     x1, y2,
+     x2, y1,
+     x2, y2,
+  ]), gl.STATIC_DRAW);
+}
+//#endregion
+
+function drawScene(timestamp) {
+    var texcoordLocation = gl.getAttribLocation(program, "a_texCoord");
+    var positionLocation = gl.getAttribLocation(program, "a_position");
+    var zoomFactorLocation = gl.getUniformLocation(program, "u_zoomFactor");
+    var brightnessAlphaLocation = gl.getUniformLocation(program, "u_brightness_alpha");
+    var brightnessBetaLocation = gl.getUniformLocation(program, "u_brightness_beta");
+    var resolutionLocation = gl.getUniformLocation(program, "u_resolution");
+
+    // Clear the canvas
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    
+    gl.uniform1f(zoomFactorLocation, ENV_CONTEXT.zoomFactor);
+    let brightnessAlpha = Math.pow(2, ENV_CONTEXT.brightness.alpha);
+    gl.uniform1f(brightnessAlphaLocation, brightnessAlpha);
+    let brightnessBeta = ENV_CONTEXT.brightness.beta;
+    gl.uniform1f(brightnessBetaLocation, brightnessBeta);
+
+    // Turn on the position attribute
+    gl.enableVertexAttribArray(positionLocation);
+
+    // Bind the position buffer.
+    gl.bindBuffer(gl.ARRAY_BUFFER, DATA_CONTEXT.positionBuffer);
+
+    // Tell the position attribute how to get data out of positionBuffer (ARRAY_BUFFER)
+    var size = 2;          // 2 components per iteration
+    var type = gl.FLOAT;   // the data is 32bit floats
+    var normalize = false; // don't normalize the data
+    var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
+    var offset = 0;        // start at the beginning of the buffer
+    gl.vertexAttribPointer(
+        positionLocation, size, type, normalize, stride, offset);
+
+    // Turn on the texcoord attribute
+    gl.enableVertexAttribArray(texcoordLocation);
+
+    // bind the texcoord buffer.
+    gl.bindBuffer(gl.ARRAY_BUFFER, DATA_CONTEXT.texcoordBuffer);
+
+    // Tell the texcoord attribute how to get data out of texcoordBuffer (ARRAY_BUFFER)
+    var size = 2;          // 2 components per iteration
+    var type = gl.FLOAT;   // the data is 32bit floats
+    var normalize = false; // don't normalize the data
+    var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
+    var offset = 0;        // start at the beginning of the buffer
+    gl.vertexAttribPointer(
+        texcoordLocation, size, type, normalize, stride, offset);
+
+    // set the resolution
+    gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height);
+
+    // Draw the rectangle.
+    var primitiveType = gl.TRIANGLES;
+    var offset = 0;
+    var count = 6;
+    gl.drawArrays(primitiveType, offset, count);
+
+    requestAnimationFrame(drawScene);
+
+    // env changes
+    onEnvChange();
+}
+
+function render(image) {
+    canvas.style.background = "#000000";
+
+    let vertexShaderSource = document.querySelector("#vertex-shader-2d").text;
+    let fragmentShaderSource = document.querySelector("#fragment-shader-2d").text;
+    resizeCanvasToDisplaySize(gl.canvas);
+
+    let canvasWidth = canvas.width;
+    let canvasHeight = canvas.height;
+    let imageWidth = image.width;
+    let imageHeight = image.height;
+
+    program = webglUtils.createProgramFromScripts(
+        gl, ["vertex-shader-2d", "fragment-shader-2d"]);
+
+    // look up where the vertex data needs to go.
+    var textureSizeLocation = gl.getUniformLocation(program, "u_textureSize");
+
+    // Create a buffer to put three 2d clip space points in
+    DATA_CONTEXT.positionBuffer = gl.createBuffer();
+    // Bind it to ARRAY_BUFFER (think of it as ARRAY_BUFFER = positionBuffer)
+    gl.bindBuffer(gl.ARRAY_BUFFER, DATA_CONTEXT.positionBuffer);
+    // Set a rectangle the same size as the image.
+    if (image.width < canvasWidth && imageHeight < canvasHeight) {
+        // render at the center
+        let startX = Math.floor((canvasWidth -imageWidth) / 2);
+        let startY = Math.floor((canvasHeight - imageHeight) / 2);
+        setRectangle(gl, startX, startY, imageWidth, imageHeight);
+    } else {
+        let startX = 0;
+        let startY = 0;
+        let newImageWidth = imageWidth;
+        let newImageHeight = imageHeight;
+        while (newImageHeight > canvasHeight || newImageWidth > canvasWidth) {
+            if (newImageWidth > canvasWidth) {
+                let lastImageWidth = newImageWidth;
+                newImageWidth = canvasWidth;
+                newImageHeight = Math.floor(newImageWidth / lastImageWidth * newImageHeight);
+                startY = Math.floor((canvasHeight - newImageHeight) / 2);  
+            } else {
+                // Condition: newImageHeight > canvasHeight
+                let lastImageHeight = newImageHeight;
+                newImageHeight = canvasHeight;
+                newImageWidth = Math.floor(newImageHeight / lastImageHeight * newImageWidth);
+                startX = Math.floor((canvasWidth - newImageWidth) / 2);  
+            }
+        }
+        setRectangle(gl, startX, startY, newImageWidth, newImageHeight);
+    }
+
+    // Texture
+    // provide texture coordinates for the rectangle.
+    DATA_CONTEXT.texcoordBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, DATA_CONTEXT.texcoordBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+        0.0,  0.0,
+        1.0,  0.0,
+        0.0,  1.0,
+        0.0,  1.0,
+        1.0,  0.0,
+        1.0,  1.0,
+    ]), gl.STATIC_DRAW);
+
+    // Create a texture.
+    var texture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    
+    // Set the parameters so we can render any size image.
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+    // Upload the image into the texture.
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+
+    // set the size of the image
+    gl.uniform2f(textureSizeLocation, image.width, image.height);
+    
+    // Tell WebGL how to convert from clip space to pixels
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+    
+    // Tell it to use our program (pair of shaders)
+    gl.useProgram(program);
+
+    requestAnimationFrame(drawScene);
+}
+
+docReady(function() {
+    // Init tasks.
+    resizeCanvas();
+    if (!isGlSupported()) {
+        alert("WebGl is not supported, this editor won't run.");
+        return;
+    }
+
+    setupListeners(
+        /* onImageLoadedCallback= */ render);    
+});
+</script>
+</body>
+  
+</html>
+
+
+
+
