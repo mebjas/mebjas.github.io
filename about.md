@@ -21,11 +21,11 @@ permalink: /about/
 ## `now()` &nbsp; Senior Software Engineer at Google
 > ⚓ Singapore, May 2019 to present
 
-I lead computational photography features like HDR & NightMode in **[CameraGo](https://blog.google/products/android/android-go-camera-go/)**. It's an exciting project which requires building best in "segment" computational photography algorithms improving image quality on less than ideal hardware while being able to process millions of pixels under low latency on rather low-end devices.
+I lead computational photography features like HDR, Low light imaging (night mode), portrait mode in **[Camera from Google](https://developers.google.com/camera/)**. It's an exciting project which requires building best in "segment" computational photography algorithms improving image quality on less than ideal hardware while being able to process millions of pixels under low latency on rather low-end devices.
 
 My primary area of focus have been around optimizing the app to run feasibly on low CPU, low RAM devices, but these days I spend a fair share of time improving image quality of HDR.
 
- - Leading a team building computational photography features in Camera Go, our feature portfolio includes Night Mode, HDR, Portrait & Face Enhance.
+ - Leading a team building computational photography features in Camera from Google app, our feature portfolio includes Night Mode, HDR Mode, Portrait Mode (real time and post processing) & Face Enhance.
  - Led launches of features like [Night Mode](https://www.xda-developers.com/google-camera-android-go-mod-night-mode-low-light-photography/) and [HDR](https://www.xda-developers.com/google-camera-go-rolling-out-hdr-support/) that run on devices with as low as 1Gb ram & low CPU specs.
  - Designed and implemented the processing pipeline responsible for scheduling processing of multi-stage image processing on resource-constrained devices.
 
@@ -55,7 +55,7 @@ Worked primarily with **Microsoft Azure**. My day to day involved applied data s
 ## `now(/* index= */ -2)` &nbsp; All roles @Todofy
 > Built in my hostel room @New Delhi, Delhi Technological University, ~6 months in 2015
 
-[Todody](https://todofy.org/) was an ambitious project to organize more than 100 million `TODOs` present in Github codebase at the moment. The goal was to build a platform to add life-cycles for those todos and get them to completion and collaborate on them. See [mebjas/csrf-protector-php](https://todofy.org/r/mebjas/CSRF-Protector-PHP) for example. I built this from scratch in the final year of my engineering and hence my roles involved that of an Engineer, Product Manager, PMM, TPM, UX, UXR, and so on. I still feel the problem exists and this could be rebuilt with a much more matured design probably as a `PaaS` service if not `SaaS` solution and could leverage the huge corpus of data on Github to make it super powerful. 
+[Todofy](https://todofy.org/) was an ambitious project to organize more than 100 million `TODOs` present in Github codebase at the moment. The goal was to build a platform to add life-cycles for those todos and get them to completion and collaborate on them. See [mebjas/csrf-protector-php](https://todofy.org/r/mebjas/CSRF-Protector-PHP) for example. I built this from scratch in the final year of my engineering and hence my roles involved that of an Engineer, Product Manager, PMM, TPM, UX, UXR, and so on. I still feel the problem exists and this could be rebuilt with a much more matured design probably as a `PaaS` service if not `SaaS` solution and could leverage the huge corpus of data on Github to make it super powerful. 
 
 ## Open Source Contributions
 #### [HTML5 QRCode](https://github.com/mebjas/html5-qrcode) | Author, Maintainer | Since 2014
