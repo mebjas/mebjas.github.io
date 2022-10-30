@@ -273,7 +273,7 @@ html5QrcodeScanner.render(onScanSuccess, onScanError);</code></pre>
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
-<script src="/assets/research/html5qrcode/html5-qrcode.min.js"></script>
+<script src="/assets/research/html5qrcode/html5-qrcode.min.v2.2.5.js"></script>
 <script>
 function docReady(fn) {
     // see if DOM is already available
@@ -357,7 +357,8 @@ docReady(function() {
             experimentalFeatures: {
                 useBarCodeDetectorIfSupported: true
             },
-            rememberLastUsedCamera: true
+            rememberLastUsedCamera: true,
+            showTorchButtonIfSupported: true
         });
 	html5QrcodeScanner.render(onScanSuccess);
 });
