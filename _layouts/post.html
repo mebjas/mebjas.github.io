@@ -2,6 +2,9 @@
 layout: default
 ---
 {% include post-sidebar-left.html %}
+<link rel="preload" href={{ "/assets/css/post.css" | relative_url }} as="style">
+<link rel="stylesheet" href={{ "/assets/css/post.css" | relative_url }}>
+
 <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="page-header">
@@ -12,10 +15,10 @@ layout: default
         {{ page.date | date: date_format }}
       </time>
       {% if page.author %}
-      • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author }}</span></span>
+      • By <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <span itemprop="name">{{ page.author }}</span>
+      </span>
       {% endif %}
-      •
-      {% include filed.html %}
     </p>
   </header>
 

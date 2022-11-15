@@ -1,0 +1,19 @@
+.blog-image-container {
+    text-align: center;
+    margin-bottom: 20px
+}
+
+.blog-image-container .image img {
+    margin: auto;
+    width: 80%
+}
+
+.blog-image-container .caption {
+    margin: 5px;
+    color: #3c3c3c;
+    font-weight: 400;
+}
+.blog-image-container .caption a {
+    color: #3d3d3d;
+    text-decoration: underline;
+}
