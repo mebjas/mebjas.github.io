@@ -17,20 +17,22 @@ Software development in Android can be done using the Java SDK or [Native Develo
 
 Many apps have requirements to read files from disk. For reading image files, the usual approach is to read files using Java APIs that are available in Android SDK or use higher level abstractions like MediaStore APIs. I won't cover reading different file formats in Java layer in this article.
 
-Sometimes, there maybe need to process the image files in native layer (C++). In such cases the usual approach (i.e. available on Internet) is to
+Sometimes, there maybe need to process the image files in native layer (C++). In such cases the usual approach is to
 
 -   Load the image as a [Bitmap](https://developer.android.com/reference/android/graphics/Bitmap).
 -   Marshall it to the native layer with JNI.
 -   Do read / write operations in the native layer.
 
-Under certain circumstances you may want to read the image directly in the native layer. If you have such circumstances - this article is for you!
+However, under certain circumstances you may want to read the image directly in the native layer. If you have such circumstances - this article is for you!
 
 > FYI, When I say "native layer" or "native code" it means in C++ code. I may use
 > these terms interchangeably in the article.
 
-In this article I'll cover how to read an image file in C++ with NDK and JNI. Note that **the approach can in general be used to load any file in native layer**.
+Also, while the article is primarily about reading image files in C++ - the concepts can easily be extrapolated to **reading any file format in native layer in Android**.
 
-While I share more around reading images in the native layer, there is another elephant in the room which needs to be addressed. 
+--- 
+
+Before getting started with steps and code examples, there is yet another elephant in the room that needs to be addressed.
 
 > Why read the image in native layer to begin with?
 
@@ -48,7 +50,7 @@ If you are reading this article I expect you to be familiar with concepts like f
 
 I hope you are also familiar with scoped storage concepts in Android.
 
-> Basically for improved protection to app and user data on external storage Android has tightened how applications can access files on Android. TL;DR; without asking excessive permissions you cannot access files directly anymore. This is good for users! Good thing is you can still ask user to grant permissions to specific files like by using a file picker.
+> Basically for improved protection to app and user data on external storage Android has tightened how applications can access files on Android. TL;DR; is without asking excessive permissions you cannot access files directly anymore. This is good for users! Good thing is you can still ask user to grant permissions to specific files like by using a file picker.
 
 So we don't use `File` anymore. It's more scalable to deal with [Uri](https://developer.android.com/reference/android/net/Uri) in Android.
 
@@ -127,7 +129,7 @@ For the rest of the content, I expect the readers to be familiar with
 
 > JNI stands for Java Native Interface - [Reference to hello-jni sample from Android](https://developer.android.com/ndk/samples/sample_hellojni).
 
-So for reading a file in native layer, we need a skeleton of Java API and corresponding JNI file. Here's an example
+So for reading a file in native layer, we need a basic Java library and corresponding JNI file. Here's example of Java library
 
 ```java
 /** Wrapper class for loading image in native layer. */
@@ -147,10 +149,10 @@ public final class NativeImageLoader {
 }
 ```
 
-And let's say we have an `image-loader-jni.cc` file baked into the `libimage-loader-jni.so` binary created by building the JNI build targets.
+And let's say we have a corresponding JNI file called `image-loader-jni.cc` that is baked into the `libimage-loader-jni.so` binary created by building the JNI build targets.
 
 ```c++
-// image-loader-jni
+// image-loader-jni.cc
 
 #include <jni.h>
 
@@ -353,6 +355,7 @@ Some more pointers:
 Although, in practice I found [AImageDecoder_setTargetSize](https://developer.android.com/ndk/reference/group/image-decoder#aimagedecoder_settargetsize) to be slower than I'd expect a down-sampling operation to be. If the performance of this API concerns you and you have other approach in hand, try loading the full resolution image and down-sampling `Image` separately.
 
 ---
+With the solution so far, you can get a working version of image decoding in native layer.
 
 Reasons to read further:
 
@@ -425,18 +428,26 @@ your problem.
 However, I would like to demystify a few misconception based on my experience using examples of different use-cases.
 
 ### Consuming image in native layer
-If your concern is latency of reading or decoding image. Note that Android Java SDK also comes with [ImageDecoder also have a Java API](https://developer.android.com/reference/android/graphics/ImageDecoder) APIs which are likely backed by the same native implementation. You can use these APIs to read images as [Drawable](https://developer.android.com/reference/android/graphics/drawable/Drawable) or [Bitmap](https://developer.android.com/reference/android/graphics/Bitmap).
+If your concern is high latency of reading or decoding image in Java layer.. Note that Android Java SDK also comes with [ImageDecoder also have a Java API](https://developer.android.com/reference/android/graphics/ImageDecoder)  which is likely backed by the same native implementation. You can use these APIs to read images as [Drawable](https://developer.android.com/reference/android/graphics/drawable/Drawable) or [Bitmap](https://developer.android.com/reference/android/graphics/Bitmap).
 
-For any kind of post-processing you might want to do in native layer, you can easily marshall `Bitmap` reference to native layer. NDK has good support for [Bitmap](https://developer.android.com/ndk/reference/group/bitmap) and it allows you to process them between Java and Native with little overhead.
+For any kind of post-processing you might want to do in the native layer, you can easily marshall `Bitmap` reference to the native layer. NDK has good support for [Bitmap](https://developer.android.com/ndk/reference/group/bitmap) and it allows you to process them between Java and Native with little overhead.
 
 > I plan to write more about it in a separate article.
 
-You might not get latency benefit between using `ImageDecoder` in Java vs Native. You may get latency benefits if you have some decoder implementation that can handle decoding faster that what NDK library does.
+You might not get latency benefit by using `ImageDecoder` in the native layer as compared to the Java layer. You may get latency benefits if you have some decoder implementation that can handle decoding faster that what NDK library does.
 
-One valid reason to read file in native layer might be to get rid of holding nasty `Bitmaps` in Java layer when you don't need them. For example if you just want to read an image, do some post processing, encode it as jpeg and save to disk. I have often found holding large `Bitmaps` can lead to visible performance issues likely because we have to rely on GC to reclaim the memory held by `Bitmap` when they are no longer referenced. GC may not always work in predictable fashion. But, [Bitmap#recycle()](https://developer.android.com/reference/android/graphics/Bitmap#recycle()) API might help you with this as well.
+One valid reason to still read the file in native layer might be to get rid of holding nasty `Bitmaps` in Java layer when you don't need to. 
+
+For example if you just want to read an image, do some post processing, encode it as jpeg and save to disk - you can avoid holding a `Bitmap` reference in Java.
+
+I have often found holding large `Bitmaps` can lead to visible performance issues likely because we have to rely on GC to reclaim the memory held by `Bitmap` when they are no longer referenced. GC may not always work in predictable fashion. However, [Bitmap#recycle()](https://developer.android.com/reference/android/graphics/Bitmap#recycle()) API might help you with this as well.
 
 ### Avoiding marshalling of file data across JNI boundary
-If you need to read alternative file format and you have your custom decoder implementation for it. It might be a good idea to avoid reading the content of the file first as a `String` in Java layer and later marshalling it all to native layer via JNI. I am not 100% sure how data marshalling works across Java Native boundary but this is [#1 tip around JNI by Android developer website](https://developer.android.com/training/articles/perf-jni#general-tips).
+It's a good idea to use native approach if
+
+You need to read alternative file format and you have your custom decoder implementation for it. This way you can avoid first reading it in the Java layer as `String` and later marshalling it to the native layer via JNI.
+
+I am not 100% sure how exactly data marshalling works across Java Native boundary but it is [#1 tip around JNI by Android developer website](https://developer.android.com/training/articles/perf-jni#general-tips) to avoid marshalling large data.
 
 It "might" be more performant to pass `fd` to native layer instead.
 
@@ -445,7 +456,7 @@ This is similar to the point above. If you have third party libraries for decodi
 
 ### You like C++ more than Java
 
-No comments, I hear you! Do as you see fit - this world but thy canvas!
+> No comments, I hear you! Do as you see fit - for this world is thy canvas!
 
 ## References
 -    [File descriptor - Wikipedia](https://en.wikipedia.org/wiki/File_descriptor)
@@ -457,7 +468,7 @@ No comments, I hear you! Do as you see fit - this world but thy canvas!
 
 ## Appendix
 
-Here's a bunch of more resources in case you get stuck at any of these steps.
+Some more resources in case you get stuck at any of these steps.
 
 ### fatal error: 'imagedecoder.h' file not found
 > So you stumbled upon this too! If you spent a lot of hours at this, let me know over comments as I did too! Let's share the misery :)
