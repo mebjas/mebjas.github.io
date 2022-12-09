@@ -266,8 +266,11 @@
 
 .embedded-post, .so-embedded-post {
     border: 1px solid #e6e6e6;
-    padding: 10px;
+    padding: 20px;
     margin: 10px;
+    border-radius: 5px;
+    background: #b3b3b312;
+    box-shadow: #0000000a 0px 0px 5px 5px;
 }
 
 .so-embedded-post {
@@ -279,11 +282,11 @@
     padding-top: 15px;
     padding-bottom: 15px;
 }
-}
 
 .embedded-post .embedded-post-title {
     font-size: 22px;
     margin-bottom: 10px;
+    font-weight: bold;
 }
 
 /** Side bars. */
