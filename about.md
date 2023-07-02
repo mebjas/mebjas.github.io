@@ -12,6 +12,7 @@ permalink: /about/
 {:class="styled-table"}
 |Area | Remarks |
 |-----|---------|
+|Applied ML| Language Model, Document Understanding, Model training pipelines / infra |
 |Camera | Particularly Android App side, Camera2, Good knowledge of ISP pipeline |
 |Computer Vision | Primarily around Camera needs, Night Mode, HDR imaging |
 |Android Performance | JNI, Native, Android Image processing, Real-time processing (OpenGL), Renderscript, Tflite inference on device |
@@ -20,6 +21,11 @@ permalink: /about/
 
 ## `now()` &nbsp; Senior Software Engineer at Google
 > ⚓ Singapore, May 2019 to present
+
+#### Android
+I lead applied ML team in Android. My focus these days is building ML driven solutions for Google 1P apps and Android. (More to come in future :)).
+
+#### Past: Camera from Google
 
 I lead computational photography features like HDR, Low light imaging (night mode), portrait mode in **[Camera from Google](https://developers.google.com/camera/)**. It's an exciting project which requires building best in "segment" computational photography algorithms improving image quality on less than ideal hardware while being able to process millions of pixels under low latency on rather low-end devices.
 
@@ -32,6 +38,7 @@ My primary area of focus have been around optimizing the app to run feasibly on 
  > TIL: Did you know a 1Gb Android device only has ~880Mb of available RAM of which only about ~450 Mb is left for applications to run on? [Learn about carveout memory in Linux](https://developer.toradex.com/knowledge-base/carveout-memory-(linux))
 
 #### Areas I work on these days
+ - On device ML, Applied ML, document understanding
  - Android, Android Fundamentals, Android Camera, Android storage
  - Linux Fundamentals, Memory management in Android
  - Computational Photography, Image Processing
