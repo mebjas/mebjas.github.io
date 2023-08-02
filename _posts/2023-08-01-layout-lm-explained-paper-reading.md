@@ -145,9 +145,11 @@ For fine-tuning
 1.   [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://arxiv.org/abs/1810.04805)
 2.   [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
 
+<!-- 
 ## About me
 I am an engineer who is working in the field of applied ML these days. I work on hybrid set of areas like image segmentation, document AI and 2D codes.
 
 Thanks to great engineering progress, it's not feasible for anyone to dabble into fields like AI/ML which otherwise had high barrier to entry or was reserved to research.
 
-In my day to day job I read several research papers (less than I would like to). These blog articles are my self notes on some of the relevant published papers.
+In my day to day job I read several research papers (less than I would like to). These blog articles are my self notes on some of the relevant published papers. 
+-->
