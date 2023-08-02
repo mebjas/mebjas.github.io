@@ -19,7 +19,8 @@ In this paper, the authors have suggested a noval way (when it was published) to
 
 Document AI refers to techniques for automatically reading, understanding, and analyzing business documents or visual documents in general. Visual documents are electronic documents like a reciept or pdf document or photograph of an ID card.
 
-![Examples of visual documents](https://blog.minhazav.dev/images/post44/im1.png)
+<div class="blog-image-container"><div class="image"><img src="https://blog.minhazav.dev/images/post44/im1.png" alt="Examples of visual documents"></div></div>
+
 
 ### Introduction
 The work on BERT [[1]](https://arxiv.org/abs/1810.04805) showed than pre-training of transformer models can help improve quality of NLP tasks significantly. A pre-trained BERT model could be finetuned for several tasks including token classification or text classification.
@@ -33,7 +34,8 @@ When the paper was published the authors claimed it to be SOTA for
 
 ## Architecture
 
-![Layout LM Architecture](https://blog.minhazav.dev/images/post44/im2.png)
+<div class="blog-image-container"><div class="image"><img src="https://blog.minhazav.dev/images/post44/im2.png" alt="Layout LM Architecture"></div></div>
+
 
 -  Text embedding similar to BERT, uses WordPeice tokenizer.
 -  For position embedding, the two corners of the bounding box for each token is used.
@@ -74,6 +76,7 @@ a token within a document.
 #### Model initialization
 Two models are trained: `BASE` and `LARGE`.
 
+{:class="styled-table"}
 | #     | Transformer Layers | Hidden Sizes | Attention Heads | # params |
 | ----- | ------------------ | ------------ | --------------- | -------- |
 | Base  | 12 | 768 | 12 | 113M |
@@ -106,10 +109,10 @@ Two models are trained: `BASE` and `LARGE`.
 
 #### Images / Figures from the paper
 
-![Model accuracy on FUNSD](https://blog.minhazav.dev/images/post44/im3.png)
-![Result of different initialisation](https://blog.minhazav.dev/images/post44/im4.png)
-![Model accuracy on SROIE](https://blog.minhazav.dev/images/post44/im5.png)
-![Model accuracy on RVL-CDIP](https://blog.minhazav.dev/images/post44/im6.png)
+<div class="blog-image-container"><div class="image"><img src="https://blog.minhazav.dev/images/post44/im3.png" alt="Model accuracy on FUNSD"></div></div>
+<div class="blog-image-container"><div class="image"><img src="https://blog.minhazav.dev/images/post44/im4.png" alt="Result of different initialisation"></div></div>
+<div class="blog-image-container"><div class="image"><img src="https://blog.minhazav.dev/images/post44/im5.png" alt="Model accuracy on SROIE"></div></div>
+<div class="blog-image-container"><div class="image"><img src="https://blog.minhazav.dev/images/post44/im6.png" alt="Model accuracy on RVL-CDIP"></div></div>
 
 
 ### Dataset used
