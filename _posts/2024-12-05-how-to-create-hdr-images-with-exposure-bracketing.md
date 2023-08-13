@@ -3,7 +3,7 @@ layout: post
 title: How to create HDR images with exposure bracketing
 categories: [image-processing, HDR, exposure-bracketing ]
 description: ""
-post-no: 46
+post-no: 52
 toc: true
 image: '../images/post33_image1.png'
 wip: true
