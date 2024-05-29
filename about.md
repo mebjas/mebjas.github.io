@@ -19,11 +19,11 @@ permalink: /about/
 |Android Memory| Android Internals, Java and Native memory, ION memory manager |
 |Distributed Systems| High Availability, Resilience & Robustness |
 
-## `now()` &nbsp; Senior Software Engineer at Google
+## `now()` &nbsp; Staff Software Engineer (TLM) at Google
 > ⚓ Singapore, May 2019 to present
 
 #### Android
-I lead applied ML team in Android. My focus these days is building ML driven solutions for Google 1P apps and Android. (More to come in future :)).
+I am Tech Lead and Manager for multiple projects in Android including QR scanner, barcode decoder, Document Scanner, Files by Google etc. Working hard building a solid applied ML/vision team at Google :).
 
 #### Past: Camera from Google
 
