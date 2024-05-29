@@ -9,5 +9,6 @@
         "assets/research/vision/library.ts",
         "assets/research/vision/operators.ts",
         "assets/research/vision/app.ts",
+        "assets/research/editor-gl/editor.gl.ts",
     ]
 }

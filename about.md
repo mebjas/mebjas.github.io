@@ -89,19 +89,3 @@ Author and main maintainer of this OWASP project since 2014. This project starte
 <br>
 <br>
 <br>
-<!--
-<h2>Ask me anything</h2>
-
-> Please note that, I'll delete the comments here after the request / question is answered.
-
-<script src="https://utteranc.es/client.js"
-    repo="mebjas/mebjas.github.io"
-    issue-term="title"
-    label="test"
-    theme="github-light"
-    crossorigin="anonymous"
-    async>
-</script>
--->
-<!-- <script data-ad-client="ca-pub-2583590292295592" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
-<!-- <script data-ad-client="ca-pub-6209792783516879" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->

@@ -194,11 +194,13 @@ code {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 <script src="/assets/research/editor-gl/webgl-utils.js"></script>
+<script src="/assets/research/editor-gl/editor.gl.js"></script>
 <script id="vertex-shader-2d" type="notjs">
 attribute vec2 a_position;
 attribute vec2 a_texCoord;
 
 uniform vec2 u_resolution;
+uniform vec2 u_offset;
 uniform float u_zoomFactor;
 
 varying vec2 v_texCoord;
@@ -206,13 +208,14 @@ varying vec2 v_texCoord;
 void main() {  
     // convert the rectangle from pixels to 0.0 to 1.0
     vec2 zeroToOne = a_position / u_resolution;
+    vec2 offset = u_offset / u_resolution;
  
     // convert from 0->1 to 0->2
     vec2 zeroToTwo = zeroToOne * 2.0;
  
     // convert from 0->2 to -1->+1 (clipspace)
-    vec2 clipSpace = (zeroToTwo - 1.0) * u_zoomFactor;
- 
+    vec2 clipSpace = (zeroToTwo - 1.0) * u_zoomFactor + offset;
+
     gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
 
     // pass the texCoord to the fragment shader
@@ -280,6 +283,7 @@ let DATA_CONTEXT = {
 
 let ENV_CONTEXT = {
     zoomFactor : 1.0,
+    offset: {x: 0, y: 0},
     blend: 1.0,
     brightness: {
         alpha: 0,
@@ -303,12 +307,15 @@ function onImageLoaded(imageFile, image) {
 
 function onEnvChange() {
     let zoomFactorWithPrecision1 = Math.floor(ENV_CONTEXT.zoomFactor * 10) / 10;
+    let offsetX = ENV_CONTEXT.offset.x;
+    let offsetY = ENV_CONTEXT.offset.y;
+
     let brightnessAlphaPrecision1 = Math.floor(ENV_CONTEXT.brightness.alpha * 10) / 10;
     let brightnessBetaPrecision1 = Math.floor(ENV_CONTEXT.brightness.beta * 10) / 10;
     let brightnessGamma = ENV_CONTEXT.brightness.gamma;
     let blend = ENV_CONTEXT.blend;
     let html = ""
-        + `Zoom Factor: ${zoomFactorWithPrecision1}<br>`
+        + `Editor: ${zoomFactorWithPrecision1}x zoom; Offset: {x: ${offsetX}, y: ${offsetY}}<br>`
         + `Blend Factor: ${blend}<br>`
         + `Brightness: ${brightnessAlphaPrecision1}x + ${brightnessBetaPrecision1}; `
         + `γ = ${brightnessGamma}<br>`;
@@ -328,97 +335,18 @@ function docReady(fn) {
     }
 }
 
-function isGlSupported() {
-    if (!gl) {
-        return false;
-    }
-    return true;
-}
-
-// returns scaled dimensions object
-function getScaledDim(img, maxWidth, maxHeight) {
-    var scaled = {
-        ratio: img.width / img.height,
-        width: img.width,
-        height: img.height
-    }
-    if (scaled.width > maxWidth) {
-        scaled.width = maxWidth;
-        scaled.height = scaled.width / scaled.ratio;
-    }
-    if (scaled.height > maxHeight) {
-        scaled.height = maxHeight;
-        scaled.width = scaled.height / scaled.ratio;
-    }
-    return scaled;
-}
-
-function onNewImage(files, onImageLoadedCallback) {
-    var reader  = new FileReader();
-    var file = files[0];
-    var img = new Image();
-    img.onload = function() {
-        onImageLoadedCallback(img);
-        onImageLoaded(file, img);
-    }
-    // this is to setup loading the image
-    reader.onloadend = function () {
-        img.src = reader.result;
-    }
-    // this is to read the file
-    reader.readAsDataURL(file);
-
-    // TODO:
-    // 1. Unlock controls.
-    // 2. Add image info, read exif?
-    // 3. render histogram to a different canvas - https://jsfiddle.net/greggman/sawx4507/
-}
-
-function resizeCanvas() {
-    // Reset canvas dimensions.
-    let canvasWidth = canvas.width;
-    let canvasHeight = Math.ceil(canvasWidth * 3/4);
-    canvas.height = canvasHeight;
-    canvas.dataMaxWidth = canvas.width;
-    canvas.dataMaxHeight = canvas.height;
-}
-
 function setupListeners(onImageLoadedCallback) {
-    let isImageLoaded = false;
-    let zoomFactor = 1.0;
-    const zoomFactorDelta = 0.2;
-    const maxZoomFactor = 8;
-    const minZoomFactor = 1/maxZoomFactor;
-
-    function clip(val, min, max) {
-        if (val < min) return min;
-        if (val > max) return max;
-        return val;
-    }
-
-    openImageSidebarButton.addEventListener("change", function(event) {
-        var files = openImageSidebarButton.files;
-        onNewImage(files, onImageLoadedCallback);
-        isImageLoaded = true;
-    });
-
-    canvas.addEventListener("wheel", function(event) {
-        if (!isImageLoaded || !program) {
+    let imageLoader = new ImageLoader(openImageSidebarButton, onImageLoadedCallback);
+    registerZoomAndPanHandlers(canvas, function(zoomFactor, offset) {
+        if (!imageLoader.isLoaded()) {
             return;
         }
 
-        if (event.deltaY < 0) {
-            // Zoom in.
-            zoomFactor += zoomFactorDelta;
-        } else {
-            zoomFactor -= zoomFactorDelta;
-        }
-
-        zoomFactor = clip(zoomFactor, minZoomFactor, maxZoomFactor);
         ENV_CONTEXT.zoomFactor = zoomFactor;
+        ENV_CONTEXT.offset = offset;
     });
 
-    let sliders_to_bind = [
+    let bindInfos = [
         {
             id: "slider_brightness_alpha",
             path: "brightness/alpha"
@@ -440,89 +368,8 @@ function setupListeners(onImageLoadedCallback) {
             path: "contrast"
         }
     ];
-
-    sliders_to_bind.forEach(function(val, idx) {
-        let slider = document.getElementById(val.id);
-        slider.addEventListener("input", function(event) {
-            if (!isImageLoaded || !program) {
-                return;
-            }
-            let value = slider.value;
-            let target = ENV_CONTEXT;
-            let splitPath = val.path.split("/");
-            for (let i = 0; i < splitPath.length - 1; ++i) {
-                let key = splitPath[i];
-                if (!(key in target)) {
-                    throw `${key} not found in ${i}`;
-                }
-                target = target[key];
-            }
-            // to ensure reference.
-            target[splitPath[splitPath.length - 1]] = value;
-        });
-    });
-}
-
-function resizeCanvasToDisplaySize(canvas) {
-  // Lookup the size the browser is displaying the canvas in CSS pixels.
-  const displayWidth  = canvas.clientWidth;
-  const displayHeight = canvas.clientHeight;
- 
-  // Check if the canvas is not the same size.
-  const needResize = canvas.width  !== displayWidth ||
-                     canvas.height !== displayHeight;
- 
-  if (needResize) {
-    // Make the canvas the same size
-    canvas.width  = displayWidth;
-    canvas.height = displayHeight;
-  }
- 
-  return needResize;
-}
-//#endregion
-
-//#region WebGl code
-function createShader(gl, type, source) {
-  var shader = gl.createShader(type);
-  gl.shaderSource(shader, source);
-  gl.compileShader(shader);
-  var success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
-  if (success) {
-    return shader;
-  }
- 
-  console.error(gl.getShaderInfoLog(shader));
-  gl.deleteShader(shader);
-}
-
-function createProgram(gl, vertexShader, fragmentShader) {
-  var program = gl.createProgram();
-  gl.attachShader(program, vertexShader);
-  gl.attachShader(program, fragmentShader);
-  gl.linkProgram(program);
-  var success = gl.getProgramParameter(program, gl.LINK_STATUS);
-  if (success) {
-    return program;
-  }
- 
-  console.error(gl.getProgramInfoLog(program));
-  gl.deleteProgram(program);
-}
-
-function setRectangle(gl, x, y, width, height) {
-  var x1 = x;
-  var x2 = x + width;
-  var y1 = y;
-  var y2 = y + height;
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-     x1, y1,
-     x2, y1,
-     x1, y2,
-     x1, y2,
-     x2, y1,
-     x2, y2,
-  ]), gl.STATIC_DRAW);
+    let uiBinder = new UiBinder(bindInfos, ENV_CONTEXT, imageLoader);
+    uiBinder.bind();
 }
 //#endregion
 
@@ -531,6 +378,7 @@ function drawScene(timestamp) {
     var positionLocation = gl.getAttribLocation(program, "a_position");
     // Top level uniforms.
     var zoomFactorLocation = gl.getUniformLocation(program, "u_zoomFactor");
+    var offsetLocation = gl.getUniformLocation(program, "u_offset");
     var blendFactorLocation = gl.getUniformLocation(program, "u_blend");
     var resolutionLocation = gl.getUniformLocation(program, "u_resolution");
     // Brightness uniforms.
@@ -545,6 +393,7 @@ function drawScene(timestamp) {
     gl.clear(gl.COLOR_BUFFER_BIT);
     
     gl.uniform1f(zoomFactorLocation, ENV_CONTEXT.zoomFactor);
+    gl.uniform2fv(offsetLocation, [ENV_CONTEXT.offset.x, ENV_CONTEXT.offset.y]);
     gl.uniform1f(blendFactorLocation , ENV_CONTEXT.blend);
     // Brightness
     let brightnessAlpha = Math.pow(2, ENV_CONTEXT.brightness.alpha);
@@ -623,16 +472,15 @@ function render(image) {
     // Bind it to ARRAY_BUFFER (think of it as ARRAY_BUFFER = positionBuffer)
     gl.bindBuffer(gl.ARRAY_BUFFER, DATA_CONTEXT.positionBuffer);
     // Set a rectangle the same size as the image.
+    let startX = 0;
+    let startY = 0;
+    let newImageWidth = imageWidth;
+    let newImageHeight= imageHeight;
     if (image.width < canvasWidth && imageHeight < canvasHeight) {
         // render at the center
-        let startX = Math.floor((canvasWidth -imageWidth) / 2);
-        let startY = Math.floor((canvasHeight - imageHeight) / 2);
-        setRectangle(gl, startX, startY, imageWidth, imageHeight);
+        startX = Math.floor((canvasWidth -imageWidth) / 2) + ENV_CONTEXT.offset.x;
+        startY = Math.floor((canvasHeight - imageHeight) / 2) + ENV_CONTEXT.offset.y;
     } else {
-        let startX = 0;
-        let startY = 0;
-        let newImageWidth = imageWidth;
-        let newImageHeight = imageHeight;
         while (newImageHeight > canvasHeight || newImageWidth > canvasWidth) {
             if (newImageWidth > canvasWidth) {
                 let lastImageWidth = newImageWidth;
@@ -647,8 +495,8 @@ function render(image) {
                 startX = Math.floor((canvasWidth - newImageWidth) / 2);  
             }
         }
-        setRectangle(gl, startX, startY, newImageWidth, newImageHeight);
     }
+    setRectangle(gl, startX, startY, newImageWidth, newImageHeight);
 
     // Texture
     // provide texture coordinates for the rectangle.
@@ -691,14 +539,13 @@ function render(image) {
 
 docReady(function() {
     // Init tasks.
-    resizeCanvas();
+    resizeCanvas(canvas);
     if (!isGlSupported()) {
         alert("WebGl is not supported, this editor won't run.");
         return;
     }
 
-    setupListeners(
-        /* onImageLoadedCallback= */ render);    
+    setupListeners(/* onImageLoadedCallback= */ render);    
 });
 </script>
 </body>
