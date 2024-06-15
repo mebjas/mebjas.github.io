@@ -1,0 +1,103 @@
+INFO: STARTING!
+INFO: Log parameter values verbosely: [0]
+INFO: Min num runs: [50]
+INFO: Num threads: [1]
+INFO: Min warmup runs: [1]
+INFO: Graph: [u8.tflite]
+INFO: Signature to run: []
+INFO: Enable op profiling: [1]
+INFO: #threads used for CPU inference: [1]
+INFO: Loaded model u8.tflite
+INFO: Initialized TensorFlow Lite runtime.
+INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+VERBOSE: Replacing 10 out of 20 node(s) with delegate (TfLiteXNNPackDelegate) node, yielding 5 partitions for the whole graph.
+INFO: The input model file size (MB): 0.12352
+INFO: Initialized session in 4.992ms.
+INFO: Running benchmark for at least 1 iterations and at least 0.5 seconds but terminate if exceeding 150 seconds.
+INFO: count=2510 first=1774 curr=168 min=167 max=3489 avg=199.069 std=117
+
+INFO: Running benchmark for at least 50 iterations and at least 1 seconds but terminate if exceeding 150 seconds.
+INFO: count=5467 first=226 curr=170 min=169 max=366 avg=172.271 std=8
+
+INFO: Inference timings in us: Init: 4992, First inference: 1774, Warmup (avg): 199.069, Inference (avg): 172.271
+INFO: Note: as the benchmark tool itself affects memory footprint, the following is only APPROXIMATE to the actual memory footprint of the model at runtime. Take the information at your discretion.
+INFO: Memory footprint delta from the start of the tool (MB): init=3.37109 overall=4.16406
+INFO: Profiling Info for Benchmark Initialization:
+============================== Run Order ==============================
+	                             [node type]	  [first]	 [avg ms]	     [%]	  [cdf%]	  [mem KB]	[times called]	[Name]
+	                 ModifyGraphWithDelegate	    0.886	    0.886	 61.613%	 61.613%	   676.000	        1	ModifyGraphWithDelegate/0
+	                         AllocateTensors	    0.552	    0.552	 38.387%	100.000%	   188.000	        1	AllocateTensors/0
+
+============================== Top by Computation Time ==============================
+	                             [node type]	  [first]	 [avg ms]	     [%]	  [cdf%]	  [mem KB]	[times called]	[Name]
+	                 ModifyGraphWithDelegate	    0.886	    0.886	 61.613%	 61.613%	   676.000	        1	ModifyGraphWithDelegate/0
+	                         AllocateTensors	    0.552	    0.552	 38.387%	100.000%	   188.000	        1	AllocateTensors/0
+
+Number of nodes executed: 2
+============================== Summary by node type ==============================
+	                             [Node type]	  [count]	  [avg ms]	    [avg %]	    [cdf %]	  [mem KB]	[times called]
+	                 ModifyGraphWithDelegate	        1	     0.886	    61.613%	    61.613%	   676.000	        1
+	                         AllocateTensors	        1	     0.552	    38.387%	   100.000%	   188.000	        1
+
+Timings (microseconds): count=1 curr=1438
+Memory (bytes): count=0
+2 nodes observed
+
+
+
+INFO: Operator-wise Profiling Info for Regular Benchmark Runs:
+============================== Run Order ==============================
+	                             [node type]	  [first]	 [avg ms]	     [%]	  [cdf%]	  [mem KB]	[times called]	[Name]
+	                                QUANTIZE	    0.002	    0.000	  0.292%	  0.292%	     0.000	        1	[tfl.quantize]:0
+	          Convolution (NHWC, QS8) DWConv	    0.009	    0.007	  4.423%	  4.715%	     0.000	        1	Delegate/Convolution (NHWC, QS8) DWConv:0
+	            Convolution (NHWC, QC8) GEMM	    0.008	    0.007	  4.405%	  9.120%	     0.000	        1	Delegate/Convolution (NHWC, QC8) GEMM:1
+	                  Max Pooling (NHWC, S8)	    0.001	    0.001	  0.628%	  9.749%	     0.000	        1	Delegate/Max Pooling (NHWC, S8):2
+	          Convolution (NHWC, QC8) DWConv	    0.004	    0.004	  2.474%	 12.222%	     0.000	        1	Delegate/Convolution (NHWC, QC8) DWConv:3
+	            Convolution (NHWC, QC8) GEMM	    0.006	    0.006	  3.708%	 15.930%	     0.000	        1	Delegate/Convolution (NHWC, QC8) GEMM:4
+	                  Max Pooling (NHWC, S8)	    0.000	    0.000	  0.004%	 15.934%	     0.000	        1	Delegate/Max Pooling (NHWC, S8):5
+	          Convolution (NHWC, QC8) DWConv	    0.002	    0.002	  1.235%	 17.169%	     0.000	        1	Delegate/Convolution (NHWC, QC8) DWConv:6
+	            Convolution (NHWC, QC8) GEMM	    0.005	    0.004	  2.480%	 19.649%	     0.000	        1	Delegate/Convolution (NHWC, QC8) GEMM:7
+	                                   SHAPE	    0.001	    0.000	  0.049%	 19.698%	     0.000	        1	[model_23/conv2d_transpose_20/Shape]:9
+	                           STRIDED_SLICE	    0.001	    0.000	  0.065%	 19.763%	     0.000	        1	[model_23/conv2d_transpose_20/strided_slice]:10
+	                                    PACK	    0.003	    0.000	  0.249%	 20.012%	     0.000	        1	[model_23/conv2d_transpose_20/stack]:11
+	                          TRANSPOSE_CONV	    0.059	    0.045	 27.870%	 47.882%	     0.000	        1	[model_23/conv2d_transpose_20/Relu;model_23/conv2d_transpose_20/BiasAdd;model_23/conv2d_transpose_20/conv2d_transpose;model_23/conv2d_transpose_20/BiasAdd/ReadVariableOp]:12
+	                                   SHAPE	    0.000	    0.000	  0.050%	 47.932%	     0.000	        1	[model_23/conv2d_transpose_21/Shape]:13
+	                           STRIDED_SLICE	    0.000	    0.000	  0.059%	 47.991%	     0.000	        1	[model_23/conv2d_transpose_21/strided_slice]:14
+	                                    PACK	    0.001	    0.000	  0.224%	 48.215%	     0.000	        1	[model_23/conv2d_transpose_21/stack]:15
+	                          TRANSPOSE_CONV	    0.064	    0.056	 34.120%	 82.335%	     0.000	        1	[model_23/conv2d_transpose_21/Relu;model_23/conv2d_transpose_21/BiasAdd;model_23/conv2d_transpose_21/conv2d_transpose;model_23/conv2d_transpose_21/BiasAdd/ReadVariableOp]:16
+	           Convolution (NHWC, QS8) IGEMM	    0.029	    0.028	 17.398%	 99.733%	     0.000	        1	Delegate/Convolution (NHWC, QS8) IGEMM:0
+	                       Sigmoid (NC, QS8)	    0.000	    0.000	  0.000%	 99.733%	     0.000	        1	Delegate/Sigmoid (NC, QS8):1
+	                                QUANTIZE	    0.000	    0.000	  0.267%	100.000%	     0.000	        1	[StatefulPartitionedCall:0]:19
+
+============================== Top by Computation Time ==============================
+	                             [node type]	  [first]	 [avg ms]	     [%]	  [cdf%]	  [mem KB]	[times called]	[Name]
+	                          TRANSPOSE_CONV	    0.064	    0.056	 34.120%	 34.120%	     0.000	        1	[model_23/conv2d_transpose_21/Relu;model_23/conv2d_transpose_21/BiasAdd;model_23/conv2d_transpose_21/conv2d_transpose;model_23/conv2d_transpose_21/BiasAdd/ReadVariableOp]:16
+	                          TRANSPOSE_CONV	    0.059	    0.045	 27.870%	 61.989%	     0.000	        1	[model_23/conv2d_transpose_20/Relu;model_23/conv2d_transpose_20/BiasAdd;model_23/conv2d_transpose_20/conv2d_transpose;model_23/conv2d_transpose_20/BiasAdd/ReadVariableOp]:12
+	           Convolution (NHWC, QS8) IGEMM	    0.029	    0.028	 17.398%	 79.387%	     0.000	        1	Delegate/Convolution (NHWC, QS8) IGEMM:0
+	          Convolution (NHWC, QS8) DWConv	    0.009	    0.007	  4.423%	 83.811%	     0.000	        1	Delegate/Convolution (NHWC, QS8) DWConv:0
+	            Convolution (NHWC, QC8) GEMM	    0.008	    0.007	  4.405%	 88.216%	     0.000	        1	Delegate/Convolution (NHWC, QC8) GEMM:1
+	            Convolution (NHWC, QC8) GEMM	    0.006	    0.006	  3.708%	 91.924%	     0.000	        1	Delegate/Convolution (NHWC, QC8) GEMM:4
+	            Convolution (NHWC, QC8) GEMM	    0.005	    0.004	  2.480%	 94.404%	     0.000	        1	Delegate/Convolution (NHWC, QC8) GEMM:7
+	          Convolution (NHWC, QC8) DWConv	    0.004	    0.004	  2.474%	 96.878%	     0.000	        1	Delegate/Convolution (NHWC, QC8) DWConv:3
+	          Convolution (NHWC, QC8) DWConv	    0.002	    0.002	  1.235%	 98.113%	     0.000	        1	Delegate/Convolution (NHWC, QC8) DWConv:6
+	                  Max Pooling (NHWC, S8)	    0.001	    0.001	  0.628%	 98.741%	     0.000	        1	Delegate/Max Pooling (NHWC, S8):2
+
+Number of nodes executed: 20
+============================== Summary by node type ==============================
+	                             [Node type]	  [count]	  [avg ms]	    [avg %]	    [cdf %]	  [mem KB]	[times called]
+	                          TRANSPOSE_CONV	        2	     0.100	    62.893%	    62.893%	     0.000	        2
+	           Convolution (NHWC, QS8) IGEMM	        1	     0.028	    17.610%	    80.503%	     0.000	        1
+	            Convolution (NHWC, QC8) GEMM	        3	     0.017	    10.692%	    91.195%	     0.000	        3
+	          Convolution (NHWC, QS8) DWConv	        1	     0.007	     4.403%	    95.597%	     0.000	        1
+	          Convolution (NHWC, QC8) DWConv	        2	     0.006	     3.774%	    99.371%	     0.000	        2
+	                  Max Pooling (NHWC, S8)	        2	     0.001	     0.629%	   100.000%	     0.000	        2
+	                       Sigmoid (NC, QS8)	        1	     0.000	     0.000%	   100.000%	     0.000	        1
+	                           STRIDED_SLICE	        2	     0.000	     0.000%	   100.000%	     0.000	        2
+	                                   SHAPE	        2	     0.000	     0.000%	   100.000%	     0.000	        2
+	                                QUANTIZE	        2	     0.000	     0.000%	   100.000%	     0.000	        2
+	                                    PACK	        2	     0.000	     0.000%	   100.000%	     0.000	        2
+
+Timings (microseconds): count=5467 first=195 curr=162 min=158 max=357 avg=162.933 std=8
+Memory (bytes): count=0
+20 nodes observed
+

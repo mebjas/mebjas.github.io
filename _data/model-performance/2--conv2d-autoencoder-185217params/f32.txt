@@ -1,0 +1,93 @@
+INFO: STARTING!
+INFO: Log parameter values verbosely: [0]
+INFO: Min num runs: [50]
+INFO: Num threads: [1]
+INFO: Min warmup runs: [1]
+INFO: Graph: [f32.tflite]
+INFO: Signature to run: []
+INFO: Enable op profiling: [1]
+INFO: #threads used for CPU inference: [1]
+INFO: Loaded model f32.tflite
+INFO: Initialized TensorFlow Lite runtime.
+INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+VERBOSE: Replacing 7 out of 15 node(s) with delegate (TfLiteXNNPackDelegate) node, yielding 3 partitions for the whole graph.
+INFO: The input model file size (MB): 0.746532
+INFO: Initialized session in 7.07ms.
+INFO: Running benchmark for at least 1 iterations and at least 0.5 seconds but terminate if exceeding 150 seconds.
+INFO: count=426 first=5329 curr=1164 min=1095 max=5329 avg=1174.69 std=282
+
+INFO: Running benchmark for at least 50 iterations and at least 1 seconds but terminate if exceeding 150 seconds.
+INFO: count=1587 first=1194 curr=584 min=580 max=3031 avg=620.661 std=91
+
+INFO: Inference timings in us: Init: 7070, First inference: 5329, Warmup (avg): 1174.69, Inference (avg): 620.661
+INFO: Note: as the benchmark tool itself affects memory footprint, the following is only APPROXIMATE to the actual memory footprint of the model at runtime. Take the information at your discretion.
+INFO: Memory footprint delta from the start of the tool (MB): init=4.53906 overall=5.70312
+INFO: Profiling Info for Benchmark Initialization:
+============================== Run Order ==============================
+	                             [node type]	  [first]	 [avg ms]	     [%]	  [cdf%]	  [mem KB]	[times called]	[Name]
+	                 ModifyGraphWithDelegate	    3.043	    3.043	 76.056%	 76.056%	  1048.000	        1	ModifyGraphWithDelegate/0
+	                         AllocateTensors	    0.958	    0.958	 23.944%	100.000%	   960.000	        1	AllocateTensors/0
+
+============================== Top by Computation Time ==============================
+	                             [node type]	  [first]	 [avg ms]	     [%]	  [cdf%]	  [mem KB]	[times called]	[Name]
+	                 ModifyGraphWithDelegate	    3.043	    3.043	 76.056%	 76.056%	  1048.000	        1	ModifyGraphWithDelegate/0
+	                         AllocateTensors	    0.958	    0.958	 23.944%	100.000%	   960.000	        1	AllocateTensors/0
+
+Number of nodes executed: 2
+============================== Summary by node type ==============================
+	                             [Node type]	  [count]	  [avg ms]	    [avg %]	    [cdf %]	  [mem KB]	[times called]
+	                 ModifyGraphWithDelegate	        1	     3.043	    76.056%	    76.056%	  1048.000	        1
+	                         AllocateTensors	        1	     0.958	    23.944%	   100.000%	   960.000	        1
+
+Timings (microseconds): count=1 curr=4001
+Memory (bytes): count=0
+2 nodes observed
+
+
+
+INFO: Operator-wise Profiling Info for Regular Benchmark Runs:
+============================== Run Order ==============================
+	                             [node type]	  [first]	 [avg ms]	     [%]	  [cdf%]	  [mem KB]	[times called]	[Name]
+	           Convolution (NHWC, F32) IGEMM	    0.028	    0.035	 11.544%	 11.544%	     0.000	        2	Delegate/Convolution (NHWC, F32) IGEMM:0
+	                 Max Pooling (NHWC, F32)	    0.006	    0.003	  0.518%	 12.061%	     0.000	        1	Delegate/Max Pooling (NHWC, F32):1
+	           Convolution (NHWC, F32) IGEMM	    0.198	    0.102	 16.683%	 28.745%	     0.000	        1	Delegate/Convolution (NHWC, F32) IGEMM:2
+	                 Max Pooling (NHWC, F32)	    0.002	    0.001	  0.174%	 28.919%	     0.000	        1	Delegate/Max Pooling (NHWC, F32):3
+	           Convolution (NHWC, F32) IGEMM	    0.220	    0.107	 17.537%	 46.455%	     0.000	        1	Delegate/Convolution (NHWC, F32) IGEMM:4
+	                                   SHAPE	    0.003	    0.000	  0.060%	 46.515%	     0.000	        1	[model_20/conv2d_transpose_14/Shape]:5
+	                           STRIDED_SLICE	    0.002	    0.000	  0.051%	 46.566%	     0.000	        1	[model_20/conv2d_transpose_14/strided_slice]:6
+	                                    PACK	    0.002	    0.001	  0.103%	 46.670%	     0.000	        1	[model_20/conv2d_transpose_14/stack]:7
+	                          TRANSPOSE_CONV	    0.297	    0.171	 27.995%	 74.665%	     0.000	        1	[model_20/conv2d_transpose_14/Relu;model_20/conv2d_transpose_14/BiasAdd;model_20/conv2d_transpose_14/conv2d_transpose;]:8
+	                                   SHAPE	    0.000	    0.000	  0.014%	 74.679%	     0.000	        1	[model_20/conv2d_transpose_15/Shape]:9
+	                           STRIDED_SLICE	    0.001	    0.000	  0.021%	 74.700%	     0.000	        1	[model_20/conv2d_transpose_15/strided_slice]:10
+	                                    PACK	    0.002	    0.000	  0.076%	 74.776%	     0.000	        1	[model_20/conv2d_transpose_15/stack]:11
+	                          TRANSPOSE_CONV	    0.279	    0.153	 25.082%	 99.858%	     0.000	        1	[model_20/conv2d_transpose_15/Relu;model_20/conv2d_transpose_15/BiasAdd;model_20/conv2d_transpose_15/conv2d_transpose;]:12
+	                       Sigmoid (NC, F32)	    0.001	    0.001	  0.142%	100.000%	     0.000	        1	Delegate/Sigmoid (NC, F32):1
+
+============================== Top by Computation Time ==============================
+	                             [node type]	  [first]	 [avg ms]	     [%]	  [cdf%]	  [mem KB]	[times called]	[Name]
+	                          TRANSPOSE_CONV	    0.297	    0.171	 27.995%	 27.995%	     0.000	        1	[model_20/conv2d_transpose_14/Relu;model_20/conv2d_transpose_14/BiasAdd;model_20/conv2d_transpose_14/conv2d_transpose;]:8
+	                          TRANSPOSE_CONV	    0.279	    0.153	 25.082%	 53.077%	     0.000	        1	[model_20/conv2d_transpose_15/Relu;model_20/conv2d_transpose_15/BiasAdd;model_20/conv2d_transpose_15/conv2d_transpose;]:12
+	           Convolution (NHWC, F32) IGEMM	    0.220	    0.107	 17.537%	 70.613%	     0.000	        1	Delegate/Convolution (NHWC, F32) IGEMM:4
+	           Convolution (NHWC, F32) IGEMM	    0.198	    0.102	 16.683%	 87.297%	     0.000	        1	Delegate/Convolution (NHWC, F32) IGEMM:2
+	           Convolution (NHWC, F32) IGEMM	    0.028	    0.035	 11.544%	 98.840%	     0.000	        2	Delegate/Convolution (NHWC, F32) IGEMM:0
+	                 Max Pooling (NHWC, F32)	    0.006	    0.003	  0.518%	 99.358%	     0.000	        1	Delegate/Max Pooling (NHWC, F32):1
+	                 Max Pooling (NHWC, F32)	    0.002	    0.001	  0.174%	 99.532%	     0.000	        1	Delegate/Max Pooling (NHWC, F32):3
+	                       Sigmoid (NC, F32)	    0.001	    0.001	  0.142%	 99.675%	     0.000	        1	Delegate/Sigmoid (NC, F32):1
+	                                    PACK	    0.002	    0.001	  0.103%	 99.778%	     0.000	        1	[model_20/conv2d_transpose_14/stack]:7
+	                                    PACK	    0.002	    0.000	  0.076%	 99.854%	     0.000	        1	[model_20/conv2d_transpose_15/stack]:11
+
+Number of nodes executed: 14
+============================== Summary by node type ==============================
+	                             [Node type]	  [count]	  [avg ms]	    [avg %]	    [cdf %]	  [mem KB]	[times called]
+	                          TRANSPOSE_CONV	        2	     0.324	    53.465%	    53.465%	     0.000	        2
+	           Convolution (NHWC, F32) IGEMM	        3	     0.278	    45.875%	    99.340%	     0.000	        4
+	                 Max Pooling (NHWC, F32)	        2	     0.004	     0.660%	   100.000%	     0.000	        2
+	                       Sigmoid (NC, F32)	        1	     0.000	     0.000%	   100.000%	     0.000	        1
+	                           STRIDED_SLICE	        2	     0.000	     0.000%	   100.000%	     0.000	        2
+	                                   SHAPE	        2	     0.000	     0.000%	   100.000%	     0.000	        2
+	                                    PACK	        2	     0.000	     0.000%	   100.000%	     0.000	        2
+
+Timings (microseconds): count=1587 first=1142 curr=574 min=570 max=3005 avg=610.942 std=90
+Memory (bytes): count=0
+14 nodes observed
+

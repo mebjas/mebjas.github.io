@@ -1,0 +1,103 @@
+INFO: STARTING!
+INFO: Log parameter values verbosely: [0]
+INFO: Min num runs: [50]
+INFO: Num threads: [1]
+INFO: Min warmup runs: [1]
+INFO: Graph: [f16.tflite]
+INFO: Signature to run: []
+INFO: Enable op profiling: [1]
+INFO: #threads used for CPU inference: [1]
+INFO: Loaded model f16.tflite
+INFO: Initialized TensorFlow Lite runtime.
+INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+VERBOSE: Replacing 24 out of 36 node(s) with delegate (TfLiteXNNPackDelegate) node, yielding 4 partitions for the whole graph.
+INFO: The input model file size (MB): 0.217072
+INFO: Initialized session in 2.153ms.
+INFO: Running benchmark for at least 1 iterations and at least 0.5 seconds but terminate if exceeding 150 seconds.
+INFO: count=967 first=2133 curr=427 min=427 max=2133 avg=516.973 std=142
+
+INFO: Running benchmark for at least 50 iterations and at least 1 seconds but terminate if exceeding 150 seconds.
+INFO: count=2220 first=485 curr=433 min=431 max=580 avg=437.929 std=13
+
+INFO: Inference timings in us: Init: 2153, First inference: 2133, Warmup (avg): 516.973, Inference (avg): 437.929
+INFO: Note: as the benchmark tool itself affects memory footprint, the following is only APPROXIMATE to the actual memory footprint of the model at runtime. Take the information at your discretion.
+INFO: Memory footprint delta from the start of the tool (MB): init=3.71484 overall=5.22656
+INFO: Profiling Info for Benchmark Initialization:
+============================== Run Order ==============================
+	                             [node type]	  [first]	 [avg ms]	     [%]	  [cdf%]	  [mem KB]	[times called]	[Name]
+	                 ModifyGraphWithDelegate	    0.540	    0.540	 72.776%	 72.776%	   468.000	        1	ModifyGraphWithDelegate/0
+	                         AllocateTensors	    0.202	    0.202	 27.224%	100.000%	   804.000	        1	AllocateTensors/0
+
+============================== Top by Computation Time ==============================
+	                             [node type]	  [first]	 [avg ms]	     [%]	  [cdf%]	  [mem KB]	[times called]	[Name]
+	                 ModifyGraphWithDelegate	    0.540	    0.540	 72.776%	 72.776%	   468.000	        1	ModifyGraphWithDelegate/0
+	                         AllocateTensors	    0.202	    0.202	 27.224%	100.000%	   804.000	        1	AllocateTensors/0
+
+Number of nodes executed: 2
+============================== Summary by node type ==============================
+	                             [Node type]	  [count]	  [avg ms]	    [avg %]	    [cdf %]	  [mem KB]	[times called]
+	                 ModifyGraphWithDelegate	        1	     0.540	    72.776%	    72.776%	   468.000	        1
+	                         AllocateTensors	        1	     0.202	    27.224%	   100.000%	   804.000	        1
+
+Timings (microseconds): count=1 curr=742
+Memory (bytes): count=0
+2 nodes observed
+
+
+
+INFO: Operator-wise Profiling Info for Regular Benchmark Runs:
+============================== Run Order ==============================
+	                             [node type]	  [first]	 [avg ms]	     [%]	  [cdf%]	  [mem KB]	[times called]	[Name]
+	                              DEQUANTIZE	    0.002	    0.000	  0.030%	  0.030%	     0.000	        1	[tfl.dequantize]:0
+	                              DEQUANTIZE	    0.001	    0.000	  0.015%	  0.045%	     0.000	        1	[tfl.dequantize1]:1
+	                              DEQUANTIZE	    0.000	    0.000	  0.018%	  0.063%	     0.000	        1	[tfl.dequantize6]:6
+	                              DEQUANTIZE	    0.000	    0.000	  0.014%	  0.076%	     0.000	        1	[tfl.dequantize7]:7
+	          Convolution (NHWC, F32) DWConv	    0.004	    0.004	  0.962%	  1.038%	     0.000	        1	Delegate/Convolution (NHWC, F32) DWConv:0
+	            Convolution (NHWC, F32) GEMM	    0.005	    0.004	  0.953%	  1.992%	     0.000	        1	Delegate/Convolution (NHWC, F32) GEMM:1
+	                 Max Pooling (NHWC, F32)	    0.004	    0.003	  0.725%	  2.716%	     0.000	        1	Delegate/Max Pooling (NHWC, F32):2
+	          Convolution (NHWC, F32) DWConv	    0.005	    0.005	  1.182%	  3.898%	     0.000	        1	Delegate/Convolution (NHWC, F32) DWConv:3
+	            Convolution (NHWC, F32) GEMM	    0.012	    0.012	  2.827%	  6.725%	     0.000	        1	Delegate/Convolution (NHWC, F32) GEMM:4
+	                 Max Pooling (NHWC, F32)	    0.001	    0.001	  0.239%	  6.964%	     0.000	        1	Delegate/Max Pooling (NHWC, F32):5
+	          Convolution (NHWC, F32) DWConv	    0.002	    0.002	  0.469%	  7.433%	     0.000	        1	Delegate/Convolution (NHWC, F32) DWConv:6
+	            Convolution (NHWC, F32) GEMM	    0.012	    0.012	  2.831%	 10.265%	     0.000	        1	Delegate/Convolution (NHWC, F32) GEMM:7
+	                                   SHAPE	    0.003	    0.000	  0.022%	 10.286%	     0.000	        1	[model_23/conv2d_transpose_20/Shape]:26
+	                           STRIDED_SLICE	    0.003	    0.000	  0.036%	 10.322%	     0.000	        1	[model_23/conv2d_transpose_20/strided_slice]:27
+	                                    PACK	    0.002	    0.001	  0.118%	 10.440%	     0.000	        1	[model_23/conv2d_transpose_20/stack]:28
+	                          TRANSPOSE_CONV	    0.188	    0.183	 42.801%	 53.241%	     0.000	        1	[model_23/conv2d_transpose_20/Relu;model_23/conv2d_transpose_20/BiasAdd;model_23/conv2d_transpose_20/conv2d_transpose;model_23/conv2d_transpose_20/BiasAdd/ReadVariableOp]:29
+	                                   SHAPE	    0.001	    0.000	  0.032%	 53.272%	     0.000	        1	[model_23/conv2d_transpose_21/Shape]:30
+	                           STRIDED_SLICE	    0.000	    0.000	  0.030%	 53.303%	     0.000	        1	[model_23/conv2d_transpose_21/strided_slice]:31
+	                                    PACK	    0.001	    0.000	  0.108%	 53.411%	     0.000	        1	[model_23/conv2d_transpose_21/stack]:32
+	                          TRANSPOSE_CONV	    0.148	    0.147	 34.538%	 87.948%	     0.000	        1	[model_23/conv2d_transpose_21/Relu;model_23/conv2d_transpose_21/BiasAdd;model_23/conv2d_transpose_21/conv2d_transpose;model_23/conv2d_transpose_21/BiasAdd/ReadVariableOp]:33
+	           Convolution (NHWC, F32) IGEMM	    0.051	    0.051	 11.877%	 99.825%	     0.000	        1	Delegate/Convolution (NHWC, F32) IGEMM:0
+	                       Sigmoid (NC, F32)	    0.001	    0.001	  0.175%	100.000%	     0.000	        1	Delegate/Sigmoid (NC, F32):1
+
+============================== Top by Computation Time ==============================
+	                             [node type]	  [first]	 [avg ms]	     [%]	  [cdf%]	  [mem KB]	[times called]	[Name]
+	                          TRANSPOSE_CONV	    0.188	    0.183	 42.801%	 42.801%	     0.000	        1	[model_23/conv2d_transpose_20/Relu;model_23/conv2d_transpose_20/BiasAdd;model_23/conv2d_transpose_20/conv2d_transpose;model_23/conv2d_transpose_20/BiasAdd/ReadVariableOp]:29
+	                          TRANSPOSE_CONV	    0.148	    0.147	 34.538%	 77.338%	     0.000	        1	[model_23/conv2d_transpose_21/Relu;model_23/conv2d_transpose_21/BiasAdd;model_23/conv2d_transpose_21/conv2d_transpose;model_23/conv2d_transpose_21/BiasAdd/ReadVariableOp]:33
+	           Convolution (NHWC, F32) IGEMM	    0.051	    0.051	 11.877%	 89.215%	     0.000	        1	Delegate/Convolution (NHWC, F32) IGEMM:0
+	            Convolution (NHWC, F32) GEMM	    0.012	    0.012	  2.831%	 92.046%	     0.000	        1	Delegate/Convolution (NHWC, F32) GEMM:7
+	            Convolution (NHWC, F32) GEMM	    0.012	    0.012	  2.827%	 94.873%	     0.000	        1	Delegate/Convolution (NHWC, F32) GEMM:4
+	          Convolution (NHWC, F32) DWConv	    0.005	    0.005	  1.182%	 96.055%	     0.000	        1	Delegate/Convolution (NHWC, F32) DWConv:3
+	          Convolution (NHWC, F32) DWConv	    0.004	    0.004	  0.962%	 97.017%	     0.000	        1	Delegate/Convolution (NHWC, F32) DWConv:0
+	            Convolution (NHWC, F32) GEMM	    0.005	    0.004	  0.953%	 97.970%	     0.000	        1	Delegate/Convolution (NHWC, F32) GEMM:1
+	                 Max Pooling (NHWC, F32)	    0.004	    0.003	  0.725%	 98.695%	     0.000	        1	Delegate/Max Pooling (NHWC, F32):2
+	          Convolution (NHWC, F32) DWConv	    0.002	    0.002	  0.469%	 99.164%	     0.000	        1	Delegate/Convolution (NHWC, F32) DWConv:6
+
+Number of nodes executed: 22
+============================== Summary by node type ==============================
+	                             [Node type]	  [count]	  [avg ms]	    [avg %]	    [cdf %]	  [mem KB]	[times called]
+	                          TRANSPOSE_CONV	        2	     0.329	    77.962%	    77.962%	     0.000	        2
+	           Convolution (NHWC, F32) IGEMM	        1	     0.050	    11.848%	    89.810%	     0.000	        1
+	            Convolution (NHWC, F32) GEMM	        3	     0.028	     6.635%	    96.445%	     0.000	        3
+	          Convolution (NHWC, F32) DWConv	        3	     0.011	     2.607%	    99.052%	     0.000	        3
+	                 Max Pooling (NHWC, F32)	        2	     0.004	     0.948%	   100.000%	     0.000	        2
+	                       Sigmoid (NC, F32)	        1	     0.000	     0.000%	   100.000%	     0.000	        1
+	                           STRIDED_SLICE	        2	     0.000	     0.000%	   100.000%	     0.000	        2
+	                                   SHAPE	        2	     0.000	     0.000%	   100.000%	     0.000	        2
+	                                    PACK	        2	     0.000	     0.000%	   100.000%	     0.000	        2
+	                              DEQUANTIZE	        4	     0.000	     0.000%	   100.000%	     0.000	        4
+
+Timings (microseconds): count=2220 first=446 curr=422 min=419 max=569 avg=426.65 std=13
+Memory (bytes): count=0
+22 nodes observed

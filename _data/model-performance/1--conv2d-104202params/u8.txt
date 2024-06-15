@@ -1,0 +1,87 @@
+INFO: STARTING!
+INFO: Log parameter values verbosely: [0]
+INFO: Min num runs: [50]
+INFO: Num threads: [1]
+INFO: Min warmup runs: [1]
+INFO: Graph: [u8.tflite]
+INFO: Signature to run: []
+INFO: Enable op profiling: [1]
+INFO: #threads used for CPU inference: [1]
+INFO: Loaded model u8.tflite
+INFO: Initialized TensorFlow Lite runtime.
+INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+VERBOSE: Replacing 7 out of 10 node(s) with delegate (TfLiteXNNPackDelegate) node, yielding 3 partitions for the whole graph.
+INFO: The input model file size (MB): 0.114776
+INFO: Initialized session in 4.042ms.
+INFO: Running benchmark for at least 1 iterations and at least 0.5 seconds but terminate if exceeding 150 seconds.
+INFO: count=10832 first=215 curr=43 min=42 max=282 avg=46.0076 std=12
+
+INFO: Running benchmark for at least 50 iterations and at least 1 seconds but terminate if exceeding 150 seconds.
+INFO: count=20748 first=80 curr=44 min=43 max=80 avg=44.4094 std=2
+
+INFO: Inference timings in us: Init: 4042, First inference: 215, Warmup (avg): 46.0076, Inference (avg): 44.4094
+INFO: Note: as the benchmark tool itself affects memory footprint, the following is only APPROXIMATE to the actual memory footprint of the model at runtime. Take the information at your discretion.
+INFO: Memory footprint delta from the start of the tool (MB): init=3.19531 overall=3.52344
+INFO: Profiling Info for Benchmark Initialization:
+============================== Run Order ==============================
+	                             [node type]	  [first]	 [avg ms]	     [%]	  [cdf%]	  [mem KB]	[times called]	[Name]
+	                 ModifyGraphWithDelegate	    0.816	    0.816	 61.446%	 61.446%	   652.000	        1	ModifyGraphWithDelegate/0
+	                         AllocateTensors	    0.512	    0.512	 38.554%	100.000%	     0.000	        1	AllocateTensors/0
+
+============================== Top by Computation Time ==============================
+	                             [node type]	  [first]	 [avg ms]	     [%]	  [cdf%]	  [mem KB]	[times called]	[Name]
+	                 ModifyGraphWithDelegate	    0.816	    0.816	 61.446%	 61.446%	   652.000	        1	ModifyGraphWithDelegate/0
+	                         AllocateTensors	    0.512	    0.512	 38.554%	100.000%	     0.000	        1	AllocateTensors/0
+
+Number of nodes executed: 2
+============================== Summary by node type ==============================
+	                             [Node type]	  [count]	  [avg ms]	    [avg %]	    [cdf %]	  [mem KB]	[times called]
+	                 ModifyGraphWithDelegate	        1	     0.816	    61.446%	    61.446%	   652.000	        1
+	                         AllocateTensors	        1	     0.512	    38.554%	   100.000%	     0.000	        1
+
+Timings (microseconds): count=1 curr=1328
+Memory (bytes): count=0
+2 nodes observed
+
+
+
+INFO: Operator-wise Profiling Info for Regular Benchmark Runs:
+============================== Run Order ==============================
+	                             [node type]	  [first]	 [avg ms]	     [%]	  [cdf%]	  [mem KB]	[times called]	[Name]
+	                                QUANTIZE	    0.002	    0.000	  1.026%	  1.026%	     0.000	        1	[tfl.quantize]:0
+	           Convolution (NHWC, QC8) IGEMM	    0.016	    0.014	 35.477%	 36.503%	     0.000	        1	Delegate/Convolution (NHWC, QC8) IGEMM:0
+	                  Max Pooling (NHWC, S8)	    0.001	    0.001	  2.533%	 39.037%	     0.000	        1	Delegate/Max Pooling (NHWC, S8):1
+	           Convolution (NHWC, QC8) IGEMM	    0.020	    0.018	 44.727%	 83.764%	     0.000	        1	Delegate/Convolution (NHWC, QC8) IGEMM:2
+	                  Max Pooling (NHWC, S8)	    0.000	    0.000	  0.004%	 83.767%	     0.000	        1	Delegate/Max Pooling (NHWC, S8):3
+	           Convolution (NHWC, QC8) IGEMM	    0.008	    0.006	 15.236%	 99.004%	     0.000	        1	Delegate/Convolution (NHWC, QC8) IGEMM:4
+	                           Copy (NC, X8)	    0.000	    0.000	  0.000%	 99.004%	     0.000	        1	Delegate/Copy (NC, X8):5
+	    Fully Connected (NC, QS8, QC8W) GEMM	    0.001	    0.000	  0.004%	 99.007%	     0.000	        1	Delegate/Fully Connected (NC, QS8, QC8W) GEMM:6
+	                                 SOFTMAX	    0.003	    0.000	  0.584%	 99.591%	     0.000	        1	[StatefulPartitionedCall:01]:8
+	                                QUANTIZE	    0.001	    0.000	  0.409%	100.000%	     0.000	        1	[StatefulPartitionedCall:0]:9
+
+============================== Top by Computation Time ==============================
+	                             [node type]	  [first]	 [avg ms]	     [%]	  [cdf%]	  [mem KB]	[times called]	[Name]
+	           Convolution (NHWC, QC8) IGEMM	    0.020	    0.018	 44.727%	 44.727%	     0.000	        1	Delegate/Convolution (NHWC, QC8) IGEMM:2
+	           Convolution (NHWC, QC8) IGEMM	    0.016	    0.014	 35.477%	 80.204%	     0.000	        1	Delegate/Convolution (NHWC, QC8) IGEMM:0
+	           Convolution (NHWC, QC8) IGEMM	    0.008	    0.006	 15.236%	 95.440%	     0.000	        1	Delegate/Convolution (NHWC, QC8) IGEMM:4
+	                  Max Pooling (NHWC, S8)	    0.001	    0.001	  2.533%	 97.974%	     0.000	        1	Delegate/Max Pooling (NHWC, S8):1
+	                                QUANTIZE	    0.002	    0.000	  1.026%	 99.000%	     0.000	        1	[tfl.quantize]:0
+	                                 SOFTMAX	    0.003	    0.000	  0.584%	 99.584%	     0.000	        1	[StatefulPartitionedCall:01]:8
+	                                QUANTIZE	    0.001	    0.000	  0.409%	 99.993%	     0.000	        1	[StatefulPartitionedCall:0]:9
+	    Fully Connected (NC, QS8, QC8W) GEMM	    0.001	    0.000	  0.004%	 99.996%	     0.000	        1	Delegate/Fully Connected (NC, QS8, QC8W) GEMM:6
+	                  Max Pooling (NHWC, S8)	    0.000	    0.000	  0.004%	100.000%	     0.000	        1	Delegate/Max Pooling (NHWC, S8):3
+	                           Copy (NC, X8)	    0.000	    0.000	  0.000%	100.000%	     0.000	        1	Delegate/Copy (NC, X8):5
+
+Number of nodes executed: 10
+============================== Summary by node type ==============================
+	                             [Node type]	  [count]	  [avg ms]	    [avg %]	    [cdf %]	  [mem KB]	[times called]
+	           Convolution (NHWC, QC8) IGEMM	        3	     0.037	    97.368%	    97.368%	     0.000	        3
+	                  Max Pooling (NHWC, S8)	        2	     0.001	     2.632%	   100.000%	     0.000	        2
+	                                 SOFTMAX	        1	     0.000	     0.000%	   100.000%	     0.000	        1
+	                                QUANTIZE	        2	     0.000	     0.000%	   100.000%	     0.000	        2
+	    Fully Connected (NC, QS8, QC8W) GEMM	        1	     0.000	     0.000%	   100.000%	     0.000	        1
+	                           Copy (NC, X8)	        1	     0.000	     0.000%	   100.000%	     0.000	        1
+
+Timings (microseconds): count=20748 first=52 curr=39 min=37 max=75 avg=39.6611 std=2
+Memory (bytes): count=0
+10 nodes observed

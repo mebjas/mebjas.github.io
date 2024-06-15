@@ -1,0 +1,40 @@
+Model: "model_23"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ input_39 (InputLayer)       [(None, 28, 28, 1)]       0         
+                                                                 
+ separable_conv2d_7 (Separa  (None, 28, 28, 32)        73        
+ bleConv2D)                                                      
+                                                                 
+ max_pooling2d_75 (MaxPooli  (None, 14, 14, 32)        0         
+ ng2D)                                                           
+                                                                 
+ dropout_102 (Dropout)       (None, 14, 14, 32)        0         
+                                                                 
+ separable_conv2d_8 (Separa  (None, 14, 14, 64)        2400      
+ bleConv2D)                                                      
+                                                                 
+ max_pooling2d_76 (MaxPooli  (None, 7, 7, 64)          0         
+ ng2D)                                                           
+                                                                 
+ dropout_103 (Dropout)       (None, 7, 7, 64)          0         
+                                                                 
+ separable_conv2d_9 (Separa  (None, 7, 7, 128)         8896      
+ bleConv2D)                                                      
+                                                                 
+ dropout_104 (Dropout)       (None, 7, 7, 128)         0         
+                                                                 
+ conv2d_transpose_20 (Conv2  (None, 14, 14, 64)        73792     
+ DTranspose)                                                     
+                                                                 
+ conv2d_transpose_21 (Conv2  (None, 28, 28, 32)        18464     
+ DTranspose)                                                     
+                                                                 
+ conv2d_106 (Conv2D)         (None, 28, 28, 1)         289       
+                                                                 
+=================================================================
+Total params: 103914 (405.91 KB)
+Trainable params: 103914 (405.91 KB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________

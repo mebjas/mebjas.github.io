@@ -1,0 +1,48 @@
+Model: "model_30"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ input_46 (InputLayer)       [(None, 28, 28, 1)]       0         
+                                                                 
+ separable_conv2d_30 (Separ  (None, 28, 28, 32)        73        
+ ableConv2D)                                                     
+                                                                 
+ max_pooling2d_89 (MaxPooli  (None, 14, 14, 32)        0         
+ ng2D)                                                           
+                                                                 
+ dropout_123 (Dropout)       (None, 14, 14, 32)        0         
+                                                                 
+ separable_conv2d_31 (Separ  (None, 14, 14, 64)        2400      
+ ableConv2D)                                                     
+                                                                 
+ max_pooling2d_90 (MaxPooli  (None, 7, 7, 64)          0         
+ ng2D)                                                           
+                                                                 
+ dropout_124 (Dropout)       (None, 7, 7, 64)          0         
+                                                                 
+ separable_conv2d_32 (Separ  (None, 7, 7, 128)         8896      
+ ableConv2D)                                                     
+                                                                 
+ dropout_125 (Dropout)       (None, 7, 7, 128)         0         
+                                                                 
+ separable_conv2d_33 (Separ  (None, 7, 7, 4)           1668      
+ ableConv2D)                                                     
+                                                                 
+ up_sampling2d_12 (UpSampli  (None, 14, 14, 4)         0         
+ ng2D)                                                           
+                                                                 
+ separable_conv2d_34 (Separ  (None, 14, 14, 2)         46        
+ ableConv2D)                                                     
+                                                                 
+ up_sampling2d_13 (UpSampli  (None, 28, 28, 2)         0         
+ ng2D)                                                           
+                                                                 
+ conv2d_113 (Conv2D)         (None, 28, 28, 1)         19        
+                                                                 
+=================================================================
+Total params: 13102 (51.18 KB)
+Trainable params: 13102 (51.18 KB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+
+Lesser filters in the decoder.
