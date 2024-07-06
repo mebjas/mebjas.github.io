@@ -5,7 +5,7 @@ categories: [html, javascript, jquery, qrcode, camera, e2e]
 description: "When I started the project <a href='https://github.com/mebjas/html5-qrcode'>html5-qrcode</a>, my goal was to make it easier to implement QR code scanning in web applications. I wanted to abstract the inner details of how the camera is accessed in HTML5 and how it's connected with a scanning library. Some developers started to adopt the library and use it in their products. In general, the adoption trend seemed to be users trying to replicate the demo code. The library was stateful and required a series of steps to connect it with UI. In the latest version, I have implemented another wrapper called Html5QrcodeScanner which enable developers to <b>integrate QR Code scanning with ~5 lines of code</b>. No more statefulness!"
 post-no: 20
 toc: true
-image: 'https://github.com/mebjas/html5-qrcode/raw/master/assets/screen.gif'
+image: '../images/post14_image1.png'
 ---
 
 When I started the project <a href='https://github.com/mebjas/html5-qrcode'>html5-qrcode</a>, my goal was to make it easier to implement QR code scanning in web applications. I wanted to abstract the inner details of how the camera is accessed in HTML5 and how it's connected with a scanning library. Some developers started to adopt the library and use it in their products. In general, the adoption trend seemed to be users trying to replicate the demo code. The library was stateful and required a series of steps to connect it with UI. In the latest version, I have implemented another wrapper called `Html5QrcodeScanner` which enable developers to <b>integrate QR Code scanning with ~5 lines of code</b>. No more statefulness!
