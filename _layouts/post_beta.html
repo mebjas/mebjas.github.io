@@ -1,0 +1,65 @@
+---
+layout: default
+beta_page: true
+---
+{% include post-sidebar-left.html %}
+<link rel="preload" href={{ "/assets/css/post.css" | relative_url }} as="style">
+<link rel="stylesheet" href={{ "/assets/css/post.css" | relative_url }}>
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="page-header">
+    <h1 class="post-title" itemprop="name headline">{{ page.title | escape }}</h1>
+    <p class="post-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+        {% assign date_format = site.minutia.date_format | default: "%b %-d, %Y" %}
+        {{ page.date | date: date_format }}
+      </time>
+      {% if page.author %}
+      • By <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <span itemprop="name">{{ page.author }}</span>
+      </span>
+      {% endif %}
+    </p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    {% if page.toc %}
+    {% include toc.html html=content %}
+    {% endif %}
+    {{ content }}
+  </div>
+
+  <div class="post-medium-referral">
+    {% include medium-referral.html %}
+  </div>
+
+  <div class="post-footer">
+    {% include post-footer.html %}
+  </div>
+
+
+  <!-- TODO(mebjas): Migrate to a different commenting solution -->
+  <!-- <div class="utterances utterances-frame"></div> -->
+  <script src="https://utteranc.es/client.js"
+        repo="mebjas/mebjas.github.io"
+        issue-term="title"
+        label="test"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+  <!-- <br>
+  <br>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6209792783516879" crossorigin="anonymous"></script>
+  <ins class="adsbygoogle"
+    style="display:block; text-align:center;"
+    data-ad-layout="in-article"
+    data-ad-format="fluid"
+    data-ad-client="ca-pub-6209792783516879"
+    data-ad-slot="6078305767"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script> -->
+</article>
+{% include post-sidebar-right.html %}
