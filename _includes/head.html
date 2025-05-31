@@ -20,6 +20,9 @@
     {{ page.style }}
   </style>
   {% endif %}
+  {% if page.beta_page %}
+  <meta name="robots" content="noindex, nofollow">
+  {% endif %}
   
   <!-- jekyll-seo-tag. Should be right before </head> -->
   {% seo %}

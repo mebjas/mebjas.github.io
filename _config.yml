@@ -48,6 +48,11 @@ footer-links:
 permalink: /:title/
 timezone: Etc/UTC
 
+collections:
+  beta_posts:
+    output: true
+    permalink: /beta/:title/
+
 # Build settings
 markdown: kramdown
 kramdown:
@@ -76,11 +81,16 @@ exclude:
     - staticman.yml
 
 defaults:
-    scope:
+  - scope:
       path: "" # an empty string here means all files in the project
       type: "posts"
     values:
       layout: "post"
+  - scope:
+      path: "" # For all files in the beta_posts collection
+      type: "beta_posts"
+    values:
+      layout: "post_beta"
 
 category_descriptions:
   - { name: "distributed-systems", description: "" }
