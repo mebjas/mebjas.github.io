@@ -39,10 +39,59 @@ layout: compress
             <h3 class="text-4xl font-bold text-gray-900">Log your weight, water, food, and exercise using natural language.</h3>
         </header>
 
+        <!-- Input Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6 sticky bottom-4 mb-8">
+            <div class="flex flex-col sm:flex-row gap-4">
+                <input type="text" id="logInput" class="flex-grow w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g., '20 pushups', '1 glass of coffee', 'current weight is 84.5kg'">
+                <button id="logButton" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+                    <span id="logButtonText">Add</span>
+                    <span id="logButtonSpinner" class="hidden">
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Processing...
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Daily Goals Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Today's Dashboard</h2>
+            <!-- Motivational Quote -->
+            <div class="bg-blue-50 border-l-4 border-blue-500 text-blue-700 p-4 mb-6" role="alert">
+                <p class="font-bold">Quote of the Day</p>
+                <p id="quoteOfTheDay">"The only bad workout is the one that didn't happen."</p>
+            </div>
+
+            <!-- Display Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <!-- Calories Card -->
+                <div class="bg-gray-50 p-4 rounded-lg text-center">
+                    <h3 class="font-semibold text-gray-700">Remaining Calories</h3>
+                    <p id="caloriesRemaining" class="text-3xl font-bold text-green-600">-</p>
+                    <p id="caloriesConsumed" class="text-sm text-gray-500">0 consumed</p>
+                    <p class="text-sm text-green-700">Goal: <span id="calorieGoal">-</span> kcal</p>
+                </div>
+                <!-- Water Card -->
+                <div class="bg-gray-50 p-4 rounded-lg text-center">
+                    <h3 class="font-semibold text-gray-700">Water Target</h3>
+                    <p id="waterProgress" class="text-3xl font-bold text-blue-900">-</p>
+                </div>
+                <!-- Exercise Card -->
+                <div class="bg-gray-50 p-4 rounded-lg text-center">
+                    <h3 class="font-semibold text-gray-700">Exercise</h3>
+                    <p id="exerciseSummary" class="text-3xl font-bold text-orange-600">None</p>
+                    <p class="text-sm text-gray-500">logged today</p>
+                </div>
+            </div>
+        </div>
+
         <!-- Gemini API Key Section -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
             <div id="apiKeyHeader" class="flex justify-between items-center cursor-pointer">
-                <h2 class="text-2xl font-semibold text-gray-800">Configure Gemini API</h2>
+                <h2 class="text-2xl font-semibold text-gray-800">Settings</h2>
                 <svg id="apiKeyToggleIcon" class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </div>
             <div id="apiKeyContainer" class="mt-4 space-y-4 hidden">
@@ -52,6 +101,21 @@ layout: compress
                     <button id="saveApiKeyButton" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">Save Key</button>
                 </div>
                 <p id="apiKeyStatus" class="text-sm"></p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="baseCaloriesInput" class="block text-sm font-medium text-gray-700">Base Calories (kcal)</label>
+                        <input type="number" id="baseCaloriesInput" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" value="1500">
+                    </div>
+                    <div>
+                        <label for="calorieDeficitInput" class="block text-sm font-medium text-gray-700">Calorie Deficit (kcal)</label>
+                        <input type="number" id="calorieDeficitInput" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" value="500">
+                    </div>
+                    <div>
+                        <label for="waterTargetInput" class="block text-sm font-medium text-gray-700">Water Target (L)</label>
+                        <input type="number" id="waterTargetInput" step="0.1" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" value="3">
+                    </div>
+                </div>
+                <button id="saveTargetsButton" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Save Targets</button>
             </div>
         </div>
 
@@ -96,22 +160,7 @@ layout: compress
             </span>
         </div>
 
-        <!-- Input Section -->
-        <div class="bg-white rounded-lg shadow-lg p-6 sticky bottom-4">
-            <div class="flex flex-col sm:flex-row gap-4">
-                <input type="text" id="logInput" class="flex-grow w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g., '20 pushups', '1 glass of coffee', 'current weight is 84.5kg'">
-                <button id="logButton" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
-                    <span id="logButtonText">Add</span>
-                    <span id="logButtonSpinner" class="hidden">
-                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Processing...
-                    </span>
-                </button>
-            </div>
-        </div>
+        
     </div>
 
     <script type="module">
@@ -136,6 +185,21 @@ layout: compress
         const saveApiKeyButton = document.getElementById('saveApiKeyButton');
         const apiKeyStatus = document.getElementById('apiKeyStatus');
 
+        // --- Dashboard Elements ---
+        const quoteOfTheDay = document.getElementById('quoteOfTheDay');
+        const caloriesRemaining = document.getElementById('caloriesRemaining');
+        const calorieGoal = document.getElementById('calorieGoal');
+        const caloriesConsumed = document.getElementById('caloriesConsumed');
+        const waterProgress = document.getElementById('waterProgress');
+        const waterGoal = document.getElementById('waterGoal');
+        const exerciseSummary = document.getElementById('exerciseSummary');
+        const targetsHeader = document.getElementById('targetsHeader');
+        const targetsContainer = document.getElementById('targetsContainer');
+        const baseCaloriesInput = document.getElementById('baseCaloriesInput');
+        const calorieDeficitInput = document.getElementById('calorieDeficitInput');
+        const waterTargetInput = document.getElementById('waterTargetInput');
+        const saveTargetsButton = document.getElementById('saveTargetsButton');
+
         // --- Chart Instances ---
         let weightChart, nutritionChart;
 
@@ -145,6 +209,8 @@ layout: compress
         // --- Local Storage Database ---
         const STORAGE_KEY = 'health-log-data';
         const GEMINI_API_KEY = 'gemini-api-key';
+        const TARGETS_KEY = 'health-log-targets';
+        const QUOTE_KEY = 'health-log-quote';
         
         // Initialize local storage and load existing data
         function initializeLocalDB() {
@@ -181,9 +247,19 @@ layout: compress
             }
         }
 
+        // Initialize Targets UI
+        function initializeTargetsUI() {
+            const targets = getTargets();
+            baseCaloriesInput.value = targets.baseCalories;
+            calorieDeficitInput.value = targets.calorieDeficit;
+            waterTargetInput.value = targets.waterTarget;
+        }
+
         // Initialize the app
         initializeLocalDB();
         initializeApiKeyUI();
+        initializeTargetsUI();
+        fetchAndDisplayQuote();
 
         
         // Save data to localStorage
@@ -196,6 +272,70 @@ layout: compress
                 showError("Failed to save data locally.");
             }
         }
+
+        // --- Targets Logic ---
+        function getTargets() {
+            const storedTargets = localStorage.getItem(TARGETS_KEY);
+            const defaults = {
+                baseCalories: 1500,
+                calorieDeficit: 500,
+                waterTarget: 3
+            };
+            return storedTargets ? JSON.parse(storedTargets) : defaults;
+        }
+
+        function saveTargets() {
+            const targets = {
+                baseCalories: parseInt(baseCaloriesInput.value) || 1500,
+                calorieDeficit: parseInt(calorieDeficitInput.value) || 500,
+                waterTarget: parseFloat(waterTargetInput.value) || 3
+            };
+            localStorage.setItem(TARGETS_KEY, JSON.stringify(targets));
+            renderAll(); // Re-render to update dashboard
+        }
+
+        // --- Quote of the Day Logic ---
+        async function fetchAndDisplayQuote() {
+            const today = new Date().toISOString().split('T')[0];
+            const storedQuote = JSON.parse(localStorage.getItem(QUOTE_KEY));
+
+            if (storedQuote && storedQuote.date === today) {
+                quoteOfTheDay.textContent = storedQuote.quote;
+                return;
+            }
+
+            quoteOfTheDay.textContent = "Generating a fresh quote for you...";
+            try {
+                const quote = await getMotivationalQuote();
+                localStorage.setItem(QUOTE_KEY, JSON.stringify({ date: today, quote: quote }));
+                quoteOfTheDay.textContent = quote;
+            } catch (error) {
+                console.error("Failed to fetch quote:", error);
+                quoteOfTheDay.textContent = "The only bad workout is the one that didn't happen."; // Fallback
+            }
+        }
+
+        async function getMotivationalQuote() {
+            const apiKey = localStorage.getItem(GEMINI_API_KEY);
+            if (!apiKey) {
+                throw new Error("API key not set");
+            }
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+            const prompt = "Generate a short, motivational quote about fitness or health. Make it inspiring and concise.";
+
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch quote from API");
+            }
+            const data = await response.json();
+            return data.candidates[0].content.parts[0].text.trim();
+        }
+
 
         // Generate unique ID for entries
         function generateId() {
@@ -340,8 +480,31 @@ layout: compress
             exerciseLog.innerHTML = '';
             
             allData.forEach(renderLogEntry);
+            updateDashboard();
             renderCharts();
             renderExerciseTimeline();
+        }
+        
+        function updateDashboard() {
+            const targets = getTargets();
+            const today = new Date().toLocaleDateString();
+
+            const todaysFood = allData.filter(d => d.category === 'food' && new Date(d.timestamp).toLocaleDateString() === today);
+            const todaysWater = allData.filter(d => d.category === 'water' && new Date(d.timestamp).toLocaleDateString() === today);
+            const todaysExercise = allData.filter(d => d.category === 'exercise' && new Date(d.timestamp).toLocaleDateString() === today);
+
+            const caloriesConsumedValue = todaysFood.reduce((sum, curr) => sum + (curr.data.calories || 0), 0);
+            const waterDrankToday = todaysWater.reduce((sum, curr) => sum + (curr.data.amount || 0), 0);
+            
+            const totalCalorieGoal = targets.baseCalories - targets.calorieDeficit;
+            const remainingCals = totalCalorieGoal - caloriesConsumedValue;
+
+            // Update UI
+            calorieGoal.textContent = totalCalorieGoal;
+            caloriesConsumed.textContent = `${caloriesConsumedValue} kcal consumed`;
+            caloriesRemaining.textContent = remainingCals;
+            waterProgress.textContent = `${waterDrankToday}L / ${targets.waterTarget}L`;
+            exerciseSummary.textContent = todaysExercise.length;
         }
         
         function renderLogEntry(entry) {
@@ -498,6 +661,12 @@ layout: compress
                 apiKeyInput.placeholder = "Enter your Gemini API Key";
             }
         });
+
+        targetsHeader.addEventListener('click', () => {
+            targetsContainer.classList.toggle('hidden');
+        });
+
+        saveTargetsButton.addEventListener('click', saveTargets);
 
     </script>
 </div>
