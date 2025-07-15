@@ -220,7 +220,7 @@ layout: compress
                 Analyze the following user input and extract structured health data. The current date is ${new Date().toDateString()}.
                 The user input is: "${text}"
 
-                Respond with a single, minified JSON object with two keys: "category" and "data".
+                Respond with a minified list of JSON object with two keys: "category" and "data". If a single entry has more than one categories, split the result into individual JSON objects in the list with different categories.
 
                 Possible categories are: "weight", "water", "food", "exercise", or "unknown".
 
@@ -232,19 +232,23 @@ layout: compress
 
                 Example 1:
                 Input: "My current weight is 84.5kg"
-                Output: {"category":"weight","data":{"value":84.5}}
+                Output: [{"category":"weight","data":{"value":84.5}}]
 
                 Example 2:
                 Input: "I drank 2 glasses of water"
-                Output: {"category":"water","data":{"amount":0.5}}
+                Output: [{"category":"water","data":{"amount":0.5}}]
 
                 Example 3:
-                Input: "Ate a slice of pepperoni pizza"
-                Output: {"category":"food","data":{"item":"pepperoni pizza slice","calories":285}}
+                Input: "I drank 1 glass of coffee"
+                Output: [{"category":"water","data":{"amount":0.25}}, {"category":"food","data":{"item":"coffee","calories":5}}]
 
                 Example 4:
+                Input: "Ate a slice of pepperoni pizza"
+                Output: [{"category":"food","data":{"item":"pepperoni pizza slice","calories":285}}]
+
+                Example 5:
                 Input: "Did 20 pushups and ran for 15 minutes"
-                Output: {"category":"exercise","data":{"type":"pushups and running","reps":20,"duration_minutes":15}}
+                Output: [{"category":"exercise","data":{"type":"pushups and running","reps":20,"duration_minutes":15}}]
             `;
 
             try {
@@ -441,18 +445,25 @@ layout: compress
             toggleLoading(true);
             dismissError();
             try {
-                const result = await getStructuredData(text);
-                if (result.category === 'unknown') {
-                    showError("Sorry, I couldn't understand that. Please try phrasing it differently.");
-                } else {
+                const results = await getStructuredData(text);
+                if (!Array.isArray(results) || results.length === 0) {
+                    showError("No valid data extracted. Please try again.");
+                    toggleLoading(false);
+                    return;
+                }
+                results.forEach(async result => {
+                    if (results.category === 'unknown') {
+                        showError("Sorry, I couldn't understand that. Please try phrasing it differently.");
+                        return;
+                    } 
                     const newEntry = {
-                        timestamp: new Date().toISOString(),
-                        originalText: text,
-                        ...result
-                    };
+                            timestamp: new Date().toISOString(),
+                            originalText: text,
+                            ...result
+                        };
                     await logData(newEntry);
                     logInput.value = '';
-                }
+                });
             } catch (error) {
                 console.error("Error processing input:", error);
                 showError("An unexpected error occurred. Please try again.");
