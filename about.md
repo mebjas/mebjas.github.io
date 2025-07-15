@@ -19,8 +19,17 @@ permalink: /about/
 |Android Memory| Android Internals, Java and Native memory, ION memory manager |
 |Distributed Systems| High Availability, Resilience & Robustness |
 
-## `now()` &nbsp; Staff Software Engineer (TLM) at Google
-> ⚓ Singapore, May 2019 to present
+## `now()` &nbsp; &nbsp; Eng Lead at Google
+> ⚓ Mountain View, California, USA, Jan 2025 to present
+
+#### Android + AI Acceleration
+I lead engineering team in Android based out of Bengaluru (India), Singapore and the USA. We work on bringing differentiated AI experiences into Android.
+The team also works on portfolio of core ODML based Android experiences like Document Scanner, QR Scanner and entire Barcode Decoding stack in Google.
+
+_More to be added soon ..._
+
+## `now(/* index= */ -1)` &nbsp; &nbsp; Staff Software Engineer (TLM) at Google
+> ⚓ Singapore, May 2019 to Jan 2025
 
 #### Android
 I am Tech Lead and Manager for multiple projects in Android including QR scanner, barcode decoder, Document Scanner, Files by Google etc. Working hard building a solid applied ML/vision team at Google :).
@@ -43,7 +52,7 @@ My primary area of focus have been around optimizing the app to run feasibly on 
  - Linux Fundamentals, Memory management in Android
  - Computational Photography, Image Processing
  
-## `now(/* index= */ -1)` &nbsp; Software Engineer II at Microsoft
+## `now(/* index= */ -2)` &nbsp; Software Engineer II at Microsoft
 > 🇮🇳 Hyderabad, India, June 2016 to May 2019, ~3 years
 
 Worked primarily with **Microsoft Azure**. My day to day involved applied data science, Azure cloud services, distributed systems, and some part of Azure UI. My team was working on an intelligent alerting platform in Azure on features like Smart Grouping capable of automatically grouping user alerts from different sources to reduce mean time to mitigation for customers.

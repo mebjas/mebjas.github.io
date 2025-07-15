@@ -1,0 +1,494 @@
+---
+layout: compress
+---
+
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+  {% include head.html %}
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    .timeline-container::-webkit-scrollbar {
+        height: 8px;
+    }
+    .timeline-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    .timeline-container::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+    }
+    .timeline-container::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+</style>
+
+<!-- Enable pre-loading pages with query strings and for external links -->
+<body data-instant-allow-query-string data-instant-allow-external-links>
+{% include header_research.html %}
+
+<div class="bg-gray-100 text-gray-800 min-h-screen">
+
+    <div class="w-full p-4 md:p-8">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h3 class="text-4xl font-bold text-gray-900">Log your weight, water, food, and exercise using natural language.</h3>
+        </header>
+
+        <!-- Gemini API Key Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <div id="apiKeyHeader" class="flex justify-between items-center cursor-pointer">
+                <h2 class="text-2xl font-semibold text-gray-800">Configure Gemini API</h2>
+                <svg id="apiKeyToggleIcon" class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+            <div id="apiKeyContainer" class="mt-4 space-y-4 hidden">
+                <p class="text-gray-600">Enter your Google AI Gemini API key to enable natural language processing. Your key is stored locally in your browser and never sent to any server besides Google's.</p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <input type="password" id="apiKeyInput" class="flex-grow w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your Gemini API Key">
+                    <button id="saveApiKeyButton" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">Save Key</button>
+                </div>
+                <p id="apiKeyStatus" class="text-sm"></p>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Data Overview</h2>
+            <div class="grid grid-cols-1 gap-8">
+                <div>
+                    <canvas id="weightChart"></canvas>
+                </div>
+                <div>
+                    <canvas id="nutritionChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Exercise Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Exercise Timeline</h2>
+            <div id="exerciseTimelineContainer" class="timeline-container overflow-x-auto whitespace-nowrap py-2">
+                <div id="exerciseLog" class="space-x-4">
+                    <!-- Exercise cards will be injected here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Logs and Errors Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+             <div id="logHeader" class="flex justify-between items-center cursor-pointer">
+                <h2 class="text-2xl font-semibold text-gray-800">Audit Log</h2>
+                <svg id="logToggleIcon" class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+            <div id="logContainer" class="mt-4 space-y-4 hidden">
+                <!-- Log entries will be injected here -->
+            </div>
+        </div>
+        <div id="errorContainer" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-4" role="alert">
+            <strong class="font-bold">Error!</strong>
+            <span class="block sm:inline" id="errorMessage"></span>
+            <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                <svg onclick="dismissError()" class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.818l-2.651 3.031a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+            </span>
+        </div>
+
+        <!-- Input Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6 sticky bottom-4">
+            <div class="flex flex-col sm:flex-row gap-4">
+                <input type="text" id="logInput" class="flex-grow w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g., '20 pushups', '1 glass of coffee', 'current weight is 84.5kg'">
+                <button id="logButton" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+                    <span id="logButtonText">Add</span>
+                    <span id="logButtonSpinner" class="hidden">
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Processing...
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // --- DOM Elements ---
+        const logInput = document.getElementById('logInput');
+        const logButton = document.getElementById('logButton');
+        const logButtonText = document.getElementById('logButtonText');
+        const logButtonSpinner = document.getElementById('logButtonSpinner');
+        const logContainer = document.getElementById('logContainer');
+        const logHeader = document.getElementById('logHeader');
+        const logToggleIcon = document.getElementById('logToggleIcon');
+        const errorContainer = document.getElementById('errorContainer');
+        const errorMessage = document.getElementById('errorMessage');
+        const exerciseLog = document.getElementById('exerciseLog');
+        const exerciseTimelineContainer = document.getElementById('exerciseTimelineContainer');
+
+        // --- Gemini API Key Elements ---
+        const apiKeyHeader = document.getElementById('apiKeyHeader');
+        const apiKeyToggleIcon = document.getElementById('apiKeyToggleIcon');
+        const apiKeyContainer = document.getElementById('apiKeyContainer');
+        const apiKeyInput = document.getElementById('apiKeyInput');
+        const saveApiKeyButton = document.getElementById('saveApiKeyButton');
+        const apiKeyStatus = document.getElementById('apiKeyStatus');
+
+        // --- Chart Instances ---
+        let weightChart, nutritionChart;
+
+        // --- Data Store ---
+        let allData = []; // This will be populated from localStorage
+
+        // --- Local Storage Database ---
+        const STORAGE_KEY = 'health-log-data';
+        const GEMINI_API_KEY = 'gemini-api-key';
+        
+        // Initialize local storage and load existing data
+        function initializeLocalDB() {
+            try {
+                const storedData = localStorage.getItem(STORAGE_KEY);
+                if (storedData) {
+                    allData = JSON.parse(storedData);
+                    console.log("Loaded existing data from localStorage:", allData.length, "entries");
+                } else {
+                    allData = [];
+                    console.log("No existing data found, starting fresh");
+                }
+                // Sort data by timestamp after loading
+                allData.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+                renderAll();
+            } catch (e) {
+                console.error("Failed to load data from localStorage:", e);
+                showError("Failed to load existing data. Starting fresh.");
+                allData = [];
+                renderAll();
+            }
+        }
+
+        // Initialize API Key UI
+        function initializeApiKeyUI() {
+            const savedKey = localStorage.getItem(GEMINI_API_KEY);
+            if (savedKey) {
+                apiKeyStatus.textContent = "API Key is saved. You can update it here.";
+                apiKeyStatus.className = "text-sm text-green-600";
+                apiKeyInput.placeholder = "••••••••••••••••••••••••••••••";
+            } else {
+                apiKeyStatus.textContent = "API Key not set. Please enter your key to use the app.";
+                apiKeyStatus.className = "text-sm text-red-600";
+            }
+        }
+
+        // Initialize the app
+        initializeLocalDB();
+        initializeApiKeyUI();
+
+        
+        // Save data to localStorage
+        function saveToLocalStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
+                console.log("Data saved to localStorage:", allData.length, "entries");
+            } catch (e) {
+                console.error("Failed to save data to localStorage:", e);
+                showError("Failed to save data locally.");
+            }
+        }
+
+        // Generate unique ID for entries
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+        
+        /**
+         * Calls the Gemini API to categorize natural language input.
+         * @param {string} text - The user's input text.
+         * @returns {Promise<object>} - A promise that resolves with the structured data.
+         */
+        async function getStructuredData(text) {
+            const apiKey = localStorage.getItem(GEMINI_API_KEY);
+            if (!apiKey) {
+                showError("Gemini API key not set. Please configure it first by clicking 'Configure Gemini API'.");
+                throw new Error("API key not set");
+            }
+
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+            
+            const prompt = `
+                Analyze the following user input and extract structured health data. The current date is ${new Date().toDateString()}.
+                The user input is: "${text}"
+
+                Respond with a single, minified JSON object with two keys: "category" and "data".
+
+                Possible categories are: "weight", "water", "food", "exercise", or "unknown".
+
+                - For "weight", the "data" object should have a "value" key with the weight in kg (float).
+                - For "water", the "data" object should have an "amount" key with the volume in Liters (float). Assume "a glass" is 0.25L.
+                - For "food", the "data" object should have "item" (string) and "calories" (integer) keys. Provide a reasonable calorie estimate.
+                - For "exercise", the "data" object should have "type" (string) and either "reps" (integer) or "duration_minutes" (integer).
+                - If the input is ambiguous or cannot be categorized, the category should be "unknown" and data should be an empty object.
+
+                Example 1:
+                Input: "My current weight is 84.5kg"
+                Output: {"category":"weight","data":{"value":84.5}}
+
+                Example 2:
+                Input: "I drank 2 glasses of water"
+                Output: {"category":"water","data":{"amount":0.5}}
+
+                Example 3:
+                Input: "Ate a slice of pepperoni pizza"
+                Output: {"category":"food","data":{"item":"pepperoni pizza slice","calories":285}}
+
+                Example 4:
+                Input: "Did 20 pushups and ran for 15 minutes"
+                Output: {"category":"exercise","data":{"type":"pushups and running","reps":20,"duration_minutes":15}}
+            `;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }],
+                        generationConfig: {
+                            response_mime_type: "application/json",
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorBody = await response.json();
+                    console.error("Gemini API Error:", errorBody);
+                    throw new Error(`API Error: ${errorBody.error.message}`);
+                }
+
+                const responseData = await response.json();
+                const jsonString = responseData.candidates[0].content.parts[0].text;
+                return JSON.parse(jsonString);
+
+            } catch (error) {
+                console.error("Error calling Gemini API:", error);
+                showError(`Failed to process via Gemini: ${error.message}. Check your API key and network.`);
+                throw error;
+            }
+        }
+
+        /**
+         * Saves a new entry to local storage.
+         * @param {object} entry - The data entry to log.
+         */
+        async function logData(entry) {
+            try {
+                // Add unique ID to entry
+                entry.id = generateId();
+                
+                // Add to local data array
+                allData.push(entry);
+                
+                // Sort data by timestamp
+                allData.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+                
+                // Save to localStorage
+                saveToLocalStorage();
+                
+                // Re-render the UI
+                renderAll();
+                
+                console.log("Entry saved to localStorage:", entry);
+            } catch (error) {
+                console.error("Error saving entry:", error);
+                showError("Failed to save the entry.");
+            }
+        }
+
+        /**
+         * Deletes an entry from local storage.
+         * @param {string} id - The ID of the entry to delete.
+         */
+        window.deleteEntry = async function(id) {
+            try {
+                // Remove from local data array
+                const index = allData.findIndex(entry => entry.id === id);
+                if (index !== -1) {
+                    allData.splice(index, 1);
+                    
+                    // Save to localStorage
+                    saveToLocalStorage();
+                    
+                    // Re-render the UI
+                    renderAll();
+                    
+                    console.log("Entry deleted from localStorage:", id);
+                } else {
+                    console.warn("Entry not found for deletion:", id);
+                }
+            } catch (error) {
+                console.error("Error deleting entry:", error);
+                showError("Failed to delete the entry.");
+            }
+        }
+
+        function renderAll() {
+            logContainer.innerHTML = '';
+            exerciseLog.innerHTML = '';
+            
+            allData.forEach(renderLogEntry);
+            renderCharts();
+            renderExerciseTimeline();
+        }
+        
+        function renderLogEntry(entry) {
+            const logElement = document.createElement('div');
+            logElement.className = 'bg-gray-50 p-3 rounded-lg shadow-sm flex justify-between items-center';
+            let content = `<div class="flex items-center">`;
+            const date = new Date(entry.timestamp).toLocaleString();
+            switch (entry.category) {
+                case 'weight': content += `<span class="text-xl mr-3">⚖️</span> <div><p class="font-semibold">Weight Logged: ${entry.data.value} kg</p><p class="text-sm text-gray-500">${date}</p></div>`; break;
+                case 'water': content += `<span class="text-xl mr-3">💧</span> <div><p class="font-semibold">Water Intake: ${entry.data.amount} L</p><p class="text-sm text-gray-500">${date}</p></div>`; break;
+                case 'food': content += `<span class="text-xl mr-3">🍎</span> <div><p class="font-semibold">Food: ${entry.data.item}</p><p class="text-gray-600 text-sm">Calories: ~${entry.data.calories} kcal</p><p class="text-sm text-gray-500">${date}</p></div>`; break;
+                case 'exercise': content += `<span class="text-xl mr-3">🏋️</span> <div><p class="font-semibold">Exercise: ${entry.data.type}</p><p class="text-gray-600 text-sm">${entry.data.reps ? `Reps: ${entry.data.reps}` : `Duration: ${entry.data.duration_minutes} min`}</p><p class="text-sm text-gray-500">${date}</p></div>`; break;
+            }
+            content += `</div>`;
+            const deleteButton = `<button onclick="deleteEntry('${entry.id}')" class="text-red-500 hover:text-red-700 font-semibold text-sm">Delete</button>`;
+            logElement.innerHTML = content + deleteButton;
+            logContainer.prepend(logElement);
+        }
+
+        function renderExerciseTimeline() {
+            const allExercises = allData.filter(e => e.category === 'exercise');
+            if (allExercises.length === 0) {
+                exerciseLog.innerHTML = '<p class="text-gray-500 text-center w-full">No exercises logged yet.</p>';
+                return;
+            }
+            const exerciseGroups = allExercises.reduce((acc, curr) => {
+                const date = new Date(curr.timestamp).toLocaleDateString();
+                if (!acc[date]) acc[date] = [];
+                acc[date].push(curr.data);
+                return acc;
+            }, {});
+            Object.keys(exerciseGroups).sort((a,b) => new Date(a) - new Date(b)).forEach(date => {
+                const card = document.createElement('div');
+                card.className = 'inline-block bg-gray-50 p-4 rounded-lg w-[180px] h-full align-top whitespace-normal shadow';
+                let exercisesHtml = `<h3 class="font-bold mb-2 text-gray-700">${date}</h3><ul class="text-sm space-y-1">`;
+                exerciseGroups[date].forEach(ex => {
+                    exercisesHtml += `<li><span class="font-semibold">${ex.type}:</span> ${ex.reps ? `${ex.reps} reps` : `${ex.duration_minutes} min`}</li>`;
+                });
+                exercisesHtml += '</ul>';
+                card.innerHTML = exercisesHtml;
+                exerciseLog.appendChild(card);
+            });
+            exerciseTimelineContainer.scrollLeft = exerciseTimelineContainer.scrollWidth;
+        }
+
+        function renderCharts() {
+            const labels = [...new Set(allData.map(d => new Date(d.timestamp).toLocaleDateString()))].sort((a,b) => new Date(a) - new Date(b));
+            const weightData = {
+                labels: labels,
+                datasets: [{
+                    label: 'Weight (kg)',
+                    data: labels.map(label => {
+                        const dayData = allData.filter(d => new Date(d.timestamp).toLocaleDateString() === label && d.category === 'weight');
+                        return dayData.length > 0 ? dayData[dayData.length - 1].data.value : null;
+                    }),
+                    borderColor: 'rgba(239, 68, 68, 1)', backgroundColor: 'rgba(239, 68, 68, 0.2)', type: 'line', fill: false, tension: 0.1, spanGaps: true
+                }]
+            };
+            const nutritionData = {
+                labels: labels,
+                datasets: [
+                {
+                    label: 'Calories (kcal)',
+                    data: labels.map(label => {
+                        const dayData = allData.filter(d => new Date(d.timestamp).toLocaleDateString() === label && d.category === 'food');
+                        return dayData.reduce((sum, curr) => sum + (curr.data.calories || 0), 0);
+                    }),
+                    backgroundColor: 'rgba(59, 130, 246, 0.6)', borderColor: 'rgba(59, 130, 246, 1)', borderWidth: 1, yAxisID: 'y'
+                },
+                {
+                    label: 'Water (L)',
+                    data: labels.map(label => {
+                        const dayData = allData.filter(d => new Date(d.timestamp).toLocaleDateString() === label && d.category === 'water');
+                        return dayData.reduce((sum, curr) => sum + (curr.data.amount || 0), 0);
+                    }),
+                    backgroundColor: 'rgba(16, 185, 129, 0.6)', borderColor: 'rgba(16, 185, 129, 1)', borderWidth: 1, yAxisID: 'y1'
+                }]
+            };
+            if (weightChart) weightChart.destroy();
+            weightChart = new Chart(document.getElementById('weightChart'), { type: 'line', data: weightData, options: { responsive: true, plugins: { title: { display: true, text: 'Weight Trend' } }, scales: { y: { beginAtZero: false } } } });
+            if (nutritionChart) nutritionChart.destroy();
+            nutritionChart = new Chart(document.getElementById('nutritionChart'), { type: 'bar', data: nutritionData, options: { responsive: true, plugins: { title: { display: true, text: 'Nutrition Overview (Calories & Water)' } }, scales: { y: { type: 'linear', display: true, position: 'left', title: { display: true, text: 'Calories (kcal)' }, beginAtZero: true }, y1: { type: 'linear', display: true, position: 'right', title: { display: true, text: 'Water (L)' }, grid: { drawOnChartArea: false }, beginAtZero: true } } } });
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorContainer.classList.remove('hidden');
+        }
+        window.dismissError = function() { errorContainer.classList.add('hidden'); }
+        
+        function toggleLoading(isLoading) {
+            logButton.disabled = isLoading;
+            logButtonText.classList.toggle('hidden', isLoading);
+            logButtonSpinner.classList.toggle('hidden', !isLoading);
+        }
+
+        // --- Event Listeners ---
+        logButton.addEventListener('click', async () => {
+            const text = logInput.value.trim();
+            if (!text) return;
+            toggleLoading(true);
+            dismissError();
+            try {
+                const result = await getStructuredData(text);
+                if (result.category === 'unknown') {
+                    showError("Sorry, I couldn't understand that. Please try phrasing it differently.");
+                } else {
+                    const newEntry = {
+                        timestamp: new Date().toISOString(),
+                        originalText: text,
+                        ...result
+                    };
+                    await logData(newEntry);
+                    logInput.value = '';
+                }
+            } catch (error) {
+                console.error("Error processing input:", error);
+                showError("An unexpected error occurred. Please try again.");
+            } finally {
+                toggleLoading(false);
+            }
+        });
+
+        logInput.addEventListener('keypress', (event) => { if (event.key === 'Enter') logButton.click(); });
+        logHeader.addEventListener('click', () => {
+            logContainer.classList.toggle('hidden');
+            logToggleIcon.classList.toggle('rotate-180');
+        });
+
+        apiKeyHeader.addEventListener('click', () => {
+            apiKeyContainer.classList.toggle('hidden');
+            apiKeyToggleIcon.classList.toggle('rotate-180');
+        });
+
+        saveApiKeyButton.addEventListener('click', () => {
+            const key = apiKeyInput.value.trim();
+            if (key) {
+                localStorage.setItem(GEMINI_API_KEY, key);
+                apiKeyStatus.textContent = "API Key saved successfully!";
+                apiKeyStatus.className = "text-sm text-green-600";
+                apiKeyInput.value = '';
+                apiKeyInput.placeholder = "••••••••••••••••••••••••••••••";
+            } else {
+                localStorage.removeItem(GEMINI_API_KEY);
+                apiKeyStatus.textContent = "API Key removed.";
+                apiKeyStatus.className = "text-sm text-yellow-600";
+                apiKeyInput.placeholder = "Enter your Gemini API Key";
+            }
+        });
+
+    </script>
+</div>
+</body>
+</html>
