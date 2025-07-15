@@ -123,10 +123,10 @@ layout: compress
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 class="text-2xl font-semibold mb-4 text-gray-800">Data Overview</h2>
             <div class="grid grid-cols-1 gap-8">
-                <div>
+                <div class="h-[300px]">
                     <canvas id="weightChart"></canvas>
                 </div>
-                <div>
+                <div class="h-[300px]">
                     <canvas id="nutritionChart"></canvas>
                 </div>
             </div>
@@ -584,9 +584,9 @@ layout: compress
                 }]
             };
             if (weightChart) weightChart.destroy();
-            weightChart = new Chart(document.getElementById('weightChart'), { type: 'line', data: weightData, options: { responsive: true, plugins: { title: { display: true, text: 'Weight Trend' } }, scales: { y: { beginAtZero: false } } } });
+            weightChart = new Chart(document.getElementById('weightChart'), { type: 'line', data: weightData, options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: 'Weight Trend' } }, scales: { y: { beginAtZero: false } } } });
             if (nutritionChart) nutritionChart.destroy();
-            nutritionChart = new Chart(document.getElementById('nutritionChart'), { type: 'bar', data: nutritionData, options: { responsive: true, plugins: { title: { display: true, text: 'Nutrition Overview (Calories & Water)' } }, scales: { y: { type: 'linear', display: true, position: 'left', title: { display: true, text: 'Calories (kcal)' }, beginAtZero: true }, y1: { type: 'linear', display: true, position: 'right', title: { display: true, text: 'Water (L)' }, grid: { drawOnChartArea: false }, beginAtZero: true } } } });
+            nutritionChart = new Chart(document.getElementById('nutritionChart'), { type: 'bar', data: nutritionData, options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: 'Nutrition Overview (Calories & Water)' } }, scales: { y: { type: 'linear', display: true, position: 'left', title: { display: true, text: 'Calories (kcal)' }, beginAtZero: true }, y1: { type: 'linear', display: true, position: 'right', title: { display: true, text: 'Water (L)' }, grid: { drawOnChartArea: false }, beginAtZero: true } } } });
         }
 
         function showError(message) {
