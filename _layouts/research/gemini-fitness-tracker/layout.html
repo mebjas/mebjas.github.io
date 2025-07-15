@@ -193,7 +193,6 @@ layout: compress
         const waterProgress = document.getElementById('waterProgress');
         const waterGoal = document.getElementById('waterGoal');
         const exerciseSummary = document.getElementById('exerciseSummary');
-        const targetsHeader = document.getElementById('targetsHeader');
         const targetsContainer = document.getElementById('targetsContainer');
         const baseCaloriesInput = document.getElementById('baseCaloriesInput');
         const calorieDeficitInput = document.getElementById('calorieDeficitInput');
@@ -285,13 +284,15 @@ layout: compress
         }
 
         function saveTargets() {
+            console.log("saveTargets called");
             const targets = {
                 baseCalories: parseInt(baseCaloriesInput.value) || 1500,
                 calorieDeficit: parseInt(calorieDeficitInput.value) || 500,
                 waterTarget: parseFloat(waterTargetInput.value) || 3
             };
+            console.log("targets", targets);
             localStorage.setItem(TARGETS_KEY, JSON.stringify(targets));
-            renderAll(); // Re-render to update dashboard
+            renderAll();
         }
 
         // --- Quote of the Day Logic ---
@@ -660,10 +661,6 @@ layout: compress
                 apiKeyStatus.className = "text-sm text-yellow-600";
                 apiKeyInput.placeholder = "Enter your Gemini API Key";
             }
-        });
-
-        targetsHeader.addEventListener('click', () => {
-            targetsContainer.classList.toggle('hidden');
         });
 
         saveTargetsButton.addEventListener('click', saveTargets);
