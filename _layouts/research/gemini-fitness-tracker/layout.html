@@ -57,30 +57,70 @@ layout: compress
 <div class="bg-gray-100 text-gray-800 min-h-screen">
 
     <div class="w-full p-4 md:p-8">
-        <!-- Cloud Backup Section -->
-        <div id="authCard" class="flex items-center justify-between p-4 bg-blue-50 border border-blue-200 rounded-lg transition-all duration-300 mb-8">
-            <div class="flex items-center">
-                <svg id="authCardIcon" class="w-6 h-6 text-blue-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
-                </svg>
-                <div>
-                    <p id="authCardTitle" class="font-semibold text-blue-800">Sign in with Google to backup your data</p>
-                    <p id="authCardSubtitle" class="text-sm text-blue-600">Otherwise local storage will be used</p>
+                <!-- Settings Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <div id="apiKeyHeader" class="flex justify-between items-center cursor-pointer">
+                <div class="flex items-center">
+                    <h2 class="text-2xl font-semibold text-gray-800 mr-4">Settings</h2>
+                    <!-- Auth Status Indicator -->
+                    <div id="authStatusIndicator" class="flex items-center">
+                        <svg id="authCardIcon" class="w-5 h-5 text-blue-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
+                        </svg>
+                        <div>
+                            <p id="authCardTitle" class="text-sm font-medium text-blue-800">Sign in with Google to backup your data</p>
+                            <p id="authCardSubtitle" class="text-xs text-blue-600">Otherwise local storage will be used</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <!-- Auth Action -->
+                    <div id="authCardAction">
+                        <button id="signInButton" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center text-sm">
+                            <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                            Sign in
+                        </button>
+                        <button id="signOutButton" class="hidden bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-3 rounded text-sm transition duration-300">
+                            Sign out
+                        </button>
+                    </div>
+                    <!-- Toggle Icon -->
+                    <svg id="apiKeyToggleIcon" class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </div>
             </div>
-            <div id="authCardAction">
-                <button id="signInButton" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center">
-                    <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                        <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                        <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                        <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                    </svg>
-                    Sign in with Google
-                </button>
-                <button id="signOutButton" class="hidden bg-red-600 hover:bg-red-700 text-white font-medium py-1.5 px-3 rounded text-sm transition duration-300">
-                    Sign out
-                </button>
+            <div id="apiKeyContainer" class="mt-4 space-y-4 hidden">
+                <!-- Settings > API key -->
+                <p class="text-gray-600">Enter your Google AI Gemini API key to enable natural language processing. Your key is stored locally in your browser and never sent to any server besides Google's.</p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <input type="password" id="apiKeyInput" class="flex-grow w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your Gemini API Key">
+                    <button id="saveApiKeyButton" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">Save Key</button>
+                </div>
+                <p id="apiKeyStatus" class="text-sm"></p>
+                <!-- Settings > configs -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="baseCaloriesInput" class="block text-sm font-medium text-gray-700">Base Calories (kcal)</label>
+                        <input type="number" id="baseCaloriesInput" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" value="1500">
+                    </div>
+                    <div>
+                        <label for="calorieDeficitInput" class="block text-sm font-medium text-gray-700">Calorie Deficit (kcal)</label>
+                        <input type="number" id="calorieDeficitInput" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" value="500">
+                    </div>
+                    <div>
+                        <label for="waterTargetInput" class="block text-sm font-medium text-gray-700">Water Target (L)</label>
+                        <input type="number" id="waterTargetInput" step="0.1" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" value="3">
+                    </div>
+                    <div>
+                        <label for="targetWeightInput" class="block text-sm font-medium text-gray-700">Target Weight (kg)</label>
+                        <input type="number" id="targetWeightInput" step="0.1" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" value="78">
+                    </div>
+                </div>
+                <button id="saveTargetsButton" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Save Targets</button>
             </div>
         </div>
 
@@ -241,43 +281,6 @@ layout: compress
             </div>
         </div>
 
-        <!-- Settings Section -->
-        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-            <div id="apiKeyHeader" class="flex justify-between items-center cursor-pointer">
-                <h2 class="text-2xl font-semibold text-gray-800">Settings</h2>
-                <svg id="apiKeyToggleIcon" class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-            </div>
-            <div id="apiKeyContainer" class="mt-4 space-y-4 hidden">
-                <!-- Settings > API key -->
-                <p class="text-gray-600">Enter your Google AI Gemini API key to enable natural language processing. Your key is stored locally in your browser and never sent to any server besides Google's.</p>
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <input type="password" id="apiKeyInput" class="flex-grow w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your Gemini API Key">
-                    <button id="saveApiKeyButton" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">Save Key</button>
-                </div>
-                <p id="apiKeyStatus" class="text-sm"></p>
-                <!-- Settings > configs -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="baseCaloriesInput" class="block text-sm font-medium text-gray-700">Base Calories (kcal)</label>
-                        <input type="number" id="baseCaloriesInput" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" value="1500">
-                    </div>
-                    <div>
-                        <label for="calorieDeficitInput" class="block text-sm font-medium text-gray-700">Calorie Deficit (kcal)</label>
-                        <input type="number" id="calorieDeficitInput" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" value="500">
-                    </div>
-                    <div>
-                        <label for="waterTargetInput" class="block text-sm font-medium text-gray-700">Water Target (L)</label>
-                        <input type="number" id="waterTargetInput" step="0.1" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" value="3">
-                    </div>
-                    <div>
-                        <label for="targetWeightInput" class="block text-sm font-medium text-gray-700">Target Weight (kg)</label>
-                        <input type="number" id="targetWeightInput" step="0.1" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" value="78">
-                    </div>
-                </div>
-                <button id="saveTargetsButton" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Save Targets</button>
-            </div>
-        </div>
-
         <!-- Charts Section -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 class="text-2xl font-semibold mb-4 text-gray-800">Data</h2>
@@ -427,7 +430,6 @@ layout: compress
         const exerciseTimelineContainer = document.getElementById('exerciseTimelineContainer');
 
         // --- Authentication Elements ---
-        const authCard = document.getElementById('authCard');
         const authCardIcon = document.getElementById('authCardIcon');
         const authCardTitle = document.getElementById('authCardTitle');
         const authCardSubtitle = document.getElementById('authCardSubtitle');
@@ -947,26 +949,27 @@ layout: compress
         // Update authentication UI
         function updateAuthUI() {
             if (currentUser) {
-                // Signed in - minimal card
-                authCard.classList.remove('bg-blue-50', 'border-blue-200');
-                authCard.classList.add('bg-green-50', 'border-green-200');
-                authCardIcon.classList.add('hidden');
+                // Signed in - show user email and sign out button
+                authCardIcon.classList.remove('text-blue-600');
+                authCardIcon.classList.add('text-green-600');
                 authCardTitle.textContent = `Signed in as ${currentUser.email}`;
                 authCardTitle.classList.remove('text-blue-800');
-                authCardTitle.classList.add('text-green-700', 'text-sm');
-                authCardSubtitle.classList.add('hidden');
+                authCardTitle.classList.add('text-green-700');
+                authCardSubtitle.textContent = "Data is backed up to cloud";
+                authCardSubtitle.classList.remove('text-blue-600');
+                authCardSubtitle.classList.add('text-green-600');
                 signInButton.classList.add('hidden');
                 signOutButton.classList.remove('hidden');
             } else {
-                // Signed out - full card
-                authCard.classList.remove('bg-green-50', 'border-green-200');
-                authCard.classList.add('bg-blue-50', 'border-blue-200');
-                authCardIcon.classList.remove('hidden');
+                // Signed out - show sign in prompt and button
+                authCardIcon.classList.remove('text-green-600');
+                authCardIcon.classList.add('text-blue-600');
                 authCardTitle.textContent = "Sign in with Google to backup your data";
-                authCardTitle.classList.remove('text-green-700', 'text-sm');
+                authCardTitle.classList.remove('text-green-700');
                 authCardTitle.classList.add('text-blue-800');
                 authCardSubtitle.textContent = "Otherwise local storage will be used";
-                authCardSubtitle.classList.remove('hidden');
+                authCardSubtitle.classList.remove('text-green-600');
+                authCardSubtitle.classList.add('text-blue-600');
                 signInButton.classList.remove('hidden');
                 signOutButton.classList.add('hidden');
             }
