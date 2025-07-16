@@ -25,6 +25,9 @@ layout: compress
     .timeline-container::-webkit-scrollbar-thumb:hover {
         background: #555;
     }
+    .card h3 {
+        margin-bottom: 20px;
+    }
 </style>
 
 <!-- Enable pre-loading pages with query strings and for external links -->
@@ -67,8 +70,17 @@ layout: compress
 
             <!-- Display Cards -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <!-- Latest Weight Card -->
+                <div class="bg-gray-50 p-4 rounded-lg text-center card">
+                    <h3 class="font-semibold text-gray-700">Latest Weight</h3>
+                    <p id="latestWeight" class="text-3xl font-bold text-indigo-600">-</p>
+                    <p id="latestWeightDate" class="text-sm text-gray-500">Not recorded</p>
+                    <p class="text-sm text-indigo-700">Goal: <span id="weightGoal">-</span> kg</p>
+                    <div id="weightGoalAnalysis" class="text-xs text-gray-600 mt-2"></div>
+                </div>
+
                 <!-- Calories and nutrients Card -->
-                <div class="bg-gray-50 p-4 rounded-lg text-center">
+                <div class="bg-gray-50 p-4 rounded-lg text-center card">
                     <h3 class="font-semibold text-gray-700">Calories & Nutrients</h3>
                     <p id="caloriesRemaining" class="text-3xl font-bold text-green-600">-</p>
                     <p id="caloriesConsumed" class="text-sm text-gray-500">0 consumed</p>
@@ -89,22 +101,15 @@ layout: compress
                     </div>
                 </div>
                 <!-- Water Card -->
-                <div class="bg-gray-50 p-4 rounded-lg text-center">
+                <div class="bg-gray-50 p-4 rounded-lg text-center card">
                     <h3 class="font-semibold text-gray-700">Water Target</h3>
                     <p id="waterProgress" class="text-3xl font-bold text-blue-900">-</p>
                 </div>
                 <!-- Exercise Card -->
-                <div class="bg-gray-50 p-4 rounded-lg text-center">
+                <div class="bg-gray-50 p-4 rounded-lg text-center card">
                     <h3 class="font-semibold text-gray-700">Exercise</h3>
                     <p id="exerciseSummary" class="text-3xl font-bold text-orange-600">None</p>
                     <p class="text-sm text-gray-500">logged today</p>
-                </div>
-                <!-- Latest Weight Card -->
-                <div class="bg-gray-50 p-4 rounded-lg text-center">
-                    <h3 class="font-semibold text-gray-700">Latest Weight</h3>
-                    <p id="latestWeight" class="text-3xl font-bold text-indigo-600">-</p>
-                    <p id="latestWeightDate" class="text-sm text-gray-500">Not recorded</p>
-                    <p class="text-sm text-indigo-700">Goal: <span id="weightGoal">-</span> kg</p>
                 </div>
             </div>
         </div>
@@ -223,6 +228,7 @@ layout: compress
         const latestWeight = document.getElementById('latestWeight');
         const latestWeightDate = document.getElementById('latestWeightDate');
         const weightGoal = document.getElementById('weightGoal');
+        const weightGoalAnalysis = document.getElementById('weightGoalAnalysis');
         const proteinTotal = document.getElementById('proteinTotal');
         const carbsTotal = document.getElementById('carbsTotal');
         const fatTotal = document.getElementById('fatTotal');
@@ -244,6 +250,7 @@ layout: compress
         const GEMINI_API_KEY = 'gemini-api-key';
         const TARGETS_KEY = 'health-log-targets';
         const QUOTE_KEY = 'health-log-quote';
+        const WEIGHT_ANALYSIS_KEY = 'health-log-weight-analysis';
         
         // Initialize local storage and load existing data
         function initializeLocalDB() {
@@ -374,6 +381,45 @@ layout: compress
             return data.candidates[0].content.parts[0].text.trim();
         }
 
+        async function getWeightGoalAnalysis(currentWeight, targetWeight) {
+            const apiKey = localStorage.getItem(GEMINI_API_KEY);
+            if (!apiKey) {
+                console.warn("API key not set, skipping weight goal analysis.");
+                return null;
+            }
+
+            const weightDifference = currentWeight - targetWeight;
+            if (Math.abs(weightDifference) < 0.1) {
+                return { analysis: "You've reached your target weight! Great job!" };
+            }
+
+            const prompt = `My current weight is ${currentWeight} kg and my target is ${targetWeight} kg. Calculate the total calorie deficit or surplus needed to reach my target, assuming 1kg of weight is roughly 7700 calories. Then, provide a very short motivational statement (under 15 words). Respond with a minified JSON object with two keys: "calories" (integer) and "motivation" (string). Example: {"calories": 7700, "motivation": "You're on the right track, keep going!"}`;
+
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }],
+                        generationConfig: {
+                            response_mime_type: "application/json",
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch weight analysis from API");
+                }
+                const data = await response.json();
+                return JSON.parse(data.candidates[0].content.parts[0].text);
+            } catch (error) {
+                console.error("Error fetching weight goal analysis:", error);
+                return null; // Fail gracefully
+            }
+        }
+
 
         // Generate unique ID for entries
         function generateId() {
@@ -473,6 +519,11 @@ layout: compress
                 // Sort data by timestamp
                 allData.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
                 
+                // If a new weight is logged, clear the analysis cache
+                if (entry.category === 'weight') {
+                    localStorage.removeItem(WEIGHT_ANALYSIS_KEY);
+                }
+
                 // Save to localStorage
                 saveToLocalStorage();
                 
@@ -557,9 +608,35 @@ layout: compress
                 const lastWeightEntry = weightEntries[weightEntries.length - 1];
                 latestWeight.textContent = `${lastWeightEntry.data.value} kg`;
                 latestWeightDate.textContent = `on ${new Date(lastWeightEntry.timestamp).toLocaleDateString()}`;
+                updateWeightGoalAnalysis(lastWeightEntry.data.value, targets.targetWeight);
             } else {
                 latestWeight.textContent = '-';
                 latestWeightDate.textContent = 'Not recorded';
+                weightGoalAnalysis.innerHTML = '';
+            }
+        }
+
+        async function updateWeightGoalAnalysis(currentWeight, targetWeight) {
+            if (!targetWeight || !currentWeight) {
+                weightGoalAnalysis.innerHTML = '';
+                return;
+            }
+
+            const cachedAnalysis = JSON.parse(localStorage.getItem(WEIGHT_ANALYSIS_KEY));
+            if (cachedAnalysis && cachedAnalysis.currentWeight === currentWeight) {
+                const { analysis } = cachedAnalysis;
+                weightGoalAnalysis.innerHTML = `<p class="italic">"${analysis.motivation}"</p><p>~${analysis.calories.toLocaleString()} kcal to go.</p>`;
+                return;
+            }
+
+            weightGoalAnalysis.innerHTML = `<p class="text-gray-500">Analyzing...</p>`;
+            const analysis = await getWeightGoalAnalysis(currentWeight, targetWeight);
+
+            if (analysis) {
+                localStorage.setItem(WEIGHT_ANALYSIS_KEY, JSON.stringify({ currentWeight, analysis }));
+                weightGoalAnalysis.innerHTML = `<p class="italic">"${analysis.motivation}"</p><p>~${analysis.calories.toLocaleString()} kcal to go.</p>`;
+            } else {
+                weightGoalAnalysis.innerHTML = '';
             }
         }
         
@@ -762,9 +839,13 @@ layout: compress
             }
         });
 
-        saveTargetsButton.addEventListener('click', saveTargets);
+        saveTargetsButton.addEventListener('click', () => {
+            saveTargets();
+            // Clear weight analysis cache as target has changed
+            localStorage.removeItem(WEIGHT_ANALYSIS_KEY);
+            renderAll();
+        });
 
     </script>
 </div>
-</body>
 </html>
