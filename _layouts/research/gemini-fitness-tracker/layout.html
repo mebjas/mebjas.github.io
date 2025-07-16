@@ -614,7 +614,6 @@ layout: compress
 
         function renderCharts() {
             const labels = [...new Set(allData.map(d => new Date(d.timestamp).toLocaleDateString()))].sort((a,b) => new Date(a) - new Date(b));
-            debugger
             const weightData = {
                 labels: labels,
                 datasets: [{
