@@ -69,7 +69,7 @@ layout: compress
             </div>
 
             <!-- Display Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
                 <!-- Latest Weight Card -->
                 <div class="bg-gray-50 p-4 rounded-lg text-center card">
                     <h3 class="font-semibold text-gray-700">Latest Weight</h3>
@@ -110,6 +110,12 @@ layout: compress
                     <h3 class="font-semibold text-gray-700">Exercise</h3>
                     <p id="exerciseSummary" class="text-3xl font-bold text-orange-600">None</p>
                     <p class="text-sm text-gray-500">logged today</p>
+                </div>
+                <!-- Fasting Card -->
+                <div class="bg-gray-50 p-4 rounded-lg text-center card">
+                    <h3 class="font-semibold text-gray-700">Fasting Since</h3>
+                    <p id="fastingDuration" class="text-3xl font-bold text-purple-600">-</p>
+                    <div id="fastingAnalysis" class="text-xs text-gray-600 mt-2"></div>
                 </div>
             </div>
         </div>
@@ -238,6 +244,8 @@ layout: compress
         const waterTargetInput = document.getElementById('waterTargetInput');
         const targetWeightInput = document.getElementById('targetWeightInput');
         const saveTargetsButton = document.getElementById('saveTargetsButton');
+        const fastingDuration = document.getElementById('fastingDuration');
+        const fastingAnalysis = document.getElementById('fastingAnalysis');
 
         // --- Chart Instances ---
         let weightChart, nutritionChart;
@@ -251,6 +259,7 @@ layout: compress
         const TARGETS_KEY = 'health-log-targets';
         const QUOTE_KEY = 'health-log-quote';
         const WEIGHT_ANALYSIS_KEY = 'health-log-weight-analysis';
+        const FASTING_ANALYSIS_KEY = 'health-log-fasting-analysis';
         
         // Initialize local storage and load existing data
         function initializeLocalDB() {
@@ -420,6 +429,44 @@ layout: compress
             }
         }
 
+        async function getFastingAnalysis(hours) {
+            const apiKey = localStorage.getItem(GEMINI_API_KEY);
+            if (!apiKey) {
+                console.warn("API key not set, skipping fasting analysis.");
+                return null;
+            }
+
+            if (hours < 12) {
+                return { analysis: "Not in a significant fasting state yet." };
+            }
+
+            const prompt = `I have been fasting for ${hours.toFixed(1)} hours. Provide a very short (under 20 words) summary of what this means for my body and how it might align with health goals like weight loss or metabolic health. Respond with a minified JSON object with one key: "analysis" (string). Example: {"analysis": "Your body is likely entering ketosis, burning fat for fuel. Great for weight loss."}`;
+
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }],
+                        generationConfig: {
+                            response_mime_type: "application/json",
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch fasting analysis from API");
+                }
+                const data = await response.json();
+                return JSON.parse(data.candidates[0].content.parts[0].text);
+            } catch (error) {
+                console.error("Error fetching fasting analysis:", error);
+                return null; // Fail gracefully
+            }
+        }
+
 
         // Generate unique ID for entries
         function generateId() {
@@ -450,7 +497,7 @@ layout: compress
 
                 - For "weight", the "data" object should have a "value" key with the weight in kg (float).
                 - For "water", the "data" object should have an "amount" key with the volume in Liters (float). Assume "a glass" is 0.25L.
-                - For "food", the "data" object should have "item" (string) and "calories" (integer) keys. Provide a reasonable calorie estimate. Also include "protein" (integer, in grams), "carbs" (integer, in grams), "fat" (integer, in grams). Also add a "thoughts" key (string, under 15 words) with your opinion on the food for weight loss, LDL & HDL control, and muscle gain.
+                - For "food", the "data" object should have "item" (string) and "calories" (integer) keys. Provide a reasonable calorie estimate. Also include "protein" (integer, in grams), "carbs" (integer, in grams), "fat" (integer, in grams). Also add a "thoughts" key (string, under 15 words) with your opinion on the food for weight loss, LDL & HDL control, and muscle gain. Also include a boolean key "breaks_fast". A food is considered to break a fast if it has more than 15 calories.
                 - For "exercise", the "data" object should have "type" (string) and either "reps" (integer) or "duration_minutes" (integer).
                 - If the input is ambiguous or cannot be categorized, the category should be "unknown" and data should be an empty object.
 
@@ -464,11 +511,11 @@ layout: compress
 
                 Example 3:
                 Input: "I drank 1 glass of coffee"
-                Output: [{"category":"water","data":{"amount":0.25}}, {"category":"food","data":{"item":"coffee","calories":5,"protein":0,"carbs":1,"fat":0,"thoughts":"Negligible impact. Fine in moderation."}}]
+                Output: [{"category":"water","data":{"amount":0.25}}, {"category":"food","data":{"item":"coffee","calories":5,"protein":0,"carbs":1,"fat":0,"thoughts":"Negligible impact. Fine in moderation.","breaks_fast":false}}]
 
                 Example 4:
                 Input: "Ate a slice of pepperoni pizza"
-                Output: [{"category":"food","data":{"item":"pepperoni pizza slice","calories":285,"protein":12,"carbs":30,"fat":12,"thoughts":"High in calories and fat. Not ideal for weight loss or heart health."}}]
+                Output: [{"category":"food","data":{"item":"pepperoni pizza slice","calories":285,"protein":12,"carbs":30,"fat":12,"thoughts":"High in calories and fat. Not ideal for weight loss or heart health.","breaks_fast":true}}]
 
                 Example 5:
                 Input: "Did 20 pushups and ran for 15 minutes"
@@ -522,6 +569,10 @@ layout: compress
                 // If a new weight is logged, clear the analysis cache
                 if (entry.category === 'weight') {
                     localStorage.removeItem(WEIGHT_ANALYSIS_KEY);
+                }
+
+                if (entry.category === 'food') {
+                    localStorage.removeItem(FASTING_ANALYSIS_KEY);
                 }
 
                 // Save to localStorage
@@ -614,6 +665,7 @@ layout: compress
                 latestWeightDate.textContent = 'Not recorded';
                 weightGoalAnalysis.innerHTML = '';
             }
+            updateFastingDashboard();
         }
 
         async function updateWeightGoalAnalysis(currentWeight, targetWeight) {
@@ -637,6 +689,55 @@ layout: compress
                 weightGoalAnalysis.innerHTML = `<p class="italic">"${analysis.motivation}"</p><p>~${analysis.calories.toLocaleString()} kcal to go.</p>`;
             } else {
                 weightGoalAnalysis.innerHTML = '';
+            }
+        }
+
+        async function updateFastingDashboard() {
+            const foodEntries = allData.filter(d => d.category === 'food').sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            let lastFastBreakingMealTime = null;
+
+            for (const entry of foodEntries) {
+                const breaksFast = entry.data.breaks_fast === undefined 
+                    ? (entry.data.calories || 0) > 15 
+                    : entry.data.breaks_fast;
+                
+                if (breaksFast) {
+                    lastFastBreakingMealTime = new Date(entry.timestamp);
+                    break;
+                }
+            }
+
+            if (lastFastBreakingMealTime) {
+                const now = new Date();
+                const hours = (now - lastFastBreakingMealTime) / (1000 * 60 * 60);
+                fastingDuration.textContent = `${hours.toFixed(1)}h`;
+                updateFastingAnalysis(hours);
+            } else {
+                fastingDuration.textContent = 'N/A';
+                fastingAnalysis.innerHTML = 'No fast-breaking meals logged yet.';
+            }
+        }
+
+        async function updateFastingAnalysis(hours) {
+            if (hours < 1) {
+                fastingAnalysis.innerHTML = '';
+                return;
+            }
+            const cachedAnalysis = JSON.parse(localStorage.getItem(FASTING_ANALYSIS_KEY));
+            // Use a tolerance for cached hours to avoid re-fetching for minor changes
+            if (cachedAnalysis && Math.abs(cachedAnalysis.hours - hours) < 0.5) {
+                fastingAnalysis.innerHTML = `<p class="italic">"${cachedAnalysis.analysis.analysis}"</p>`;
+                return;
+            }
+
+            fastingAnalysis.innerHTML = `<p class="text-gray-500">Analyzing...</p>`;
+            const analysis = await getFastingAnalysis(hours);
+
+            if (analysis) {
+                localStorage.setItem(FASTING_ANALYSIS_KEY, JSON.stringify({ hours, analysis }));
+                fastingAnalysis.innerHTML = `<p class="italic">"${analysis.analysis}"</p>`;
+            } else {
+                fastingAnalysis.innerHTML = '';
             }
         }
         
@@ -843,6 +944,7 @@ layout: compress
             saveTargets();
             // Clear weight analysis cache as target has changed
             localStorage.removeItem(WEIGHT_ANALYSIS_KEY);
+            localStorage.removeItem(FASTING_ANALYSIS_KEY);
             renderAll();
         });
 
