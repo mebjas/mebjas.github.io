@@ -67,12 +67,26 @@ layout: compress
 
             <!-- Display Cards -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                <!-- Calories Card -->
+                <!-- Calories and nutrients Card -->
                 <div class="bg-gray-50 p-4 rounded-lg text-center">
-                    <h3 class="font-semibold text-gray-700">Remaining Calories</h3>
+                    <h3 class="font-semibold text-gray-700">Calories & Nutrients</h3>
                     <p id="caloriesRemaining" class="text-3xl font-bold text-green-600">-</p>
                     <p id="caloriesConsumed" class="text-sm text-gray-500">0 consumed</p>
                     <p class="text-sm text-green-700">Goal: <span id="calorieGoal">-</span> kcal</p>
+                    <div id="macrosContainer" class="text-xs text-gray-600 mt-2 grid grid-cols-3 gap-1">
+                        <div>
+                            <p class="font-semibold">Protein</p>
+                            <p id="proteinTotal">0g</p>
+                        </div>
+                        <div>
+                            <p class="font-semibold">Carbs</p>
+                            <p id="carbsTotal">0g</p>
+                        </div>
+                        <div>
+                            <p class="font-semibold">Fat</p>
+                            <p id="fatTotal">0g</p>
+                        </div>
+                    </div>
                 </div>
                 <!-- Water Card -->
                 <div class="bg-gray-50 p-4 rounded-lg text-center">
@@ -209,6 +223,9 @@ layout: compress
         const latestWeight = document.getElementById('latestWeight');
         const latestWeightDate = document.getElementById('latestWeightDate');
         const weightGoal = document.getElementById('weightGoal');
+        const proteinTotal = document.getElementById('proteinTotal');
+        const carbsTotal = document.getElementById('carbsTotal');
+        const fatTotal = document.getElementById('fatTotal');
         const targetsContainer = document.getElementById('targetsContainer');
         const baseCaloriesInput = document.getElementById('baseCaloriesInput');
         const calorieDeficitInput = document.getElementById('calorieDeficitInput');
@@ -387,7 +404,7 @@ layout: compress
 
                 - For "weight", the "data" object should have a "value" key with the weight in kg (float).
                 - For "water", the "data" object should have an "amount" key with the volume in Liters (float). Assume "a glass" is 0.25L.
-                - For "food", the "data" object should have "item" (string) and "calories" (integer) keys. Provide a reasonable calorie estimate.
+                - For "food", the "data" object should have "item" (string) and "calories" (integer) keys. Provide a reasonable calorie estimate. Also include "protein" (integer, in grams), "carbs" (integer, in grams), "fat" (integer, in grams). Also add a "thoughts" key (string, under 15 words) with your opinion on the food for weight loss, LDL & HDL control, and muscle gain.
                 - For "exercise", the "data" object should have "type" (string) and either "reps" (integer) or "duration_minutes" (integer).
                 - If the input is ambiguous or cannot be categorized, the category should be "unknown" and data should be an empty object.
 
@@ -401,11 +418,11 @@ layout: compress
 
                 Example 3:
                 Input: "I drank 1 glass of coffee"
-                Output: [{"category":"water","data":{"amount":0.25}}, {"category":"food","data":{"item":"coffee","calories":5}}]
+                Output: [{"category":"water","data":{"amount":0.25}}, {"category":"food","data":{"item":"coffee","calories":5,"protein":0,"carbs":1,"fat":0,"thoughts":"Negligible impact. Fine in moderation."}}]
 
                 Example 4:
                 Input: "Ate a slice of pepperoni pizza"
-                Output: [{"category":"food","data":{"item":"pepperoni pizza slice","calories":285}}]
+                Output: [{"category":"food","data":{"item":"pepperoni pizza slice","calories":285,"protein":12,"carbs":30,"fat":12,"thoughts":"High in calories and fat. Not ideal for weight loss or heart health."}}]
 
                 Example 5:
                 Input: "Did 20 pushups and ran for 15 minutes"
@@ -515,6 +532,9 @@ layout: compress
             const todaysExercise = allData.filter(d => d.category === 'exercise' && new Date(d.timestamp).toLocaleDateString() === today);
 
             const caloriesConsumedValue = todaysFood.reduce((sum, curr) => sum + (curr.data.calories || 0), 0);
+            const proteinToday = todaysFood.reduce((sum, curr) => sum + (curr.data.protein || 0), 0);
+            const carbsToday = todaysFood.reduce((sum, curr) => sum + (curr.data.carbs || 0), 0);
+            const fatToday = todaysFood.reduce((sum, curr) => sum + (curr.data.fat || 0), 0);
             const waterDrankToday = todaysWater.reduce((sum, curr) => sum + (curr.data.amount || 0), 0);
             
             const totalCalorieGoal = targets.baseCalories - targets.calorieDeficit;
@@ -527,6 +547,9 @@ layout: compress
             waterProgress.textContent = `${waterDrankToday}L / ${targets.waterTarget}L`;
             exerciseSummary.textContent = todaysExercise.length;
             weightGoal.textContent = targets.targetWeight;
+            proteinTotal.textContent = `${proteinToday}g`;
+            carbsTotal.textContent = `${carbsToday}g`;
+            fatTotal.textContent = `${fatToday}g`;
 
             // Update latest weight
             const weightEntries = allData.filter(d => d.category === 'weight');
@@ -548,7 +571,13 @@ layout: compress
             switch (entry.category) {
                 case 'weight': content += `<span class="text-xl mr-3">⚖️</span> <div><p class="font-semibold">Weight Logged: ${entry.data.value} kg</p><p class="text-sm text-gray-500">${date}</p></div>`; break;
                 case 'water': content += `<span class="text-xl mr-3">💧</span> <div><p class="font-semibold">Water Intake: ${entry.data.amount} L</p><p class="text-sm text-gray-500">${date}</p></div>`; break;
-                case 'food': content += `<span class="text-xl mr-3">🍎</span> <div><p class="font-semibold">Food: ${entry.data.item}</p><p class="text-gray-600 text-sm">Calories: ~${entry.data.calories} kcal</p><p class="text-sm text-gray-500">${date}</p></div>`; break;
+                case 'food': 
+                    content += `<span class="text-xl mr-3">🍎</span> <div><p class="font-semibold">Food: ${entry.data.item}</p><p class="text-gray-600 text-sm">Calories: ~${entry.data.calories} kcal</p>`;
+                    if (entry.data.thoughts) {
+                        content += `<p class="text-gray-600 text-sm italic">"${entry.data.thoughts}"</p>`;
+                    }
+                    content += `<p class="text-sm text-gray-500">${date}</p></div>`; 
+                    break;
                 case 'exercise': content += `<span class="text-xl mr-3">🏋️</span> <div><p class="font-semibold">Exercise: ${entry.data.type}</p><p class="text-gray-600 text-sm">${entry.data.reps ? `Reps: ${entry.data.reps}` : `Duration: ${entry.data.duration_minutes} min`}</p><p class="text-sm text-gray-500">${date}</p></div>`; break;
             }
             content += `</div>`;
@@ -585,6 +614,7 @@ layout: compress
 
         function renderCharts() {
             const labels = [...new Set(allData.map(d => new Date(d.timestamp).toLocaleDateString()))].sort((a,b) => new Date(a) - new Date(b));
+            debugger
             const weightData = {
                 labels: labels,
                 datasets: [{
@@ -605,7 +635,9 @@ layout: compress
                         const dayData = allData.filter(d => new Date(d.timestamp).toLocaleDateString() === label && d.category === 'food');
                         return dayData.reduce((sum, curr) => sum + (curr.data.calories || 0), 0);
                     }),
-                    backgroundColor: 'rgba(59, 130, 246, 0.6)', borderColor: 'rgba(59, 130, 246, 1)', borderWidth: 1, yAxisID: 'y'
+                    backgroundColor: 'rgba(34, 197, 94, 0.6)',
+                    borderColor: 'rgba(34, 197, 94, 1)',
+                    borderWidth: 1,
                 },
                 {
                     label: 'Water (L)',
@@ -613,13 +645,49 @@ layout: compress
                         const dayData = allData.filter(d => new Date(d.timestamp).toLocaleDateString() === label && d.category === 'water');
                         return dayData.reduce((sum, curr) => sum + (curr.data.amount || 0), 0);
                     }),
-                    backgroundColor: 'rgba(16, 185, 129, 0.6)', borderColor: 'rgba(16, 185, 129, 1)', borderWidth: 1, yAxisID: 'y1'
-                }]
+                    backgroundColor: 'rgba(107, 114, 128, 0.6)',
+                    borderColor: 'rgba(107, 114, 128, 1)',
+                    borderWidth: 1,
+                },
+                {
+                    label: 'Protein (g)',
+                    data: labels.map(label => {
+                        const dayData = allData.filter(d => new Date(d.timestamp).toLocaleDateString() === label && d.category === 'food');
+                        return dayData.reduce((sum, curr) => sum + (curr.data.protein || 0), 0);
+                    }),
+                    backgroundColor: 'rgba(239, 68, 68, 0.6)',
+                    borderColor: 'rgba(239, 68, 68, 1)',
+                    borderWidth: 1,
+                    yAxisID: 'yGrams',
+                },
+                {
+                    label: 'Carbs (g)',
+                    data: labels.map(label => {
+                        const dayData = allData.filter(d => new Date(d.timestamp).toLocaleDateString() === label && d.category === 'food');
+                        return dayData.reduce((sum, curr) => sum + (curr.data.carbs || 0), 0);
+                    }),
+                    backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 1,
+                    yAxisID: 'yGrams',
+                },
+                {
+                    label: 'Fat (g)',
+                    data: labels.map(label => {
+                        const dayData = allData.filter(d => new Date(d.timestamp).toLocaleDateString() === label && d.category === 'food');
+                        return dayData.reduce((sum, curr) => sum + (curr.data.fat || 0), 0);
+                    }),
+                    backgroundColor: 'rgba(245, 158, 11, 0.6)',
+                    borderColor: 'rgba(245, 158, 11, 1)',
+                    borderWidth: 1,
+                    yAxisID: 'yGrams',
+                }
+            ]
             };
             if (weightChart) weightChart.destroy();
             weightChart = new Chart(document.getElementById('weightChart'), { type: 'line', data: weightData, options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: 'Weight Trend' } }, scales: { y: { beginAtZero: false } } } });
             if (nutritionChart) nutritionChart.destroy();
-            nutritionChart = new Chart(document.getElementById('nutritionChart'), { type: 'bar', data: nutritionData, options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: 'Nutrition Overview (Calories & Water)' } }, scales: { y: { type: 'linear', display: true, position: 'left', title: { display: true, text: 'Calories (kcal)' }, beginAtZero: true }, y1: { type: 'linear', display: true, position: 'right', title: { display: true, text: 'Water (L)' }, grid: { drawOnChartArea: false }, beginAtZero: true } } } });
+            nutritionChart = new Chart(document.getElementById('nutritionChart'), { type: 'bar', data: nutritionData, options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: 'Nutrition Overview (Macros)' } }, scales: { x: { stacked: false }, y: { stacked: false, beginAtZero: true, title: { display: true, text: 'Grams' } } } } });
         }
 
         function showError(message) {
