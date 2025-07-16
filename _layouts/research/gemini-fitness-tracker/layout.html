@@ -53,7 +53,6 @@ layout: compress
 
 <!-- Enable pre-loading pages with query strings and for external links -->
 <body data-instant-allow-query-string data-instant-allow-external-links>
-{% include header_research.html %}
 
 <div class="bg-gray-100 text-gray-800 min-h-screen">
 
@@ -550,15 +549,40 @@ layout: compress
             
             try {
                 const userDocRef = window.doc(window.db, 'userData', currentUser.uid);
+                const apiKey = localStorage.getItem(GEMINI_API_KEY);
+                
                 await window.setDoc(userDocRef, {
                     data: allData,
                     lastUpdated: new Date().toISOString(),
-                    userEmail: currentUser.email
+                    userEmail: currentUser.email,
+                    apiKey: apiKey || null
                 });
                 console.log("Data saved to cloud:", allData.length, "entries");
             } catch (e) {
                 console.error("Failed to save data to cloud:", e);
                 showError("Failed to backup data to cloud.");
+            }
+        }
+
+        // Save API key to Firestore
+        async function saveApiKeyToCloud(apiKey) {
+            if (!currentUser) return;
+            
+            try {
+                const userDocRef = window.doc(window.db, 'userData', currentUser.uid);
+                const docSnap = await window.getDoc(userDocRef);
+                
+                const existingData = docSnap.exists() ? docSnap.data() : {};
+                
+                await window.setDoc(userDocRef, {
+                    ...existingData,
+                    apiKey: apiKey || null,
+                    lastUpdated: new Date().toISOString()
+                });
+                console.log("API key saved to cloud");
+            } catch (e) {
+                console.error("Failed to save API key to cloud:", e);
+                showError("Failed to backup API key to cloud.");
             }
         }
 
@@ -573,6 +597,17 @@ layout: compress
                 if (docSnap.exists()) {
                     const cloudData = docSnap.data();
                     console.log("Loaded data from cloud:", cloudData.data?.length || 0, "entries");
+                    
+                    // Handle API key sync
+                    if (cloudData.apiKey) {
+                        const localApiKey = localStorage.getItem(GEMINI_API_KEY);
+                        if (localApiKey !== cloudData.apiKey) {
+                            console.log("Cloud API key differs from local, using cloud version");
+                            localStorage.setItem(GEMINI_API_KEY, cloudData.apiKey);
+                            initializeApiKeyUI();
+                        }
+                    }
+                    
                     return cloudData.data || [];
                 } else {
                     console.log("No cloud data found");
@@ -649,7 +684,7 @@ layout: compress
                 renderAll();
                 console.log("Synced cloud data to local");
             } else if (hasLocalData && !hasCloudData) {
-                // No cloud data, upload local data
+                // No cloud data, upload local data and API key
                 await saveToCloud();
                 console.log("Synced local data to cloud");
             } else if (hasLocalData && hasCloudData) {
@@ -659,6 +694,13 @@ layout: compress
                     showSyncDialog(cloudData);
                 } else {
                     console.log("Local and cloud data are in sync");
+                }
+            } else {
+                // No data on either side, but sync API key if available locally
+                const localApiKey = localStorage.getItem(GEMINI_API_KEY);
+                if (localApiKey) {
+                    await saveApiKeyToCloud(localApiKey);
+                    console.log("Synced local API key to cloud");
                 }
             }
         }
@@ -1442,16 +1484,22 @@ layout: compress
             apiKeyToggleIcon.classList.toggle('rotate-180');
         });
 
-        saveApiKeyButton.addEventListener('click', () => {
+        saveApiKeyButton.addEventListener('click', async () => {
             const key = apiKeyInput.value.trim();
             if (key) {
                 localStorage.setItem(GEMINI_API_KEY, key);
+                if (currentUser) {
+                    await saveApiKeyToCloud(key);
+                }
                 apiKeyStatus.textContent = "API Key saved successfully!";
                 apiKeyStatus.className = "text-sm text-green-600";
                 apiKeyInput.value = '';
                 apiKeyInput.placeholder = "••••••••••••••••••••••••••••••";
             } else {
                 localStorage.removeItem(GEMINI_API_KEY);
+                if (currentUser) {
+                    await saveApiKeyToCloud(null);
+                }
                 apiKeyStatus.textContent = "API Key removed.";
                 apiKeyStatus.className = "text-sm text-yellow-600";
                 apiKeyInput.placeholder = "Enter your Gemini API Key";
