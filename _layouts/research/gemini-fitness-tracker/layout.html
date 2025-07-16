@@ -57,37 +57,30 @@ layout: compress
 <div class="bg-gray-100 text-gray-800 min-h-screen">
 
     <div class="w-full p-4 md:p-8">
-        <!-- Header -->
-        <!-- <header class="text-center mb-8">
-            <h3 class="text-4xl font-bold text-gray-900">Log your weight, water, food, and exercise using natural language.</h3>
-        </header> -->
-
         <!-- Cloud Backup Section -->
-        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-            <div id="authCard" class="flex items-center justify-between p-4 bg-blue-50 border border-blue-200 rounded-lg transition-all duration-300">
-                <div class="flex items-center">
-                    <svg id="authCardIcon" class="w-6 h-6 text-blue-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
+        <div id="authCard" class="flex items-center justify-between p-4 bg-blue-50 border border-blue-200 rounded-lg transition-all duration-300 mb-8">
+            <div class="flex items-center">
+                <svg id="authCardIcon" class="w-6 h-6 text-blue-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
+                </svg>
+                <div>
+                    <p id="authCardTitle" class="font-semibold text-blue-800">Sign in with Google to backup your data</p>
+                    <p id="authCardSubtitle" class="text-sm text-blue-600">Otherwise local storage will be used</p>
+                </div>
+            </div>
+            <div id="authCardAction">
+                <button id="signInButton" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center">
+                    <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                     </svg>
-                    <div>
-                        <p id="authCardTitle" class="font-semibold text-blue-800">Sign in with Google to backup your data</p>
-                        <p id="authCardSubtitle" class="text-sm text-blue-600">Otherwise local storage will be used</p>
-                    </div>
-                </div>
-                <div id="authCardAction">
-                    <button id="signInButton" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center">
-                        <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                            <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                            <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                            <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                        </svg>
-                        Sign in with Google
-                    </button>
-                    <button id="signOutButton" class="hidden bg-red-600 hover:bg-red-700 text-white font-medium py-1.5 px-3 rounded text-sm transition duration-300">
-                        Sign out
-                    </button>
-                </div>
+                    Sign in with Google
+                </button>
+                <button id="signOutButton" class="hidden bg-red-600 hover:bg-red-700 text-white font-medium py-1.5 px-3 rounded text-sm transition duration-300">
+                    Sign out
+                </button>
             </div>
         </div>
 
@@ -163,18 +156,45 @@ layout: compress
                         </div>
                     </div>
                 </div>
+
                 <!-- Water Card -->
                 <div class="bg-gray-50 p-4 rounded-lg text-center card relative overflow-hidden">
-                    <!-- Background SVG -->
-                    <svg class="absolute bottom-0 right-0 w-16 h-16 text-blue-100 opacity-50" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2l3.09 6.26L22 9l-5 4.87L18.18 22 12 19.27 5.82 22 7 13.87 2 9l6.91-.74L12 2z"/>
-                        <path d="M12 2.2l2.42 5.2c.1.22.29.37.52.4l5.68.83-4.11 4.01c-.18.17-.26.42-.21.67l.97 5.67-5.09-2.68c-.22-.12-.49-.12-.71 0l-5.09 2.68.97-5.67c.05-.25-.03-.5-.21-.67L2.03 8.63l5.68-.83c.23-.03.42-.18.52-.4L10.65 2.2"/>
-                        <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1" fill="none"/>
-                        <path d="M12 6c-3.31 0-6 2.69-6 6 0 2.97 2.16 5.43 5 5.91V6h1z"/>
+                    <!-- Background Water Drop SVG -->
+                    <svg class="absolute bottom-0 right-0 w-16 h-16 text-blue-400 opacity-30" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2c-1.1 0-2 .9-2 2 0 1.05.2 2.05.57 3H9c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2h-1.57c.37-.95.57-1.95.57-3 0-1.1-.9-2-2-2z"/>
+                        <path d="M12 3c.5 0 1 .2 1.4.6.4.4.6.9.6 1.4 0 .8-.15 1.55-.4 2.25-.25.7-.6 1.35-1 1.95-.4.6-.85 1.15-1.35 1.65-.5.5-1.05.9-1.65 1.25-.6.35-1.25.6-1.95.75-.7.15-1.45.25-2.25.25v-.5c0-.8.15-1.55.4-2.25.25-.7.6-1.35 1-1.95.4-.6.85-1.15 1.35-1.65.5-.5 1.05-.9 1.65-1.25.6-.35 1.25-.6 1.95-.75.15-.7.25-1.45.25-2.25 0-.5-.2-1-.6-1.4C13 3.2 12.5 3 12 3z"/>
                     </svg>
-                    <div class="relative z-10">
-                        <h3 class="font-semibold text-gray-700">Water Target</h3>
-                        <p id="waterProgress" class="text-3xl font-bold text-blue-900">-</p>
+                    <div class="relative z-10 flex flex-col items-center justify-center h-full">
+                        <h3 class="font-semibold text-gray-700 mb-2">Water Target</h3>
+                        
+                        <!-- Circular Progress -->
+                        <div class="relative w-20 h-20 mb-2">
+                            <svg class="w-20 h-20 transform -rotate-90" viewBox="0 0 100 100">
+                                <!-- Background circle -->
+                                <circle cx="50" cy="50" r="40" stroke="#e0f2fe" stroke-width="8" fill="none"/>
+                                <!-- Progress circle -->
+                                <circle 
+                                    id="waterProgressCircle" 
+                                    cx="50" 
+                                    cy="50" 
+                                    r="40" 
+                                    stroke="#0ea5e9" 
+                                    stroke-width="8" 
+                                    fill="none"
+                                    stroke-linecap="round"
+                                    stroke-dasharray="251.2"
+                                    stroke-dashoffset="251.2"
+                                    class="transition-all duration-500 ease-in-out"
+                                />
+                            </svg>
+                            <!-- Center text -->
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span id="waterConsumedToday" class="text-lg font-bold text-blue-600">0.0L</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Water consumption ratio -->
+                        <p id="waterProgressRatio" class="text-sm text-gray-500">0.00 / 3.00L</p>
                     </div>
                 </div>
                 <!-- Exercise Card -->
@@ -310,9 +330,11 @@ layout: compress
                     <div class="grid grid-cols-2 gap-4 h-full">
                         <!-- Local Data -->
                         <div class="flex flex-col">
-                            <div class="flex items-center mb-2">
-                                <div class="w-4 h-4 bg-red-500 rounded mr-2"></div>
-                                <h4 class="font-semibold text-gray-800">Local Data (<span id="localDataCount">0</span>  entries)</h4>
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <div class="w-4 h-4 bg-red-500 rounded mr-2"></div>
+                                    <h4 class="font-semibold text-gray-800">Local Data (<span id="localDataCount">0</span> entries)</h4>
+                                </div>
                             </div>
                             <div class="flex-1 overflow-auto bg-gray-50 p-3 rounded border">
                                 <pre id="localDataJson" class="text-xs font-mono whitespace-pre-wrap"></pre>
@@ -321,9 +343,11 @@ layout: compress
                         
                         <!-- Cloud Data -->
                         <div class="flex flex-col">
-                            <div class="flex items-center mb-2">
-                                <div class="w-4 h-4 bg-green-500 rounded mr-2"></div>
-                                <h4 class="font-semibold text-gray-800">Cloud Data (<span id="cloudDataCount">0</span>  entries)</h4>
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <div class="w-4 h-4 bg-green-500 rounded mr-2"></div>
+                                    <h4 class="font-semibold text-gray-800">Cloud Data (<span id="cloudDataCount">0</span> entries)</h4>
+                                </div>
                             </div>
                             <div class="flex-1 overflow-auto bg-gray-50 p-3 rounded border">
                                 <pre id="cloudDataJson" class="text-xs font-mono whitespace-pre-wrap"></pre>
@@ -424,6 +448,9 @@ layout: compress
         const calorieGoal = document.getElementById('calorieGoal');
         const caloriesConsumed = document.getElementById('caloriesConsumed');
         const waterProgress = document.getElementById('waterProgress');
+        const waterProgressCircle = document.getElementById('waterProgressCircle');
+        const waterConsumedToday = document.getElementById('waterConsumedToday');
+        const waterProgressRatio = document.getElementById('waterProgressRatio');
         const waterGoal = document.getElementById('waterGoal');
         const exerciseSummary = document.getElementById('exerciseSummary');
         const exerciseSummarySubtitle = document.getElementById('exerciseSummarySubtitle');
@@ -718,8 +745,76 @@ layout: compress
             localDataCount.textContent = allData.length;
             cloudDataCount.textContent = cloudData.length;
             
+            // Update the description with timestamp information
+            updateSyncDialogDescription(allData, cloudData);
+            
+            // Determine and show which dataset is more recent
+            updateDatasetRecencyIndicators(allData, cloudData);
+            
             // Format and display the data with highlighting
             displayDataComparison(allData, cloudData);
+        }
+
+        // Update sync dialog description with timestamp information
+        function updateSyncDialogDescription(localData, cloudData) {
+            const localLatest = getLatestTimestamp(localData);
+            const cloudLatest = getLatestTimestamp(cloudData);
+            const descriptionEl = document.querySelector('#syncDialog p');
+            
+            let description = "You have different data locally and in the cloud. Review the differences below:";
+            
+            if (localLatest && cloudLatest) {
+                const localDate = new Date(localLatest).toLocaleString();
+                const cloudDate = new Date(cloudLatest).toLocaleString();
+                
+                if (localLatest > cloudLatest) {
+                    description += ` Your local data is more recent (${localDate} vs ${cloudDate}).`;
+                } else if (cloudLatest > localLatest) {
+                    description += ` Your cloud data is more recent (${cloudDate} vs ${localDate}).`;
+                } else {
+                    description += ` Both datasets have the same latest timestamp (${localDate}).`;
+                }
+            }
+            
+            descriptionEl.textContent = description;
+        }
+
+        // Update indicators to show which dataset has more recent data
+        function updateDatasetRecencyIndicators(localData, cloudData) {
+            const localLatest = getLatestTimestamp(localData);
+            const cloudLatest = getLatestTimestamp(cloudData);
+            
+            // Get the header elements
+            const localHeaderContainer = document.querySelector('#syncDialog .grid > div:first-child .flex');
+            const cloudHeaderContainer = document.querySelector('#syncDialog .grid > div:last-child .flex');
+            
+            // Remove any existing "Latest" badges
+            const existingLocalBadge = localHeaderContainer.querySelector('.latest-badge');
+            const existingCloudBadge = cloudHeaderContainer.querySelector('.latest-badge');
+            if (existingLocalBadge) existingLocalBadge.remove();
+            if (existingCloudBadge) existingCloudBadge.remove();
+            
+            // Add "Latest" indicator to the more recent dataset
+            if (localLatest && cloudLatest) {
+                const latestBadge = '<span class="latest-badge ml-2 px-2 py-1 bg-blue-500 text-white text-xs rounded font-semibold">Latest</span>';
+                
+                if (localLatest > cloudLatest) {
+                    localHeaderContainer.innerHTML += latestBadge;
+                } else if (cloudLatest > localLatest) {
+                    cloudHeaderContainer.innerHTML += latestBadge;
+                }
+                // If timestamps are equal, don't show any indicator
+            }
+        }
+
+        // Get the latest timestamp from a dataset
+        function getLatestTimestamp(data) {
+            if (!data || data.length === 0) return null;
+            
+            return data.reduce((latest, entry) => {
+                const entryTime = new Date(entry.timestamp).getTime();
+                return entryTime > latest ? entryTime : latest;
+            }, 0);
         }
 
         // Display data comparison with highlighting
@@ -791,6 +886,16 @@ layout: compress
             cloudDataJson.innerHTML = '';
             localDataCount.textContent = '0';
             cloudDataCount.textContent = '0';
+            
+            // Reset description text
+            const descriptionEl = document.querySelector('#syncDialog p');
+            descriptionEl.textContent = "You have different data locally and in the cloud. Review the differences below:";
+            
+            // Remove any latest badges
+            const localBadge = document.querySelector('#syncDialog .grid > div:first-child .latest-badge');
+            const cloudBadge = document.querySelector('#syncDialog .grid > div:last-child .latest-badge');
+            if (localBadge) localBadge.remove();
+            if (cloudBadge) cloudBadge.remove();
         }
 
         // Replace local data with cloud data
@@ -1190,7 +1295,15 @@ layout: compress
             calorieGoal.textContent = totalCalorieGoal;
             caloriesConsumed.textContent = `${caloriesConsumedValue} kcal consumed`;
             caloriesRemaining.textContent = remainingCals;
-            waterProgress.textContent = `${waterDrankToday}L / ${targets.waterTarget}L`;
+            
+            // Update water progress with circular indicator
+            const waterPercentage = Math.min((waterDrankToday / targets.waterTarget) * 100, 100);
+            const circumference = 2 * Math.PI * 40; // radius = 40
+            const offset = circumference - (waterPercentage / 100) * circumference;
+            
+            waterConsumedToday.textContent = `${waterDrankToday.toFixed(1)}L`;
+            waterProgressRatio.textContent = `${waterDrankToday.toFixed(2)} / ${targets.waterTarget.toFixed(2)}L`;
+            waterProgressCircle.style.strokeDashoffset = offset;
             
             if (todaysExercise.length > 0) {
                 exerciseSummary.textContent = todaysExercise.length;
