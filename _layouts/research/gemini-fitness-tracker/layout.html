@@ -56,9 +56,9 @@ layout: compress
             </div>
         </div>
 
-        <!-- Daily Goals Section -->
+        <!-- Overview section aka "dashboard" -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Today's Dashboard</h2>
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Today's Overview</h2>
             <!-- Motivational Quote -->
             <div class="bg-blue-50 border-l-4 border-blue-500 text-blue-700 p-4 mb-6" role="alert">
                 <p class="font-bold">Quote of the Day</p>
@@ -66,7 +66,7 @@ layout: compress
             </div>
 
             <!-- Display Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                 <!-- Calories Card -->
                 <div class="bg-gray-50 p-4 rounded-lg text-center">
                     <h3 class="font-semibold text-gray-700">Remaining Calories</h3>
@@ -85,23 +85,32 @@ layout: compress
                     <p id="exerciseSummary" class="text-3xl font-bold text-orange-600">None</p>
                     <p class="text-sm text-gray-500">logged today</p>
                 </div>
+                <!-- Latest Weight Card -->
+                <div class="bg-gray-50 p-4 rounded-lg text-center">
+                    <h3 class="font-semibold text-gray-700">Latest Weight</h3>
+                    <p id="latestWeight" class="text-3xl font-bold text-indigo-600">-</p>
+                    <p id="latestWeightDate" class="text-sm text-gray-500">Not recorded</p>
+                    <p class="text-sm text-indigo-700">Goal: <span id="weightGoal">-</span> kg</p>
+                </div>
             </div>
         </div>
 
-        <!-- Gemini API Key Section -->
+        <!-- Settings Section -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
             <div id="apiKeyHeader" class="flex justify-between items-center cursor-pointer">
                 <h2 class="text-2xl font-semibold text-gray-800">Settings</h2>
                 <svg id="apiKeyToggleIcon" class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </div>
             <div id="apiKeyContainer" class="mt-4 space-y-4 hidden">
+                <!-- Settings > API key -->
                 <p class="text-gray-600">Enter your Google AI Gemini API key to enable natural language processing. Your key is stored locally in your browser and never sent to any server besides Google's.</p>
                 <div class="flex flex-col sm:flex-row gap-4">
                     <input type="password" id="apiKeyInput" class="flex-grow w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your Gemini API Key">
                     <button id="saveApiKeyButton" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">Save Key</button>
                 </div>
                 <p id="apiKeyStatus" class="text-sm"></p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Settings > configs -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label for="baseCaloriesInput" class="block text-sm font-medium text-gray-700">Base Calories (kcal)</label>
                         <input type="number" id="baseCaloriesInput" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" value="1500">
@@ -114,6 +123,10 @@ layout: compress
                         <label for="waterTargetInput" class="block text-sm font-medium text-gray-700">Water Target (L)</label>
                         <input type="number" id="waterTargetInput" step="0.1" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" value="3">
                     </div>
+                    <div>
+                        <label for="targetWeightInput" class="block text-sm font-medium text-gray-700">Target Weight (kg)</label>
+                        <input type="number" id="targetWeightInput" step="0.1" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg" value="78">
+                    </div>
                 </div>
                 <button id="saveTargetsButton" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Save Targets</button>
             </div>
@@ -121,7 +134,7 @@ layout: compress
 
         <!-- Charts Section -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Data Overview</h2>
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Data</h2>
             <div class="grid grid-cols-1 gap-8">
                 <div class="h-[300px]">
                     <canvas id="weightChart"></canvas>
@@ -193,10 +206,14 @@ layout: compress
         const waterProgress = document.getElementById('waterProgress');
         const waterGoal = document.getElementById('waterGoal');
         const exerciseSummary = document.getElementById('exerciseSummary');
+        const latestWeight = document.getElementById('latestWeight');
+        const latestWeightDate = document.getElementById('latestWeightDate');
+        const weightGoal = document.getElementById('weightGoal');
         const targetsContainer = document.getElementById('targetsContainer');
         const baseCaloriesInput = document.getElementById('baseCaloriesInput');
         const calorieDeficitInput = document.getElementById('calorieDeficitInput');
         const waterTargetInput = document.getElementById('waterTargetInput');
+        const targetWeightInput = document.getElementById('targetWeightInput');
         const saveTargetsButton = document.getElementById('saveTargetsButton');
 
         // --- Chart Instances ---
@@ -252,6 +269,7 @@ layout: compress
             baseCaloriesInput.value = targets.baseCalories;
             calorieDeficitInput.value = targets.calorieDeficit;
             waterTargetInput.value = targets.waterTarget;
+            targetWeightInput.value = targets.targetWeight;
         }
 
         // Initialize the app
@@ -278,7 +296,8 @@ layout: compress
             const defaults = {
                 baseCalories: 1500,
                 calorieDeficit: 500,
-                waterTarget: 3
+                waterTarget: 3,
+                targetWeight: 78
             };
             return storedTargets ? JSON.parse(storedTargets) : defaults;
         }
@@ -288,7 +307,8 @@ layout: compress
             const targets = {
                 baseCalories: parseInt(baseCaloriesInput.value) || 1500,
                 calorieDeficit: parseInt(calorieDeficitInput.value) || 500,
-                waterTarget: parseFloat(waterTargetInput.value) || 3
+                waterTarget: parseFloat(waterTargetInput.value) || 3,
+                targetWeight: parseFloat(targetWeightInput.value) || 78
             };
             console.log("targets", targets);
             localStorage.setItem(TARGETS_KEY, JSON.stringify(targets));
@@ -506,6 +526,18 @@ layout: compress
             caloriesRemaining.textContent = remainingCals;
             waterProgress.textContent = `${waterDrankToday}L / ${targets.waterTarget}L`;
             exerciseSummary.textContent = todaysExercise.length;
+            weightGoal.textContent = targets.targetWeight;
+
+            // Update latest weight
+            const weightEntries = allData.filter(d => d.category === 'weight');
+            if (weightEntries.length > 0) {
+                const lastWeightEntry = weightEntries[weightEntries.length - 1];
+                latestWeight.textContent = `${lastWeightEntry.data.value} kg`;
+                latestWeightDate.textContent = `on ${new Date(lastWeightEntry.timestamp).toLocaleDateString()}`;
+            } else {
+                latestWeight.textContent = '-';
+                latestWeightDate.textContent = 'Not recorded';
+            }
         }
         
         function renderLogEntry(entry) {
