@@ -56,7 +56,7 @@ layout: compress
 
 <div class="bg-gray-100 text-gray-800 min-h-screen">
 
-    <div class="w-full p-4 md:p-8">
+    <div class="w-full p-4 md:p-8 pb-32">
         <!-- Settings Section -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
             <div id="apiKeyHeader" class="flex justify-between items-center cursor-pointer">
@@ -124,20 +124,34 @@ layout: compress
             </div>
         </div>
 
-        <!-- Input Section -->
-        <div class="bg-white rounded-lg shadow-lg p-6 sticky top-2 mb-8 z-50 border border-gray-200 backdrop-blur-sm">
-            <div class="flex flex-col sm:flex-row gap-4">
-                <input type="text" id="logInput" class="flex-grow w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g., '20 pushups', '1 glass of coffee', 'current weight is 84.5kg'">
-                <button id="logButton" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
-                    <span id="logButtonText">Add</span>
-                    <span id="logButtonSpinner" class="hidden">
-                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Processing...
-                    </span>
-                </button>
+        <!-- Floating Input Section (Fixed at Bottom) -->
+        <div class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-gray-200 p-4 shadow-lg">
+            <div class="max-w-4xl mx-auto">
+                <div class="relative flex items-center bg-white rounded-full shadow-lg border border-gray-300 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all duration-200">
+                    <input 
+                        type="text" 
+                        id="logInput" 
+                        class="flex-1 px-6 py-4 bg-transparent border-none outline-none text-gray-700 placeholder-gray-500 rounded-full text-lg" 
+                        placeholder="e.g., '20 pushups', '1 glass of coffee', 'current weight is 84.5kg'"
+                    >
+                    <button 
+                        id="logButton" 
+                        class="m-2 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center min-w-[48px] h-12"
+                    >
+                        <span id="logButtonText" class="sr-only">Send</span>
+                        <span id="logButtonIcon" class="block">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                            </svg>
+                        </span>
+                        <span id="logButtonSpinner" class="hidden">
+                            <svg class="animate-spin w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -327,6 +341,7 @@ layout: compress
                 <!-- Log entries will be injected here -->
             </div>
         </div>
+
         <div id="errorContainer" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-4" role="alert">
             <strong class="font-bold">Error!</strong>
             <span class="block sm:inline" id="errorMessage"></span>
@@ -387,6 +402,7 @@ layout: compress
             </div>
         </div>
 
+        <div style="margin-bottom: 100px;"></div>
         
     </div>
     <script type="module">
@@ -433,6 +449,7 @@ layout: compress
         const logInput = document.getElementById('logInput');
         const logButton = document.getElementById('logButton');
         const logButtonText = document.getElementById('logButtonText');
+        const logButtonIcon = document.getElementById('logButtonIcon');
         const logButtonSpinner = document.getElementById('logButtonSpinner');
         const logContainer = document.getElementById('logContainer');
         const logHeader = document.getElementById('logHeader');
@@ -1610,7 +1627,7 @@ layout: compress
         
         function toggleLoading(isLoading) {
             logButton.disabled = isLoading;
-            logButtonText.classList.toggle('hidden', isLoading);
+            logButtonIcon.classList.toggle('hidden', isLoading);
             logButtonSpinner.classList.toggle('hidden', !isLoading);
         }
 
