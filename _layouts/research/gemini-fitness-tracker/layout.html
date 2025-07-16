@@ -601,7 +601,7 @@ layout: compress
                     // Handle API key sync
                     if (cloudData.apiKey) {
                         const localApiKey = localStorage.getItem(GEMINI_API_KEY);
-                        if (localApiKey !== cloudData.apiKey) {
+                        if (localApiKey !== cloudData.apiKey && cloudData.apiKey != null && cloudData.apiKey != undefined && cloudData.apiKey.trim() != "") {
                             console.log("Cloud API key differs from local, using cloud version");
                             localStorage.setItem(GEMINI_API_KEY, cloudData.apiKey);
                             initializeApiKeyUI();
@@ -703,6 +703,8 @@ layout: compress
                     console.log("Synced local API key to cloud");
                 }
             }
+
+
         }
 
         // Show sync confirmation dialog
