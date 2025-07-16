@@ -28,6 +28,27 @@ layout: compress
     .card h3 {
         margin-bottom: 20px;
     }
+    
+    /* Sync Dialog Styles */
+    #syncDialog pre {
+        line-height: 1.4;
+        color: #374151;
+    }
+    
+    #syncDialog .bg-red-200 {
+        background-color: #fecaca;
+        border-left: 4px solid #ef4444;
+    }
+    
+    #syncDialog .bg-green-200 {
+        background-color: #bbf7d0;
+        border-left: 4px solid #10b981;
+    }
+    
+    #syncDialog .bg-yellow-200 {
+        background-color: #fef3c7;
+        border-left: 4px solid #f59e0b;
+    }
 </style>
 
 <!-- Enable pre-loading pages with query strings and for external links -->
@@ -38,9 +59,38 @@ layout: compress
 
     <div class="w-full p-4 md:p-8">
         <!-- Header -->
-        <header class="text-center mb-8">
+        <!-- <header class="text-center mb-8">
             <h3 class="text-4xl font-bold text-gray-900">Log your weight, water, food, and exercise using natural language.</h3>
-        </header>
+        </header> -->
+
+        <!-- Cloud Backup Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <div id="authCard" class="flex items-center justify-between p-4 bg-blue-50 border border-blue-200 rounded-lg transition-all duration-300">
+                <div class="flex items-center">
+                    <svg id="authCardIcon" class="w-6 h-6 text-blue-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
+                    </svg>
+                    <div>
+                        <p id="authCardTitle" class="font-semibold text-blue-800">Sign in with Google to backup your data</p>
+                        <p id="authCardSubtitle" class="text-sm text-blue-600">Otherwise local storage will be used</p>
+                    </div>
+                </div>
+                <div id="authCardAction">
+                    <button id="signInButton" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center">
+                        <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        Sign in with Google
+                    </button>
+                    <button id="signOutButton" class="hidden bg-red-600 hover:bg-red-700 text-white font-medium py-1.5 px-3 rounded text-sm transition duration-300">
+                        Sign out
+                    </button>
+                </div>
+            </div>
+        </div>
 
         <!-- Input Section -->
         <div class="bg-white rounded-lg shadow-lg p-6 sticky bottom-4 mb-8">
@@ -198,12 +248,62 @@ layout: compress
             </span>
         </div>
 
+        <!-- Data Sync Confirmation Dialog -->
+        <div id="syncDialog" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-lg p-6 max-w-6xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+                <h3 class="text-xl font-semibold mb-4">Data Sync Conflict</h3>
+                <p class="text-gray-600 mb-4">You have different data locally and in the cloud. Review the differences below:</p>
+                
+                <!-- Data Comparison -->
+                <div class="flex-1 overflow-auto mb-6">
+                    <div class="grid grid-cols-2 gap-4 h-full">
+                        <!-- Local Data -->
+                        <div class="flex flex-col">
+                            <div class="flex items-center mb-2">
+                                <div class="w-4 h-4 bg-red-500 rounded mr-2"></div>
+                                <h4 class="font-semibold text-gray-800">Local Data (<span id="localDataCount">0</span>  entries)</h4>
+                            </div>
+                            <div class="flex-1 overflow-auto bg-gray-50 p-3 rounded border">
+                                <pre id="localDataJson" class="text-xs font-mono whitespace-pre-wrap"></pre>
+                            </div>
+                        </div>
+                        
+                        <!-- Cloud Data -->
+                        <div class="flex flex-col">
+                            <div class="flex items-center mb-2">
+                                <div class="w-4 h-4 bg-green-500 rounded mr-2"></div>
+                                <h4 class="font-semibold text-gray-800">Cloud Data (<span id="cloudDataCount">0</span>  entries)</h4>
+                            </div>
+                            <div class="flex-1 overflow-auto bg-gray-50 p-3 rounded border">
+                                <pre id="cloudDataJson" class="text-xs font-mono whitespace-pre-wrap"></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="flex justify-between items-center">
+                    <div class="text-sm text-gray-500">
+                        <span class="inline-block w-3 h-3 bg-red-200 rounded mr-1"></span>Local only
+                        <span class="inline-block w-3 h-3 bg-green-200 rounded mr-1 ml-3"></span>Cloud only
+                        <span class="inline-block w-3 h-3 bg-yellow-200 rounded mr-1 ml-3"></span>Different
+                    </div>
+                    <div class="flex space-x-4">
+                        <button id="syncDialogCancel" class="px-4 py-2 text-gray-600 hover:text-gray-800 transition">Keep Local</button>
+                        <button id="syncDialogReplace" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Use Cloud Data</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         
     </div>
     <script type="module">
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import { getFirestore, collection, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -222,8 +322,22 @@ layout: compress
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+    
+    // Make Firebase objects globally accessible
+    window.auth = auth;
+    window.db = db;
+    window.provider = provider;
+    window.signInWithPopup = signInWithPopup;
+    window.signOut = signOut;
+    window.onAuthStateChanged = onAuthStateChanged;
+    window.doc = doc;
+    window.getDoc = getDoc;
+    window.setDoc = setDoc;
     </script>
-    <script type="module">
+    <script type="module">//
         // --- DOM Elements ---
         const logInput = document.getElementById('logInput');
         const logButton = document.getElementById('logButton');
@@ -236,6 +350,14 @@ layout: compress
         const errorMessage = document.getElementById('errorMessage');
         const exerciseLog = document.getElementById('exerciseLog');
         const exerciseTimelineContainer = document.getElementById('exerciseTimelineContainer');
+
+        // --- Authentication Elements ---
+        const authCard = document.getElementById('authCard');
+        const authCardIcon = document.getElementById('authCardIcon');
+        const authCardTitle = document.getElementById('authCardTitle');
+        const authCardSubtitle = document.getElementById('authCardSubtitle');
+        const signInButton = document.getElementById('signInButton');
+        const signOutButton = document.getElementById('signOutButton');
 
         // --- Gemini API Key Elements ---
         const apiKeyHeader = document.getElementById('apiKeyHeader');
@@ -270,11 +392,21 @@ layout: compress
         const fastingDuration = document.getElementById('fastingDuration');
         const fastingAnalysis = document.getElementById('fastingAnalysis');
 
+        // --- Dialog Elements ---
+        const syncDialog = document.getElementById('syncDialog');
+        const syncDialogCancel = document.getElementById('syncDialogCancel');
+        const syncDialogReplace = document.getElementById('syncDialogReplace');
+        const localDataJson = document.getElementById('localDataJson');
+        const cloudDataJson = document.getElementById('cloudDataJson');
+        const localDataCount = document.getElementById('localDataCount');
+        const cloudDataCount = document.getElementById('cloudDataCount');
+
         // --- Chart Instances ---
         let weightChart, nutritionChart;
 
         // --- Data Store ---
-        let allData = []; // This will be populated from localStorage
+        let allData = []; // This will be populated from localStorage or cloud
+        let currentUser = null; // Current authenticated user
 
         // --- Local Storage Database ---
         const STORAGE_KEY = 'health-log-data';
@@ -333,6 +465,18 @@ layout: compress
         initializeApiKeyUI();
         initializeTargetsUI();
         fetchAndDisplayQuote();
+        
+        // Initialize authentication
+        window.onAuthStateChanged(window.auth, (user) => {
+            currentUser = user;
+            updateAuthUI();
+            if (user) {
+                console.log("User is signed in:", user.email);
+                syncData();
+            } else {
+                console.log("User is signed out");
+            }
+        });
 
         
         // Save data to localStorage
@@ -343,6 +487,287 @@ layout: compress
             } catch (e) {
                 console.error("Failed to save data to localStorage:", e);
                 showError("Failed to save data locally.");
+            }
+        }
+
+        // --- Cloud Backup Functions ---
+        
+        // Save data to Firestore
+        async function saveToCloud() {
+            if (!currentUser) return;
+            
+            try {
+                const userDocRef = window.doc(window.db, 'userData', currentUser.uid);
+                await window.setDoc(userDocRef, {
+                    data: allData,
+                    lastUpdated: new Date().toISOString(),
+                    userEmail: currentUser.email
+                });
+                console.log("Data saved to cloud:", allData.length, "entries");
+            } catch (e) {
+                console.error("Failed to save data to cloud:", e);
+                showError("Failed to backup data to cloud.");
+            }
+        }
+
+        // Load data from Firestore
+        async function loadFromCloud() {
+            if (!currentUser) return null;
+            
+            try {
+                const userDocRef = window.doc(window.db, 'userData', currentUser.uid);
+                const docSnap = await window.getDoc(userDocRef);
+                
+                if (docSnap.exists()) {
+                    const cloudData = docSnap.data();
+                    console.log("Loaded data from cloud:", cloudData.data?.length || 0, "entries");
+                    return cloudData.data || [];
+                } else {
+                    console.log("No cloud data found");
+                    return [];
+                }
+            } catch (e) {
+                console.error("Failed to load data from cloud:", e);
+                showError("Failed to load data from cloud.");
+                return null;
+            }
+        }
+
+        // Deep equality check for arrays of objects
+        function deepEqual(arr1, arr2) {
+            if (arr1.length !== arr2.length) return false;
+            
+            // Sort both arrays by timestamp and id for consistent comparison
+            const sorted1 = [...arr1].sort((a, b) => {
+                const timeCompare = new Date(a.timestamp) - new Date(b.timestamp);
+                return timeCompare !== 0 ? timeCompare : a.id.localeCompare(b.id);
+            });
+            
+            const sorted2 = [...arr2].sort((a, b) => {
+                const timeCompare = new Date(a.timestamp) - new Date(b.timestamp);
+                return timeCompare !== 0 ? timeCompare : a.id.localeCompare(b.id);
+            });
+            
+            // Compare each entry
+            for (let i = 0; i < sorted1.length; i++) {
+                if (!objectsEqual(sorted1[i], sorted2[i])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // Deep equality check for objects
+        function objectsEqual(obj1, obj2) {
+            const keys1 = Object.keys(obj1);
+            const keys2 = Object.keys(obj2);
+            
+            if (keys1.length !== keys2.length) return false;
+            
+            for (let key of keys1) {
+                if (!keys2.includes(key)) return false;
+                
+                const val1 = obj1[key];
+                const val2 = obj2[key];
+                
+                if (typeof val1 === 'object' && val1 !== null && typeof val2 === 'object' && val2 !== null) {
+                    if (!objectsEqual(val1, val2)) return false;
+                } else if (val1 !== val2) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // Sync data between local and cloud
+        async function syncData() {
+            if (!currentUser) return;
+            
+            const cloudData = await loadFromCloud();
+            if (cloudData === null) return;
+            
+            const hasLocalData = allData.length > 0;
+            const hasCloudData = cloudData.length > 0;
+            
+            if (!hasLocalData && hasCloudData) {
+                // No local data, use cloud data
+                allData = cloudData;
+                allData.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+                saveToLocalStorage();
+                renderAll();
+                console.log("Synced cloud data to local");
+            } else if (hasLocalData && !hasCloudData) {
+                // No cloud data, upload local data
+                await saveToCloud();
+                console.log("Synced local data to cloud");
+            } else if (hasLocalData && hasCloudData) {
+                // Both have data, check if they're different using deep equality
+                if (!deepEqual(allData, cloudData)) {
+                    // Data is different, show dialog
+                    showSyncDialog(cloudData);
+                } else {
+                    console.log("Local and cloud data are in sync");
+                }
+            }
+        }
+
+        // Show sync confirmation dialog
+        function showSyncDialog(cloudData) {
+            syncDialog.classList.remove('hidden');
+            
+            // Store cloud data temporarily for the dialog
+            syncDialog.cloudData = cloudData;
+            
+            // Update data counts
+            localDataCount.textContent = allData.length;
+            cloudDataCount.textContent = cloudData.length;
+            
+            // Format and display the data with highlighting
+            displayDataComparison(allData, cloudData);
+        }
+
+        // Display data comparison with highlighting
+        function displayDataComparison(localData, cloudData) {
+            const localFormatted = formatDataForComparison(localData);
+            const cloudFormatted = formatDataForComparison(cloudData);
+            
+            // Create maps for easier comparison
+            const localMap = new Map(localData.map(item => [item.id, item]));
+            const cloudMap = new Map(cloudData.map(item => [item.id, item]));
+            
+            // Highlight differences
+            localDataJson.innerHTML = highlightDifferences(localFormatted, localMap, cloudMap, 'local');
+            cloudDataJson.innerHTML = highlightDifferences(cloudFormatted, cloudMap, localMap, 'cloud');
+        }
+
+        // Format data for better readability
+        function formatDataForComparison(data) {
+            return data.map(entry => ({
+                id: entry.id,
+                timestamp: new Date(entry.timestamp).toLocaleString(),
+                category: entry.category,
+                data: entry.data,
+                originalText: entry.originalText
+            }));
+        }
+
+        // Highlight differences between datasets
+        function highlightDifferences(formattedData, thisMap, otherMap, side) {
+            let html = '';
+            
+            formattedData.forEach((entry, index) => {
+                const otherEntry = otherMap.get(entry.id);
+                let entryClass = '';
+                
+                if (!otherEntry) {
+                    // Entry exists only in this dataset
+                    entryClass = side === 'local' ? 'bg-red-200' : 'bg-green-200';
+                } else {
+                    // Entry exists in both, check if different
+                    const thisEntryStr = JSON.stringify(thisMap.get(entry.id));
+                    const otherEntryStr = JSON.stringify(otherEntry);
+                    if (thisEntryStr !== otherEntryStr) {
+                        entryClass = 'bg-yellow-200';
+                    }
+                }
+                
+                const entryJson = JSON.stringify(entry, null, 2);
+                html += `<div class="${entryClass} p-2 mb-2 rounded">${escapeHtml(entryJson)}</div>`;
+            });
+            
+            return html || '<div class="text-gray-500 italic">No data</div>';
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Hide sync dialog
+        function hideSyncDialog() {
+            syncDialog.classList.add('hidden');
+            delete syncDialog.cloudData;
+            
+            // Clear the displayed data
+            localDataJson.innerHTML = '';
+            cloudDataJson.innerHTML = '';
+            localDataCount.textContent = '0';
+            cloudDataCount.textContent = '0';
+        }
+
+        // Replace local data with cloud data
+        async function replaceLocalWithCloud() {
+            if (syncDialog.cloudData) {
+                allData = syncDialog.cloudData;
+                allData.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+                saveToLocalStorage();
+                renderAll();
+                console.log("Replaced local data with cloud data");
+            }
+            hideSyncDialog();
+        }
+
+        // Combined save function
+        async function saveData() {
+            saveToLocalStorage();
+            if (currentUser) {
+                await saveToCloud();
+            }
+        }
+
+        // Authentication functions
+        async function signInWithGoogle() {
+            try {
+                const result = await window.signInWithPopup(window.auth, window.provider);
+                currentUser = result.user;
+                console.log("Signed in:", currentUser.email);
+                updateAuthUI();
+                await syncData();
+            } catch (error) {
+                console.error("Sign in failed:", error);
+                showError("Failed to sign in with Google.");
+            }
+        }
+
+        async function signOutUser() {
+            try {
+                await window.signOut(window.auth);
+                currentUser = null;
+                console.log("Signed out");
+                updateAuthUI();
+            } catch (error) {
+                console.error("Sign out failed:", error);
+                showError("Failed to sign out.");
+            }
+        }
+
+        // Update authentication UI
+        function updateAuthUI() {
+            if (currentUser) {
+                // Signed in - minimal card
+                authCard.classList.remove('bg-blue-50', 'border-blue-200');
+                authCard.classList.add('bg-green-50', 'border-green-200');
+                authCardIcon.classList.add('hidden');
+                authCardTitle.textContent = `Signed in as ${currentUser.email}`;
+                authCardTitle.classList.remove('text-blue-800');
+                authCardTitle.classList.add('text-green-700', 'text-sm');
+                authCardSubtitle.classList.add('hidden');
+                signInButton.classList.add('hidden');
+                signOutButton.classList.remove('hidden');
+            } else {
+                // Signed out - full card
+                authCard.classList.remove('bg-green-50', 'border-green-200');
+                authCard.classList.add('bg-blue-50', 'border-blue-200');
+                authCardIcon.classList.remove('hidden');
+                authCardTitle.textContent = "Sign in with Google to backup your data";
+                authCardTitle.classList.remove('text-green-700', 'text-sm');
+                authCardTitle.classList.add('text-blue-800');
+                authCardSubtitle.textContent = "Otherwise local storage will be used";
+                authCardSubtitle.classList.remove('hidden');
+                signInButton.classList.remove('hidden');
+                signOutButton.classList.add('hidden');
             }
         }
 
@@ -575,7 +1000,7 @@ layout: compress
         }
 
         /**
-         * Saves a new entry to local storage.
+         * Saves a new entry to local storage and cloud.
          * @param {object} entry - The data entry to log.
          */
         async function logData(entry) {
@@ -598,13 +1023,13 @@ layout: compress
                     localStorage.removeItem(FASTING_ANALYSIS_KEY);
                 }
 
-                // Save to localStorage
-                saveToLocalStorage();
+                // Save to localStorage and cloud
+                await saveData();
                 
                 // Re-render the UI
                 renderAll();
                 
-                console.log("Entry saved to localStorage:", entry);
+                console.log("Entry saved:", entry);
             } catch (error) {
                 console.error("Error saving entry:", error);
                 showError("Failed to save the entry.");
@@ -612,7 +1037,7 @@ layout: compress
         }
 
         /**
-         * Deletes an entry from local storage.
+         * Deletes an entry from local storage and cloud.
          * @param {string} id - The ID of the entry to delete.
          */
         window.deleteEntry = async function(id) {
@@ -622,13 +1047,13 @@ layout: compress
                 if (index !== -1) {
                     allData.splice(index, 1);
                     
-                    // Save to localStorage
-                    saveToLocalStorage();
+                    // Save to localStorage and cloud
+                    await saveData();
                     
                     // Re-render the UI
                     renderAll();
                     
-                    console.log("Entry deleted from localStorage:", id);
+                    console.log("Entry deleted:", id);
                 } else {
                     console.warn("Entry not found for deletion:", id);
                 }
@@ -988,6 +1413,14 @@ layout: compress
             localStorage.removeItem(FASTING_ANALYSIS_KEY);
             renderAll();
         });
+
+        // Authentication event listeners
+        signInButton.addEventListener('click', signInWithGoogle);
+        signOutButton.addEventListener('click', signOutUser);
+        
+        // Dialog event listeners
+        syncDialogCancel.addEventListener('click', hideSyncDialog);
+        syncDialogReplace.addEventListener('click', replaceLocalWithCloud);
 
     </script>
 </div>
