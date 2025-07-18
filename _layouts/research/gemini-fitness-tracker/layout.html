@@ -312,7 +312,7 @@ layout: compress
 
         <!-- Weekly Analysis Section -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-            <div class="flex justify-between items-center mb-4">
+            <div id="weeklyAnalysisHeader" class="flex justify-between items-center mb-4 cursor-pointer">
                 <div>
                     <h2 class="text-2xl font-semibold text-gray-800">Weekly Analysis</h2>
                     <p class="text-sm text-gray-600 mt-1">AI-powered insights from your last 7 days of health data</p>
@@ -327,10 +327,12 @@ layout: compress
                     <button id="refreshAnalysisButton" class="text-blue-600 hover:text-blue-800 text-sm font-medium transition">
                         Refresh Analysis
                     </button>
+                    <svg id="weeklyAnalysisToggleIcon" class="w-6 h-6 transition-transform duration-300 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div id="weeklyAnalysisContainer" class="mt-4 space-y-4 hidden">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <!-- Doing Good Card -->
                 <div class="bg-green-50 border border-green-200 rounded-lg p-4 h-fit">
                     <div class="flex items-center mb-3">
@@ -384,6 +386,7 @@ layout: compress
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
 
@@ -599,6 +602,9 @@ layout: compress
         const doingGoodContent = document.getElementById('doingGoodContent');
         const needsImprovementContent = document.getElementById('needsImprovementContent');
         const suggestionsContent = document.getElementById('suggestionsContent');
+        const weeklyAnalysisHeader = document.getElementById('weeklyAnalysisHeader');
+        const weeklyAnalysisContainer = document.getElementById('weeklyAnalysisContainer');
+        const weeklyAnalysisToggleIcon = document.getElementById('weeklyAnalysisToggleIcon');
 
         // --- Chart Instances ---
         let weightChart, nutritionChart;
@@ -1377,14 +1383,17 @@ Please provide a concise analysis in JSON format with these three categories:
   "suggestions": ["Suggestion 1", "Suggestion 2", ...]
 }
 
+IMPORTANT CONSTRAINTS:
+- Maximum 5 items per category
+- Each point must be 15 words or less
+- Be specific and actionable
+
 Focus on:
 - Weight loss progress and calorie management
 - Exercise consistency and upper body focus
 - Hydration levels
 - Overall health patterns
-- Actionable, specific suggestions
-
-Keep each point concise (under 50 words) and actionable.`;
+- Actionable, specific suggestions`;
 
             const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
 
@@ -2108,51 +2117,22 @@ Keep each point concise (under 50 words) and actionable.`;
             apiKeyToggleIcon.classList.toggle('rotate-180');
         });
 
-        saveApiKeyButton.addEventListener('click', async () => {
-            const key = apiKeyInput.value.trim();
-            if (key) {
-                localStorage.setItem(GEMINI_API_KEY, key);
-                if (currentUser) {
-                    await saveApiKeyToCloud(key);
-                }
-                apiKeyStatus.textContent = "API Key saved successfully!";
-                apiKeyStatus.className = "text-sm text-green-600";
-                apiKeyInput.value = '';
-                apiKeyInput.placeholder = "••••••••••••••••••••••••••••••";
-            } else {
-                localStorage.removeItem(GEMINI_API_KEY);
-                if (currentUser) {
-                    await saveApiKeyToCloud(null);
-                }
-                apiKeyStatus.textContent = "API Key removed.";
-                apiKeyStatus.className = "text-sm text-yellow-600";
-                apiKeyInput.placeholder = "Enter your Gemini API Key";
-            }
+        weeklyAnalysisHeader.addEventListener('click', () => {
+            weeklyAnalysisContainer.classList.toggle('hidden');
+            weeklyAnalysisToggleIcon.classList.toggle('rotate-180');
         });
 
-        saveTargetsButton.addEventListener('click', () => {
-            saveTargets();
-            // Clear weight analysis cache as target has changed
-            localStorage.removeItem(WEIGHT_ANALYSIS_KEY);
-            localStorage.removeItem(FASTING_ANALYSIS_KEY);
-            renderAll();
+        refreshAnalysisButton.addEventListener('click', async (event) => {
+            event.stopPropagation(); // Prevent triggering the header click
+            
+            // Clear any existing cache to force a fresh analysis
+            localStorage.removeItem(WEEKLY_ANALYSIS_KEY);
+            
+            // Trigger a fresh analysis
+            await updateWeeklyAnalysis();
         });
 
-        // Authentication event listeners
-        signInButton.addEventListener('click', signInWithGoogle);
-        signOutButton.addEventListener('click', signOutUser);
-        
-        // Dialog event listeners
-        syncDialogCancel.addEventListener('click', hideSyncDialog);
-        syncDialogReplace.addEventListener('click', replaceLocalWithCloud);
-
-        // Weekly analysis refresh
-        refreshAnalysisButton.addEventListener('click', async () => {
-            await performWeeklyAnalysis(); // Force fresh analysis, not cached
-        });
-
-        // Initial weekly analysis check
-        updateWeeklyAnalysis().catch(console.error);
+        // ...existing code...
     </script>
 </div>
 </html>
