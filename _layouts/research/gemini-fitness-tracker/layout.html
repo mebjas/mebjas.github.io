@@ -1502,7 +1502,17 @@ layout: compress
                 case 'weight': content += `<span class="text-xl mr-3">⚖️</span> <div><p class="font-semibold">Weight Logged: ${entry.data.value} kg</p><p class="text-sm text-gray-500">${date}</p></div>`; break;
                 case 'water': content += `<span class="text-xl mr-3">💧</span> <div><p class="font-semibold">Water Intake: ${entry.data.amount} L</p><p class="text-sm text-gray-500">${date}</p></div>`; break;
                 case 'food': 
-                    content += `<span class="text-xl mr-3">🍎</span> <div><p class="font-semibold">Food: ${entry.data.item}</p><p class="text-gray-600 text-sm">Calories: ~${entry.data.calories} kcal</p>`;
+                    content += `<span class="text-xl mr-3">🍎</span> <div><p class="font-semibold">Food: ${entry.data.item}</p>`;
+                    content += `<p class="text-gray-600 text-sm">Calories: ~${entry.data.calories} kcal`;
+                    if (entry.data.protein !== undefined || entry.data.carbs !== undefined || entry.data.fat !== undefined) {
+                        content += ` | Protein: ${entry.data.protein || 0}g | Carbs: ${entry.data.carbs || 0}g | Fat: ${entry.data.fat || 0}g`;
+                    }
+                    content += `</p>`;
+                    if (entry.data.breaks_fast !== undefined) {
+                        const fastingStatus = entry.data.breaks_fast ? 'Breaks fast' : 'Fasting friendly';
+                        const fastingIcon = entry.data.breaks_fast ? '🔴' : '🟢';
+                        content += `<p class="text-gray-600 text-sm">${fastingIcon} ${fastingStatus}</p>`;
+                    }
                     if (entry.data.thoughts) {
                         content += `<p class="text-gray-600 text-sm italic">"${entry.data.thoughts}"</p>`;
                     }
