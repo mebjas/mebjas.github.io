@@ -845,8 +845,21 @@ layout: compress
             } else if (hasLocalData && hasCloudData) {
                 // Both have data, check if they're different using deep equality
                 if (!deepEqual(allData, cloudData)) {
-                    // Data is different, show dialog
-                    showSyncDialog(cloudData);
+                    // Data is different, check which is more recent
+                    const localLatest = getLatestTimestamp(allData);
+                    const cloudLatest = getLatestTimestamp(cloudData);
+                    
+                    if (cloudLatest > localLatest) {
+                        // Cloud data is more recent, auto-sync it
+                        allData = cloudData;
+                        allData.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+                        saveToLocalStorage();
+                        renderAll();
+                        console.log("Auto-synced newer cloud data to local");
+                    } else {
+                        // Local data is more recent or equal, show dialog for user decision
+                        showSyncDialog(cloudData);
+                    }
                 } else {
                     console.log("Local and cloud data are in sync");
                 }
@@ -858,8 +871,6 @@ layout: compress
                     console.log("Synced local API key to cloud");
                 }
             }
-
-
         }
 
         // Show sync confirmation dialog
