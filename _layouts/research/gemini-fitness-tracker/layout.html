@@ -271,7 +271,8 @@ layout: compress
                                 <thead>
                                     <tr class="border-b border-gray-200">
                                         <th class="text-left py-1 text-gray-600 font-medium">Exercise</th>
-                                        <th class="text-right py-1 text-gray-600 font-medium">Reps</th>
+                                        <th class="text-center py-1 text-gray-600 font-medium">Reps</th>
+                                        <th class="text-right py-1 text-gray-600 font-medium">Kcal</th>
                                     </tr>
                                 </thead>
                                 <tbody id="exerciseTableBody">
@@ -280,7 +281,8 @@ layout: compress
                             </table>
                             <div id="exerciseEmptyState" class="text-center py-4 text-gray-500">No exercises logged today</div>
                         </div>
-                        <p id="exerciseCountSubtitle" class="text-sm text-orange-600 font-medium mb-3">0 exercises today</p>
+                        <p id="exerciseCountSubtitle" class="text-sm text-orange-600 font-medium mb-1">0 exercises today</p>
+                        <p id="caloriesBurntSubtitle" class="text-sm text-orange-700 font-medium">0 kcal burnt</p>
                     </div>
                 </div>
                 <!-- Fasting Card -->
@@ -485,6 +487,7 @@ layout: compress
         const waterProgressRatio = document.getElementById('waterProgressRatio');
         const waterGoal = document.getElementById('waterGoal');
         const exerciseCountSubtitle = document.getElementById('exerciseCountSubtitle');
+        const caloriesBurntSubtitle = document.getElementById('caloriesBurntSubtitle');
         const exerciseTableBody = document.getElementById('exerciseTableBody');
         const exerciseTable = document.getElementById('exerciseTable');
         const exerciseEmptyState = document.getElementById('exerciseEmptyState');
@@ -1182,7 +1185,7 @@ layout: compress
                 - For "weight", the "data" object should have a "value" key with the weight in kg (float).
                 - For "water", the "data" object should have an "amount" key with the volume in Liters (float). Assume "a glass" is 0.25L.
                 - For "food", the "data" object should have "item" (string) and "calories" (integer) keys. Provide a reasonable calorie estimate. Also include "protein" (integer, in grams), "carbs" (integer, in grams), "fat" (integer, in grams). Also add a "thoughts" key (string, under 15 words) with your opinion on the food for weight loss, LDL & HDL control, and muscle gain. Also include a boolean key "breaks_fast". A food is considered to break a fast if it has more than 15 calories.
-                - For "exercise", the "data" object should have "type" (string) and either "reps" (integer) or "duration_minutes" (integer).
+                - For "exercise", the "data" object should have "type" (string), either "reps" (integer) or "duration_minutes" (integer), and "calories_burnt" (integer) with a reasonable estimate based on the exercise type and intensity.
                 - If the input is ambiguous or cannot be categorized, the category should be "unknown" and data should be an empty object.
 
                 Example 1:
@@ -1203,7 +1206,7 @@ layout: compress
 
                 Example 5:
                 Input: "Did 20 pushups and ran for 15 minutes"
-                Output: [{"category":"exercise","data":{"type":"pushups and running","reps":20,"duration_minutes":15}}]
+                Output: [{"category":"exercise","data":{"type":"pushups and running","reps":20,"duration_minutes":15,"calories_burnt":180}}]
             `;
 
             try {
@@ -1322,13 +1325,14 @@ layout: compress
             const carbsToday = todaysFood.reduce((sum, curr) => sum + (curr.data.carbs || 0), 0);
             const fatToday = todaysFood.reduce((sum, curr) => sum + (curr.data.fat || 0), 0);
             const waterDrankToday = todaysWater.reduce((sum, curr) => sum + (curr.data.amount || 0), 0);
+            const caloriesBurntToday = todaysExercise.reduce((sum, curr) => sum + (curr.data.calories_burnt || 0), 0);
             
             const totalCalorieGoal = targets.baseCalories - targets.calorieDeficit;
-            const remainingCals = totalCalorieGoal - caloriesConsumedValue;
+            const remainingCals = totalCalorieGoal - caloriesConsumedValue + caloriesBurntToday;
 
             // Update UI
             calorieGoal.textContent = totalCalorieGoal;
-            caloriesConsumed.textContent = `${caloriesConsumedValue} kcal consumed`;
+            caloriesConsumed.textContent = `${caloriesConsumedValue} consumed${caloriesBurntToday > 0 ? `, ${caloriesBurntToday} burnt` : ''}`;
             caloriesRemaining.textContent = remainingCals;
             
             // Update water progress with circular indicator
@@ -1350,6 +1354,7 @@ layout: compress
                         exerciseMap[exerciseType] = {
                             reps: 0,
                             duration: 0,
+                            calories: 0,
                             hasReps: false,
                             hasDuration: false
                         };
@@ -1362,11 +1367,15 @@ layout: compress
                         exerciseMap[exerciseType].duration += ex.data.duration_minutes;
                         exerciseMap[exerciseType].hasDuration = true;
                     }
+                    if (ex.data.calories_burnt) {
+                        exerciseMap[exerciseType].calories += ex.data.calories_burnt;
+                    }
                 });
 
                 // Update subtitle
                 const exerciseCount = Object.keys(exerciseMap).length;
                 exerciseCountSubtitle.textContent = `${exerciseCount} exercise${exerciseCount !== 1 ? 's' : ''} today`;
+                caloriesBurntSubtitle.textContent = `${caloriesBurntToday} kcal burnt`;
 
                 // Generate table rows
                 let tableRowsHTML = '';
@@ -1385,7 +1394,8 @@ layout: compress
                     tableRowsHTML += `
                         <tr class="border-b border-gray-100 last:border-b-0">
                             <td class="py-1 text-left text-gray-700">${exerciseType}</td>
-                            <td class="py-1 text-right text-gray-600">${valueText}</td>
+                            <td class="py-1 text-center text-gray-600">${valueText}</td>
+                            <td class="py-1 text-right text-gray-600">${data.calories || 0}</td>
                         </tr>
                     `;
                 });
@@ -1395,6 +1405,7 @@ layout: compress
                 exerciseEmptyState.style.display = 'none';
             } else {
                 exerciseCountSubtitle.textContent = '0 exercises today';
+                caloriesBurntSubtitle.textContent = '0 kcal burnt';
                 exerciseTableBody.innerHTML = '';
                 exerciseTable.style.display = 'none';
                 exerciseEmptyState.style.display = 'block';
@@ -1517,7 +1528,14 @@ layout: compress
                     }
                     content += `<p class="text-sm text-gray-500">${date}</p></div>`; 
                     break;
-                case 'exercise': content += `<span class="text-xl mr-3">🏋️</span> <div><p class="font-semibold">Exercise: ${entry.data.type}</p><p class="text-gray-600 text-sm">${entry.data.reps ? `Reps: ${entry.data.reps}` : `Duration: ${entry.data.duration_minutes} min`}</p><p class="text-sm text-gray-500">${date}</p></div>`; break;
+                case 'exercise': 
+                    content += `<span class="text-xl mr-3">🏋️</span> <div><p class="font-semibold">Exercise: ${entry.data.type}</p>`;
+                    content += `<p class="text-gray-600 text-sm">${entry.data.reps ? `Reps: ${entry.data.reps}` : `Duration: ${entry.data.duration_minutes} min`}`;
+                    if (entry.data.calories_burnt) {
+                        content += ` | Calories burnt: ${entry.data.calories_burnt} kcal`;
+                    }
+                    content += `</p><p class="text-sm text-gray-500">${date}</p></div>`; 
+                    break;
             }
             content += `</div>`;
             const deleteButton = `<button onclick="deleteEntry('${entry.id}')" class="text-red-500 hover:text-red-700 font-semibold text-sm">Delete</button>`;
