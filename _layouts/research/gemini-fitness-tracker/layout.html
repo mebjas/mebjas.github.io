@@ -1510,8 +1510,7 @@ layout: compress
                     content += `</p>`;
                     if (entry.data.breaks_fast !== undefined) {
                         const fastingStatus = entry.data.breaks_fast ? 'Breaks fast' : 'Fasting friendly';
-                        const fastingIcon = entry.data.breaks_fast ? '🔴' : '🟢';
-                        content += `<p class="text-gray-600 text-sm">${fastingIcon} ${fastingStatus}</p>`;
+                        content += `<p class="text-gray-600 text-sm">${fastingStatus}</p>`;
                     }
                     if (entry.data.thoughts) {
                         content += `<p class="text-gray-600 text-sm italic">"${entry.data.thoughts}"</p>`;
