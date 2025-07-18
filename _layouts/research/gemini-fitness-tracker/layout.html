@@ -2167,6 +2167,20 @@ Focus on:
             await updateWeeklyAnalysis();
         });
 
+        // Sync dialog event listeners
+        syncDialogCancel.addEventListener('click', () => {
+            hideSyncDialog();
+        });
+
+        syncDialogReplace.addEventListener('click', async () => {
+            await replaceLocalWithCloud();
+        });
+
+        // Save targets button event listener
+        saveTargetsButton.addEventListener('click', () => {
+            saveTargets();
+        });
+
         // ...existing code...
     </script>
 </div>
