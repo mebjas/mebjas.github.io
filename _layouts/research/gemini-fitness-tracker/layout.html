@@ -310,6 +310,83 @@ layout: compress
             </div>
         </div>
 
+        <!-- Weekly Analysis Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h2 class="text-2xl font-semibold text-gray-800">Weekly Analysis</h2>
+                    <p class="text-sm text-gray-600 mt-1">AI-powered insights from your last 7 days of health data</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <div id="analysisLoader" class="hidden">
+                        <svg class="animate-spin w-5 h-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </div>
+                    <button id="refreshAnalysisButton" class="text-blue-600 hover:text-blue-800 text-sm font-medium transition">
+                        Refresh Analysis
+                    </button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Doing Good Card -->
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4 h-fit">
+                    <div class="flex items-center mb-3">
+                        <svg class="w-6 h-6 text-green-600 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <h3 class="text-lg font-semibold text-green-800">Doing Great</h3>
+                    </div>
+                    <div id="doingGoodContent" class="text-sm text-green-700 space-y-2 min-h-[100px]">
+                        <div class="flex items-center justify-center py-8 text-gray-500">
+                            <svg class="w-8 h-8 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                            </svg>
+                            <span>Loading analysis...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Need Improvement Card -->
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 h-fit">
+                    <div class="flex items-center mb-3">
+                        <svg class="w-6 h-6 text-yellow-600 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <h3 class="text-lg font-semibold text-yellow-800">Needs Attention</h3>
+                    </div>
+                    <div id="needsImprovementContent" class="text-sm text-yellow-700 space-y-2 min-h-[100px]">
+                        <div class="flex items-center justify-center py-8 text-gray-500">
+                            <svg class="w-8 h-8 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                            </svg>
+                            <span>Loading analysis...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Suggestions Card -->
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 h-fit">
+                    <div class="flex items-center mb-3">
+                        <svg class="w-6 h-6 text-blue-600 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                        </svg>
+                        <h3 class="text-lg font-semibold text-blue-800">Suggestions</h3>
+                    </div>
+                    <div id="suggestionsContent" class="text-sm text-blue-700 space-y-2 min-h-[100px]">
+                        <div class="flex items-center justify-center py-8 text-gray-500">
+                            <svg class="w-8 h-8 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            </svg>
+                            <span>Loading analysis...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Charts Section -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 class="text-2xl font-semibold mb-4 text-gray-800">Data</h2>
@@ -516,6 +593,13 @@ layout: compress
         const localDataCount = document.getElementById('localDataCount');
         const cloudDataCount = document.getElementById('cloudDataCount');
 
+        // --- Weekly Analysis Elements ---
+        const refreshAnalysisButton = document.getElementById('refreshAnalysisButton');
+        const analysisLoader = document.getElementById('analysisLoader');
+        const doingGoodContent = document.getElementById('doingGoodContent');
+        const needsImprovementContent = document.getElementById('needsImprovementContent');
+        const suggestionsContent = document.getElementById('suggestionsContent');
+
         // --- Chart Instances ---
         let weightChart, nutritionChart;
 
@@ -530,6 +614,7 @@ layout: compress
         const QUOTE_KEY = 'health-log-quote';
         const WEIGHT_ANALYSIS_KEY = 'health-log-weight-analysis';
         const FASTING_ANALYSIS_KEY = 'health-log-fasting-analysis';
+        const WEEKLY_ANALYSIS_KEY = 'health-log-weekly-analysis';
         
         // Initialize local storage and load existing data
         function initializeLocalDB() {
@@ -1154,6 +1239,318 @@ layout: compress
             }
         }
 
+        // --- Weekly Analysis Functions ---
+        
+        async function performWeeklyAnalysis() {
+            const analysisData = getWeeklyAnalysisData();
+            if (!analysisData.hasData) {
+                showEmptyAnalysis();
+                return;
+            }
+
+            try {
+                showAnalysisLoader();
+                const analysis = await getWeeklyAnalysisFromAI(analysisData);
+                displayWeeklyAnalysis(analysis);
+                cacheWeeklyAnalysis(analysis);
+            } catch (error) {
+                console.error("Failed to get weekly analysis:", error);
+                showAnalysisError();
+            } finally {
+                hideAnalysisLoader();
+            }
+        }
+
+        function getWeeklyAnalysisData() {
+            const sevenDaysAgo = new Date();
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+            const last7DaysData = allData.filter(entry => 
+                new Date(entry.timestamp) >= sevenDaysAgo
+            );
+
+            if (last7DaysData.length === 0) {
+                return { hasData: false };
+            }
+
+            // Get current targets
+            const targets = getTargets();
+            
+            // Get latest weight
+            const weightEntries = allData.filter(entry => entry.category === 'weight')
+                .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            const currentWeight = weightEntries.length > 0 ? weightEntries[0].data.weight : null;
+
+            // Aggregate data by category
+            const summary = {
+                nutrition: [],
+                exercise: [],
+                water: [],
+                weight: [],
+                other: []
+            };
+
+            last7DaysData.forEach(entry => {
+                switch(entry.category) {
+                    case 'nutrition':
+                        summary.nutrition.push({
+                            date: entry.timestamp.split('T')[0],
+                            calories: entry.data.calories || 0,
+                            protein: entry.data.protein || 0,
+                            carbs: entry.data.carbs || 0,
+                            fat: entry.data.fat || 0,
+                            originalText: entry.originalText
+                        });
+                        break;
+                    case 'exercise':
+                        summary.exercise.push({
+                            date: entry.timestamp.split('T')[0],
+                            type: entry.data.exercise || entry.originalText,
+                            reps: entry.data.reps || 0,
+                            caloriesBurnt: entry.data.caloriesBurnt || 0,
+                            originalText: entry.originalText
+                        });
+                        break;
+                    case 'water':
+                        summary.water.push({
+                            date: entry.timestamp.split('T')[0],
+                            amount: entry.data.amount || 0,
+                            originalText: entry.originalText
+                        });
+                        break;
+                    case 'weight':
+                        summary.weight.push({
+                            date: entry.timestamp.split('T')[0],
+                            weight: entry.data.weight,
+                            originalText: entry.originalText
+                        });
+                        break;
+                    default:
+                        summary.other.push({
+                            date: entry.timestamp.split('T')[0],
+                            category: entry.category,
+                            data: entry.data,
+                            originalText: entry.originalText
+                        });
+                }
+            });
+
+            return {
+                hasData: true,
+                currentWeight,
+                targets,
+                last7DaysData: summary,
+                totalEntries: last7DaysData.length
+            };
+        }
+
+        async function getWeeklyAnalysisFromAI(analysisData) {
+            const apiKey = localStorage.getItem(GEMINI_API_KEY);
+            if (!apiKey) {
+                throw new Error("API key not set");
+            }
+
+            const prompt = `
+Analyze my last 7 days of health and fitness data to help me achieve these goals:
+1. Lose weight
+2. Build upper body muscles and strength  
+3. Have better skin
+4. Overall be healthier and fit
+
+Current Stats:
+- Current Weight: ${analysisData.currentWeight || 'Not recorded'} kg
+- Target Weight: ${analysisData.targets.targetWeight} kg
+- Daily Calorie Goal: ${analysisData.targets.baseCalories - analysisData.targets.calorieDeficit} kcal
+- Water Target: ${analysisData.targets.waterTarget}L per day
+
+Last 7 Days Data:
+Nutrition: ${JSON.stringify(analysisData.last7DaysData.nutrition)}
+Exercise: ${JSON.stringify(analysisData.last7DaysData.exercise)}
+Water: ${JSON.stringify(analysisData.last7DaysData.water)}
+Weight: ${JSON.stringify(analysisData.last7DaysData.weight)}
+Other: ${JSON.stringify(analysisData.last7DaysData.other)}
+
+Please provide a concise analysis in JSON format with these three categories:
+{
+  "doingGood": ["Point 1", "Point 2", ...],
+  "needsImprovement": ["Point 1", "Point 2", ...], 
+  "suggestions": ["Suggestion 1", "Suggestion 2", ...]
+}
+
+Focus on:
+- Weight loss progress and calorie management
+- Exercise consistency and upper body focus
+- Hydration levels
+- Overall health patterns
+- Actionable, specific suggestions
+
+Keep each point concise (under 50 words) and actionable.`;
+
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{
+                            text: prompt
+                        }]
+                    }]
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`API request failed: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const responseText = data.candidates[0].content.parts[0].text.trim();
+            
+            // Try to extract JSON from the response
+            try {
+                const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+                if (jsonMatch) {
+                    return JSON.parse(jsonMatch[0]);
+                } else {
+                    throw new Error("No JSON found in response");
+                }
+            } catch (parseError) {
+                console.error("Failed to parse AI response:", responseText);
+                throw new Error("Failed to parse analysis response");
+            }
+        }
+
+        function displayWeeklyAnalysis(analysis) {
+            // Display "Doing Good" points
+            if (analysis.doingGood && analysis.doingGood.length > 0) {
+                doingGoodContent.innerHTML = analysis.doingGood.map(point => 
+                    `<div class="flex items-start space-x-2 p-2 bg-green-100 rounded">
+                        <svg class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-green-800">${point}</span>
+                    </div>`
+                ).join('');
+            } else {
+                doingGoodContent.innerHTML = '<div class="text-center text-gray-500 py-4">No positive patterns identified yet</div>';
+            }
+
+            // Display "Needs Improvement" points
+            if (analysis.needsImprovement && analysis.needsImprovement.length > 0) {
+                needsImprovementContent.innerHTML = analysis.needsImprovement.map(point => 
+                    `<div class="flex items-start space-x-2 p-2 bg-yellow-100 rounded">
+                        <svg class="w-4 h-4 text-yellow-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-yellow-800">${point}</span>
+                    </div>`
+                ).join('');
+            } else {
+                needsImprovementContent.innerHTML = '<div class="text-center text-gray-500 py-4">All areas looking good!</div>';
+            }
+
+            // Display "Suggestions" points
+            if (analysis.suggestions && analysis.suggestions.length > 0) {
+                suggestionsContent.innerHTML = analysis.suggestions.map(point => 
+                    `<div class="flex items-start space-x-2 p-2 bg-blue-100 rounded">
+                        <svg class="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-blue-800">${point}</span>
+                    </div>`
+                ).join('');
+            } else {
+                suggestionsContent.innerHTML = '<div class="text-center text-gray-500 py-4">Keep up the great work!</div>';
+            }
+        }
+
+        function showEmptyAnalysis() {
+            const emptyMessage = '<div class="text-center text-gray-500 py-4">Not enough data for analysis. Start logging your health data!</div>';
+            doingGoodContent.innerHTML = emptyMessage;
+            needsImprovementContent.innerHTML = emptyMessage;
+            suggestionsContent.innerHTML = emptyMessage;
+        }
+
+        function showAnalysisError() {
+            const errorMessage = '<div class="text-center text-red-500 py-4">Failed to generate analysis. Try again later.</div>';
+            doingGoodContent.innerHTML = errorMessage;
+            needsImprovementContent.innerHTML = errorMessage;
+            suggestionsContent.innerHTML = errorMessage;
+        }
+
+        function showAnalysisLoader() {
+            analysisLoader.classList.remove('hidden');
+            refreshAnalysisButton.textContent = 'Analyzing...';
+            refreshAnalysisButton.disabled = true;
+        }
+
+        function hideAnalysisLoader() {
+            analysisLoader.classList.add('hidden');
+            refreshAnalysisButton.textContent = 'Refresh Analysis';
+            refreshAnalysisButton.disabled = false;
+        }
+
+        function cacheWeeklyAnalysis(analysis) {
+            const today = new Date().toISOString().split('T')[0];
+            const cacheData = {
+                date: today,
+                analysis: analysis,
+                dataHash: generateDataHash() // To detect if data has changed
+            };
+            localStorage.setItem(WEEKLY_ANALYSIS_KEY, JSON.stringify(cacheData));
+        }
+
+        function loadCachedAnalysis() {
+            try {
+                const cached = localStorage.getItem(WEEKLY_ANALYSIS_KEY);
+                if (!cached) return null;
+
+                const cacheData = JSON.parse(cached);
+                const today = new Date().toISOString().split('T')[0];
+                
+                // Check if cache is from today and data hasn't changed
+                if (cacheData.date === today && cacheData.dataHash === generateDataHash()) {
+                    return cacheData.analysis;
+                }
+                
+                return null;
+            } catch (error) {
+                console.error("Failed to load cached analysis:", error);
+                return null;
+            }
+        }
+
+        function generateDataHash() {
+            // Simple hash of last 7 days data to detect changes
+            const sevenDaysAgo = new Date();
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+            
+            const recentData = allData.filter(entry => 
+                new Date(entry.timestamp) >= sevenDaysAgo
+            );
+            
+            return btoa(JSON.stringify(recentData.map(entry => ({
+                timestamp: entry.timestamp,
+                category: entry.category,
+                data: entry.data
+            })))).slice(0, 16); // Simple hash
+        }
+
+        async function updateWeeklyAnalysis() {
+            // Check if we have cached analysis from today
+            const cached = loadCachedAnalysis();
+            if (cached) {
+                displayWeeklyAnalysis(cached);
+                return;
+            }
+
+            // Generate new analysis
+            await performWeeklyAnalysis();
+        }
+
 
         // Generate unique ID for entries
         function generateId() {
@@ -1169,7 +1566,7 @@ layout: compress
             const apiKey = localStorage.getItem(GEMINI_API_KEY);
             if (!apiKey) {
                 showError("Gemini API key not set. Please configure it first by clicking 'Configure Gemini API'.");
-                throw new Error("API key not set");
+                               throw new Error("API key not set");
             }
 
             const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
@@ -1262,6 +1659,9 @@ layout: compress
                     localStorage.removeItem(FASTING_ANALYSIS_KEY);
                 }
 
+                // Clear weekly analysis cache since we have new data
+                localStorage.removeItem(WEEKLY_ANALYSIS_KEY);
+
                 // Save to localStorage and cloud
                 await saveData();
                 
@@ -1285,6 +1685,9 @@ layout: compress
                 const index = allData.findIndex(entry => entry.id === id);
                 if (index !== -1) {
                     allData.splice(index, 1);
+                    
+                    // Clear weekly analysis cache since data has changed
+                    localStorage.removeItem(WEEKLY_ANALYSIS_KEY);
                     
                     // Save to localStorage and cloud
                     await saveData();
@@ -1310,6 +1713,8 @@ layout: compress
             updateDashboard();
             renderCharts();
             renderExerciseTimeline();
+            // Don't await here to avoid blocking the UI
+            updateWeeklyAnalysis().catch(console.error);
         }
         
         function updateDashboard() {
@@ -1741,6 +2146,13 @@ layout: compress
         syncDialogCancel.addEventListener('click', hideSyncDialog);
         syncDialogReplace.addEventListener('click', replaceLocalWithCloud);
 
+        // Weekly analysis refresh
+        refreshAnalysisButton.addEventListener('click', async () => {
+            await performWeeklyAnalysis(); // Force fresh analysis, not cached
+        });
+
+        // Initial weekly analysis check
+        updateWeeklyAnalysis().catch(console.error);
     </script>
 </div>
 </html>
