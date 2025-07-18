@@ -178,8 +178,11 @@ layout: compress
                         <h3 class="font-semibold text-gray-700">Latest Weight</h3>
                         <p id="latestWeight" class="text-3xl font-bold text-indigo-600">-</p>
                         <p id="latestWeightDate" class="text-sm text-gray-500">Not recorded</p>
-                        <p class="text-sm text-indigo-700">Goal: <span id="weightGoal">-</span> kg</p>
                         <div id="weightGoalAnalysis" class="text-xs text-gray-600 mt-2"></div>
+                        <div id="weightProgress" style="margin-top: 15px; margin-bottom: 5px;" class="mt-2">
+                            <p class="text-sm text-indigo-700">Goal: <span id="weightGoal">-</span> kg</p>
+                            <div id="weightDistanceIndicator" class="mt-1"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -575,6 +578,7 @@ layout: compress
         const latestWeightDate = document.getElementById('latestWeightDate');
         const weightGoal = document.getElementById('weightGoal');
         const weightGoalAnalysis = document.getElementById('weightGoalAnalysis');
+        const weightDistanceIndicator = document.getElementById('weightDistanceIndicator');
         const proteinTotal = document.getElementById('proteinTotal');
         const carbsTotal = document.getElementById('carbsTotal');
         const fatTotal = document.getElementById('fatTotal');
@@ -1845,12 +1849,58 @@ Focus on:
             const weightEntries = allData.filter(d => d.category === 'weight');
             if (weightEntries.length > 0) {
                 const lastWeightEntry = weightEntries[weightEntries.length - 1];
-                latestWeight.textContent = `${lastWeightEntry.data.value} kg`;
+                const currentWeight = lastWeightEntry.data.value;
+                const targetWeight = targets.targetWeight;
+                
+                latestWeight.textContent = `${currentWeight} kg`;
                 latestWeightDate.textContent = `on ${new Date(lastWeightEntry.timestamp).toLocaleDateString()}`;
-                updateWeightGoalAnalysis(lastWeightEntry.data.value, targets.targetWeight);
+                
+                // Update weight distance indicator
+                if (targetWeight) {
+                    const difference = currentWeight - targetWeight;
+                    const absDistance = Math.abs(difference);
+                    
+                    if (absDistance < 0.1) {
+                        // At target weight
+                        weightDistanceIndicator.innerHTML = `
+                            <div class="flex items-center justify-center space-x-1 text-green-600">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-sm font-semibold">🎯 Target achieved!</span>
+                            </div>`;
+                    } else if (difference > 0) {
+                        // Above target - need to lose weight
+                        weightDistanceIndicator.innerHTML = `
+                            <div class="text-center">
+                                <p class="text-sm text-orange-600 font-semibold">
+                                    📉 ${absDistance.toFixed(1)} kg to go
+                                </p>
+                                <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                    <div class="bg-orange-500 h-2 rounded-full transition-all duration-300" 
+                                         style="width: ${Math.max(10, Math.min(90, (absDistance / 10) * 100))}%"></div>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1">Keep pushing! You've got this! 💪</p>
+                            </div>`;
+                    } else {
+                        // Below target - gained weight beyond goal
+                        weightDistanceIndicator.innerHTML = `
+                            <div class="text-center">
+                                <p class="text-sm text-blue-600 font-semibold">
+                                    📈 ${absDistance.toFixed(1)} kg above target
+                                </p>
+                                <p class="text-xs text-gray-500 mt-1">Great progress! Consider adjusting your goal? 🎉</p>
+                            </div>`;
+                    }
+                } else {
+                    weightDistanceIndicator.innerHTML = '<p class="text-xs text-gray-500">Set a target weight to track progress</p>';
+                }
+                
+                updateWeightGoalAnalysis(currentWeight, targetWeight);
             } else {
                 latestWeight.textContent = '-';
                 latestWeightDate.textContent = 'Not recorded';
+                weightDistanceIndicator.innerHTML = '<p class="text-xs text-gray-500">Start logging your weight to track progress</p>';
                 weightGoalAnalysis.innerHTML = '';
             }
             updateFastingDashboard();
