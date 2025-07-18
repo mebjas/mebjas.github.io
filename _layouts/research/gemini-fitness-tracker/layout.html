@@ -2018,6 +2018,7 @@ Focus on:
                     backgroundColor: 'rgba(107, 114, 128, 0.6)',
                     borderColor: 'rgba(107, 114, 128, 1)',
                     borderWidth: 1,
+                    yAxisID: 'yWater',
                 },
                 {
                     label: 'Protein (g)',
@@ -2057,7 +2058,41 @@ Focus on:
             if (weightChart) weightChart.destroy();
             weightChart = new Chart(document.getElementById('weightChart'), { type: 'line', data: weightData, options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: 'Weight Trend' } }, scales: { y: { beginAtZero: false } } } });
             if (nutritionChart) nutritionChart.destroy();
-            nutritionChart = new Chart(document.getElementById('nutritionChart'), { type: 'bar', data: nutritionData, options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: 'Nutrition Overview (Macros)' } }, scales: { x: { stacked: false }, y: { stacked: false, beginAtZero: true, title: { display: true, text: 'Grams' } } } } });
+            nutritionChart = new Chart(document.getElementById('nutritionChart'), { 
+                type: 'bar', 
+                data: nutritionData, 
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    plugins: { 
+                        title: { display: true, text: 'Nutrition Overview (Macros)' } 
+                    }, 
+                    scales: { 
+                        x: { stacked: false }, 
+                        y: { 
+                            stacked: false, 
+                            beginAtZero: true, 
+                            title: { display: true, text: 'Calories / Grams' }, 
+                            position: 'left'
+                        },
+                        yGrams: {
+                            type: 'linear',
+                            position: 'left',
+                            beginAtZero: true,
+                            display: false
+                        },
+                        yWater: {
+                            type: 'linear',
+                            position: 'right',
+                            beginAtZero: true,
+                            title: { display: true, text: 'Water (L)' },
+                            grid: {
+                                drawOnChartArea: false
+                            }
+                        }
+                    } 
+                } 
+            });
         }
 
         function showError(message) {
