@@ -2242,6 +2242,38 @@ Focus on:
             saveTargets();
         });
 
+        // Authentication button event listeners
+        signInButton.addEventListener('click', async (event) => {
+            event.stopPropagation(); // Prevent triggering header click
+            await signInWithGoogle();
+        });
+
+        signOutButton.addEventListener('click', async (event) => {
+            event.stopPropagation(); // Prevent triggering header click
+            await signOutUser();
+        });
+
+        // Save API key button event listener
+        saveApiKeyButton.addEventListener('click', (event) => {
+            event.stopPropagation(); // Prevent triggering header click
+            const apiKey = apiKeyInput.value.trim();
+            if (apiKey) {
+                localStorage.setItem(GEMINI_API_KEY, apiKey);
+                apiKeyStatus.textContent = "API Key saved successfully!";
+                apiKeyStatus.className = "text-sm text-green-600";
+                apiKeyInput.value = '';
+                apiKeyInput.placeholder = "••••••••••••••••••••••••••••••";
+                
+                // Save to cloud if user is signed in
+                if (currentUser) {
+                    saveApiKeyToCloud(apiKey);
+                }
+            } else {
+                apiKeyStatus.textContent = "Please enter a valid API key.";
+                apiKeyStatus.className = "text-sm text-red-600";
+            }
+        });
+
         // ...existing code...
     </script>
 </div>
