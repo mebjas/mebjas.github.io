@@ -315,7 +315,10 @@ function renderCapabilityDashboard(capabilities) {
                     return;
                 }
                 var floatValue = parseFloat(inputValue);
-                // TODO(mebjas): Check for NaN
+                if (isNaN(floatValue)) {
+                    input.value = "";
+                    return;
+                }
                 if (floatValue >= value.min && floatValue <= value.max) {
                     latestCapability[key] = floatValue;
                     applyButton.disabled = false;

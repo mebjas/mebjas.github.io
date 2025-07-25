@@ -18,6 +18,11 @@ var Channel;
     Channel[Channel["Green"] = 2] = "Green";
     Channel[Channel["Luma"] = 3] = "Luma";
 })(Channel || (Channel = {}));
+var ChannelColors = {};
+ChannelColors[Channel.Red] = "#FF0000";
+ChannelColors[Channel.Green] = "#00FF00";
+ChannelColors[Channel.Blue] = "#0000FF";
+ChannelColors[Channel.Luma] = "#000000";
 var AllChannels = [
     Channel.Red,
     Channel.Blue,
@@ -258,16 +263,16 @@ var Histograms = /** @class */ (function () {
             channelsToShow = CreateDefaultSelectionOfChannelsToShow();
         }
         if (channelsToShow[Channel.Red]) {
-            this.renderSingleHist(context, contextWidth, contextHeight, this.rHist, "#FF0000", maxVal);
+            this.renderSingleHist(context, contextWidth, contextHeight, this.rHist, ChannelColors[Channel.Red], maxVal);
         }
         if (channelsToShow[Channel.Green]) {
-            this.renderSingleHist(context, contextWidth, contextHeight, this.gHist, "#00FF00", maxVal);
+            this.renderSingleHist(context, contextWidth, contextHeight, this.gHist, ChannelColors[Channel.Green], maxVal);
         }
         if (channelsToShow[Channel.Blue]) {
-            this.renderSingleHist(context, contextWidth, contextHeight, this.bHist, "#0000FF", maxVal);
+            this.renderSingleHist(context, contextWidth, contextHeight, this.bHist, ChannelColors[Channel.Blue], maxVal);
         }
         if (channelsToShow[Channel.Luma]) {
-            this.renderSingleHist(context, contextWidth, contextHeight, this.lumaHist, "#000000", maxVal);
+            this.renderSingleHist(context, contextWidth, contextHeight, this.lumaHist, ChannelColors[Channel.Luma], maxVal);
         }
     };
     Histograms.prototype.getColorHistogram = function (channel) {
@@ -395,18 +400,17 @@ var CDFs = /** @class */ (function () {
         if (!channelsToShow) {
             channelsToShow = CreateDefaultSelectionOfChannelsToShow();
         }
-        // TODO(mebjas): Make these colors constant
         if (channelsToShow[Channel.Red]) {
-            this.renderSingleCdf(context, contextWidth, contextHeight, this.rCdf, "#FF0000", maxVal);
+            this.renderSingleCdf(context, contextWidth, contextHeight, this.rCdf, ChannelColors[Channel.Red], maxVal);
         }
         if (channelsToShow[Channel.Green]) {
-            this.renderSingleCdf(context, contextWidth, contextHeight, this.gCdf, "#00FF00", maxVal);
+            this.renderSingleCdf(context, contextWidth, contextHeight, this.gCdf, ChannelColors[Channel.Green], maxVal);
         }
         if (channelsToShow[Channel.Blue]) {
-            this.renderSingleCdf(context, contextWidth, contextHeight, this.bCdf, "#0000FF", maxVal);
+            this.renderSingleCdf(context, contextWidth, contextHeight, this.bCdf, ChannelColors[Channel.Blue], maxVal);
         }
         if (channelsToShow[Channel.Luma]) {
-            this.renderSingleCdf(context, contextWidth, contextHeight, this.lumaCdf, "#000000", maxVal);
+            this.renderSingleCdf(context, contextWidth, contextHeight, this.lumaCdf, ChannelColors[Channel.Luma], maxVal);
         }
     };
     CDFs.prototype.renderSingleCdf = function (context, contextWidth, contextHeight, hist, strokeStyle, maxVal) {

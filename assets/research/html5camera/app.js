@@ -91,7 +91,7 @@ class Viewfinder {
             videoElement.play();
 
             // Set state
-            $this._videoElement = videoElement;  // TODO: Remove if not needed
+            $this._videoElement = videoElement;
         }
 
         var onMediaStreamReceived = (mediaStream, resolve, reject) => {
@@ -445,11 +445,10 @@ class Camera {
         this.container.style.background = "black";
         this.container.style.border = "1px solid black";
         this.container.style.margin = "auto";
+        this.container.style.display = "flex";
 
         // Viewfinder
         var vfContianer = document.createElement("div");
-        vfContianer.style.display = "inline-block";
-        vfContianer.style.float = "left";   // TODO: use flex
         vfContianer.style.width = `${this.vfWidth}px`;
         vfContianer.style.height = `${this.height}px`;
         this.__vfContianer = vfContianer;
@@ -457,8 +456,6 @@ class Camera {
 
         // Side Contoller
         var scContainer = document.createElement("div");
-        scContainer.style.display = "inline-block";
-        scContainer.style.float = "right";   // TODO: use flex
         scContainer.style.width = `${this.scWidth}px`;
         scContainer.style.height = `${this.height}px`;
         scContainer.style.height = `${this.height}px`;
