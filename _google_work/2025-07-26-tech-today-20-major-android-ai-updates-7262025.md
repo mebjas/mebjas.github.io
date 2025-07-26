@@ -1,9 +1,9 @@
 ---
-layout: post
+layout: google_post
 title: "Tech Today: 20+ Android, AI, & Google Updates (7/26/2025)"
 categories: [tech-updates, daily-roundup, 2025, uncategorized, general-google-ai, gemini, android-+-artificial-intelligence, android-development, google, android]
 description: "Your daily dose of tech news!  Today's roundup covers major Google AI advancements, including Gemini updates, Android AI integrations, and Android development news.  Stay informed on the latest in AI and mobile technology."
-post-no: 532
+post-no: 1
 toc: true
 image: '/images/unsplash/google-android.jpg'
 wip: false
