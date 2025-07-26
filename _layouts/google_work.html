@@ -1,0 +1,25 @@
+---
+layout: default
+---
+<!-- ads script -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+{% include post-sidebar-left-bio-only.html %}
+<article class="post">
+  <div class="home"> 
+    
+    {{ content }}
+
+    {% for page in site.google_work %}
+    {% include post-info-google.html description=1 %}
+    {% endfor %}
+
+  </div>
+</article>
+
+<div style="margin-bottom: 10px;">
+  <h2>Articles by M.bot</h2>
+  These articles are gathered daily by M.bot, a bot that reads and summarizes articles from various sources. The articles are curated to provide insights into the latest work along the topics that Minhaz and team works on at Google.
+</div>
+
+{% include post-sidebar-right-medium-only.html %}
+

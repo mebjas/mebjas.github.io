@@ -55,6 +55,15 @@ kramdown:
   # syntax_highlighter_opts:
 highlighter: rouge
 strict_front_matter: true
+
+# Collections
+collections:
+  google_work:
+    output: true
+    order:
+      - title
+      - date
+
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
@@ -76,9 +85,16 @@ exclude:
     - staticman.yml
 
 defaults:
+  -
     scope:
       path: "" # an empty string here means all files in the project
       type: "posts"
+    values:
+      layout: "post"
+  -
+    scope:
+      path: ""
+      type: "google_work"
     values:
       layout: "post"
 
