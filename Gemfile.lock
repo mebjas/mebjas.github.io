@@ -11,7 +11,9 @@ GEM
     ethon (0.16.0)
       ffi (>= 1.15.0)
     eventmachine (1.2.7)
+    eventmachine (1.2.7-x64-mingw32)
     ffi (1.17.0-arm64-darwin)
+    ffi (1.17.0-x64-mingw32)
     forwardable-extended (2.6.0)
     html-proofer (4.4.3)
       addressable (~> 2.3)
@@ -61,6 +63,8 @@ GEM
     mercenary (0.3.6)
     nokogiri (1.13.10-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.13.10-x64-mingw32)
+      racc (~> 1.4)
     parallel (1.24.0)
     pathutil (0.16.2)
       forwardable-extended (~> 2.6)
@@ -75,6 +79,8 @@ GEM
     rouge (3.30.0)
     safe_yaml (1.0.5)
     sassc (2.4.0)
+      ffi (~> 1.9)
+    sassc (2.4.0-x64-mingw32)
       ffi (~> 1.9)
     strscan (3.1.0)
     terminal-table (1.8.0)
@@ -92,6 +98,7 @@ GEM
 PLATFORMS
   arm64-darwin-23
   arm64-darwin-24
+  x64-mingw32
 
 DEPENDENCIES
   html-proofer
