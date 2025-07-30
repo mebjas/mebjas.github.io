@@ -35,6 +35,10 @@ Technology continues to evolve at a rapid pace, and 30/07/2025 brings us 20 sign
 
 ## General Google AI
 
+### Startups can apply now for the Google for Startups Gemini Founders Forum.
+
+Applications are now open for the first-ever Google for Startups Gemini Founders Forum, a two-day, in-person summit hosted by Google DeepMind and Google Cloud.Held November 11–12 in San Francisco, the... [Read more →](https://blog.google/outreach-initiatives/entrepreneurs/apply-google-for-startups-gemini-founders-fund/)
+
 ### More advanced AI capabilities are coming to Search
 
 More advanced AI capabilities are coming to Search Jul 16, 2025 · Share Twitter Facebook LinkedIn Mail Copy link We’re rolling out powerful new capabilities in Search, including Gemini 2.5 Pro and Dee... [Read more →](https://blog.google/products/search/deep-search-business-calling-google-search/)
@@ -50,10 +54,6 @@ A summer of security: empowering cyber defenders with AI Jul 15, 2025 · Share T
 ### How Lush and Google Cloud AI are reinventing retail checkout
 
 How Lush and Google Cloud AI are reinventing retail checkout Jul 09, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Lush revolutionizes retail with Google Cloud AI to power in-store tills that [Read more →](https://blog.google/around-the-globe/google-europe/united-kingdom/how-lush-and-google-cloud-ai-are-reinventing-retail-checkout/)
-
-### The latest AI news we announced in June
-
-The latest AI news we announced in June Jul 02, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Here’s a recap of some of our biggest AI updates from June, including more ways to search with AI [Read more →](https://blog.google/technology/ai/google-ai-updates-june-2025/)
 
 ## Android + Circle to Search
 
