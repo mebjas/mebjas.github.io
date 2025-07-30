@@ -13,10 +13,6 @@ Technology continues to evolve at a rapid pace, and 30/07/2025 brings us 20 sign
 
 ## Other Updates
 
-### Simulating a neural operating system with Gemini 2.5 Flash-Lite
-
-<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/simulating-a-neural-operating-system-with-gemini-2-5-flash-lite/)
-
 ### Introducing Gemma 3n: The developer guide
 
 <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/introducing-gemma-3n-developer-guide/)
@@ -32,6 +28,10 @@ Technology continues to evolve at a rapid pace, and 30/07/2025 brings us 20 sign
 ### Unlock Gemini’s reasoning: A step-by-step guide to logprobs on Vertex AI
 
 <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/unlock-gemini-reasoning-with-logprobs-on-vertex-ai/)
+
+### Build with Veo 3, now available in the Gemini API
+
+<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/veo-3-now-available-gemini-api/)
 
 ## General Google AI
 
@@ -74,7 +74,6 @@ These 20 updates demonstrate the dynamic nature of today's technology landscape.
 
 ## Sources
 
-- [Simulating a neural operating system with Gemini 2.5 Flash-Lite](https://developers.googleblog.com/en/simulating-a-neural-operating-system-with-gemini-2-5-flash-lite/) (30/07/2025)
 - [Introducing Gemma 3n: The developer guide](https://developers.googleblog.com/en/introducing-gemma-3n-developer-guide/) (30/07/2025)
 - [Announcing GenAI Processors: Build powerful and flexible Gemini applications](https://developers.googleblog.com/en/genai-processors/) (30/07/2025)
 - [Gemini Embedding now generally available in the Gemini API](https://developers.googleblog.com/en/gemini-embedding-available-gemini-api/) (30/07/2025)
@@ -94,6 +93,7 @@ These 20 updates demonstrate the dynamic nature of today's technology landscape.
 - [Dive deeper with AI Mode and get gaming help in Circle to Search](https://blog.google/products/search/circle-to-search-ai-mode-gaming/) (09/07/2025)
 - [How Lush and Google Cloud AI are reinventing retail checkout](https://blog.google/around-the-globe/google-europe/united-kingdom/how-lush-and-google-cloud-ai-are-reinventing-retail-checkout/) (09/07/2025)
 - [The latest AI news we announced in June](https://blog.google/technology/ai/google-ai-updates-june-2025/) (02/07/2025)
+- [The Google for Startups Gemini kit is here](https://blog.google/outreach-initiatives/entrepreneurs/google-for-startups-gemini-ai-kit/) (26/06/2025)
 
 ---
 *This post was automatically generated from 20 source articles on 30/07/2025.*
