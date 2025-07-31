@@ -13,10 +13,6 @@ Technology continues to evolve at a rapid pace, and 31/07/2025 brings us 20 sign
 
 ## Other Updates
 
-### Introducing Gemma 3n: The developer guide
-
-<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/introducing-gemma-3n-developer-guide/)
-
 ### Announcing GenAI Processors: Build powerful and flexible Gemini applications
 
 <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/genai-processors/)
@@ -32,6 +28,10 @@ Technology continues to evolve at a rapid pace, and 31/07/2025 brings us 20 sign
 ### Build with Veo 3, now available in the Gemini API
 
 <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/veo-3-now-available-gemini-api/)
+
+### Conversational image segmentation with Gemini 2.5
+
+<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/conversational-image-segmentation-gemini-2-5/)
 
 ## Android + Circle to Search
 
@@ -71,6 +71,12 @@ How Lush and Google Cloud AI are reinventing retail checkout Jul 09, 2025 · Sha
 
 <meta content="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiGrbvjPNwEv5vrSrbuXf6hzYltmdc-6vYGCwiILsy8AB8SZQBiLimrvJaGham-g7COGhcJLle_PkZY6cvIOU4lTqSqZbNRiGNv56eQwTHcR9g5QZUUYuogdCAEk5-5... [Read more →](https://android-developers.googleblog.com/2025/06/top-3-updates-for-ai-on-android-google-io.html)
 
+## Android + Gemini
+
+### 16 things to know for Android developers at Google I/O 2025
+
+<meta name="twitter:image" content="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9MIW2UBiiU-RrzVtvnukfm2wzj2-OFAM75mAH2f3yZyoPoivSPB0ycuUgkSnTEhJo1EpkfZCOpEdGHQT8ICfD8qvoB2euLdesX7M5Kxg... [Read more →](https://android-developers.googleblog.com/2025/05/16-things-to-know-for-android-developers-google-io-2025.html)
+
 ## 🔍 Key Takeaways
 
 - 20 updates across 7 categories show continued innovation
@@ -84,7 +90,6 @@ These 20 updates demonstrate the dynamic nature of today's technology landscape.
 
 ## Sources
 
-- [Introducing Gemma 3n: The developer guide](https://developers.googleblog.com/en/introducing-gemma-3n-developer-guide/) (31/07/2025)
 - [Announcing GenAI Processors: Build powerful and flexible Gemini applications](https://developers.googleblog.com/en/genai-processors/) (31/07/2025)
 - [Gemini Embedding now generally available in the Gemini API](https://developers.googleblog.com/en/gemini-embedding-available-gemini-api/) (31/07/2025)
 - [Unlock Gemini’s reasoning: A step-by-step guide to logprobs on Vertex AI](https://developers.googleblog.com/en/unlock-gemini-reasoning-with-logprobs-on-vertex-ai/) (31/07/2025)
@@ -104,6 +109,7 @@ These 20 updates demonstrate the dynamic nature of today's technology landscape.
 - [How Lush and Google Cloud AI are reinventing retail checkout](https://blog.google/around-the-globe/google-europe/united-kingdom/how-lush-and-google-cloud-ai-are-reinventing-retail-checkout/) (09/07/2025)
 - [The latest AI news we announced in June](https://blog.google/technology/ai/google-ai-updates-june-2025/) (02/07/2025)
 - [Top 3 things to know for AI on Android at Google I/O ‘25](https://android-developers.googleblog.com/2025/06/top-3-updates-for-ai-on-android-google-io.html) (16/06/2025)
+- [16 things to know for Android developers at Google I/O 2025](https://android-developers.googleblog.com/2025/05/16-things-to-know-for-android-developers-google-io-2025.html) (20/05/2025)
 
 ---
 *This post was automatically generated from 20 source articles on 31/07/2025.*
