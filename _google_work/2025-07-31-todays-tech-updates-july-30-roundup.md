@@ -15,7 +15,7 @@ Technology continues to evolve at a rapid pace, and 30/07/2025 brings us 20 sign
 
 ### Introducing Gemma 3n: The developer guide
 
-The Gemma 3n developer guide is finally here, expanding on the wildly popular (160M+ downloads!) Gemmaverse ecosystem.  Looks like someone's been busy building a family of specialized models—from safeguarding to medicine—so get ready to dive into the code and maybe even cure cancer, all while contributing to the ever-growing Gemmaverse.  Prepare for another level of model madness! [Read more →](https://developers.googleblog.com/en/introducing-gemma-3n-developer-guide/)
+<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/introducing-gemma-3n-developer-guide/)
 
 ### Announcing GenAI Processors: Build powerful and flexible Gemini applications
 
