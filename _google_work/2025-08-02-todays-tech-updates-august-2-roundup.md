@@ -1,49 +1,43 @@
 ---
 layout: google_post
 title: "Today's Tech Updates: August 2 Roundup"
-categories: [tech-updates, daily-roundup, 2025, android-development, android-+-gemini-+-agents, general-google-ai, android-+-artificial-intelligence, android-+-gemini, privacy-&-security, uncategorized]
-description: "Your daily dose of Google tech news is here!  We've got 23 Android development updates and 42 scoops on General Google AI –  a whirlwind of innovation, neatly packaged for your reading pleasure.  Dive in!"
+categories: [tech-updates, daily-roundup, 2025, general-google-ai, android-+-artificial-intelligence, android-+-gemini, privacy-&-security, android-development, uncategorized, android-+-circle-to-search]
+description: "Daily roundup of 20 tech updates covering General Google AI, Android + Artificial Intelligence, Android + Gemini and more. Stay informed on the latest developments."
 post-no: 8
 toc: true
 image: '/images/unsplash/google-android.jpg'
 wip: false
 ---
 
-Technology continues to evolve at a rapid pace, and 02/08/2025 brings us 20 significant updates across multiple domains. Today's roundup covers developments in Android Development, Android + Gemini + Agents, General Google AI and more, showcasing the breadth of innovation happening across the tech landscape. From AI advancements to developer tools, these updates highlight how technology companies are pushing boundaries and creating new possibilities for users and developers alike.
+Technology continues to evolve at a rapid pace, and 02/08/2025 brings us 20 significant updates across multiple domains. Today's roundup covers developments in General Google AI, Android + Artificial Intelligence, Android + Gemini and more, showcasing the breadth of innovation happening across the tech landscape. From AI advancements to developer tools, these updates highlight how technology companies are pushing boundaries and creating new possibilities for users and developers alike.
 
 ## Other Updates
 
-###  First things you should do with the Samsung Galaxy Z Fold 7 
+### Announcing GenAI Processors: Build powerful and flexible Gemini applications
 
-The Samsung Galaxy Z Fold 7 boasts a much-improved camera and powerful One UI 8 features, finally giving foldable phone users what they've been waiting for (think: finally, Instagram-worthy selfies!).  Get started by updating the software, customizing the taskbar for easier multitasking (like having your email and shopping apps readily available), and exploring advanced features to personalize your experience.  For developers,  One UI 8 opens up exciting possibilities, while users can enjoy seamless app transitions and faster animations. [Read more →](https://www.androidcentral.com/phones/samsung-galaxy/first-things-you-should-do-with-the-samsung-galaxy-z-fold-7)
+<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/genai-processors/)
 
-###  Gemini 2.5 Deep Think is finally heading to Google AI Ultra users 
+### Gemini Embedding now generally available in the Gemini API
 
-Gemini 2.5 Deep Think is finally heading to Google AI Ultra users News By Jay Bonggolto published 1 August 2025 ‘Deep Think’ cranks up the power behind Google’s top-tier Gemini AI model. (Image credit... [Read more →](https://www.androidcentral.com/apps-software/gemini-2-5-deep-think-is-finally-heading-to-google-ai-ultra-users)
+<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/gemini-embedding-available-gemini-api/)
 
-###  Google's Veo 3, Veo 3 Fast brings fast video creation to Vertex AI in 'general availability' 
+### Unlock Gemini’s reasoning: A step-by-step guide to logprobs on Vertex AI
 
-Google's Veo 3, Veo 3 Fast brings fast video creation to Vertex AI in 'general availability' News By Nickolas Diaz published 29 July 2025 Pushing the boundaries for video generation. (Image credit: Go... [Read more →](https://www.androidcentral.com/apps-software/ai/google-veo-3-veo-3-fast-fast-video-creation-vertex-ai-feature-teaser-announced)
+<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/unlock-gemini-reasoning-with-logprobs-on-vertex-ai/)
 
-### The inside story of building NotebookLM
+### Build with Veo 3, now available in the Gemini API
 
-The inside story of building NotebookLM Jul 29, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Hear how Googlers developed and tested your virtual research assistant — straight from the source.... [Read more →](https://blog.google/technology/ai/developing-notebooklm/)
+<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/veo-3-now-available-gemini-api/)
 
-### Try Deep Think in the Gemini app
+### Conversational image segmentation with Gemini 2.5
 
-Try Deep Think in the Gemini app Aug 01, 2025 · Share Twitter Facebook LinkedIn Mail Copy link We're rolling out Deep Think in the Gemini app for Google AI Ultra subscribers, and we're giving select m... [Read more →](https://blog.google/products/gemini/gemini-2-5-deep-think/)
-
-## Android + Circle to Search
-
-### Q2 earnings call: CEO’s remarks
-
-Q2 earnings call: CEO’s remarks Jul 23, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Sundar Pichai CEO of Google and Alphabet Share Twitter Facebook LinkedIn Mail Copy link Q2 was a standout [Read more →](https://blog.google/inside-google/message-ceo/alphabet-earnings-q2-2025/)
-
-### Dive deeper with AI Mode and get gaming help in Circle to Search
-
-Dive deeper with AI Mode and get gaming help in Circle to Search Jul 09, 2025 · Share Twitter Facebook LinkedIn Mail Copy link We’re bringing the capabilities of AI Mode to Circle to Search so you can... [Read more →](https://blog.google/products/search/circle-to-search-ai-mode-gaming/)
+<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/conversational-image-segmentation-gemini-2-5/)
 
 ## General Google AI
+
+### The Google Developer Program is evolving
+
+<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/google-developer-program-join-connect-code/)
 
 ### Startups can apply now for the Google for Startups Gemini Founders Forum.
 
@@ -61,46 +55,39 @@ Google France hosted a hackathon to tackle healthcare's biggest challenges Share
 
 A summer of security: empowering cyber defenders with AI Jul 15, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Today we’re sharing more about our latest AI innovations for security, public and... [Read more →](https://blog.google/technology/safety-security/cybersecurity-updates-summer-2025/)
 
-### How Lush and Google Cloud AI are reinventing retail checkout
+## Android + Circle to Search
 
-How Lush and Google Cloud AI are reinventing retail checkout Jul 09, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Lush revolutionizes retail with Google Cloud AI to power in-store tills that [Read more →](https://blog.google/around-the-globe/google-europe/united-kingdom/how-lush-and-google-cloud-ai-are-reinventing-retail-checkout/)
+### Q2 earnings call: CEO’s remarks
 
-## Android + Artificial Intelligence
+Q2 earnings call: CEO’s remarks Jul 23, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Sundar Pichai CEO of Google and Alphabet Share Twitter Facebook LinkedIn Mail Copy link Q2 was a standout [Read more →](https://blog.google/inside-google/message-ceo/alphabet-earnings-q2-2025/)
 
-### Top 3 things to know for AI on Android at Google I/O ‘25
+### Dive deeper with AI Mode and get gaming help in Circle to Search
 
-<meta content="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiGrbvjPNwEv5vrSrbuXf6hzYltmdc-6vYGCwiILsy8AB8SZQBiLimrvJaGham-g7COGhcJLle_PkZY6cvIOU4lTqSqZbNRiGNv56eQwTHcR9g5QZUUYuogdCAEk5-5... [Read more →](https://android-developers.googleblog.com/2025/06/top-3-updates-for-ai-on-android-google-io.html)
-
-## Android + Gemini
-
-### 16 things to know for Android developers at Google I/O 2025
-
-<meta name="twitter:image" content="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9MIW2UBiiU-RrzVtvnukfm2wzj2-OFAM75mAH2f3yZyoPoivSPB0ycuUgkSnTEhJo1EpkfZCOpEdGHQT8ICfD8qvoB2euLdesX7M5Kxg... [Read more →](https://android-developers.googleblog.com/2025/05/16-things-to-know-for-android-developers-google-io-2025.html)
-
-### Google releases Olympiad medal-winning Gemini 2.5 ‘Deep Think’ AI publicly — but there’s a catch…
-
-Want smarter insights in your inbox? Sign up for our weekly newsletters to get only what matters to enterprise AI, data, and security leaders. Subscribe Now Google has officially launched Gemini 2.5 D... [Read more →](https://venturebeat.com/ai/google-releases-olympiad-medal-winning-gemini-2-5-deep-think-ai-publicly-but-theres-a-catch/)
-
-## Android Development
-
-### Announcing GenAI Processors: Build powerful and flexible Gemini applications
-
-<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/genai-processors/)
+Dive deeper with AI Mode and get gaming help in Circle to Search Jul 09, 2025 · Share Twitter Facebook LinkedIn Mail Copy link We’re bringing the capabilities of AI Mode to Circle to Search so you can... [Read more →](https://blog.google/products/search/circle-to-search-ai-mode-gaming/)
 
 ## 🔍 Key Takeaways
 
-- 20 updates across 8 categories show continued innovation
+- 20 updates across 7 categories show continued innovation
 - AI and machine learning integration remains a dominant theme
 - Developer tools and user experience improvements are accelerating
 - Cross-platform integration continues to strengthen
 
 ## 🚀 Looking Ahead
 
-These 20 updates demonstrate the dynamic nature of today's technology landscape. As we continue to see rapid advancement across 8 different areas, it's clear that staying informed is more important than ever. Whether you're a developer, tech enthusiast, or business professional, these developments will likely impact how we work and interact with technology. Keep following for more updates as they emerge.
+These 20 updates demonstrate the dynamic nature of today's technology landscape. As we continue to see rapid advancement across 7 different areas, it's clear that staying informed is more important than ever. Whether you're a developer, tech enthusiast, or business professional, these developments will likely impact how we work and interact with technology. Keep following for more updates as they emerge.
 
 ## Sources
 
+- [Announcing GenAI Processors: Build powerful and flexible Gemini applications](https://developers.googleblog.com/en/genai-processors/) (02/08/2025)
+- [Gemini Embedding now generally available in the Gemini API](https://developers.googleblog.com/en/gemini-embedding-available-gemini-api/) (02/08/2025)
+- [Unlock Gemini’s reasoning: A step-by-step guide to logprobs on Vertex AI](https://developers.googleblog.com/en/unlock-gemini-reasoning-with-logprobs-on-vertex-ai/) (02/08/2025)
+- [Build with Veo 3, now available in the Gemini API](https://developers.googleblog.com/en/veo-3-now-available-gemini-api/) (02/08/2025)
+- [Conversational image segmentation with Gemini 2.5](https://developers.googleblog.com/en/conversational-image-segmentation-gemini-2-5/) (02/08/2025)
+- [Gemini 2.5 Flash-Lite is now stable and generally available](https://developers.googleblog.com/en/gemini-25-flash-lite-is-now-stable-and-generally-available/) (02/08/2025)
+- [People of AI podcast Season 5 is here: Meet the builders shaping the future](https://developers.googleblog.com/en/people-of-ai-podcast-season-5/) (02/08/2025)
+- [The Google Developer Program is evolving](https://developers.googleblog.com/en/google-developer-program-join-connect-code/) (02/08/2025)
 - [ First things you should do with the Samsung Galaxy Z Fold 7 ](https://www.androidcentral.com/phones/samsung-galaxy/first-things-you-should-do-with-the-samsung-galaxy-z-fold-7) (01/08/2025)
+- [Google releases Olympiad medal-winning Gemini 2.5 ‘Deep Think’ AI publicly — but there’s a catch…](https://venturebeat.com/ai/google-releases-olympiad-medal-winning-gemini-2-5-deep-think-ai-publicly-but-theres-a-catch/) (01/08/2025)
 - [ Gemini 2.5 Deep Think is finally heading to Google AI Ultra users ](https://www.androidcentral.com/apps-software/gemini-2-5-deep-think-is-finally-heading-to-google-ai-ultra-users) (01/08/2025)
 - [ Google's Veo 3, Veo 3 Fast brings fast video creation to Vertex AI in 'general availability' ](https://www.androidcentral.com/apps-software/ai/google-veo-3-veo-3-fast-fast-video-creation-vertex-ai-feature-teaser-announced) (29/07/2025)
 - [The inside story of building NotebookLM](https://blog.google/technology/ai/developing-notebooklm/) (29/07/2025)
@@ -111,15 +98,6 @@ These 20 updates demonstrate the dynamic nature of today's technology landscape.
 - [A summer of security: empowering cyber defenders with AI](https://blog.google/technology/safety-security/cybersecurity-updates-summer-2025/) (15/07/2025)
 - [Dive deeper with AI Mode and get gaming help in Circle to Search](https://blog.google/products/search/circle-to-search-ai-mode-gaming/) (09/07/2025)
 - [How Lush and Google Cloud AI are reinventing retail checkout](https://blog.google/around-the-globe/google-europe/united-kingdom/how-lush-and-google-cloud-ai-are-reinventing-retail-checkout/) (09/07/2025)
-- [The latest AI news we announced in June](https://blog.google/technology/ai/google-ai-updates-june-2025/) (02/07/2025)
-- [Top 3 things to know for AI on Android at Google I/O ‘25](https://android-developers.googleblog.com/2025/06/top-3-updates-for-ai-on-android-google-io.html) (16/06/2025)
-- [16 things to know for Android developers at Google I/O 2025](https://android-developers.googleblog.com/2025/05/16-things-to-know-for-android-developers-google-io-2025.html) (20/05/2025)
-- [Try Deep Think in the Gemini app](https://blog.google/products/gemini/gemini-2-5-deep-think/) (01/08/2025)
-- [Google’s latest Circle to Search redesign looks like the TVA portals from ‘Loki’](https://9to5google.com/2025/08/01/new-circle-to-search-animation/) (01/08/2025)
-- [Google releases Olympiad medal-winning Gemini 2.5 ‘Deep Think’ AI publicly — but there’s a catch…](https://venturebeat.com/ai/google-releases-olympiad-medal-winning-gemini-2-5-deep-think-ai-publicly-but-theres-a-catch/) (01/08/2025)
-- [Try on styles with AI, jump on great prices and more](https://blog.google/products/shopping/back-to-school-ai-updates-try-on-price-alerts/) (24/07/2025)
-- [Transform your photos into videos and remix your pics in Google Photos](https://blog.google/products/photos/photo-to-video-remix-create-tab/) (23/07/2025)
-- [Announcing GenAI Processors: Build powerful and flexible Gemini applications](https://developers.googleblog.com/en/genai-processors/) (02/08/2025)
 
 ---
 *This post was automatically generated from 20 source articles on 02/08/2025.*
