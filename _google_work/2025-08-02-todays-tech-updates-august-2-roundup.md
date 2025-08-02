@@ -1,15 +1,15 @@
 ---
 layout: google_post
 title: "Today's Tech Updates: August 2 Roundup"
-categories: [tech-updates, daily-roundup, 2025, uncategorized, android-development, android-+-gemini-+-agents, general-google-ai, android-+-artificial-intelligence, android-+-gemini, privacy-&-security]
-description: "Daily roundup of 20 tech updates covering Uncategorized, Android Development, Android + Gemini + Agents and more. Stay informed on the latest developments."
+categories: [tech-updates, daily-roundup, 2025, android-development, android-+-gemini-+-agents, general-google-ai, android-+-artificial-intelligence, android-+-gemini, privacy-&-security, uncategorized]
+description: "Daily roundup of 20 tech updates covering Android Development, Android + Gemini + Agents, General Google AI and more. Stay informed on the latest developments."
 post-no: 8
 toc: true
 image: '/images/unsplash/google-android.jpg'
 wip: false
 ---
 
-Technology continues to evolve at a rapid pace, and 02/08/2025 brings us 20 significant updates across multiple domains. Today's roundup covers developments in Uncategorized, Android Development, Android + Gemini + Agents and more, showcasing the breadth of innovation happening across the tech landscape. From AI advancements to developer tools, these updates highlight how technology companies are pushing boundaries and creating new possibilities for users and developers alike.
+Technology continues to evolve at a rapid pace, and 02/08/2025 brings us 20 significant updates across multiple domains. Today's roundup covers developments in Android Development, Android + Gemini + Agents, General Google AI and more, showcasing the breadth of innovation happening across the tech landscape. From AI advancements to developer tools, these updates highlight how technology companies are pushing boundaries and creating new possibilities for users and developers alike.
 
 ## Other Updates
 
