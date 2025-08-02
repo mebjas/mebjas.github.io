@@ -33,11 +33,17 @@ Technology continues to evolve at a rapid pace, and 02/08/2025 brings us 20 sign
 
 <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/conversational-image-segmentation-gemini-2-5/)
 
+## Android + Circle to Search
+
+### Q2 earnings call: CEO’s remarks
+
+Q2 earnings call: CEO’s remarks Jul 23, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Sundar Pichai CEO of Google and Alphabet Share Twitter Facebook LinkedIn Mail Copy link Q2 was a standout [Read more →](https://blog.google/inside-google/message-ceo/alphabet-earnings-q2-2025/)
+
+### Dive deeper with AI Mode and get gaming help in Circle to Search
+
+Dive deeper with AI Mode and get gaming help in Circle to Search Jul 09, 2025 · Share Twitter Facebook LinkedIn Mail Copy link We’re bringing the capabilities of AI Mode to Circle to Search so you can... [Read more →](https://blog.google/products/search/circle-to-search-ai-mode-gaming/)
+
 ## General Google AI
-
-### The Google Developer Program is evolving
-
-<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/google-developer-program-join-connect-code/)
 
 ### Startups can apply now for the Google for Startups Gemini Founders Forum.
 
@@ -55,15 +61,9 @@ Google France hosted a hackathon to tackle healthcare's biggest challenges Share
 
 A summer of security: empowering cyber defenders with AI Jul 15, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Today we’re sharing more about our latest AI innovations for security, public and... [Read more →](https://blog.google/technology/safety-security/cybersecurity-updates-summer-2025/)
 
-## Android + Circle to Search
+### How Lush and Google Cloud AI are reinventing retail checkout
 
-### Q2 earnings call: CEO’s remarks
-
-Q2 earnings call: CEO’s remarks Jul 23, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Sundar Pichai CEO of Google and Alphabet Share Twitter Facebook LinkedIn Mail Copy link Q2 was a standout [Read more →](https://blog.google/inside-google/message-ceo/alphabet-earnings-q2-2025/)
-
-### Dive deeper with AI Mode and get gaming help in Circle to Search
-
-Dive deeper with AI Mode and get gaming help in Circle to Search Jul 09, 2025 · Share Twitter Facebook LinkedIn Mail Copy link We’re bringing the capabilities of AI Mode to Circle to Search so you can... [Read more →](https://blog.google/products/search/circle-to-search-ai-mode-gaming/)
+How Lush and Google Cloud AI are reinventing retail checkout Jul 09, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Lush revolutionizes retail with Google Cloud AI to power in-store tills that [Read more →](https://blog.google/around-the-globe/google-europe/united-kingdom/how-lush-and-google-cloud-ai-are-reinventing-retail-checkout/)
 
 ## 🔍 Key Takeaways
 
