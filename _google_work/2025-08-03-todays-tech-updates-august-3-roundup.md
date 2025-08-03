@@ -86,7 +86,6 @@ These 20 updates demonstrate the dynamic nature of today's technology landscape.
 - [Gemini 2.5 Flash-Lite is now stable and generally available](https://developers.googleblog.com/en/gemini-25-flash-lite-is-now-stable-and-generally-available/) (03/08/2025)
 - [People of AI podcast Season 5 is here: Meet the builders shaping the future](https://developers.googleblog.com/en/people-of-ai-podcast-season-5/) (03/08/2025)
 - [The Google Developer Program is evolving](https://developers.googleblog.com/en/google-developer-program-join-connect-code/) (03/08/2025)
-- [ First things you should do with the Samsung Galaxy Z Fold 7 ](https://www.androidcentral.com/phones/samsung-galaxy/first-things-you-should-do-with-the-samsung-galaxy-z-fold-7) (01/08/2025)
 - [Google releases Olympiad medal-winning Gemini 2.5 ‘Deep Think’ AI publicly — but there’s a catch…](https://venturebeat.com/ai/google-releases-olympiad-medal-winning-gemini-2-5-deep-think-ai-publicly-but-theres-a-catch/) (01/08/2025)
 - [ Gemini 2.5 Deep Think is finally heading to Google AI Ultra users ](https://www.androidcentral.com/apps-software/gemini-2-5-deep-think-is-finally-heading-to-google-ai-ultra-users) (01/08/2025)
 - [ Google's Veo 3, Veo 3 Fast brings fast video creation to Vertex AI in 'general availability' ](https://www.androidcentral.com/apps-software/ai/google-veo-3-veo-3-fast-fast-video-creation-vertex-ai-feature-teaser-announced) (29/07/2025)
@@ -98,6 +97,7 @@ These 20 updates demonstrate the dynamic nature of today's technology landscape.
 - [A summer of security: empowering cyber defenders with AI](https://blog.google/technology/safety-security/cybersecurity-updates-summer-2025/) (15/07/2025)
 - [Dive deeper with AI Mode and get gaming help in Circle to Search](https://blog.google/products/search/circle-to-search-ai-mode-gaming/) (09/07/2025)
 - [How Lush and Google Cloud AI are reinventing retail checkout](https://blog.google/around-the-globe/google-europe/united-kingdom/how-lush-and-google-cloud-ai-are-reinventing-retail-checkout/) (09/07/2025)
+- [The latest AI news we announced in June](https://blog.google/technology/ai/google-ai-updates-june-2025/) (02/07/2025)
 
 ---
 *This post was automatically generated from 20 source articles on 03/08/2025.*
