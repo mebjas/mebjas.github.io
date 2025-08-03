@@ -55,7 +55,7 @@ More advanced AI capabilities are coming to Search Jul 16, 2025 · Share Twitter
 
 ### Google France hosted a hackathon to tackle healthcare's biggest challenges
 
-Google France's 12-hour healthcare hackathon saw 130 experts wield Google's open AI models (Gemma, MedGemma, TxGemma) to prototype solutions, proving that even AI needs a good caffeine fix to conquer clinical trials and administrative burdens.  The resulting functional prototypes showcase the power of readily available AI tools for tackling real-world medical challenges, a definite win for both developers seeking impactful projects and patients hoping for smoother healthcare experiences.  Think of it as a "hack the healthcare system" event – but in the best possible way. [Read more →](https://blog.google/technology/health/google-france-ai-healthcare-hackathon/)
+Google France hosted a hackathon to tackle healthcare's biggest challenges Share Twitter Facebook LinkedIn Mail Copy link Doctors, developers and researchers gathered in Paris to prototype new medical... [Read more →](https://blog.google/technology/health/google-france-ai-healthcare-hackathon/)
 
 ### A summer of security: empowering cyber defenders with AI
 
