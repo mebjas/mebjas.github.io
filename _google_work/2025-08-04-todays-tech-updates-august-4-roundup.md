@@ -1,15 +1,15 @@
 ---
 layout: google_post
 title: "Today's Tech Updates: August 4 Roundup"
-categories: [tech-updates, daily-roundup, 2025, uncategorized, general-google-ai, android-+-artificial-intelligence, android-+-gemini, privacy-&-security, android-development, android-+-circle-to-search]
-description: "Your daily dose of tech news is here!  Today's roundup covers 27 uncategorized updates, a hefty serving of Google AI advancements (15!), and a sprinkle of Android & Gemini news.  Get the scoop on all things tech—we've got you covered (mostly)."
+categories: [tech-updates, daily-roundup, 2025, general-google-ai, android-+-artificial-intelligence, android-+-gemini, privacy-&-security, android-development, uncategorized, android-+-circle-to-search]
+description: "Daily roundup of 20 tech updates covering General Google AI, Android + Artificial Intelligence, Android + Gemini and more. Stay informed on the latest developments."
 post-no: 10
 toc: true
 image: '/images/unsplash/google-android.jpg'
 wip: false
 ---
 
-Technology continues to evolve at a rapid pace, and 04/08/2025 brings us 20 significant updates across multiple domains. Today's roundup covers developments in Uncategorized, General Google AI, Android + Artificial Intelligence and more, showcasing the breadth of innovation happening across the tech landscape. From AI advancements to developer tools, these updates highlight how technology companies are pushing boundaries and creating new possibilities for users and developers alike.
+Technology continues to evolve at a rapid pace, and 04/08/2025 brings us 20 significant updates across multiple domains. Today's roundup covers developments in General Google AI, Android + Artificial Intelligence, Android + Gemini and more, showcasing the breadth of innovation happening across the tech landscape. From AI advancements to developer tools, these updates highlight how technology companies are pushing boundaries and creating new possibilities for users and developers alike.
 
 ## Other Updates
 
@@ -35,6 +35,10 @@ Technology continues to evolve at a rapid pace, and 04/08/2025 brings us 20 sign
 
 ## General Google AI
 
+### The Google Developer Program is evolving
+
+<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/google-developer-program-join-connect-code/)
+
 ### Startups can apply now for the Google for Startups Gemini Founders Forum.
 
 Applications are now open for the first-ever Google for Startups Gemini Founders Forum, a two-day, in-person summit hosted by Google DeepMind and Google Cloud.Held November 11–12 in San Francisco, the... [Read more →](https://blog.google/outreach-initiatives/entrepreneurs/apply-google-for-startups-gemini-founders-fund/)
@@ -50,10 +54,6 @@ Google France hosted a hackathon to tackle healthcare's biggest challenges Share
 ### A summer of security: empowering cyber defenders with AI
 
 A summer of security: empowering cyber defenders with AI Jul 15, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Today we’re sharing more about our latest AI innovations for security, public and... [Read more →](https://blog.google/technology/safety-security/cybersecurity-updates-summer-2025/)
-
-### How Lush and Google Cloud AI are reinventing retail checkout
-
-How Lush and Google Cloud AI are reinventing retail checkout Jul 09, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Lush revolutionizes retail with Google Cloud AI to power in-store tills that [Read more →](https://blog.google/around-the-globe/google-europe/united-kingdom/how-lush-and-google-cloud-ai-are-reinventing-retail-checkout/)
 
 ## Android + Circle to Search
 
