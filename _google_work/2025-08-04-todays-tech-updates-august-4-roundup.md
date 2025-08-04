@@ -23,7 +23,7 @@ Technology continues to evolve at a rapid pace, and 04/08/2025 brings us 20 sign
 
 ### Unlock Gemini’s reasoning: A step-by-step guide to logprobs on Vertex AI
 
-Google's finally letting us peek under the hood of Gemini on Vertex AI –  the new logprobs feature reveals the model's word-choice rationale, ending the frustrating "black box" mystery.  So developers, rejoice!  Now you can debug those weirdly-worded chatbot responses and build even more sophisticated, less-surprising applications (because let's be honest, sometimes AI is a bit of a drama queen). [Read more →](https://developers.googleblog.com/en/unlock-gemini-reasoning-with-logprobs-on-vertex-ai/)
+<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/unlock-gemini-reasoning-with-logprobs-on-vertex-ai/)
 
 ### Build with Veo 3, now available in the Gemini API
 
@@ -32,16 +32,6 @@ Google's finally letting us peek under the hood of Gemini on Vertex AI –  the 
 ### Conversational image segmentation with Gemini 2.5
 
 <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/conversational-image-segmentation-gemini-2-5/)
-
-## Android + Circle to Search
-
-### Q2 earnings call: CEO’s remarks
-
-Q2 earnings call: CEO’s remarks Jul 23, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Sundar Pichai CEO of Google and Alphabet Share Twitter Facebook LinkedIn Mail Copy link Q2 was a standout [Read more →](https://blog.google/inside-google/message-ceo/alphabet-earnings-q2-2025/)
-
-### Dive deeper with AI Mode and get gaming help in Circle to Search
-
-Dive deeper with AI Mode and get gaming help in Circle to Search Jul 09, 2025 · Share Twitter Facebook LinkedIn Mail Copy link We’re bringing the capabilities of AI Mode to Circle to Search so you can... [Read more →](https://blog.google/products/search/circle-to-search-ai-mode-gaming/)
 
 ## General Google AI
 
@@ -64,6 +54,18 @@ A summer of security: empowering cyber defenders with AI Jul 15, 2025 · Share T
 ### How Lush and Google Cloud AI are reinventing retail checkout
 
 How Lush and Google Cloud AI are reinventing retail checkout Jul 09, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Lush revolutionizes retail with Google Cloud AI to power in-store tills that [Read more →](https://blog.google/around-the-globe/google-europe/united-kingdom/how-lush-and-google-cloud-ai-are-reinventing-retail-checkout/)
+
+## Android + Circle to Search
+
+### Dive deeper with AI Mode and get gaming help in Circle to Search
+
+Dive deeper with AI Mode and get gaming help in Circle to Search Jul 09, 2025 · Share Twitter Facebook LinkedIn Mail Copy link We’re bringing the capabilities of AI Mode to Circle to Search so you can... [Read more →](https://blog.google/products/search/circle-to-search-ai-mode-gaming/)
+
+## Android + Artificial Intelligence
+
+### Top 3 things to know for AI on Android at Google I/O ‘25
+
+<meta content="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiGrbvjPNwEv5vrSrbuXf6hzYltmdc-6vYGCwiILsy8AB8SZQBiLimrvJaGham-g7COGhcJLle_PkZY6cvIOU4lTqSqZbNRiGNv56eQwTHcR9g5QZUUYuogdCAEk5-5... [Read more →](https://android-developers.googleblog.com/2025/06/top-3-updates-for-ai-on-android-google-io.html)
 
 ## 🔍 Key Takeaways
 
@@ -90,7 +92,6 @@ These 20 updates demonstrate the dynamic nature of today's technology landscape.
 - [ Gemini 2.5 Deep Think is finally heading to Google AI Ultra users ](https://www.androidcentral.com/apps-software/gemini-2-5-deep-think-is-finally-heading-to-google-ai-ultra-users) (01/08/2025)
 - [ Google's Veo 3, Veo 3 Fast brings fast video creation to Vertex AI in 'general availability' ](https://www.androidcentral.com/apps-software/ai/google-veo-3-veo-3-fast-fast-video-creation-vertex-ai-feature-teaser-announced) (29/07/2025)
 - [The inside story of building NotebookLM](https://blog.google/technology/ai/developing-notebooklm/) (29/07/2025)
-- [Q2 earnings call: CEO’s remarks](https://blog.google/inside-google/message-ceo/alphabet-earnings-q2-2025/) (23/07/2025)
 - [Startups can apply now for the Google for Startups Gemini Founders Forum.](https://blog.google/outreach-initiatives/entrepreneurs/apply-google-for-startups-gemini-founders-fund/) (23/07/2025)
 - [More advanced AI capabilities are coming to Search](https://blog.google/products/search/deep-search-business-calling-google-search/) (16/07/2025)
 - [Google France hosted a hackathon to tackle healthcare's biggest challenges](https://blog.google/technology/health/google-france-ai-healthcare-hackathon/) (16/07/2025)
@@ -98,6 +99,7 @@ These 20 updates demonstrate the dynamic nature of today's technology landscape.
 - [Dive deeper with AI Mode and get gaming help in Circle to Search](https://blog.google/products/search/circle-to-search-ai-mode-gaming/) (09/07/2025)
 - [How Lush and Google Cloud AI are reinventing retail checkout](https://blog.google/around-the-globe/google-europe/united-kingdom/how-lush-and-google-cloud-ai-are-reinventing-retail-checkout/) (09/07/2025)
 - [The latest AI news we announced in June](https://blog.google/technology/ai/google-ai-updates-june-2025/) (02/07/2025)
+- [Top 3 things to know for AI on Android at Google I/O ‘25](https://android-developers.googleblog.com/2025/06/top-3-updates-for-ai-on-android-google-io.html) (16/06/2025)
 
 ---
 *This post was automatically generated from 20 source articles on 04/08/2025.*
