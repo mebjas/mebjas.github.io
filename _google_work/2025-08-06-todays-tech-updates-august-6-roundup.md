@@ -61,6 +61,12 @@ A summer of security: empowering cyber defenders with AI Jul 15, 2025 · Share T
 
 Dive deeper with AI Mode and get gaming help in Circle to Search Jul 09, 2025 · Share Twitter Facebook LinkedIn Mail Copy link We’re bringing the capabilities of AI Mode to Circle to Search so you can... [Read more →](https://blog.google/products/search/circle-to-search-ai-mode-gaming/)
 
+## Android + Artificial Intelligence
+
+### Top 3 things to know for AI on Android at Google I/O ‘25
+
+<meta content="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiGrbvjPNwEv5vrSrbuXf6hzYltmdc-6vYGCwiILsy8AB8SZQBiLimrvJaGham-g7COGhcJLle_PkZY6cvIOU4lTqSqZbNRiGNv56eQwTHcR9g5QZUUYuogdCAEk5-5... [Read more →](https://android-developers.googleblog.com/2025/06/top-3-updates-for-ai-on-android-google-io.html)
+
 ## 🔍 Key Takeaways
 
 - 20 updates across 7 categories show continued innovation
@@ -86,7 +92,6 @@ These 20 updates demonstrate the dynamic nature of today's technology landscape.
 - [Meet your new AI coding teammate: Gemini CLI GitHub Actions](https://blog.google/technology/developers/introducing-gemini-cli-github-actions/) (05/08/2025)
 - [Rethinking how we measure AI intelligence](https://blog.google/technology/ai/kaggle-game-arena/) (04/08/2025)
 - [Google releases Olympiad medal-winning Gemini 2.5 ‘Deep Think’ AI publicly — but there’s a catch…](https://venturebeat.com/ai/google-releases-olympiad-medal-winning-gemini-2-5-deep-think-ai-publicly-but-theres-a-catch/) (01/08/2025)
-- [ Gemini 2.5 Deep Think is finally heading to Google AI Ultra users ](https://www.androidcentral.com/apps-software/gemini-2-5-deep-think-is-finally-heading-to-google-ai-ultra-users) (01/08/2025)
 - [The inside story of building NotebookLM](https://blog.google/technology/ai/developing-notebooklm/) (29/07/2025)
 - [Startups can apply now for the Google for Startups Gemini Founders Forum.](https://blog.google/outreach-initiatives/entrepreneurs/apply-google-for-startups-gemini-founders-fund/) (23/07/2025)
 - [More advanced AI capabilities are coming to Search](https://blog.google/products/search/deep-search-business-calling-google-search/) (16/07/2025)
@@ -94,6 +99,7 @@ These 20 updates demonstrate the dynamic nature of today's technology landscape.
 - [A summer of security: empowering cyber defenders with AI](https://blog.google/technology/safety-security/cybersecurity-updates-summer-2025/) (15/07/2025)
 - [Dive deeper with AI Mode and get gaming help in Circle to Search](https://blog.google/products/search/circle-to-search-ai-mode-gaming/) (09/07/2025)
 - [How Lush and Google Cloud AI are reinventing retail checkout](https://blog.google/around-the-globe/google-europe/united-kingdom/how-lush-and-google-cloud-ai-are-reinventing-retail-checkout/) (09/07/2025)
+- [Top 3 things to know for AI on Android at Google I/O ‘25](https://android-developers.googleblog.com/2025/06/top-3-updates-for-ai-on-android-google-io.html) (16/06/2025)
 
 ---
 *This post was automatically generated from 20 source articles on 06/08/2025.*
