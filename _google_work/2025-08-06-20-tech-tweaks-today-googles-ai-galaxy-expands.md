@@ -2,7 +2,7 @@
 layout: google_post
 title: "20 Tech Tweaks Today: Google's AI Galaxy Expands"
 categories: [tech-updates, daily-roundup, 2025, uncategorized, general-google-ai, android-+-artificial-intelligence, android-+-gemini, privacy-&-security, android-development, android-+-circle-to-search]
-description: "Daily roundup of 20 tech updates covering Uncategorized, General Google AI, Android + Artificial Intelligence and more. Stay informed on the latest developments."
+description: "Your daily dose of tech news is here!  Today's roundup covers 20 articles, diving deep into the latest on Google AI (17 updates!), plus a smattering of general tech and Android development news.  Get the scoop—before it becomes yesterday's news!"
 post-no: 12
 toc: true
 image: '/images/unsplash/google-android.jpg'
@@ -19,7 +19,7 @@ Technology continues to evolve at a rapid pace, and 06/08/2025 brings us 20 sign
 
 ### Gemini Embedding now generally available in the Gemini API
 
-<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/gemini-embedding-available-gemini-api/)
+Google's Gemini embedding model (gemini-embedding-001) is finally out of beta and ready to play in the Gemini API and Vertex AI, boasting top scores on the MTEB Multilingual leaderboard.  Developers can now easily leverage its powerful text embedding capabilities, finally giving us all a break from wrestling with less-than-stellar alternatives.  So ditch that janky embedding model you've been cobbling together – your productivity (and sanity) will thank you. [Read more →](https://developers.googleblog.com/en/gemini-embedding-available-gemini-api/)
 
 ### Unlock Gemini’s reasoning: A step-by-step guide to logprobs on Vertex AI
 
