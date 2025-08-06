@@ -15,7 +15,7 @@ Technology continues to evolve at a rapid pace, and 06/08/2025 brings us 20 sign
 
 ### Announcing GenAI Processors: Build powerful and flexible Gemini applications
 
-<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/genai-processors/)
+Google's new GenAI processors promise to make building AI apps with their Gemini model much easier, like finally having all the right pieces to that frustrating AI puzzle.  This means faster, more responsive AI experiences for users – imagine smoother, more natural interactions with your favorite AI assistant, or quicker image generation from text prompts.  Developers will appreciate the improved flexibility and power, leading to more innovative and user-friendly applications. [Read more →](https://developers.googleblog.com/en/genai-processors/)
 
 ### Gemini Embedding now generally available in the Gemini API
 
