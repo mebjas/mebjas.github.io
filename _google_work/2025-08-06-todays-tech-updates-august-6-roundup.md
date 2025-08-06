@@ -45,7 +45,7 @@ Applications are now open for the first-ever Google for Startups Gemini Founders
 
 ### More advanced AI capabilities are coming to Search
 
-Google's throwing some serious AI firepower into Search with Gemini 2.5 Pro and Deep Search –  think of it as Search going full-on "Skynet," but hopefully less apocalyptic.  AI Pro and Ultra subscribers get early access to these features, including the ability to have Search call businesses for you (finally, an AI that can handle those infuriating automated phone systems). [Read more →](https://blog.google/products/search/deep-search-business-calling-google-search/)
+More advanced AI capabilities are coming to Search Jul 16, 2025 · Share Twitter Facebook LinkedIn Mail Copy link We’re rolling out powerful new capabilities in Search, including Gemini 2.5 Pro and Dee... [Read more →](https://blog.google/products/search/deep-search-business-calling-google-search/)
 
 ### Google France hosted a hackathon to tackle healthcare's biggest challenges
 
