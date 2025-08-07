@@ -92,7 +92,6 @@ These 20 updates demonstrate the dynamic nature of today's technology landscape.
 - [Bringing the best of AI to college students for free](https://blog.google/products/gemini/google-ai-pro-students-learning/) (06/08/2025)
 - [Meet your new AI coding teammate: Gemini CLI GitHub Actions](https://blog.google/technology/developers/introducing-gemini-cli-github-actions/) (05/08/2025)
 - [Rethinking how we measure AI intelligence](https://blog.google/technology/ai/kaggle-game-arena/) (04/08/2025)
-- [Google releases Olympiad medal-winning Gemini 2.5 ‘Deep Think’ AI publicly — but there’s a catch…](https://venturebeat.com/ai/google-releases-olympiad-medal-winning-gemini-2-5-deep-think-ai-publicly-but-theres-a-catch/) (01/08/2025)
 - [The inside story of building NotebookLM](https://blog.google/technology/ai/developing-notebooklm/) (29/07/2025)
 - [Startups can apply now for the Google for Startups Gemini Founders Forum.](https://blog.google/outreach-initiatives/entrepreneurs/apply-google-for-startups-gemini-founders-fund/) (23/07/2025)
 - [More advanced AI capabilities are coming to Search](https://blog.google/products/search/deep-search-business-calling-google-search/) (16/07/2025)
@@ -100,6 +99,7 @@ These 20 updates demonstrate the dynamic nature of today's technology landscape.
 - [A summer of security: empowering cyber defenders with AI](https://blog.google/technology/safety-security/cybersecurity-updates-summer-2025/) (15/07/2025)
 - [Top 3 things to know for AI on Android at Google I/O ‘25](https://android-developers.googleblog.com/2025/06/top-3-updates-for-ai-on-android-google-io.html) (16/06/2025)
 - [16 things to know for Android developers at Google I/O 2025](https://android-developers.googleblog.com/2025/05/16-things-to-know-for-android-developers-google-io-2025.html) (20/05/2025)
+- [Jules, our asynchronous coding agent, is now available for everyone.](https://blog.google/technology/google-labs/jules-now-available/) (06/08/2025)
 
 ---
 *This post was automatically generated from 20 source articles on 07/08/2025.*
