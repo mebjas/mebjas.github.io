@@ -1,15 +1,15 @@
 ---
 layout: google_post
 title: "Today's Tech Updates: August 7 Roundup"
-categories: [tech-updates, daily-roundup, 2025, general-google-ai, android-+-artificial-intelligence, android-+-gemini, privacy-&-security, android-development, uncategorized, google]
-description: "Daily roundup of 20 tech updates covering General Google AI, Android + Artificial Intelligence, Android + Gemini and more. Stay informed on the latest developments."
+categories: [tech-updates, daily-roundup, 2025, uncategorized, general-google-ai, android-+-artificial-intelligence, android-+-gemini, privacy-&-security, android-development, google]
+description: "Daily roundup of 20 tech updates covering Uncategorized, General Google AI, Android + Artificial Intelligence and more. Stay informed on the latest developments."
 post-no: 13
 toc: true
 image: '/images/unsplash/google-android.jpg'
 wip: false
 ---
 
-Technology continues to evolve at a rapid pace, and 07/08/2025 brings us 20 significant updates across multiple domains. Today's roundup covers developments in General Google AI, Android + Artificial Intelligence, Android + Gemini and more, showcasing the breadth of innovation happening across the tech landscape. From AI advancements to developer tools, these updates highlight how technology companies are pushing boundaries and creating new possibilities for users and developers alike.
+Technology continues to evolve at a rapid pace, and 07/08/2025 brings us 20 significant updates across multiple domains. Today's roundup covers developments in Uncategorized, General Google AI, Android + Artificial Intelligence and more, showcasing the breadth of innovation happening across the tech landscape. From AI advancements to developer tools, these updates highlight how technology companies are pushing boundaries and creating new possibilities for users and developers alike.
 
 ## Other Updates
 
@@ -27,7 +27,7 @@ Technology continues to evolve at a rapid pace, and 07/08/2025 brings us 20 sign
 
 ### Build with Veo 3, now available in the Gemini API
 
-<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/veo-3-now-available-gemini-api/)
+Google's finally unleashed Veo 3 via the Gemini API and Vertex AI (paid preview, naturally – gotta monetize that magic!), letting developers conjure tens of millions of high-quality videos.  So, dust off your coding skills and prepare to unleash your inner Spielberg… or at least a slightly more efficient video generation workflow. [Read more →](https://developers.googleblog.com/en/veo-3-now-available-gemini-api/)
 
 ### Conversational image segmentation with Gemini 2.5
 
