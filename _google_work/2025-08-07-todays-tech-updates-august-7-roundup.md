@@ -1,15 +1,15 @@
 ---
 layout: google_post
 title: "Today's Tech Updates: August 7 Roundup"
-categories: [tech-updates, daily-roundup, 2025, general-google-ai, uncategorized, android-+-artificial-intelligence, android-+-gemini, privacy-&-security, android-development, google]
-description: "Daily roundup of 20 tech updates covering General Google AI, Uncategorized, Android + Artificial Intelligence and more. Stay informed on the latest developments."
+categories: [tech-updates, daily-roundup, 2025, general-google-ai, android-+-artificial-intelligence, android-+-gemini, privacy-&-security, android-development, uncategorized, google]
+description: "Daily roundup of 20 tech updates covering General Google AI, Android + Artificial Intelligence, Android + Gemini and more. Stay informed on the latest developments."
 post-no: 13
 toc: true
 image: '/images/unsplash/google-android.jpg'
 wip: false
 ---
 
-Technology continues to evolve at a rapid pace, and 07/08/2025 brings us 20 significant updates across multiple domains. Today's roundup covers developments in General Google AI, Uncategorized, Android + Artificial Intelligence and more, showcasing the breadth of innovation happening across the tech landscape. From AI advancements to developer tools, these updates highlight how technology companies are pushing boundaries and creating new possibilities for users and developers alike.
+Technology continues to evolve at a rapid pace, and 07/08/2025 brings us 20 significant updates across multiple domains. Today's roundup covers developments in General Google AI, Android + Artificial Intelligence, Android + Gemini and more, showcasing the breadth of innovation happening across the tech landscape. From AI advancements to developer tools, these updates highlight how technology companies are pushing boundaries and creating new possibilities for users and developers alike.
 
 ## Other Updates
 
@@ -35,10 +35,6 @@ Technology continues to evolve at a rapid pace, and 07/08/2025 brings us 20 sign
 
 ## General Google AI
 
-### The Google Developer Program is evolving
-
-<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/google-developer-program-join-connect-code/)
-
 ### The inside story of building NotebookLM
 
 The inside story of building NotebookLM Jul 29, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Hear how Googlers developed and tested your virtual research assistant — straight from the source.... [Read more →](https://blog.google/technology/ai/developing-notebooklm/)
@@ -54,6 +50,10 @@ More advanced AI capabilities are coming to Search Jul 16, 2025 · Share Twitter
 ### Google France hosted a hackathon to tackle healthcare's biggest challenges
 
 Google France hosted a hackathon to tackle healthcare's biggest challenges Share Twitter Facebook LinkedIn Mail Copy link Doctors, developers and researchers gathered in Paris to prototype new medical... [Read more →](https://blog.google/technology/health/google-france-ai-healthcare-hackathon/)
+
+### A summer of security: empowering cyber defenders with AI
+
+A summer of security: empowering cyber defenders with AI Jul 15, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Today we’re sharing more about our latest AI innovations for security, public and... [Read more →](https://blog.google/technology/safety-security/cybersecurity-updates-summer-2025/)
 
 ## Android + Artificial Intelligence
 
