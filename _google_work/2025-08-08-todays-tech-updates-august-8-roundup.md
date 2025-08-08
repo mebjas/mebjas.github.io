@@ -35,10 +35,6 @@ Technology continues to evolve at a rapid pace, and 08/08/2025 brings us 20 sign
 
 ## General Google AI
 
-### The Google Developer Program is evolving
-
-<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/google-developer-program-join-connect-code/)
-
 ### The inside story of building NotebookLM
 
 The inside story of building NotebookLM Jul 29, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Hear how Googlers developed and tested your virtual research assistant — straight from the source.... [Read more →](https://blog.google/technology/ai/developing-notebooklm/)
