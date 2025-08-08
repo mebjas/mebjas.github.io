@@ -51,10 +51,6 @@ More advanced AI capabilities are coming to Search Jul 16, 2025 · Share Twitter
 
 Google France hosted a hackathon to tackle healthcare's biggest challenges Share Twitter Facebook LinkedIn Mail Copy link Doctors, developers and researchers gathered in Paris to prototype new medical... [Read more →](https://blog.google/technology/health/google-france-ai-healthcare-hackathon/)
 
-### A summer of security: empowering cyber defenders with AI
-
-A summer of security: empowering cyber defenders with AI Jul 15, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Today we’re sharing more about our latest AI innovations for security, public and... [Read more →](https://blog.google/technology/safety-security/cybersecurity-updates-summer-2025/)
-
 ## Android + Artificial Intelligence
 
 ### Top 3 things to know for AI on Android at Google I/O ‘25
@@ -96,10 +92,10 @@ These 20 updates demonstrate the dynamic nature of today's technology landscape.
 - [Startups can apply now for the Google for Startups Gemini Founders Forum.](https://blog.google/outreach-initiatives/entrepreneurs/apply-google-for-startups-gemini-founders-fund/) (23/07/2025)
 - [More advanced AI capabilities are coming to Search](https://blog.google/products/search/deep-search-business-calling-google-search/) (16/07/2025)
 - [Google France hosted a hackathon to tackle healthcare's biggest challenges](https://blog.google/technology/health/google-france-ai-healthcare-hackathon/) (16/07/2025)
-- [A summer of security: empowering cyber defenders with AI](https://blog.google/technology/safety-security/cybersecurity-updates-summer-2025/) (15/07/2025)
 - [Top 3 things to know for AI on Android at Google I/O ‘25](https://android-developers.googleblog.com/2025/06/top-3-updates-for-ai-on-android-google-io.html) (16/06/2025)
 - [16 things to know for Android developers at Google I/O 2025](https://android-developers.googleblog.com/2025/05/16-things-to-know-for-android-developers-google-io-2025.html) (20/05/2025)
 - [Jules, our asynchronous coding agent, is now available for everyone.](https://blog.google/technology/google-labs/jules-now-available/) (06/08/2025)
+- [How we’re using AI to help track and predict cyclones](https://blog.google/technology/google-deepmind/weather-lab-ai-cyclone-prediction-tracking/) (04/08/2025)
 
 ---
 *This post was automatically generated from 20 source articles on 08/08/2025.*
