@@ -2,7 +2,7 @@
 layout: google_post
 title: "Today's Tech Updates: August 9 Roundup"
 categories: [tech-updates, daily-roundup, 2025, general-google-ai, android-+-artificial-intelligence, android-+-gemini, privacy-&-security, android-development, uncategorized, google]
-description: "Your daily dose of tech news is here!  Today's roundup features 11 Google AI advancements, plus 29 other updates across the board (Gemini got a single shout-out!).  Dive in for all the juicy details!"
+description: "Daily roundup of 20 tech updates covering General Google AI, Android + Artificial Intelligence, Android + Gemini and more. Stay informed on the latest developments."
 post-no: 15
 toc: true
 image: '/images/unsplash/google-android.jpg'
@@ -23,7 +23,7 @@ Technology continues to evolve at a rapid pace, and 09/08/2025 brings us 20 sign
 
 ### Unlock Gemini’s reasoning: A step-by-step guide to logprobs on Vertex AI
 
-Google's Gemini API on Vertex AI now offers logprobs, letting developers peek under the hood of its reasoning – no more black box mysteries!  This means you can finally see the probability distribution behind Gemini's word choices,  allowing for more explainable and trustworthy AI applications.  It's like getting the model's "thought process" transcript – a debugging dream come true. [Read more →](https://developers.googleblog.com/en/unlock-gemini-reasoning-with-logprobs-on-vertex-ai/)
+<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/unlock-gemini-reasoning-with-logprobs-on-vertex-ai/)
 
 ### Build with Veo 3, now available in the Gemini API
 
