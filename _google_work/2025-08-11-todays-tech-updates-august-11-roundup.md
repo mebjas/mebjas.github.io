@@ -19,7 +19,7 @@ Technology continues to evolve at a rapid pace, and 11/08/2025 brings us 20 sign
 
 ### Gemini Embedding now generally available in the Gemini API
 
-Google's Gemini embedding model (gemini-embedding-001) is now out of beta and ready to play in the Gemini API and Vertex AI, finally giving developers the MTEB multilingual leaderboard champion they've been waiting for.  So, ditch those cobbled-together embedding solutions – unless you enjoy living on the bleeding edge of frustration, of course. [Read more →](https://developers.googleblog.com/en/gemini-embedding-available-gemini-api/)
+<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/gemini-embedding-available-gemini-api/)
 
 ### Unlock Gemini’s reasoning: A step-by-step guide to logprobs on Vertex AI
 
