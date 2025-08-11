@@ -1,15 +1,15 @@
 ---
 layout: google_post
 title: "Today's Tech Updates: August 11 Roundup"
-categories: [tech-updates, daily-roundup, 2025, uncategorized, general-google-ai, android-+-artificial-intelligence, android-+-gemini, privacy-&-security, android-development, google]
-description: "Daily roundup of 20 tech updates covering Uncategorized, General Google AI, Android + Artificial Intelligence and more. Stay informed on the latest developments."
+categories: [tech-updates, daily-roundup, 2025, general-google-ai, android-+-artificial-intelligence, android-+-gemini, privacy-&-security, android-development, uncategorized, google]
+description: "Daily roundup of 20 tech updates covering General Google AI, Android + Artificial Intelligence, Android + Gemini and more. Stay informed on the latest developments."
 post-no: 17
 toc: true
 image: '/images/unsplash/google-android.jpg'
 wip: false
 ---
 
-Technology continues to evolve at a rapid pace, and 11/08/2025 brings us 20 significant updates across multiple domains. Today's roundup covers developments in Uncategorized, General Google AI, Android + Artificial Intelligence and more, showcasing the breadth of innovation happening across the tech landscape. From AI advancements to developer tools, these updates highlight how technology companies are pushing boundaries and creating new possibilities for users and developers alike.
+Technology continues to evolve at a rapid pace, and 11/08/2025 brings us 20 significant updates across multiple domains. Today's roundup covers developments in General Google AI, Android + Artificial Intelligence, Android + Gemini and more, showcasing the breadth of innovation happening across the tech landscape. From AI advancements to developer tools, these updates highlight how technology companies are pushing boundaries and creating new possibilities for users and developers alike.
 
 ## Other Updates
 
@@ -35,6 +35,14 @@ Technology continues to evolve at a rapid pace, and 11/08/2025 brings us 20 sign
 
 ## General Google AI
 
+### The Google Developer Program is evolving
+
+<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/google-developer-program-join-connect-code/)
+
+### Hear Google DeepMind CEO Demis Hassabis discuss how world model capabilities are helping AI understand reality.
+
+How are advancements like Genie 3 and improved benchmarking helping shape the future of AI?In the latest episode of the Google AI: Release Notes podcast, host Logan Kilpatrick sits down with Google De... [Read more →](https://blog.google/technology/google-deepmind/ai-release-notes-podcast-demis-hassabis/)
+
 ### Rethinking how we measure AI intelligence
 
 Rethinking how we measure AI intelligence Aug 04, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Game Arena is a new, open-source platform for rigorous evaluation of AI models. It allows for he... [Read more →](https://blog.google/technology/ai/kaggle-game-arena/)
@@ -46,10 +54,6 @@ The inside story of building NotebookLM Jul 29, 2025 · Share Twitter Facebook L
 ### Startups can apply now for the Google for Startups Gemini Founders Forum.
 
 Applications are now open for the first-ever Google for Startups Gemini Founders Forum, a two-day, in-person summit hosted by Google DeepMind and Google Cloud.Held November 11–12 in San Francisco, the... [Read more →](https://blog.google/outreach-initiatives/entrepreneurs/apply-google-for-startups-gemini-founders-fund/)
-
-### More advanced AI capabilities are coming to Search
-
-More advanced AI capabilities are coming to Search Jul 16, 2025 · Share Twitter Facebook LinkedIn Mail Copy link We’re rolling out powerful new capabilities in Search, including Gemini 2.5 Pro and Dee... [Read more →](https://blog.google/products/search/deep-search-business-calling-google-search/)
 
 ## Android + Artificial Intelligence
 
