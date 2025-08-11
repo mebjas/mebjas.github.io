@@ -1,21 +1,17 @@
 ---
 layout: google_post
 title: "Today's Tech Updates: August 11 Roundup"
-categories: [tech-updates, daily-roundup, 2025, uncategorized, general-google-ai, android-+-artificial-intelligence, android-+-gemini, privacy-&-security, android-development, google]
-description: "Daily roundup of 20 tech updates covering Uncategorized, General Google AI, Android + Artificial Intelligence and more. Stay informed on the latest developments."
+categories: [tech-updates, daily-roundup, 2025, general-google-ai, android-+-artificial-intelligence, android-+-gemini, privacy-&-security, android-development, uncategorized, google]
+description: "Daily roundup of 20 tech updates covering General Google AI, Android + Artificial Intelligence, Android + Gemini and more. Stay informed on the latest developments."
 post-no: 17
 toc: true
 image: '/images/unsplash/google-android.jpg'
 wip: false
 ---
 
-Technology continues to evolve at a rapid pace, and 11/08/2025 brings us 20 significant updates across multiple domains. Today's roundup covers developments in Uncategorized, General Google AI, Android + Artificial Intelligence and more, showcasing the breadth of innovation happening across the tech landscape. From AI advancements to developer tools, these updates highlight how technology companies are pushing boundaries and creating new possibilities for users and developers alike.
+Technology continues to evolve at a rapid pace, and 11/08/2025 brings us 20 significant updates across multiple domains. Today's roundup covers developments in General Google AI, Android + Artificial Intelligence, Android + Gemini and more, showcasing the breadth of innovation happening across the tech landscape. From AI advancements to developer tools, these updates highlight how technology companies are pushing boundaries and creating new possibilities for users and developers alike.
 
 ## Other Updates
-
-### Hear Google DeepMind CEO Demis Hassabis discuss how world model capabilities are helping AI understand reality.
-
-How are advancements like Genie 3 and improved benchmarking helping shape the future of AI?In the latest episode of the Google AI: Release Notes podcast, host Logan Kilpatrick sits down with Google De... [Read more →](https://blog.google/technology/google-deepmind/ai-release-notes-podcast-demis-hassabis/)
 
 ### Announcing GenAI Processors: Build powerful and flexible Gemini applications
 
@@ -32,6 +28,10 @@ How are advancements like Genie 3 and improved benchmarking helping shape the fu
 ### Build with Veo 3, now available in the Gemini API
 
 <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/veo-3-now-available-gemini-api/)
+
+### Conversational image segmentation with Gemini 2.5
+
+<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/conversational-image-segmentation-gemini-2-5/)
 
 ## General Google AI
 
@@ -76,7 +76,6 @@ These 20 updates demonstrate the dynamic nature of today's technology landscape.
 
 ## Sources
 
-- [Hear Google DeepMind CEO Demis Hassabis discuss how world model capabilities are helping AI understand reality.](https://blog.google/technology/google-deepmind/ai-release-notes-podcast-demis-hassabis/) (11/08/2025)
 - [Announcing GenAI Processors: Build powerful and flexible Gemini applications](https://developers.googleblog.com/en/genai-processors/) (11/08/2025)
 - [Gemini Embedding now generally available in the Gemini API](https://developers.googleblog.com/en/gemini-embedding-available-gemini-api/) (11/08/2025)
 - [Unlock Gemini’s reasoning: A step-by-step guide to logprobs on Vertex AI](https://developers.googleblog.com/en/unlock-gemini-reasoning-with-logprobs-on-vertex-ai/) (11/08/2025)
@@ -85,6 +84,8 @@ These 20 updates demonstrate the dynamic nature of today's technology landscape.
 - [Gemini 2.5 Flash-Lite is now stable and generally available](https://developers.googleblog.com/en/gemini-25-flash-lite-is-now-stable-and-generally-available/) (11/08/2025)
 - [People of AI podcast Season 5 is here: Meet the builders shaping the future](https://developers.googleblog.com/en/people-of-ai-podcast-season-5/) (11/08/2025)
 - [The Google Developer Program is evolving](https://developers.googleblog.com/en/google-developer-program-join-connect-code/) (11/08/2025)
+- [Hear Google DeepMind CEO Demis Hassabis discuss how world model capabilities are helping AI understand reality.](https://blog.google/technology/google-deepmind/ai-release-notes-podcast-demis-hassabis/) (11/08/2025)
+- [ College students in US and beyond to get Google's AI Pro plan for free now ](https://www.androidcentral.com/apps-software/ai/college-students-get-google-ai-pro-plan-free-with-gemini-2-5-pro-announced) (11/08/2025)
 - [The latest AI news we announced in July](https://blog.google/technology/ai/google-ai-updates-july-2025/) (07/08/2025)
 - [Bringing the best of AI to college students for free](https://blog.google/products/gemini/google-ai-pro-students-learning/) (06/08/2025)
 - [Meet your new AI coding teammate: Gemini CLI GitHub Actions](https://blog.google/technology/developers/introducing-gemini-cli-github-actions/) (05/08/2025)
@@ -95,7 +96,6 @@ These 20 updates demonstrate the dynamic nature of today's technology landscape.
 - [Top 3 things to know for AI on Android at Google I/O ‘25](https://android-developers.googleblog.com/2025/06/top-3-updates-for-ai-on-android-google-io.html) (16/06/2025)
 - [16 things to know for Android developers at Google I/O 2025](https://android-developers.googleblog.com/2025/05/16-things-to-know-for-android-developers-google-io-2025.html) (20/05/2025)
 - [Jules, our asynchronous coding agent, is now available for everyone.](https://blog.google/technology/google-labs/jules-now-available/) (06/08/2025)
-- [Guided Learning in Gemini: From answers to understanding](https://blog.google/outreach-initiatives/education/guided-learning/) (06/08/2025)
 
 ---
 *This post was automatically generated from 20 source articles on 11/08/2025.*
