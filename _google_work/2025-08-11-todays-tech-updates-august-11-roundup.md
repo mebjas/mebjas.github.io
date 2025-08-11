@@ -27,7 +27,7 @@ Technology continues to evolve at a rapid pace, and 11/08/2025 brings us 20 sign
 
 ### Build with Veo 3, now available in the Gemini API
 
-Google's Gemini API just got a serious upgrade: Veo 3, the video generation tool that's already churned out tens of millions of videos, is now available in paid preview!  This means developers can now harness its power via Vertex AI, opening doors to countless creative applications and potentially lucrative new business ventures.  Get ready to build the next viral video sensation – if you can keep up with the demand! [Read more →](https://developers.googleblog.com/en/veo-3-now-available-gemini-api/)
+<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/veo-3-now-available-gemini-api/)
 
 ### Conversational image segmentation with Gemini 2.5
 
