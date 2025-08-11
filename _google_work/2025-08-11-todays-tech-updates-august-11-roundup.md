@@ -13,6 +13,10 @@ Technology continues to evolve at a rapid pace, and 11/08/2025 brings us 20 sign
 
 ## Other Updates
 
+### Hear Google DeepMind CEO Demis Hassabis discuss how world model capabilities are helping AI understand reality.
+
+How are advancements like Genie 3 and improved benchmarking helping shape the future of AI?In the latest episode of the Google AI: Release Notes podcast, host Logan Kilpatrick sits down with Google De... [Read more →](https://blog.google/technology/google-deepmind/ai-release-notes-podcast-demis-hassabis/)
+
 ### Announcing GenAI Processors: Build powerful and flexible Gemini applications
 
 <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/genai-processors/)
@@ -28,10 +32,6 @@ Technology continues to evolve at a rapid pace, and 11/08/2025 brings us 20 sign
 ### Build with Veo 3, now available in the Gemini API
 
 <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/veo-3-now-available-gemini-api/)
-
-### Conversational image segmentation with Gemini 2.5
-
-<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/conversational-image-segmentation-gemini-2-5/)
 
 ## General Google AI
 
@@ -50,10 +50,6 @@ Applications are now open for the first-ever Google for Startups Gemini Founders
 ### More advanced AI capabilities are coming to Search
 
 More advanced AI capabilities are coming to Search Jul 16, 2025 · Share Twitter Facebook LinkedIn Mail Copy link We’re rolling out powerful new capabilities in Search, including Gemini 2.5 Pro and Dee... [Read more →](https://blog.google/products/search/deep-search-business-calling-google-search/)
-
-### Google France hosted a hackathon to tackle healthcare's biggest challenges
-
-Google France hosted a hackathon to tackle healthcare's biggest challenges Share Twitter Facebook LinkedIn Mail Copy link Doctors, developers and researchers gathered in Paris to prototype new medical... [Read more →](https://blog.google/technology/health/google-france-ai-healthcare-hackathon/)
 
 ## Android + Artificial Intelligence
 
@@ -80,6 +76,7 @@ These 20 updates demonstrate the dynamic nature of today's technology landscape.
 
 ## Sources
 
+- [Hear Google DeepMind CEO Demis Hassabis discuss how world model capabilities are helping AI understand reality.](https://blog.google/technology/google-deepmind/ai-release-notes-podcast-demis-hassabis/) (11/08/2025)
 - [Announcing GenAI Processors: Build powerful and flexible Gemini applications](https://developers.googleblog.com/en/genai-processors/) (11/08/2025)
 - [Gemini Embedding now generally available in the Gemini API](https://developers.googleblog.com/en/gemini-embedding-available-gemini-api/) (11/08/2025)
 - [Unlock Gemini’s reasoning: A step-by-step guide to logprobs on Vertex AI](https://developers.googleblog.com/en/unlock-gemini-reasoning-with-logprobs-on-vertex-ai/) (11/08/2025)
@@ -95,7 +92,6 @@ These 20 updates demonstrate the dynamic nature of today's technology landscape.
 - [The inside story of building NotebookLM](https://blog.google/technology/ai/developing-notebooklm/) (29/07/2025)
 - [Startups can apply now for the Google for Startups Gemini Founders Forum.](https://blog.google/outreach-initiatives/entrepreneurs/apply-google-for-startups-gemini-founders-fund/) (23/07/2025)
 - [More advanced AI capabilities are coming to Search](https://blog.google/products/search/deep-search-business-calling-google-search/) (16/07/2025)
-- [Google France hosted a hackathon to tackle healthcare's biggest challenges](https://blog.google/technology/health/google-france-ai-healthcare-hackathon/) (16/07/2025)
 - [Top 3 things to know for AI on Android at Google I/O ‘25](https://android-developers.googleblog.com/2025/06/top-3-updates-for-ai-on-android-google-io.html) (16/06/2025)
 - [16 things to know for Android developers at Google I/O 2025](https://android-developers.googleblog.com/2025/05/16-things-to-know-for-android-developers-google-io-2025.html) (20/05/2025)
 - [Jules, our asynchronous coding agent, is now available for everyone.](https://blog.google/technology/google-labs/jules-now-available/) (06/08/2025)
