@@ -15,7 +15,7 @@ Technology continues to evolve at a rapid pace, and 11/08/2025 brings us 20 sign
 
 ### Announcing GenAI Processors: Build powerful and flexible Gemini applications
 
-<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/genai-processors/)
+Google announced GenAI Processors, promising to make building Gemini applications – those juggling multimodal inputs and demanding real-time responses – less like herding cats and more like, well, actual programming.  Developers can now supposedly build powerful, flexible AI apps with LLMs, finally solving that age-old problem of making AI feel less like magic and more like (slightly less chaotic) engineering. [Read more →](https://developers.googleblog.com/en/genai-processors/)
 
 ### Gemini Embedding now generally available in the Gemini API
 
