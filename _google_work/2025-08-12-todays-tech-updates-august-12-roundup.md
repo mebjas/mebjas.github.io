@@ -31,7 +31,7 @@ Technology continues to evolve at a rapid pace, and 12/08/2025 brings us 20 sign
 
 ### Conversational image segmentation with Gemini 2.5
 
-Google's Gemini 2.5 is shaking up image recognition, moving beyond simple bounding boxes to precise object segmentation via conversational prompts – think "laser-guided scissors" for images.  This leap allows developers to build more intuitive and powerful image-based applications, opening doors for businesses in everything from e-commerce (imagine effortless product background removal) to medical imaging (precisely isolating anomalies).  Get ready for a world where AI "sees" exactly what *you* mean, boosting efficiency and innovation across countless sectors. [Read more →](https://developers.googleblog.com/en/conversational-image-segmentation-gemini-2-5/)
+<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/conversational-image-segmentation-gemini-2-5/)
 
 ## General Google AI
 
