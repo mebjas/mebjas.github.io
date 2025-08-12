@@ -35,10 +35,6 @@ Technology continues to evolve at a rapid pace, and 12/08/2025 brings us 20 sign
 
 ## General Google AI
 
-### Hear Google DeepMind CEO Demis Hassabis discuss how world model capabilities are helping AI understand reality.
-
-How are advancements like Genie 3 and improved benchmarking helping shape the future of AI?In the latest episode of the Google AI: Release Notes podcast, host Logan Kilpatrick sits down with Google De... [Read more →](https://blog.google/technology/google-deepmind/ai-release-notes-podcast-demis-hassabis/)
-
 ### Rethinking how we measure AI intelligence
 
 Rethinking how we measure AI intelligence Aug 04, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Game Arena is a new, open-source platform for rigorous evaluation of AI models. It allows for he... [Read more →](https://blog.google/technology/ai/kaggle-game-arena/)
