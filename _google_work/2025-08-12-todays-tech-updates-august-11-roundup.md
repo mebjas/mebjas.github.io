@@ -23,7 +23,7 @@ Technology continues to evolve at a rapid pace, and 11/08/2025 brings us 20 sign
 
 ### Unlock Gemini’s reasoning: A step-by-step guide to logprobs on Vertex AI
 
-<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/unlock-gemini-reasoning-with-logprobs-on-vertex-ai/)
+Google's Gemini API on Vertex AI now offers logprobs, letting developers peek under the hood and see exactly why Gemini chose its output – no more black box AI!  This transparency is a game-changer for building trust and sophisticated applications, offering businesses a crucial edge in understanding and improving their AI-powered products.  Essentially, it's like getting the AI's "thought process" – invaluable for debugging, refinement, and gaining a competitive advantage. [Read more →](https://developers.googleblog.com/en/unlock-gemini-reasoning-with-logprobs-on-vertex-ai/)
 
 ### Build with Veo 3, now available in the Gemini API
 
