@@ -1,15 +1,15 @@
 ---
 layout: google_post
 title: "Today's Tech Updates: August 12 Roundup"
-categories: [tech-updates, daily-roundup, 2025, general-google-ai, android-+-artificial-intelligence, android-+-gemini, privacy-&-security, android-development, uncategorized, google]
-description: "Daily roundup of 20 tech updates covering General Google AI, Android + Artificial Intelligence, Android + Gemini and more. Stay informed on the latest developments."
+categories: [tech-updates, daily-roundup, 2025, uncategorized, general-google-ai, android-+-artificial-intelligence, android-+-gemini, privacy-&-security, android-development, google]
+description: "Daily roundup of 20 tech updates covering Uncategorized, General Google AI, Android + Artificial Intelligence and more. Stay informed on the latest developments."
 post-no: 19
 toc: true
 image: '/images/unsplash/google-android.jpg'
 wip: false
 ---
 
-Technology continues to evolve at a rapid pace, and 12/08/2025 brings us 20 significant updates across multiple domains. Today's roundup covers developments in General Google AI, Android + Artificial Intelligence, Android + Gemini and more, showcasing the breadth of innovation happening across the tech landscape. From AI advancements to developer tools, these updates highlight how technology companies are pushing boundaries and creating new possibilities for users and developers alike.
+Technology continues to evolve at a rapid pace, and 12/08/2025 brings us 20 significant updates across multiple domains. Today's roundup covers developments in Uncategorized, General Google AI, Android + Artificial Intelligence and more, showcasing the breadth of innovation happening across the tech landscape. From AI advancements to developer tools, these updates highlight how technology companies are pushing boundaries and creating new possibilities for users and developers alike.
 
 ## Other Updates
 
@@ -34,6 +34,10 @@ Technology continues to evolve at a rapid pace, and 12/08/2025 brings us 20 sign
 <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WVTLDSL " height="0" width="0" style="display:none;visibility:hidden"></iframe> Search English English Español (Latam) Bahasa Indonesia 日本語... [Read more →](https://developers.googleblog.com/en/conversational-image-segmentation-gemini-2-5/)
 
 ## General Google AI
+
+### Meet your new AI coding teammate: Gemini CLI GitHub Actions
+
+Meet your new AI coding teammate: Gemini CLI GitHub Actions Aug 06, 2025 · Share Twitter Facebook LinkedIn Mail Copy link Gemini CLI GitHub Actions is a no-cost, powerful AI coding teammate for your r... [Read more →](https://blog.google/technology/developers/introducing-gemini-cli-github-actions/)
 
 ### Rethinking how we measure AI intelligence
 
