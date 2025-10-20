@@ -626,6 +626,12 @@ layout: compress
         const FASTING_ANALYSIS_KEY = 'health-log-fasting-analysis';
         const WEEKLY_ANALYSIS_KEY = 'health-log-weekly-analysis';
         
+        // --- Gemini API Helper ---
+        function buildGeminiApiUrl(apiKey) {
+            const modelName= "gemini-flash-latest";
+            return `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+        }
+        
         // Initialize local storage and load existing data
         function initializeLocalDB() {
             try {
@@ -1167,7 +1173,7 @@ layout: compress
             if (!apiKey) {
                 throw new Error("API key not set");
             }
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+            const API_URL = buildGeminiApiUrl(apiKey);
             const prompt = "Generate a short, motivational quote about fitness or health. Make it inspiring and concise.";
 
             const response = await fetch(API_URL, {
@@ -1197,7 +1203,7 @@ layout: compress
 
             const prompt = `My current weight is ${currentWeight} kg and my target is ${targetWeight} kg. Calculate the total calorie deficit or surplus needed to reach my target, assuming 1kg of weight is roughly 7700 calories. Then, provide a very short motivational statement (under 15 words). Respond with a minified JSON object with two keys: "calories" (integer) and "motivation" (string). Example: {"calories": 7700, "motivation": "You're on the right track, keep going!"}`;
 
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+            const API_URL = buildGeminiApiUrl(apiKey);
 
             try {
                 const response = await fetch(API_URL, {
@@ -1235,7 +1241,7 @@ layout: compress
 
             const prompt = `I have been fasting for ${hours.toFixed(1)} hours. Provide a very short (under 20 words) summary of what this means for my body and how it might align with health goals like weight loss or metabolic health. Respond with a minified JSON object with one key: "analysis" (string). Example: {"analysis": "Your body is likely entering ketosis, burning fat for fuel. Great for weight loss."}`;
 
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+            const API_URL = buildGeminiApiUrl(apiKey);
 
             try {
                 const response = await fetch(API_URL, {
@@ -1410,7 +1416,7 @@ Focus on:
 - Overall health patterns
 - Actionable, specific suggestions`;
 
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+            const API_URL = buildGeminiApiUrl(apiKey);
 
             const response = await fetch(API_URL, {
                 method: 'POST',
@@ -1593,7 +1599,7 @@ Focus on:
                                throw new Error("API key not set");
             }
 
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+            const API_URL = buildGeminiApiUrl(apiKey);
             
             const prompt = `
                 Analyze the following user input and extract structured health data. The current date is ${new Date().toDateString()}.
