@@ -16,23 +16,59 @@
       }
     </script>
     <style>
+        :root {
+            --bg-color: #0f172a;
+            --text-color: #e2e8f0;
+            --panel-bg: rgba(30, 41, 59, 0.7);
+            --accent-color: #38bdf8;
+            --accent-gradient-from: #38bdf8;
+            --accent-gradient-to: #818cf8;
+        }
+
+        [data-theme="midnight"] {
+            --bg-color: #020617;
+            --text-color: #f8fafc;
+            --panel-bg: rgba(15, 23, 42, 0.8);
+            --accent-color: #a855f7;
+            --accent-gradient-from: #a855f7;
+            --accent-gradient-to: #ec4899;
+        }
+
+        [data-theme="forest"] {
+            --bg-color: #052e16;
+            --text-color: #f0fdf4;
+            --panel-bg: rgba(20, 83, 45, 0.7);
+            --accent-color: #4ade80;
+            --accent-gradient-from: #4ade80;
+            --accent-gradient-to: #22c55e;
+        }
+
+        [data-theme="sunset"] {
+            --bg-color: #431407;
+            --text-color: #fff7ed;
+            --panel-bg: rgba(124, 45, 18, 0.7);
+            --accent-color: #fb923c;
+            --accent-gradient-from: #fb923c;
+            --accent-gradient-to: #ea580c;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0f172a;
-            /* Slate 900 */
-            color: #e2e8f0;
-            /* Slate 200 */
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
+            background: var(--panel-bg);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: background 0.3s ease;
         }
 
         .gradient-text {
-            background: linear-gradient(to right, #38bdf8, #818cf8);
+            background: linear-gradient(to right, var(--accent-gradient-from), var(--accent-gradient-to));
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -43,16 +79,16 @@
         }
 
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: #1e293b;
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #475569;
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 4px;
         }
 
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #64748b;
+            background: rgba(255, 255, 255, 0.3);
         }
 
         /* Loading Animation */
@@ -62,8 +98,8 @@
             left: 0;
             width: 100%;
             height: 4px;
-            background: #38bdf8;
-            box-shadow: 0 0 10px #38bdf8, 0 0 20px #38bdf8;
+            background: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color);
             animation: scan 2s infinite linear;
         }
 
@@ -84,6 +120,137 @@
             100% {
                 top: 100%;
                 opacity: 0;
+            }
+        }
+
+        /* Chat Widget */
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .chat-window {
+            width: 350px;
+            height: 500px;
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            margin-bottom: 16px;
+            transform-origin: bottom right;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .chat-window.hidden {
+            transform: scale(0.9);
+            opacity: 0;
+            pointer-events: none;
+            display: none;
+            /* Actually hide it to prevent clicks */
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chat-message {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .chat-message.user {
+            align-self: flex-end;
+            background: var(--accent-color);
+            color: #fff;
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-message.bot {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            border-bottom-left-radius: 2px;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                overflow: visible !important;
+                height: auto !important;
+            }
+
+            .glass-panel {
+                background: white !important;
+                border: 1px solid #ddd !important;
+                box-shadow: none !important;
+                backdrop-filter: none !important;
+                color: black !important;
+            }
+
+            .gradient-text {
+                background: none !important;
+                -webkit-text-fill-color: black !important;
+                color: black !important;
+            }
+
+            header button,
+            .chat-widget,
+            #dropZone,
+            #apiKeyModal,
+            #errorModal,
+            #loadingView {
+                display: none !important;
+            }
+
+            /* Hide scrollbars */
+            ::-webkit-scrollbar {
+                display: none;
+            }
+
+            /* Ensure charts print */
+            canvas {
+                max-width: 100% !important;
+            }
+
+            /* Layout adjustments */
+            #dashboardView {
+                display: block !important;
+                overflow: visible !important;
+                height: auto !important;
+            }
+
+            main {
+                overflow: visible !important;
+            }
+
+            /* Text colors */
+            .text-slate-400,
+            .text-slate-500,
+            .text-slate-300 {
+                color: #444 !important;
+            }
+
+            .text-white {
+                color: #000 !important;
             }
         }
     </style>
@@ -186,7 +353,7 @@
             <div class="scanner"></div>
         </div>
         <h2 class="text-2xl font-bold text-white mb-2">Analyzing Statement...</h2>
-        <p class="text-slate-400 animate-pulse">Gemini is categorizing your transactions</p>
+        <p id="loadingText" class="text-slate-400 animate-pulse">Gemini is categorizing your transactions</p>
     </div>
 
     <!-- Dashboard View -->
@@ -198,15 +365,36 @@
                 <span class="text-slate-500">|</span>
                 <span id="billPeriodDisplay" class="text-slate-300 font-medium">Bill Period: --</span>
             </div>
-            <button onclick="resetApp()"
-                class="text-sm text-slate-400 hover:text-white transition-colors flex items-center">
-                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 4v5h.051M20.418 20.418A9.969 9.969 0 0112 22c-5.523 0-10-4.477-10-10S6.477 2 12 2s10 4.477 10 10a9.953 9.953 0 01-1.793 5.739M15 11a3 3 0 11-6 0 3 3 0 016 0z">
-                    </path>
-                </svg>
-                Start Again
-            </button>
+            <div class="flex items-center space-x-3">
+                <!-- Theme Selector -->
+                <select id="themeSelect" onchange="setTheme(this.value)"
+                    class="bg-slate-800 text-slate-300 text-sm rounded-lg border border-slate-700 px-3 py-1.5 focus:outline-none focus:border-blue-500">
+                    <option value="default">Default Theme</option>
+                    <option value="midnight">Midnight</option>
+                    <option value="forest">Forest</option>
+                    <option value="sunset">Sunset</option>
+                </select>
+
+                <!-- Export PDF -->
+                <button onclick="exportPdf()"
+                    class="text-sm bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-lg border border-slate-700 transition-colors flex items-center">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    Export PDF
+                </button>
+
+                <button onclick="resetApp()"
+                    class="text-sm text-slate-400 hover:text-white transition-colors flex items-center ml-2">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 4v5h.051M20.418 20.418A9.969 9.969 0 0112 22c-5.523 0-10-4.477-10-10S6.477 2 12 2s10 4.477 10 10a9.953 9.953 0 01-1.793 5.739M15 11a3 3 0 11-6 0 3 3 0 016 0z">
+                        </path>
+                    </svg>
+                    Start Again
+                </button>
+            </div>
         </header>
 
         <!-- Main Content -->
@@ -301,6 +489,55 @@
         </main>
     </div>
 
+    <!-- Chat Widget -->
+    <div class="chat-widget">
+        <div id="chatWindow" class="chat-window hidden">
+            <div class="p-4 border-b border-slate-700 bg-slate-800/50 flex justify-between items-center">
+                <h3 class="text-white font-semibold flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
+                        </path>
+                    </svg>
+                    Ask Gemini
+                </h3>
+                <button onclick="toggleChat()" class="text-slate-400 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+            <div id="chatMessages" class="chat-messages custom-scrollbar">
+                <div class="chat-message bot">
+                    Hello! I've analyzed your statement. Ask me anything about your spending.
+                </div>
+            </div>
+            <div class="p-3 border-t border-slate-700 bg-slate-800/50">
+                <div class="flex space-x-2">
+                    <input type="text" id="chatInput" placeholder="Ask a question..."
+                        class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+                        onkeypress="handleChatKey(event)">
+                    <button onclick="sendChatMessage()"
+                        class="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <button onclick="toggleChat()"
+            class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg shadow-blue-600/30 transition-transform hover:scale-110">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
+                </path>
+            </svg>
+        </button>
+    </div>
+
     <script type="module">
         import { GoogleGenerativeAI } from "@google/generative-ai";
 
@@ -324,6 +561,12 @@
             if (!apiKey) {
                 apiKeyModal.classList.remove('hidden');
             }
+
+            // Load theme
+            const savedTheme = localStorage.getItem('theme') || 'default';
+            setTheme(savedTheme);
+            document.getElementById('themeSelect').value = savedTheme;
+
             setupEventListeners();
         });
 
@@ -380,6 +623,106 @@
             renderTransactions(analysisData.transactions, showHighValue);
         };
 
+        window.setTheme = (theme) => {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        };
+
+        window.exportPdf = () => {
+            window.print();
+        };
+
+        window.toggleChat = () => {
+            const chatWindow = document.getElementById('chatWindow');
+            chatWindow.classList.toggle('hidden');
+            if (!chatWindow.classList.contains('hidden')) {
+                document.getElementById('chatInput').focus();
+            }
+        };
+
+        window.handleChatKey = (e) => {
+            if (e.key === 'Enter') sendChatMessage();
+        };
+
+        window.sendChatMessage = async () => {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, 'user');
+            input.value = '';
+
+            // Show typing indicator
+            const typingId = addMessage('Thinking...', 'bot');
+
+            try {
+                if (!analysisData) {
+                    throw new Error("No data available. Please analyze a statement first.");
+                }
+
+                const genAI = new GoogleGenerativeAI(apiKey);
+                const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+                const prompt = `
+                    Context: You are a helpful financial assistant. The user has uploaded a credit card statement.
+                    Here is the analyzed data JSON:
+                    ${JSON.stringify(analysisData)}
+
+                    User Question: ${message}
+
+                    Answer the user's question based on the data provided. Be concise and helpful. 
+                    Format numbers as currency. If the answer isn't in the data, say so.
+                `;
+
+                const result = await model.generateContent(prompt);
+                const response = await result.response;
+                const text = response.text();
+
+                // Remove typing indicator and add response
+                document.getElementById(typingId).remove();
+                addMessage(text, 'bot');
+
+            } catch (error) {
+                document.getElementById(typingId).remove();
+                addMessage("Sorry, I couldn't process that. " + error.message, 'bot');
+            }
+        };
+
+        function addMessage(text, sender) {
+            const container = document.getElementById('chatMessages');
+            const div = document.createElement('div');
+            div.className = `chat-message ${sender}`;
+            div.id = 'msg-' + Date.now();
+            div.textContent = text;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+            return div.id;
+        }
+
+        let loadingInterval;
+        function startLoadingAnimation() {
+            const texts = [
+                "Reading PDF...",
+                "Extracting Transactions...",
+                "Categorizing Expenses...",
+                "Identifying Insights...",
+                "Crunching Numbers..."
+            ];
+            let i = 0;
+            const el = document.getElementById('loadingText');
+            el.textContent = texts[0];
+
+            loadingInterval = setInterval(() => {
+                i = (i + 1) % texts.length;
+                el.textContent = texts[i];
+            }, 2000);
+        }
+
+        function stopLoadingAnimation() {
+            clearInterval(loadingInterval);
+        }
+
         async function handleFiles(files) {
             if (files.length === 0) return;
 
@@ -393,6 +736,7 @@
             // Show loading
             landingView.classList.add('hidden');
             loadingView.classList.remove('hidden');
+            startLoadingAnimation();
 
             try {
                 const genAI = new GoogleGenerativeAI(apiKey);
@@ -464,6 +808,8 @@
                 }
                 document.getElementById('errorMessage').textContent = msg;
                 errorModal.classList.remove('hidden');
+            } finally {
+                stopLoadingAnimation();
             }
         }
 
