@@ -1,4 +1,11 @@
 - {
+    title: "Credit Card Spend analysis",
+    description: "Credit card spend analysis vibe coded using gemini 2.5 Pro. This is simple natural language based tracking of weight, food logging, water logging and exercise tracking. All data is stored in local storage. Will require your API key to work.",
+    image: "/assets/research/gemini/credit-card-spend-analysis.png",
+    link: "gemini-credit-card-analyzer",
+    vibe_coded: false,
+}
+- {
     title: "Fitness Tracker",
     description: "Fitness tracker vibe coded using gemini 2.5 Pro. This is simple natural language based tracking of weight, food logging, water logging and exercise tracking. All data is stored in local storage. Will require your API key to work.",
     image: "/assets/research/gemini/fitness-tracker-1.png",
