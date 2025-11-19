@@ -2,101 +2,297 @@
 layout: default_research
 ---
 <style>
-.wrapper-content {
-    max-width: calc(1200px - (30px * 2));
-}
-.research {
-    border: 1px solid #00000017;
-    margin-bottom: 10px;
-    display: flex;
-    cursor: pointer;
-}
-@media only screen and (max-width: 500px) {
-    .research {
-    border: 1px solid #00000017;
-    margin-bottom: 10px;
-    display: block;
-    cursor: pointer;
-}
-}
+    /* Modern Reset & Base */
+    .wrapper-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        position: relative;
+        z-index: 2;
+        /* Above canvas */
+    }
 
-.research.wip {
-    display: none;
-}
-.research:hover {
-    border: 1px solid #f19f21;
-    color: #805007;
-}
-.research:hover>.body a {
-    color: #100a01;
-}
-.research .wip {
-    background: #fff670;
-    padding: 5px;
-    text-align: center;
-    color: #111111;
-    font-weight: bold;
-}
-.research:hover>.header .title {
-    background: #f19f2147;
-}
-.research .header {
-    width: 100%;
-    height: 250px;
-    flex: 1;
-    overflow: hidden;
-}
-.research .header .img {
-    width: 100%;
-    /* height: 210px; */
-    border-radius: 5px 5px 0px 0px;
-    background: white;
-}
-.research .header .img img {
-    width: 100%;
-}
-.research .body .title {
-    padding: 5px 0px;
-    font-size: 14pt;
-    font-weight: 500;
-}
-.research .body {
-    padding: 10px;
-    flex: 3;
-    /* font-family: sans-serif; */
-}
+    /* Background Animation Canvas */
+    #bg-animation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+        opacity: 0.6;
+    }
+
+    /* Grid Layout */
+    .research-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 30px;
+        padding: 20px 0;
+    }
+
+    /* Card Styles */
+    .research-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        backdrop-filter: blur(10px);
+        height: 100%;
+    }
+
+    .research-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        border-color: rgba(241, 159, 33, 0.3);
+    }
+
+    /* WIP Badge */
+    .research-card.wip {
+        display: none;
+        /* Hidden by default, shown via JS if needed */
+    }
+
+    .wip-badge {
+        background: #fff670;
+        color: #111;
+        font-weight: 700;
+        text-align: center;
+        padding: 8px;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    /* Card Header (Image) */
+    .card-header {
+        height: 200px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .card-header img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .research-card:hover .card-header img {
+        transform: scale(1.05);
+    }
+
+    /* Card Body */
+    .card-body {
+        padding: 24px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: #1a1a1a;
+        line-height: 1.4;
+    }
+
+    .research-card:hover .card-title {
+        color: #d98200;
+        /* Darker shade of the hover border */
+    }
+
+    .card-desc {
+        font-size: 0.95rem;
+        color: #555;
+        line-height: 1.6;
+        flex-grow: 1;
+    }
+
+    /* Mobile Optimization (List View) */
+    @media only screen and (max-width: 600px) {
+        .research-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .research-card {
+            flex-direction: row;
+            height: auto;
+            min-height: 140px;
+        }
+
+        .card-header {
+            width: 120px;
+            height: auto;
+            flex-shrink: 0;
+        }
+
+        .card-body {
+            padding: 16px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .wip-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 0.7rem;
+            padding: 4px 8px;
+        }
+    }
 </style>
-<div class="main_container">
-    {% for research in site.data.research %}
+
+<canvas id="bg-animation"></canvas>
+
+<div class="wrapper-content">
+    <div class="research-grid">
+        {% for research in site.data.research %}
         {% if research.wip %}
-        <div class="research wip" data="{{ research.link }}">
-            <div class="wip">Work in progress</div>
-        {% else %}
-        <div class="research" data="{{ research.link }}">
-        {% endif %}
-            <div class="header">
-                <div class="img">
+        <div class="research-card wip" data-link="{{ research.link }}">
+            <div class="wip-badge">Work in progress</div>
+            {% else %}
+            <div class="research-card" data-link="{{ research.link }}">
+                {% endif %}
+
+                <div class="card-header">
                     {% if research.image %}
-                    <img src="{{ research.image }}" >
+                    <img src="{{ research.image }}" alt="{{ research.title }}">
+                    {% else %}
+                    <!-- Placeholder gradient if no image -->
+                    <div
+                        style="width:100%; height:100%; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
+                    </div>
                     {% endif %}
                 </div>
-            </div>
-            <div class="body">
-                <div class="title">{{ research.title }}</div>
-                <div>{{ research.description }}</div>
-            </div>
-        </div>
-    {% endfor %}
-</div>
-<script src="/assets/js/jquery.js"></script>
-<script type="text/javascript">
-$(document).ready(() => {
-    $(".research").on("click", (e) => {
-        location.href = "/research/" +$(e.currentTarget).attr('data');
-    });
 
-    if (location.hash.indexOf("wip") != -1) {
-        $(".research.wip").show();
-    }
-});
-</script>
+                <div class="card-body">
+                    <div class="card-title">{{ research.title }}</div>
+                    <div class="card-desc">{{ research.description }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="/assets/js/jquery.js"></script>
+    <script type="text/javascript">
+        $(document).ready(() => {
+            // Card Click Handler
+            $(".research-card").on("click", function (e) {
+                const link = $(this).attr('data-link');
+                if (link) {
+                    location.href = "/research/" + link;
+                }
+            });
+
+            // Show WIP items if hash present
+            if (location.hash.indexOf("wip") != -1) {
+                $(".research-card.wip").css('display', 'flex');
+            }
+
+            // Background Animation (Atoms/Molecules)
+            const canvas = document.getElementById('bg-animation');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let particles = [];
+
+            // Configuration
+            const particleCount = window.innerWidth < 600 ? 30 : 60; // Fewer on mobile
+            const connectionDistance = 150;
+            const moveSpeed = 0.5;
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.vx = (Math.random() - 0.5) * moveSpeed;
+                    this.vy = (Math.random() - 0.5) * moveSpeed;
+                    this.size = Math.random() * 2 + 1;
+                }
+
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+
+                    // Bounce off edges
+                    if (this.x < 0 || this.x > width) this.vx *= -1;
+                    if (this.y < 0 || this.y > height) this.vy *= -1;
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                    ctx.fill();
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push(new Particle());
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                    particles[i].draw();
+
+                    // Draw connections
+                    for (let j = i; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < connectionDistance) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = `rgba(0, 0, 0, ${0.1 - distance / connectionDistance * 0.1})`;
+                            ctx.lineWidth = 1;
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+
+            window.addEventListener('resize', () => {
+                resize();
+                initParticles();
+            });
+
+            resize();
+            initParticles();
+            animate();
+        });
+    </script>
