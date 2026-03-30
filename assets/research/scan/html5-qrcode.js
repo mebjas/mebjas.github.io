@@ -239,13 +239,23 @@ class Html5Qrcode {
                     videoElement.onabort = reject;
                     videoElement.onerror = reject;
                     videoElement.onplaying = () => {
-                        const videoWidth = videoElement.clientWidth;
-                        const videoHeight = videoElement.clientHeight;
-                        setupUi(videoWidth, videoHeight);
+                        // Wait for video to have actual dimensions and be ready
+                        // This prevents race conditions with cameras that need time to initialize
+                        const checkVideoReady = () => {
+                            if (videoElement.videoWidth > 0 && videoElement.videoHeight > 0) {
+                                const videoWidth = videoElement.clientWidth;
+                                const videoHeight = videoElement.clientHeight;
+                                setupUi(videoWidth, videoHeight);
 
-                        // start scanning after video feed has started
-                        foreverScan();
-                        resolve();
+                                // start scanning after video feed has started
+                                foreverScan();
+                                resolve();
+                            } else {
+                                // Video dimensions not ready yet, wait a bit and check again
+                                setTimeout(checkVideoReady, 50);
+                            }
+                        };
+                        checkVideoReady();
                     }
 
                     videoElement.srcObject = mediaStream;
