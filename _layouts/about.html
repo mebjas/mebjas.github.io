@@ -1,15 +1,657 @@
 ---
-layout: default
+layout: compress
 ---
-{% include widget-self.html %}
 
-<header class="page-header">
-    <h1 class="page-title">{{ page.title | escape }}</h1>
-</header>
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: 'en' }}">
 
-<div class="page-content">
-    {{ content }}
+  {% include head.html %}
+
+  <!-- Enable pre-loading pages with query strings and for external links -->
+  <body data-instant-allow-query-string data-instant-allow-external-links>
+
+    <main class="default-content" aria-label="Content">
+      <div class="wrapper-content">
+        <div id="tsparticles"></div>
+
+        <div class="about-container">
+            <div class="header-right custom-about-nav">
+              <a class="page-link" href="{{ '/' | relative_url }}">Blog</a>
+              <a class="page-link" href="{{ '/research/' | relative_url }}">Mini-Projects</a>
+              <a class="page-link" href="{{ '/photography/' | relative_url }}">Photography</a>
+              <a class="page-link" href="{{ site.footer-links.github_full }}">Github</a>
+              <a class="page-link" href="{{ site.footer-links.linkedin }}">LinkedIn</a>
+            </div>
+
+            {% include widget-self.html %}
+
+    <div class="page-content">
+        <blockquote>TL;DR; Mostly 404 otherwise figuring out solutions or next problem to solve.</blockquote>
+        
+        <div class="social-links-container" style="justify-content: center;">
+            <a href="https://www.linkedin.com/in/minhazav/" class="social-link linkedin">LinkedIn</a>
+            <a href="https://github.com/mebjas" class="social-link github">Github</a>
+            <a href="https://twitter.com/minhazav" class="social-link twitter">Twitter</a>
+            <a href="https://medium.com/@minhazav" class="social-link github">Medium</a>
+        </div>
+
+        <h2>Key area of expertise</h2>
+        <table class="styled-table">
+            <thead>
+                <tr><th>Area</th><th>Remarks</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Applied ML</td><td>Language Model, Document Understanding, Model training pipelines / infra</td></tr>
+                <tr><td>Camera</td><td>Particularly Android App side, Camera2, Good knowledge of ISP pipeline</td></tr>
+                <tr><td>Computer Vision</td><td>Primarily around Camera needs, Night Mode, HDR imaging</td></tr>
+                <tr><td>Android Performance</td><td>JNI, Native, Android Image processing, Real-time processing (OpenGL), Renderscript, Tflite inference on device</td></tr>
+                <tr><td>Android Memory</td><td>Android Internals, Java and Native memory, ION memory manager</td></tr>
+                <tr><td>Distributed Systems</td><td>High Availability, Resilience & Robustness</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Eng Lead at Google</h2>
+        <div class="job-subtitle"><span class="status-current">Current</span> &nbsp;&bull;&nbsp; Jan 2025 to present &nbsp;&bull;&nbsp; ⚓ Mountain View, California, USA</div>
+        
+        <h4>Android + AI Acceleration</h4>
+        <p>I lead engineering team in Android based out of Bengaluru (India), Singapore and the USA. We work on bringing differentiated AI experiences into Android.</p>
+        <p>The team also works on portfolio of core ODML based Android experiences like Document Scanner, QR Scanner and entire Barcode Decoding stack in Google.</p>
+        
+        <p><em>More to be added soon ...</em></p>
+
+        <h2>Staff Software Engineer (TLM) at Google</h2>
+        <div class="job-subtitle">May 2019 to Jan 2025 &nbsp;&bull;&nbsp; ⚓ Singapore</div>
+        
+        <h4>Android</h4>
+        <p>I am Tech Lead and Manager for multiple projects in Android including QR scanner, barcode decoder, Document Scanner, Files by Google etc. Working hard building a solid applied ML/vision team at Google :).</p>
+        
+        <h4>Past: Camera from Google</h4>
+        <p>I lead computational photography features like HDR, Low light imaging (night mode), portrait mode in <strong><a href="https://developers.google.com/camera/">Camera from Google</a></strong>. It's an exciting project which requires building best in "segment" computational photography algorithms improving image quality on less than ideal hardware while being able to process millions of pixels under low latency on rather low-end devices.</p>
+        <p>My primary area of focus have been around optimizing the app to run feasibly on low CPU, low RAM devices, but these days I spend a fair share of time improving image quality of HDR.</p>
+        
+        <ul>
+            <li>Leading a team building computational photography features in Camera from Google app, our feature portfolio includes Night Mode, HDR Mode, Portrait Mode (real time and post processing) & Face Enhance.</li>
+            <li>Led launches of features like <a href="https://www.xda-developers.com/google-camera-android-go-mod-night-mode-low-light-photography/">Night Mode</a> and <a href="https://www.xda-developers.com/google-camera-go-rolling-out-hdr-support/">HDR</a> that run on devices with as low as 1Gb ram & low CPU specs.</li>
+            <li>Designed and implemented the processing pipeline responsible for scheduling processing of multi-stage image processing on resource-constrained devices.</li>
+        </ul>
+        
+        <blockquote>TIL: Did you know a 1Gb Android device only has ~880Mb of available RAM of which only about ~450 Mb is left for applications to run on? <a href="https://developer.toradex.com/knowledge-base/carveout-memory-(linux)">Learn about carveout memory in Linux</a></blockquote>
+
+        <h4>Areas I work on these days</h4>
+        <ul>
+            <li>On device ML, Applied ML, document understanding</li>
+            <li>Android, Android Fundamentals, Android Camera, Android storage</li>
+            <li>Linux Fundamentals, Memory management in Android</li>
+            <li>Computational Photography, Image Processing</li>
+        </ul>
+        
+        <h2>Software Engineer II at Microsoft</h2>
+        <div class="job-subtitle">June 2016 to May 2019 (~3 years) &nbsp;&bull;&nbsp; 🇮🇳 Hyderabad, India</div>
+        
+        <p>Worked primarily with <strong>Microsoft Azure</strong>. My day to day involved applied data science, Azure cloud services, distributed systems, and some part of Azure UI. My team was working on an intelligent alerting platform in Azure on features like Smart Grouping capable of automatically grouping user alerts from different sources to reduce mean time to mitigation for customers.</p>
+        
+        <ul>
+            <li>Led design and implementation of <strong>99.99% available Azure Alerting platform</strong> (4 9s of availability). The effort centered around making the service resilient to regional datacenter outages,</li>
+            <li>Led design and implementation of <strong>alerts correlation service</strong> that could group similar Azure alerts to surface relevant alerts to customers and reduce noise.</li>
+            <li>Awards:
+                <ul>
+                    <li><strong>1st prize (Microsoft wide)</strong> in the annual hackathon in the Universal Windows App category. The project involved HoloLens and IoT.</li>
+                    <li>Runner ups in short paper presentation in Synapse - <strong>AI Meet 2017</strong> (Microsoft IDC).</li>
+                </ul>
+            </li>
+        </ul>
+        
+        <blockquote>Did you know 99.99% availability means only acceptable downtime of only <strong>4m 23.0s</strong> per month :O</blockquote>
+
+        <h4>Areas I worked on:</h4>
+        <ul>
+            <li>Applied ML, Unsupervised Learning, Bayesian Networks, Knowledge Graphs</li>
+            <li>Distributed Systems, Systems design, High Availability</li>
+        </ul>
+        
+        <h2>All roles @Todofy</h2>
+        <div class="job-subtitle">2015 (~6 months) &nbsp;&bull;&nbsp; Built in my hostel room @New Delhi, Delhi Technological University</div>
+        
+        <p><a href="https://todofy.org/">Todofy</a> was an ambitious project to organize more than 100 million <span class="highlight">TODOs</span> present in Github codebase at the moment. The goal was to build a platform to add life-cycles for those todos and get them to completion and collaborate on them. See <a href="https://todofy.org/r/mebjas/CSRF-Protector-PHP">mebjas/csrf-protector-php</a> for example. I built this from scratch in the final year of my engineering and hence my roles involved that of an Engineer, Product Manager, PMM, TPM, UX, UXR, and so on. I still feel the problem exists and this could be rebuilt with a much more matured design probably as a <span class="highlight">PaaS</span> service if not <span class="highlight">SaaS</span> solution and could leverage the huge corpus of data on Github to make it super powerful.</p>
+
+        <h2>Open Source Contributions</h2>
+        
+        <h4><a href="https://github.com/mebjas/html5-qrcode">HTML5 QRCode</a> | Author, Maintainer | Since 2014</h4>
+        
+        <p>
+            <a class="github-button" href="https://github.com/mebjas/html5-qrcode" data-icon="octicon-star" data-show-count="true" aria-label="Star mebjas/html5-qrcode on GitHub">Star</a> 
+            <a class="github-button" href="https://github.com/mebjas/html5-qrcode/fork" data-show-count="true" aria-label="Fork mebjas/html5-qrcode on GitHub">Fork</a>
+            <a class="github-button" href="https://github.com/sponsors/mebjas" aria-label="Sponsor @mebjas on GitHub">Sponsor</a>
+            <a class="github-button" href="https://github.com/mebjas/html5-qrcode/issues" data-show-count="true" aria-label="Issue mebjas/html5-qrcode on GitHub">Issue</a>
+        </p>
+        
+        <p>It's a QR code reader for the web, built on vanilla js works for different frameworks, operating systems and platforms. Check <a href="https://blog.minhazav.dev/research/html5-qrcode.html">demo</a> here. Getting more traction everyday!</p>
+        <ul>
+            <li><a href="https://blog.minhazav.dev/qr-code-scanner-end-to-end/">Html5QrcodeScanner - End to end QR Code scanner for web, not just a library</a></li>
+        </ul>
+
+        <h4><a href="https://github.com/mebjas/CSRF-Protector-PHP">OWASP CSRF Protector</a> | Author, Lead Maintainer | Since 2014</h4>
+        
+        <p>
+            <a class="github-button" href="https://github.com/mebjas/CSRF-protector-php" data-icon="octicon-star" data-show-count="true" aria-label="Star mebjas/CSRF-protector-php on GitHub">Star</a> 
+            <a class="github-button" href="https://github.com/mebjas/CSRF-protector-php/fork" data-show-count="true" aria-label="Fork mebjas/CSRF-protector-php on GitHub">Fork</a>
+            <a class="github-button" href="https://github.com/sponsors/mebjas" aria-label="Sponsor @mebjas on GitHub">Sponsor</a>
+            <a class="github-button" href="https://github.com/mebjas/CSRF-protector-php/issues" data-show-count="true" aria-label="Issue mebjas/CSRF-protector-php on GitHub">Issue</a>
+        </p>
+        
+        <p>Author and main maintainer of this OWASP project since 2014. This project started with my participation in Google Summer of Code with OWASP in 2014 under the mentorship of K. W. Walls and Abbas Naderi. Read more about the project in <a href="https://owasp.org/www-project-csrfprotector/">the OWASP Wiki</a>.</p>
+        
+        <blockquote>OWASP CSRF Protector Project is an effort by a group of developers in securing web applications against Cross-Site Request Forgery, providing a PHP library and an Apache Module (to be used differently) for easy mitigation.</blockquote>
+        
+        <br><br><br>
+    </div>
 </div>
+
+<style>
+/* CSS for the new about page */
+#tsparticles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background-color: #f8fafc; /* Light theme background */
+}
+
+/* Base override for layout */
+body {
+    background: transparent !important; /* allow particles to show */
+}
+
+/* Job Subtitles */
+.job-subtitle {
+    font-size: 1.05em;
+    font-weight: 500;
+    color: #64748b;
+    margin-top: -15px;
+    margin-bottom: 25px;
+}
+
+.job-subtitle .status-current {
+    color: #0ea5e9;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+}
+
+.highlight {
+    background: rgba(14, 165, 233, 0.1);
+    color: #0284c7;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+.custom-about-nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 30px 0 40px 0;
+    padding: 0;
+}
+.custom-about-nav .page-link {
+    font-weight: 500;
+    font-size: 1em;
+    color: #64748b !important;
+    text-transform: none;
+    letter-spacing: normal;
+    padding: 5px 10px;
+    position: relative;
+    text-decoration: none;
+    background: transparent;
+    border: none;
+}
+.custom-about-nav .page-link::after {
+    display: none !important;
+}
+.custom-about-nav .page-link:hover {
+    color: #334155 !important;
+    text-decoration: underline;
+}
+
+.about-container {
+    width: 95%;
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 20px 0;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    color: #334155;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 1.1em;
+    line-height: 1.8;
+}
+
+@media (min-width: 1200px) {
+    .about-container {
+        max-width: 1600px;
+        padding: 40px 0;
+    }
+}
+
+.about-container h1, .about-container h2, .about-container h3, .about-container h4 {
+    color: #0f172a;
+    margin-top: 2em;
+    margin-bottom: 0.8em;
+    border-bottom: none;
+    padding-bottom: 0;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.social-links-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 30px 0 40px 0;
+}
+
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 22px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9em;
+    color: #ffffff !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.social-link::after {
+    display: none !important;
+}
+
+.social-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    color: #ffffff !important;
+}
+
+.social-link.linkedin { background: linear-gradient(135deg, #0077b5, #005e93); }
+.social-link.github { background: linear-gradient(135deg, #24292e, #0f1113); }
+.social-link.twitter { background: linear-gradient(135deg, #1da1f2, #147ec0); }
+.social-link.photography { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.social-link.px500 { background: linear-gradient(135deg, #0099e5, #007bb8); }
+
+.about-container h2 {
+    font-size: 2.2em;
+    position: relative;
+    padding-left: 18px;
+}
+
+.about-container h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 15%;
+    height: 70%;
+    width: 6px;
+    background: linear-gradient(to bottom, #0ea5e9, #a855f7);
+    border-radius: 4px;
+}
+
+.about-container h1.page-title {
+    margin-top: 0;
+    font-size: 3.5em;
+    text-transform: uppercase;
+    letter-spacing: -0.04em;
+    background: linear-gradient(120deg, #0f172a, #334155);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.about-container a {
+    color: #0ea5e9;
+    text-decoration: none;
+    position: relative;
+    font-weight: 500;
+}
+
+.about-container a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #0ea5e9;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+}
+
+.about-container a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+.about-container blockquote {
+    border-left: none;
+    position: relative;
+    padding: 25px 35px;
+    margin: 35px 0;
+    border-radius: 12px;
+    color: #334155;
+    font-style: italic;
+    font-size: 1.15em;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.about-container blockquote::before {
+    content: '"';
+    position: absolute;
+    top: -15px;
+    left: 15px;
+    font-size: 4em;
+    color: #0ea5e9;
+    opacity: 0.2;
+    font-family: Georgia, serif;
+    line-height: 1;
+}
+
+/* Styled Table for markdown */
+.about-container .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 30px 0;
+    font-size: 0.95em;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.about-container .styled-table thead tr {
+    background-color: rgba(14, 165, 233, 0.08);
+    color: #0f172a;
+    text-align: left;
+}
+
+.about-container .styled-table th,
+.about-container .styled-table td {
+    padding: 18px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.about-container .styled-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.about-container .styled-table tbody tr:hover {
+    background-color: rgba(14, 165, 233, 0.03);
+}
+
+.about-container .styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #0ea5e9;
+}
+
+/* Adjusting widget self for dark theme */
+.widget-self {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 40px;
+    align-items: center;
+    margin-bottom: 60px;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+}
+
+.widget-self .section-image {
+    order: 1;
+}
+
+.widget-self .section-image img {
+    border-radius: 50%;
+    box-shadow: 0 20px 40px -10px rgba(14, 165, 233, 0.3);
+    border: none;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+    object-fit: cover;
+}
+
+.widget-self .section-image img:hover {
+    transform: scale(1.05) rotate(-3deg);
+    box-shadow: 0 30px 50px -10px rgba(168, 85, 247, 0.4);
+}
+
+.widget-self .section-info {
+    flex: 1;
+    min-width: 300px;
+    order: 2;
+}
+
+.widget-self .profile-header {
+    margin-bottom: 20px;
+}
+
+.widget-self .profile-name {
+    font-size: 2.5em;
+    font-weight: 800;
+    margin: 0 0 5px 0;
+    line-height: 1.1;
+}
+
+.widget-self .profile-name a {
+    background: linear-gradient(to right, #0ea5e9, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.widget-self .profile-name a::after {
+    display: none;
+}
+
+.widget-self .profile-title {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: #334155;
+    margin: 0 0 5px 0;
+}
+
+.widget-self .profile-location {
+    font-size: 1.1em;
+    color: #64748b;
+    margin: 0;
+}
+
+.about-quotes {
+    margin-bottom: 40px;
+}
+
+.about-quotes .quote {
+    color: #475569;
+    margin-top: 20px;
+    font-size: 1.15em;
+    line-height: 1.8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .about-container {
+        width: 100%;
+        margin: 0;
+        padding: 30px 20px;
+        border-radius: 0;
+        box-shadow: none;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+    .widget-self {
+        justify-content: center;
+        text-align: center;
+        padding: 20px 0;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .widget-self .section-image {
+        order: 1;
+    }
+    .widget-self .section-info {
+        order: 2;
+        min-width: 100%;
+        text-align: center;
+    }
+    .widget-self .profile-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+    }
+    .widget-self .section-image img {
+        width: 150px;
+        height: 150px;
+    }
+    .widget-self .profile-name {
+        font-size: 2em;
+    }
+    .widget-self .profile-title {
+        font-size: 1.3em;
+    }
+    .job-subtitle {
+        font-size: 0.95em;
+        line-height: 1.5;
+        margin-top: -10px;
+    }
+    .about-container .styled-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+</style>
+
+<!-- tsParticles scripts -->
+<script src="https://cdn.jsdelivr.net/npm/tsparticles-slim@2.0.6/tsparticles.slim.bundle.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    tsParticles.load("tsparticles", {
+        fpsLimit: 60,
+        particles: {
+            number: {
+                value: 80,
+                density: {
+                    enable: true,
+                    value_area: 800
+                }
+            },
+            color: {
+                value: ["#38bdf8", "#818cf8", "#c084fc"]
+            },
+            shape: {
+                type: "circle"
+            },
+            opacity: {
+                value: 0.6,
+                random: true,
+                anim: {
+                    enable: true,
+                    speed: 1,
+                    opacity_min: 0.1,
+                    sync: false
+                }
+            },
+            size: {
+                value: 3,
+                random: true,
+                anim: {
+                    enable: true,
+                    speed: 2,
+                    size_min: 0.1,
+                    sync: false
+                }
+            },
+            links: {
+                enable: true,
+                distance: 150,
+                color: "#94a3b8",
+                opacity: 0.4,
+                width: 1
+            },
+            move: {
+                enable: true,
+                speed: 1.5,
+                direction: "none",
+                random: false,
+                straight: false,
+                out_mode: "out",
+                attract: {
+                    enable: false,
+                    rotateX: 600,
+                    rotateY: 1200
+                }
+            }
+        },
+        interactivity: {
+            detect_on: "canvas",
+            events: {
+                onhover: {
+                    enable: true,
+                    mode: "grab"
+                },
+                onclick: {
+                    enable: true,
+                    mode: "push"
+                },
+                resize: true
+            },
+            modes: {
+                grab: {
+                    distance: 140,
+                    links: {
+                        opacity: 1
+                    }
+                },
+                push: {
+                    particles_nb: 4
+                }
+            }
+        },
+        retina_detect: true
+    });
+});
+</script>
 
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+      </div>
+    </main>
+
+    <!-- analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-158605510-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-158605510-1');
+    </script>
+  </body>
+</html>
